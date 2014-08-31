@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="mlang_tabs_tab">SEO</label>
+			<label index="mlang_labels_tabdescr">Search Engine Optimization</label>
+			<label index="mlang_labels_tablabel">Search Engine Optimization</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="mlang_tabs_tab">SEO</label>
+			<label index="mlang_labels_tabdescr">Suchmaschinenoptimierung</label>
+			<label index="mlang_labels_tablabel">Suchmaschinenoptimierung</label>
+		</languageKey>
+	</data>
+</T3locallang>

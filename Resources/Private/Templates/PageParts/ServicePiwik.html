@@ -1,0 +1,22 @@
+<script>
+var _paq = _paq || [];
+(function(){
+var u=(("https:" == document.location.protocol) ? "https://{piwikUrl}/" : "http://{piwikUrl}/");
+_paq.push(['setSiteId', {piwikId}]);
+_paq.push(['setTrackerUrl', u+'piwik.php']);
+<f:if condition="{piwikDomainName}">_paq.push(['setDomains', '{piwikDomainName}']);</f:if>
+<f:if condition="{piwikCookieDomainName}">_paq.push(['setCookieDomain', '{piwikCookieDomainName}']);</f:if>
+<f:if condition="{piwikDoNotTrack}">_paq.push(['setDoNotTrack', '{piwikDoNotTrack}']);</f:if>
+<f:if condition="{piwikCustomizationCode}"><f:format.html parseFuncTSPath="">{piwikCustomizationCode}</f:format.html></f:if>
+_paq.push(['trackPageView']);
+_paq.push(['enableLinkTracking']);
+var d=document,
+	g=d.createElement('script'),
+	s=d.getElementsByTagName('script')[0];
+	g.type='text/javascript';
+	g.defer=true;
+	g.async=true;
+	g.src=u+'piwik.js';
+	s.parentNode.insertBefore(g,s);
+})();
+</script><noscript><p><img src="http://{piwikUrl}/piwik.php?idsite={piwikId}" style="border:0" alt="" /></p></noscript>

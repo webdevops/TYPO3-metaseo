@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>database</type>
+		<description>Language labels for database tables/fields belonging to extension 'metaseo'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="pages.tx_metaseo_pagetitle">title-TAG (absolute, without prefix/suffix)</label>
+			<label index="pages_language_overlay.tx_metaseo_pagetitle">title-TAG</label>
+			<label index="pages.tx_metaseo_pagetitle_rel">Browsertitle</label>
+			<label index="pages_language_overlay.tx_metaseo_pagetitle_rel">Browsertitle</label>
+			<label index="pages.tx_metaseo_is_exclude">Exclude page from SearchEngines</label>
+			<label index="pages.tx_metaseo_pagetitle_prefix">Prefix (inheritable)</label>
+			<label index="pages.tx_metaseo_pagetitle_suffix">Suffix (inheritable)</label>
+			<label index="pages.tx_metaseo_inheritance">Inheritance mode</label>
+			<label index="pages.tx_metaseo_canonicalurl">Canonical URL (if your content is a copy from another webpage, link here to it)</label>
+			<label index="pages.tx_metaseo_geo_lat">Latitude</label>
+			<label index="pages.tx_metaseo_geo_long">Longitude</label>
+			<label index="pages.tx_metaseo_geo_place">City/Place</label>
+			<label index="pages.tx_metaseo_geo_region">Region</label>
+
+			<label index="pages.tx_metaseo_inheritance.I.0">Normal</label>
+			<label index="pages.tx_metaseo_inheritance.I.1">Skip (don't herit from this page)</label>
+
+			<label index="pages.tx_metaseo_priority">Priority (0-100)</label>
+			<label index="pages.tx_metaseo_change_frequency">Page change frequency</label>
+
+			<label index="pages.tx_metaseo_change_frequency.I.0">Default (see constants)</label>
+			<label index="pages.tx_metaseo_change_frequency.I.1">Always</label>
+			<label index="pages.tx_metaseo_change_frequency.I.2">Hourly</label>
+			<label index="pages.tx_metaseo_change_frequency.I.3">Daily</label>
+			<label index="pages.tx_metaseo_change_frequency.I.4">Weekly</label>
+			<label index="pages.tx_metaseo_change_frequency.I.5">Monthly</label>
+			<label index="pages.tx_metaseo_change_frequency.I.6">Yearly</label>
+			<label index="pages.tx_metaseo_change_frequency.I.7">Never (archive)</label>
+
+			<label index="tx_metaseo_setting_root">SEO Settings for Root</label>
+			<label index="tx_metaseo_setting_root.is_sitemap">Sitemap active</label>
+			<label index="tx_metaseo_setting_root.is_sitemap_page_indexer">Page indexer</label>
+			<label index="tx_metaseo_setting_root.is_sitemap_page_indexer.description">Page indexer</label>
+			<label index="tx_metaseo_setting_root.is_sitemap_typolink_indexer">TypoLink indexer</label>
+			<label index="tx_metaseo_setting_root.is_sitemap_language_lock">Enable language-domain support (lock output to current language)</label>
+			<label index="tx_metaseo_setting_root.sitemap_page_limit">Sitemap.xml entry page limit (keep empty to use default of 1000)</label>
+			<label index="tx_metaseo_setting_root.sitemap_priorty">Priority (if page have no priority) (default:1)</label>
+			<label index="tx_metaseo_setting_root.sitemap_priorty_depth_multiplier">Priority depth multiplier (default:1)</label>
+			<label index="tx_metaseo_setting_root.sitemap_priorty_depth_modificator">Priority depth modificator (default:1)</label>
+			<label index="tx_metaseo_setting_root.is_robotstxt">Robots.txt active</label>
+			<label index="tx_metaseo_setting_root.is_robotstxt_sitemap_static">Link to static sitemap.xml (scheduler-task needed)</label>
+			<label index="tx_metaseo_setting_root.robotstxt">Robots.txt content (replaces default robots.txt content)</label>
+			<label index="tx_metaseo_setting_root.robotstxt_additional">Robots.txt additional content (below default)</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="pages.tx_metaseo_pagetitle">title-TAG (absolut, ohne Prefix/Suffix)</label>
+			<label index="pages_language_overlay.tx_metaseo_pagetitle">title-TAG</label>
+			<label index="pages.tx_metaseo_pagetitle_rel">Browsertitel</label>
+			<label index="pages_language_overlay.tx_metaseo_pagetitle_rel">Browsertitel</label>
+			<label index="pages.tx_metaseo_is_exclude">Seite von Suchmaschinen ausschließen</label>
+			<label index="pages.tx_metaseo_priority">Priorität (0-100)</label>
+			<label index="pages.tx_metaseo_pagetitle_prefix">Präfix (vererbbar)</label>
+			<label index="pages.tx_metaseo_pagetitle_suffix">Suffix (vererbbar)</label>
+			<label index="pages.tx_metaseo_inheritance">Vererbungsmodus</label>
+			<label index="pages.tx_metaseo_canonicalurl">Canonical URL (Wenn der Inhalt der Webseite von einer Anderen übernommen worden ist, hier die URL dieser Seite eintragen)</label>
+			<label index="pages.tx_metaseo_geo_lat">Breitengrad</label>
+			<label index="pages.tx_metaseo_geo_long">Längengrad</label>
+			<label index="pages.tx_metaseo_geo_place">Stadt/Standort</label>
+			<label index="pages.tx_metaseo_geo_region">Region</label>
+
+			<label index="pages.tx_metaseo_inheritance.I.0">Normal</label>
+			<label index="pages.tx_metaseo_inheritance.I.1">Überspringen (von dieser Seite nicht vererben)</label>
+
+			<label index="pages.tx_metaseo_priority">Priorität (0-100)</label>
+			<label index="pages.tx_metaseo_change_frequency">Änderungshäufigkeit der Seite</label>
+
+			<label index="pages.tx_metaseo_change_frequency.I.0">Standard (siehe Konstanten)</label>
+			<label index="pages.tx_metaseo_change_frequency.I.1">Immer</label>
+			<label index="pages.tx_metaseo_change_frequency.I.2">Stündlich</label>
+			<label index="pages.tx_metaseo_change_frequency.I.3">Täglich</label>
+			<label index="pages.tx_metaseo_change_frequency.I.4">Wöchentlich</label>
+			<label index="pages.tx_metaseo_change_frequency.I.5">Monatlich</label>
+			<label index="pages.tx_metaseo_change_frequency.I.6">Jährlich</label>
+			<label index="pages.tx_metaseo_change_frequency.I.7">Nie (Archivseite)</label>
+
+			<label index="tx_metaseo_setting_root">SEO Einstellungen für Website</label>
+			<label index="tx_metaseo_setting_root.is_robotstxt">Robots.txt aktiv</label>
+			<label index="tx_metaseo_setting_root.robotstxt">Robots.txt</label>
+
+
+			<label index="tx_metaseo_setting_root.is_sitemap">Sitemap aktiv</label>
+			<label index="tx_metaseo_setting_root.is_sitemap_page_indexer">Seiten-Indizierung</label>
+			<label index="tx_metaseo_setting_root.is_sitemap_page_indexer.description">Seiten-Indizierung</label>
+			<label index="tx_metaseo_setting_root.is_sitemap_typolink_indexer">TypoLink-Indizierung</label>
+			<label index="tx_metaseo_setting_root.is_sitemap_language_lock">Sprach-Domain Unterstützung aktivieren (Sitemap gibt nur aktuelle Sprache aus)</label>
+			<label index="tx_metaseo_setting_root.sitemap_page_limit">Sitemap.xml Einträge pro Seite (Leer für Standard von 1000 Einträgen)</label>
+			<label index="tx_metaseo_setting_root.sitemap_priorty">Priorität (wenn bei Seite nicht gesetzt) (Standard:1)</label>
+			<label index="tx_metaseo_setting_root.sitemap_priorty_depth_multiplier">Priorität Seitentiefe Multiplikator (Standard:1)</label>
+			<label index="tx_metaseo_setting_root.sitemap_priorty_depth_modificator">Priorität Seitentiefe Modifikator (Standard:1)</label>
+			<label index="tx_metaseo_setting_root.is_robotstxt">Robots.txt aktiv</label>
+			<label index="tx_metaseo_setting_root.is_robotstxt_sitemap_static">Statische sitemap.xml nutzen (Planer Task wird benötigt)</label>
+			<label index="tx_metaseo_setting_root.robotstxt">Robots.txt Inhalt (Ersetzt den Standard Inhalt der robots.txt)</label>
+			<label index="tx_metaseo_setting_root.robotstxt_additional">Robots.txt Zusatzinhalt (wird unter dem Standard ausgegeben)</label>
+
+		</languageKey>
+	</data>
+</T3locallang>

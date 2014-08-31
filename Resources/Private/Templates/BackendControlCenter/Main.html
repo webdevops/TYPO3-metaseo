@@ -1,0 +1,98 @@
+<f:layout name="BackendStandard" />
+
+<f:section name="title">
+    <h1><f:translate key="title.rootsettings.main">Sitemap</f:translate></h1>
+</f:section>
+
+<f:section name="content">
+
+<f:if condition="{RootPageList}">
+	<table border="0" cellpadding="0" cellspacing="1" width="100%" class="typo3-dblist">
+		<colgroup>
+            <col width="20" />
+            <col width="*" />
+			<col width="200" />
+			<col width="80" />
+			<col width="80" />
+		</colgroup>
+		<thead>
+			<tr>
+                <td class="t3-row-header">&nbsp;</td>
+				<td class="t3-row-header"><strong><f:translate key="table.header.rootpage">Root page</f:translate></strong></td>
+				<td class="t3-row-header"><strong><f:translate key="table.header.domain">Domain</f:translate></strong></td>
+				<td class="t3-row-header"><strong><f:translate key="table.header.sitemap">Sitemap</f:translate></strong></td>
+				<td class="t3-row-header"><strong><f:translate key="table.header.robotstxt">Robots.txt</f:translate></strong></td>
+		</tr>
+		</thead>
+		<tbody>
+
+		<f:for each="{RootPageList}" as="RootPage" iteration="RootPageIterator">
+			<tr>
+                <!-- Edit settings button -->
+                <td>
+                    <span title="" class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-open" onclick="{RootPage.settingsLink}">&nbsp;</span>
+                </td>
+
+				<!-- Title -->
+				<td>{RootPage.title}</td>
+
+				<!-- Domain list -->
+				<td>
+					<f:if condition="{RootPage.domainList}">
+						<f:then>
+							<f:for each="{RootPage.domainList}" as="Domain">
+								<div style="white-space: nowrap">
+									<f:if condition="{Domain.forced}">
+										<f:then>
+											<strong>{Domain.domainName}</strong>
+										</f:then>
+										<f:else>
+											{Domain.domainName}
+										</f:else>
+									</f:if>
+								</div>
+							</f:for>
+						</f:then>
+						<f:else>
+							<span class="metaseo-warning"><f:translate key="message.warning.no_domain_entries_found">No domains found</f:translate></span>
+						</f:else>
+					</f:if>
+				</td>
+
+				<!-- Sitemap status -->
+				<td class="center">
+					<f:if condition="{RootPage.rootSettings.is_sitemap}">
+						<f:then>
+							<span class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-permission-granted"></span>
+
+                            <f:if condition="{RootPage.sitemapLink}">
+                                <div class="metaseo-sitemap-link"><a href="{RootPage.sitemapLink}" target="_blank"><f:translate key="link.open">open</f:translate></a></div>
+                            </f:if>
+						</f:then>
+						<f:else>
+							<span class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-permission-denied"></span>
+						</f:else>
+					</f:if>
+				</td>
+
+				<!-- robots.txt status -->
+				<td class="center">
+					<f:if condition="{RootPage.rootSettings.is_robotstxt}">
+						<f:then>
+							<span class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-permission-granted"></span>
+                            <f:if condition="{RootPage.robotsTxtLink}">
+                                <div class="metaseo-robotstxt-link"><a href="{RootPage.robotsTxtLink}" target="_blank"><f:translate key="link.open">open</f:translate></a></div>
+                            </f:if>
+						</f:then>
+						<f:else>
+							<span class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-permission-denied"></span>
+						</f:else>
+					</f:if>
+				</td>
+			</tr>
+		</f:for>
+		</tbody>
+	</table>
+</f:if>
+
+</f:section>

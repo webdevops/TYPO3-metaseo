@@ -1,0 +1,11 @@
+   # cat=General; type=boolean; label=Beta: Enable beta-features, see manual for details (default is disabled)
+enableBeta =
+
+   # cat=General; type=boolean; label=tt_news integration: Enable tt_news integration
+enableIntegrationTTNews = 1
+
+   # cat=General; type=int+; label=Clear cache possibility: Clear cache possibility on index (0 = default is disabled, good values are 1000 or more - you should instead use the scheduler task if possible)
+sitemap_clearCachePossibility =
+
+   # cat=General; type=int+; label=Sitemap entry expire: Days we should keep pages or urls at least (0 = default is 60)
+sitemap_pageSitemapExpireDays = 60

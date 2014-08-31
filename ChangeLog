@@ -1,0 +1,5 @@
+2014-04-20 Markus Blaschke <typo3@markus-blaschke.de>
+    * Version 1.0.0
+    * Fork of metaseo
+    * Fixed several bugs and improved codebase
+    * Fixed and improved manual (now reStructuredText)

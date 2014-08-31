@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>database</type>
+		<description>Language labels for database tables/fields belonging to extension 'metaseo'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="pages.tab.seo">SEO</label>
+			<label index="pages.palette.pagetitle">Pagetitle</label>
+			<label index="pages.palette.geo">Geo position</label>
+			<label index="pages.palette.crawler">Searchengines</label>
+			<label index="pages.palette.sitemap">Sitemap</label>
+
+			<label index="tx_metaseo_setting_root.tab.sitemap">Sitemap</label>
+			<label index="tx_metaseo_setting_root.tab.robotstxt">Robots.txt</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="pages.tab.seo">SEO</label>
+			<label index="pages.palette.pagetitle">Seitentitel</label>
+			<label index="pages.palette.geo">Geo Position</label>
+			<label index="pages.palette.crawler">Suchmaschinen</label>
+			<label index="pages.palette.sitemap">Sitemap</label>
+
+			<label index="tx_metaseo_setting_root.tab.sitemap">Sitemap</label>
+			<label index="tx_metaseo_setting_root.tab.robotstxt">Robots.txt</label>
+		</languageKey>
+	</data>
+</T3locallang>

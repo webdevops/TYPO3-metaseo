@@ -1,0 +1,20 @@
+<f:layout name="BackendStandard" />
+
+<f:section name="title">
+    <h1><f:translate key="title.seo.pagetitle.simulaton"></f:translate></h1>
+</f:section>
+
+<f:section name="content">
+	<div id="tx-metaseo-sitemap-grid"></div>
+</f:section>
+
+<f:section name="button-toolbar">
+	<f:be.menus.actionMenu>
+		<f:be.menus.actionMenuItem label="{f:translate(key: 'menu.seo.page.metadata')}" controller="BackendPageSeo" action="main" />
+		<f:be.menus.actionMenuItem label="{f:translate(key: 'menu.seo.page.geo')}" controller="BackendPageSeo" action="geo" />
+		<f:be.menus.actionMenuItem label="{f:translate(key: 'menu.seo.page.searchengines')}" controller="BackendPageSeo" action="searchengines" />
+		<f:be.menus.actionMenuItem label="{f:translate(key: 'menu.seo.page.url')}" controller="BackendPageSeo" action="url" />
+		<f:be.menus.actionMenuItem label="{f:translate(key: 'menu.seo.page.pagetitle')}" controller="BackendPageSeo" action="pagetitle" />
+		<f:be.menus.actionMenuItem label="{f:translate(key: 'menu.seo.page.pagetitlesim')}" controller="BackendPageSeo" action="pagetitlesim" />
+	</f:be.menus.actionMenu>
+</f:section>
