@@ -279,8 +279,9 @@ class GeneralUtility {
 
         // Fix url stuff
         $url = str_replace('?&', '?', $url);
-        $url = str_replace('//', '/', $url);
-
+		// FIXME: Find a better regexp or url parsing to prevent double slashes in url (but not in http://)
+		//$url = str_replace('//', '/', $url);
+		
         // Fallback
         //if( !empty($GLOBALS['TSFE']) && !preg_match('/^https?:\/\//i', $url ) ) {
         //	$url = $GLOBALS['TSFE']->baseUrlWrap($url);
