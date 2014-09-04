@@ -83,8 +83,8 @@ plugin.metaseo {
 		robotsFollow = {$plugin.metaseo.metaTags.robotsFollow}
 		robotsArchive = {$plugin.metaseo.metaTags.robotsArchive}
 		robotsSnippet = {$plugin.metaseo.metaTags.robotsSnippet}
-		robotsNoImageindex = {$plugin.tq_seo.metaTags.robotsNoImageindex}
-		robotsNoTranslate = {$plugin.tq_seo.metaTags.robotsNoTranslate}
+		robotsNoImageindex = {$plugin.metaseo.metaTags.robotsNoImageindex}
+		robotsNoTranslate = {$plugin.metaseo.metaTags.robotsNoTranslate}
 		robotsOdp = {$plugin.metaseo.metaTags.robotsOdp}
 		robotsYdir = {$plugin.metaseo.metaTags.robotsYdir}
 

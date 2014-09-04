@@ -85,9 +85,9 @@ plugin.metaseo {
   metaTags.robotsArchive = 1
     # cat=plugin.metaseo.crawler/page/05; type=boolean; label= Crawler Snippet: Should the crawler (eg. Google) show the snippet in the search result
   metaTags.robotsSnippet = 1
-     # cat=plugin.tq_seo.crawler/page/06; type=boolean; label= Crawler Noimageindex: Should the crawler (eg. Google) not index images
+     # cat=plugin.metaseo.crawler/page/06; type=boolean; label= Crawler Noimageindex: Should the crawler (eg. Google) not index images
   metaTags.robotsNoImageindex = 0
-     # cat=plugin.tq_seo.crawler/page/07; type=boolean; label= Crawler Notranslate: Should the crawler (eg. Google) not translate content
+     # cat=plugin.metaseo.crawler/page/07; type=boolean; label= Crawler Notranslate: Should the crawler (eg. Google) not translate content
   metaTags.robotsNoTranslate = 0
     # cat=plugin.metaseo.crawler/page/08; type=boolean; label= Crawler ODP: Should the crawler (eg. Google) use the description from the OpenDirectoryProject
   metaTags.robotsOdp = 1
