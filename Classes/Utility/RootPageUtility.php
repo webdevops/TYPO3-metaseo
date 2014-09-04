@@ -61,15 +61,15 @@ class RootPageUtility {
         $domain = self::getDomain($rootPid);
 
         if( !empty($domain) ) {
-            $domain = 'http://'.$domain.'/';
+            $domain = 'http://' . $domain . '/';
         } else {
             $domain = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
         }
 
         // Add sitemap
-        $domain .= 'index.php?id='.(int)$rootPid.'&type=841132';
+        $url = $domain . 'index.php?id=' . (int)$rootPid . '&type=841132';
 
-        return $domain;
+        return $url;
     }
 
     /**
@@ -82,15 +82,15 @@ class RootPageUtility {
         $domain = self::getDomain($rootPid);
 
         if( !empty($domain) ) {
-            $domain = 'http://'.$domain.'/';
+            $domain = 'http://' . $domain . '/';
         } else {
             $domain = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
         }
 
         // Add sitemap
-        $domain .= 'index.php?id='.(int)$rootPid.'&type=841133';
+        $url = $domain . 'index.php?id=' . (int)$rootPid . '&type=841133';
 
-        return $domain;
+        return $url;
     }
 
 }
