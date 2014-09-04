@@ -131,5 +131,6 @@ Thanks to...
 - Rico Sonntag
 - Ralle Büchnitz
 - Manfred Egger
+- Carsten Hager
 - and for all other contributors and bug reporters
 - famfamfam for these cool silk icons http://www.famfamfam.com/lab/icons/silk/
