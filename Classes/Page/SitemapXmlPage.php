@@ -75,10 +75,12 @@ class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage {
         );
 
         if (empty($page) || $page == 'index') {
-            return $generator->sitemapIndex();
+            $ret = $generator->sitemapIndex();
         } else {
-            return $generator->sitemap($page);
+            $ret = $generator->sitemap($page);
         }
+
+        return $ret;
     }
 
 }

@@ -32,7 +32,7 @@ namespace Metaseo\Metaseo\Page;
  * @subpackage  Page
  * @version     $Id: class.robots_txt.php 62700 2012-05-22 15:53:22Z mblaschke $
  */
-class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage {
+class SitemapTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
 
     // ########################################################################
     // Attributes
@@ -68,17 +68,13 @@ class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage {
      * @return mixed
      */
     protected function _build() {
-        $page = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('page');
-
         $generator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'Metaseo\\Metaseo\\Sitemap\\Generator\\TxtGenerator'
         );
 
-        if (empty($page) || $page == 'index') {
-            return $generator->sitemapIndex();
-        } else {
-            return $generator->sitemap($page);
-        }
+        $ret = $generator->sitemap();
+
+        return $ret;
     }
 
 }
