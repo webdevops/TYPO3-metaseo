@@ -40,7 +40,7 @@ If your extension doesn't use cHash or use no_cache the outwill WILL NOT include
 Also the sitemap indexes all generated “typolink” (BETA).
 
 **Warning:**
-The TQ Seo Sitemap relies on the TYPO3 caching system. If any extension (or configuration – eg. RealURL configuration) break the caching system and makes TSFE non-cacheable (TSFE->no_cache) the sites will NOT INDEXED!
+The MetaSEO Sitemap relies on the TYPO3 caching system. If any extension (or configuration – eg. RealURL configuration) break the caching system and makes TSFE non-cacheable (TSFE->no_cache) the sites will NOT INDEXED!
 Make sure no extension will set no_cache and the cHash of your link is valid. This is the only way to get only valid URLs into your sitemap.
 
 This sitemap supports both, pibase- and extbase-Extensions without problems. However the developer must take care of the cHash-handling.

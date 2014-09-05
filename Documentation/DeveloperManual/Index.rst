@@ -55,10 +55,10 @@ PageTitle
 TypoScript Node                                 Description                                                  Type
 =============================================   ==========================================================   ======================
 plugin.metaseo.pageTitle.stdWrap.before         Manipulation of the raw page title                           *stdWrap*
-                                                (before TQ-Seo processing)
+                                                (before MetaSEO processing)
 
 plugin.metaseo.pageTitle.stdWrap.after          Manipulation of the processed page title                     *stdWrap*
-                                                (after TQ-Seo processing)
+                                                (after MetaSEO processing)
 
 plugin.metaseo.pageTitle.stdWrap.sitetitle      Manipulation of the sitetitle                                *stdWrap*
                                                 (from the TS-Setup-Template)
