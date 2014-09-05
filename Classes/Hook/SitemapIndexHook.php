@@ -48,6 +48,13 @@ class SitemapIndexHook {
         841133, // robots.txt      (metaseo)
     );
 
+	/**
+	 * Current cache status
+	 *
+	 * @var null|boolean
+	 */
+	protected static $currentCacheStatus = null;
+
     // ########################################################################
     // Methods
     // ########################################################################
@@ -319,35 +326,44 @@ class SitemapIndexHook {
         return TRUE;
     }
 
+	/**
+	 * Check current page
+	 *
+	 * @return bool
+	 */
+	protected static function _checkIfCurrentPageIsIndexable() {
+		// check caching status
+		if (self::$currentCacheStatus !== NULL) {
+			return self::$currentCacheStatus;
+		}
 
-    /**
-     * Check current page
-     *
-     * @return bool
-     */
-    protected static function _checkIfCurrentPageIsIndexable() {
-        // skip POST-calls and feuser login
-        if ($_SERVER['REQUEST_METHOD'] !== 'GET'
-            || !empty($GLOBALS['TSFE']->fe_user->user['uid'])
-        ) {
-            return FALSE;
-        }
+		// by default page is not cacheable
+		self::$currentCacheStatus = FALSE;
 
-        // Check for type blacklisting
-        if( in_array($GLOBALS['TSFE']->type, self::$_typeBlacklist) ) {
-            return FALSE;
-        }
+		// skip POST-calls and feuser login
+		if ($_SERVER['REQUEST_METHOD'] !== 'GET'
+			|| !empty($GLOBALS['TSFE']->fe_user->user['uid'])
+		) {
+			return FALSE;
+		}
+		// Check for type blacklisting
+		if( in_array($GLOBALS['TSFE']->type, self::$_typeBlacklist) ) {
+			return FALSE;
+		}
 
-        // dont parse if page is not cacheable
-        if (!$GLOBALS['TSFE']->isStaticCacheble()) {
-            return FALSE;
-        }
+		// dont parse if page is not cacheable
+		if (!$GLOBALS['TSFE']->isStaticCacheble()) {
+			return FALSE;
+		}
 
-        // Skip no_cache-pages
-        if (!empty($GLOBALS['TSFE']->no_cache)) {
-            return FALSE;
-        }
+		// Skip no_cache-pages
+		if (!empty($GLOBALS['TSFE']->no_cache)) {
+			return FALSE;
+		}
 
-        return TRUE;
-    }
+		// all checks successfull, page is cacheable
+		self::$currentCacheStatus = TRUE;
+
+		return TRUE;
+	}
 }
