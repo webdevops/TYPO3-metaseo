@@ -329,6 +329,7 @@ plugin.metaseo {
 	sitemap =
 	sitemap {
 		pagePriority = {$plugin.metaseo.sitemap.pagePriority}
+		changeFrequency = {$plugin.metaseo.sitemap.changeFrequency}
 	}
 
 	# Robots.txt configuration
