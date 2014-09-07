@@ -217,17 +217,22 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
             // Page change frequency
             $pageChangeFrequency = NULL;
             if (!empty($page['tx_metaseo_change_frequency'])) {
-                $pageChangeFrequency = (int)$page['tx_metaseo_change_frequency'];
+                // from page
+                $pageChangeFdrequency = (int)$page['tx_metaseo_change_frequency'];
             } elseif (!empty($sitemapPage['page_change_frequency'])) {
+                // from sitemap settings
                 $pageChangeFrequency = (int)$sitemapPage['page_change_frequency'];
+            } elseif (!empty($this->tsSetup['changeFrequency'])) {
+                // default from SetupTS
+                $pageChangeFrequency = (int)$this->tsSetup['changeFrequency'];
             }
 
+            // translate change frequency
             if (!empty($pageChangeFrequency) && !empty($this->pageChangeFrequency[$pageChangeFrequency])) {
                 $pageChangeFrequency = $this->pageChangeFrequency[$pageChangeFrequency];
             } else {
                 $pageChangeFrequency = NULL;
             }
-
 
             // #####################################
             // Sitemal page output
