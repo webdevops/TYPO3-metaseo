@@ -336,11 +336,15 @@
 			<label index="button.cancel">Abbrechen</label>
 
 			<label index="button.delete">Löschen</label>
-			<label index="button.delete.hint">Alle Einträge löschen</label>
+			<label index="button.delete.hint">Alle ausgewählten Einträge löschen</label>
+
+            <label index="button.delete_all">Alle Einträge löschen</label>
 
 			<label index="button.blacklist">Blacklist</label>
 			<label index="button.blacklist.hint">Einträge auf Blacklist setzen</label>
 
+            <label index="button.whitelist">Whitelist</label>
+            <label index="button.whitelist.hint">Einträge von Blacklist entfernen</label>
 			<!--
 			   Category: Pager and pager stuff
 			-->

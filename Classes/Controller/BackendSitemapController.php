@@ -237,7 +237,7 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         $depthList = array();
         $depthList[] =	array(
             -1,
-            $this->_translate('empty.search_page_depth'),
+            $this->_translate('empty.search.page_depth'),
         );
 
         $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
