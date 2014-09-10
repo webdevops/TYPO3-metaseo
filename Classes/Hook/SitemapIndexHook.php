@@ -326,6 +326,16 @@ class SitemapIndexHook {
         return TRUE;
     }
 
+    /**
+     * Check if page is blacklisted
+     *
+     * @param   string  $url Url
+     * @return  boolean
+     */
+    protected static function checkIfPageIsBlacklisted($url) {
+        // TODO
+    }
+
 	/**
 	 * Check current page
 	 *

@@ -330,6 +330,16 @@ plugin.metaseo {
 	sitemap {
 		pagePriority = {$plugin.metaseo.sitemap.pagePriority}
 		changeFrequency = {$plugin.metaseo.sitemap.changeFrequency}
+
+		# indexer settings
+		index {
+
+			# blacklist
+			blacklist {
+				
+			}
+
+		}
 	}
 
 	# Robots.txt configuration
