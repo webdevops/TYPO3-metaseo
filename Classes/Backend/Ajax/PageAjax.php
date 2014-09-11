@@ -294,7 +294,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
 
         // Init tree
         /** @var \TYPO3\CMS\Backend\Tree\View\PageTreeView $tree */
-        $tree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
+        $tree = $this->objectManager->get('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
         foreach ($fieldList as $field) {
             $tree->addField($field, TRUE);
         }
@@ -494,7 +494,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
     protected function simulateTitle($page, $sysLanguage) {
         $this->initTsfe($page, NULL, $page, NULL, $sysLanguage);
 
-        $pagetitle = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Metaseo\\Metaseo\\Page\\Part\\PagetitlePart');
+        $pagetitle = $this->objectManager->get('Metaseo\\Metaseo\\Page\\Part\\PagetitlePart');
         $ret       = $pagetitle->main($page['title']);
 
         return $ret;
@@ -518,10 +518,10 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         $pageUid = (int)$page['uid'];
 
         if ($rootLine === NULL) {
-            $sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            $sysPageObj = $this->objectManager->get(
                 'TYPO3\\CMS\\Frontend\\Page\\PageRepository'
             );
-            $rootLine   = $sysPageObj->getRootLine($pageUid);
+            $rootLine = $sysPageObj->getRootLine($pageUid);
 
             // save full rootline, we need it in TSFE
             $rootlineFull = $rootLine;
