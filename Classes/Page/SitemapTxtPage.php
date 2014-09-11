@@ -68,9 +68,8 @@ class SitemapTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
      * @return mixed
      */
     protected function _build() {
-        $generator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            'Metaseo\\Metaseo\\Sitemap\\Generator\\TxtGenerator'
-        );
+        /** @var \Metaseo\Metaseo\Sitemap\Generator\TxtGenerator $generator */
+        $generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\TxtGenerator');
 
         $ret = $generator->sitemap();
 
