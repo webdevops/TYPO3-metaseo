@@ -50,7 +50,7 @@ class SitemapUtility {
         static $cache = array();
 
         // do not index empty urls
-        if( empty($pageData['page_url']) ) {
+        if (empty($pageData['page_url']) ) {
             return;
         }
 
@@ -118,7 +118,7 @@ class SitemapUtility {
         // Expired pages
         // #####################
         $expireDays = (int)\Metaseo\Metaseo\Utility\GeneralUtility::getExtConf('sitemap_pageSitemapExpireDays', 60);
-        if( empty($expireDays) ) {
+        if (empty($expireDays) ) {
             $expireDays = 60;
         }
 

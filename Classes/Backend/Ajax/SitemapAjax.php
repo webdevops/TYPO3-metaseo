@@ -40,20 +40,20 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
      *
      * @return    array
      */
-    protected function _executeGetList() {
+    protected function executeGetList() {
         // Init
         $rootPageList = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
 
-        $rootPid      = (int)$this->_postVar['pid'];
-        $offset       = (int)$this->_postVar['start'];
-        $limit        = (int)$this->_postVar['limit'];
-        $itemsPerPage = (int)$this->_postVar['pagingSize'];
+        $rootPid      = (int)$this->postVar['pid'];
+        $offset       = (int)$this->postVar['start'];
+        $limit        = (int)$this->postVar['limit'];
+        $itemsPerPage = (int)$this->postVar['pagingSize'];
 
-        $searchFulltext      = trim((string)$this->_postVar['criteriaFulltext']);
-        $searchPageUid       = trim((int)$this->_postVar['criteriaPageUid']);
-        $searchPageLanguage  = trim((string)$this->_postVar['criteriaPageLanguage']);
-        $searchPageDepth     = trim((string)$this->_postVar['criteriaPageDepth']);
-        $searchIsBlacklisted = (bool)trim((string)$this->_postVar['criteriaIsBlacklisted']);
+        $searchFulltext      = trim((string)$this->postVar['criteriaFulltext']);
+        $searchPageUid       = trim((int)$this->postVar['criteriaPageUid']);
+        $searchPageLanguage  = trim((string)$this->postVar['criteriaPageLanguage']);
+        $searchPageDepth     = trim((string)$this->postVar['criteriaPageDepth']);
+        $searchIsBlacklisted = (bool)trim((string)$this->postVar['criteriaIsBlacklisted']);
 
         // ############################
         // Critera
@@ -106,9 +106,9 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         // default sort
         $sort = 'page_depth ASC, page_uid ASC';
 
-        if (!empty($this->_sortField) && !empty($this->_sortDir)) {
+        if (!empty($this->sortField) && !empty($this->sortDir)) {
             // already filered
-            $sort = $this->_sortField . ' ' . $this->_sortDir;
+            $sort = $this->sortField . ' ' . $this->sortDir;
         }
 
         // ############################
@@ -144,9 +144,9 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
      *
      * @return    boolean
      */
-    protected function _executeBlacklist() {
-        $uidList = $this->_postVar['uidList'];
-        $rootPid = (int)$this->_postVar['pid'];
+    protected function executeBlacklist() {
+        $uidList = $this->postVar['uidList'];
+        $rootPid = (int)$this->postVar['pid'];
 
         $uidList = $GLOBALS['TYPO3_DB']->cleanIntArray($uidList);
 
@@ -172,9 +172,9 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
      *
      * @return    boolean
      */
-    protected function _executeWhitelist() {
-        $uidList = $this->_postVar['uidList'];
-        $rootPid = (int)$this->_postVar['pid'];
+    protected function executeWhitelist() {
+        $uidList = $this->postVar['uidList'];
+        $rootPid = (int)$this->postVar['pid'];
 
         $uidList = $GLOBALS['TYPO3_DB']->cleanIntArray($uidList);
 
@@ -202,9 +202,9 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
      *
      * @return    boolean
      */
-    protected function _executeDelete() {
-        $uidList = $this->_postVar['uidList'];
-        $rootPid = (int)$this->_postVar['pid'];
+    protected function executeDelete() {
+        $uidList = $this->postVar['uidList'];
+        $rootPid = (int)$this->postVar['pid'];
 
         $uidList = $GLOBALS['TYPO3_DB']->cleanIntArray($uidList);
 
@@ -229,10 +229,10 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
      *
      * @return    boolean
      */
-    protected function _executeDeleteAll() {
-        $rootPid = (int)$this->_postVar['pid'];
+    protected function executeDeleteAll() {
+        $rootPid = (int)$this->postVar['pid'];
 
-        if( empty($rootPid) ) {
+        if (empty($rootPid) ) {
             return FALSE;
         }
 

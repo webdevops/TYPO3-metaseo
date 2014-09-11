@@ -41,7 +41,7 @@ class FrontendUtility {
         // FIXME: add sys langauge or check if sys langauge is needed
 
         // Fetch page if needed
-        if( $pageData === NULL ) {
+        if ($pageData === NULL ) {
             $sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
                 'TYPO3\\CMS\\Frontend\\Page\\PageRepository'
             );

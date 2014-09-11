@@ -60,7 +60,7 @@ class MetatagPart {
         $tsfePage = $GLOBALS['TSFE']->page;
 
         $sysLanguageId = 0;
-        if( !empty($tsSetup['config.']['sys_language_uid']) ) {
+        if (!empty($tsSetup['config.']['sys_language_uid']) ) {
             $sysLanguageId = $tsSetup['config.']['sys_language_uid'];
         }
 
@@ -336,7 +336,7 @@ class MetatagPart {
             // #################
 
             // robots
-            if( !empty($tsSetupSeo['robotsEnable']) ) {
+            if (!empty($tsSetupSeo['robotsEnable']) ) {
                 $crawlerOrder = array();
 
                 if (!empty($tsSetupSeo['robotsIndex']) && empty($tsfePage['tx_metaseo_is_exclude'])) {
@@ -563,17 +563,17 @@ class MetatagPart {
         $advMetaTagList      = array();
         $advMetaTagCondition = array();
 
-        if( !empty($storeMeta['flag']['meta:og:external']) ) {
+        if (!empty($storeMeta['flag']['meta:og:external']) ) {
             // External OpenGraph support
             $advMetaTagCondition[] = 'tag_name NOT LIKE \'og:%\'';
 
             // Add external og-tags to adv meta tag list
-            if( !empty($storeMeta['meta:og']) ) {
+            if (!empty($storeMeta['meta:og']) ) {
                 $advMetaTagList = array_merge($advMetaTagList, $storeMeta['meta:og']);
             }
         }
 
-        if( !empty($advMetaTagCondition) ) {
+        if (!empty($advMetaTagCondition) ) {
             $advMetaTagCondition = '( '.implode(') AND (', $advMetaTagCondition).' )';
 
         } else {
@@ -589,7 +589,7 @@ class MetatagPart {
         $advMetaTagList = DatabaseUtility::getList($query);
 
         // Add metadata to tag list
-        foreach($advMetaTagList as $tagName => $tagValue) {
+        foreach ($advMetaTagList as $tagName => $tagValue) {
             $metaTags['adv.' . $tagName] = '<meta name="' . htmlspecialchars($tagName) . '" content="' . htmlspecialchars($tagValue) . '">';
         }
 
@@ -608,7 +608,7 @@ class MetatagPart {
     protected function _initExtensionSupport() {
 
         // Extension: news
-        if( \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('news') ) {
+        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('news') ) {
             $this->_initExtensionSupportNews();
         }
 
@@ -619,34 +619,34 @@ class MetatagPart {
      * Init extension support for "news" extension
      */
     protected function _initExtensionSupportNews() {
-        if( empty($GLOBALS['TSFE']->register) ) {
+        if (empty($GLOBALS['TSFE']->register) ) {
             return;
         }
 
         /** @var \Metaseo\Metaseo\Connector $connector */
         $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Metaseo\\Metaseo\\Connector');
 
-        if( isset($GLOBALS['TSFE']->register['newsTitle']) ) {
+        if (isset($GLOBALS['TSFE']->register['newsTitle']) ) {
             $connector->setMetaTag('title', $GLOBALS['TSFE']->register['newsTitle']);
         }
 
-        if( isset($GLOBALS['TSFE']->register['newsAuthor']) ) {
+        if (isset($GLOBALS['TSFE']->register['newsAuthor']) ) {
             $connector->setMetaTag('author', $GLOBALS['TSFE']->register['newsAuthor']);
         }
 
-        if( isset($GLOBALS['TSFE']->register['newsAuthoremail']) ) {
+        if (isset($GLOBALS['TSFE']->register['newsAuthoremail']) ) {
             $connector->setMetaTag('email', $GLOBALS['TSFE']->register['newsAuthoremail']);
         }
 
-        if( isset($GLOBALS['TSFE']->register['newsAuthorEmail']) ) {
+        if (isset($GLOBALS['TSFE']->register['newsAuthorEmail']) ) {
             $connector->setMetaTag('email', $GLOBALS['TSFE']->register['newsAuthorEmail']);
         }
 
-        if( isset($GLOBALS['TSFE']->register['newsKeywords']) ) {
+        if (isset($GLOBALS['TSFE']->register['newsKeywords']) ) {
             $connector->setMetaTag('keywords', $GLOBALS['TSFE']->register['newsKeywords']);
         }
 
-        if( isset($GLOBALS['TSFE']->register['newsTeaser']) ) {
+        if (isset($GLOBALS['TSFE']->register['newsTeaser']) ) {
             $connector->setMetaTag('description', $GLOBALS['TSFE']->register['newsTeaser']);
         }
     }
