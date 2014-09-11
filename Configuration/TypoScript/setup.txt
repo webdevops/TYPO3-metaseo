@@ -396,14 +396,14 @@ metaSeoSitemapTxt = PAGE
 metaSeoSitemapTxt {
 	typeNum = 841131
 
-	10 = USER
+	10 = USER_INT
 	10 {
 		userFunc = Metaseo\Metaseo\Page\SitemapTxtPage->main
 	}
 
 	config {
 		disableAllHeaderCode = 1
-		additionalHeaders = Content-type:text/plain
+		additionalHeaders = Content-type:text/plain;charset=UTF-8
 		xhtml_cleaning = 0
 
 		## disable static documents and stuff
@@ -431,14 +431,14 @@ metaSeoSitemapXml = PAGE
 metaSeoSitemapXml {
 	typeNum = 841132
 
-	10 = USER
+	10 = USER_INT
 	10 {
 		userFunc = Metaseo\Metaseo\Page\SitemapXmlPage->main
 	}
 
 	config {
 		disableAllHeaderCode = 1
-		additionalHeaders = Content-type:application/xml
+		additionalHeaders = Content-type:application/xml;charset=UTF-8
 		xhtml_cleaning = 0
 
 		## disable static documents and stuff
@@ -465,14 +465,14 @@ metaSeoRobotsTxt = PAGE
 metaSeoRobotsTxt {
 	typeNum = 841133
 
-	10 = USER
+	10 = USER_INT
 	10 {
 		userFunc = Metaseo\Metaseo\Page\RobotsTxtPage->main
 	}
 
 	config {
 		disableAllHeaderCode = 1
-		additionalHeaders = Content-type:text/plain
+		additionalHeaders = Content-type:text/plain;charset=UTF-8
 		xhtml_cleaning = 0
 
 		## disable static documents and stuff
