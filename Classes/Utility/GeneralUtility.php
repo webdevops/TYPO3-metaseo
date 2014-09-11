@@ -270,7 +270,7 @@ class GeneralUtility {
     public static function fullUrl($url, $domain = NULL) {
         if (!preg_match('/^https?:\/\//i', $url)) {
 
-            if( $domain !== NULL ) {
+            if ($domain !== NULL ) {
                 // specified domain
                 $url = 'http://'.$domain.'/'.$url;
             } else {
@@ -286,7 +286,7 @@ class GeneralUtility {
         $url = preg_replace('_(?<!:)\//_', '/', $url);
 
         // Fallback
-        //if( !empty($GLOBALS['TSFE']) && !preg_match('/^https?:\/\//i', $url ) ) {
+        //if (!empty($GLOBALS['TSFE']) && !preg_match('/^https?:\/\//i', $url ) ) {
         //	$url = $GLOBALS['TSFE']->baseUrlWrap($url);
         //}
 

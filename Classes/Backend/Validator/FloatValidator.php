@@ -44,14 +44,14 @@ value = value.replace(/[^-0-9,.]/g,\'\');
 
 var ret = 0;
 try {
-    if( isNaN(value) ) {
+    if (isNaN(value) ) {
         value = 0;
     }
 
     ret = parseFloat(value);
 } catch(e) {}
 
-if( isNaN(ret) ) {
+if (isNaN(ret) ) {
     ret = 0;
 }
 

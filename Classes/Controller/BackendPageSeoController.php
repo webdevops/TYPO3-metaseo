@@ -25,6 +25,8 @@ namespace Metaseo\Metaseo\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Metaseo\Metaseo\Utility\DatabaseUtility;
+
 /**
  * TYPO3 Backend module page seo
  *
@@ -85,7 +87,7 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
     protected function _handleSubAction($type) {
         $pageId		= (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 
-        if( empty($pageId) ) {
+        if (empty($pageId) ) {
             $message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
                 $this->translate('message.warning.no_valid_page.message'),
                 $this->translate('message.warning.no_valid_page.title'),
@@ -109,23 +111,24 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
             ),
         );
 
-        if( !empty($pageTsConf['mod.']['SHARED.']['defaultLanguageFlag']) ) {
+        if (!empty($pageTsConf['mod.']['SHARED.']['defaultLanguageFlag']) ) {
             $languageFullList[0]['flag'] = $pageTsConf['mod.']['SHARED.']['defaultLanguageFlag'];
         }
 
-        if( !empty($pageTsConf['mod.']['SHARED.']['defaultLanguageLabel']) ) {
+        if (!empty($pageTsConf['mod.']['SHARED.']['defaultLanguageLabel']) ) {
             $languageFullList[0]['label'] = $pageTsConf['mod.']['SHARED.']['defaultLanguageLabel'];
 
             $defaultLanguageText = $pageTsConf['mod.']['SHARED.']['defaultLanguageLabel'];
         }
 
         // Fetch other flags
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-            'uid, title, flag',
-            'sys_language',
-            'hidden = 0'
-        );
-        while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
+        $query = 'SELECT uid,
+                         title,
+                         flag
+                    FROM sys_language
+                   WHERE hidden = 0';
+        $rowList = DatabaseUtility::getAll($query);
+        foreach ($rowList as $row) {
             $languageFullList[$row['uid']] = array(
                 'label'	=> htmlspecialchars($row['title']),
                 'flag'	=> htmlspecialchars($row['flag']),
@@ -135,11 +138,11 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         // Langauges
         $languageList = array();
 
-        foreach($languageFullList as $langId => $langRow) {
+        foreach ($languageFullList as $langId => $langRow) {
             $flag = '';
 
             // Flag (if available)
-            if( !empty($langRow['flag']) ) {
+            if (!empty($langRow['flag']) ) {
                 $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-'.$langRow['flag'].' t3-icon-'.$langRow['flag'].'"></span>';
                 $flag .= '&nbsp;';
             }
@@ -156,7 +159,7 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
         $sysLangaugeDefault = (int)$GLOBALS['BE_USER']->getSessionData('TQSeo.sysLanguage');
 
-        if( empty($sysLangaugeDefault) ) {
+        if (empty($sysLangaugeDefault) ) {
             $sysLangaugeDefault = 0;
         }
 

@@ -59,7 +59,7 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
         $ret = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $this->extensionName, $arguments);
 
         // Not translated handling
-        if( $ret === NULL ) {
+        if ($ret === NULL ) {
             $ret = '[-'.$key.'-]';
         }
 
@@ -74,9 +74,9 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
      */
     protected function translateList($list) {
         unset($token);
-        foreach($list as &$token) {
-            if( !empty($token) ) {
-                if( is_array($token) ) {
+        foreach ($list as &$token) {
+            if (!empty($token) ) {
+                if (is_array($token) ) {
                     $token = $this->translateList($token);
                 } else {
                     $token = $this->translate($token);

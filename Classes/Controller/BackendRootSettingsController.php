@@ -54,7 +54,7 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
         $rootIdList     = array_keys($rootPageList);
 
         $rootPidCondition = NULL;
-        if( !empty($rootIdList) ) {
+        if (!empty($rootIdList) ) {
             $rootPidCondition = 'p.uid IN ('.implode(',', $rootIdList).')';
         } else {
             $rootPidCondition = '1=0';
@@ -68,12 +68,12 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
         $query = 'SELECT p.uid
                     FROM pages p
                          LEFT JOIN tx_metaseo_setting_root seosr
-                            ON   seosr.pid = p.uid
+                              ON seosr.pid = p.uid
                              AND seosr.deleted = 0
                     WHERE '.$rootPidCondition.'
                       AND seosr.uid IS NULL';
         $uidList = DatabaseUtility::getCol($query);
-        foreach( $uidList as $tmpUid ) {
+        foreach ($uidList as $tmpUid) {
             $query = 'INSERT INTO tx_metaseo_setting_root (pid, tstamp, crdate, cruser_id)
                             VALUES ('.(int)$tmpUid.',
                                     '.(int)time().',
@@ -89,16 +89,17 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
         // ##################
 
         // Fetch domain name
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-            'uid, pid, domainName, forced',
-            'sys_domain',
-            'hidden = 0',
-            '',
-            'forced DESC, sorting'
-        );
+        $query = 'SELECT uid,
+                         pid,
+                         domainName,
+                         forced
+                    FROM sys_domain
+                   WHERE hidden = 0
+                ORDER BY forced DESC, sorting';
+        $rowList = DatabaseUtility::getAll($query);
 
         $domainList = array();
-        while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
+        foreach ($rowList as $row) {
             $domainList[ $row['pid'] ][ $row['uid'] ] = $row;
         }
 
@@ -107,16 +108,16 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
         // #################
 
         unset($page);
-        foreach($rootPageList as $pageId => &$page) {
+        foreach ($rootPageList as $pageId => &$page) {
             // Domain list
             $page['domainList'] = '';
-            if( !empty($domainList[$pageId]) ) {
+            if (!empty($domainList[$pageId]) ) {
                 $page['domainList'] = $domainList[$pageId];
             }
 
             // Settings
             $page['rootSettings'] = array();
-            if( !empty($rootSettingList[$pageId]) ) {
+            if (!empty($rootSettingList[$pageId]) ) {
                 $page['rootSettings'] = $rootSettingList[$pageId];
             }
 
@@ -126,7 +127,7 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
         unset($page);
 
         // check if there is any root page
-        if( empty($rootPageList) ) {
+        if (empty($rootPageList) ) {
             $message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
                 $this->translate('message.warning.noRootPage.message'),
                 $this->translate('message.warning.noRootPage.title'),

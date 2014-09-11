@@ -57,11 +57,11 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
     public function clearSitemapCommand($rootPageId) {
         $rootPageId = $this->_getRootPageIdFromId($rootPageId);
 
-        if( $rootPageId !== NULL ) {
+        if ($rootPageId !== NULL ) {
             $domain = RootPageUtility::getDomain($rootPageId);
 
             $query = 'DELETE FROM tx_metaseo_sitemap
-                       WHERE page_rootpid = '.DatabaseUtility::quote($rootPageId, 'tx_metaseo_sitemap').'
+                       WHERE page_rootpid = ' . DatabaseUtility::quote($rootPageId, 'tx_metaseo_sitemap') . '
                          AND is_blacklisted = 0';
             DatabaseUtility::exec($query);
 
@@ -81,17 +81,17 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
     public function sitemapCommand($rootPageId) {
         $rootPageId = $this->_getRootPageIdFromId($rootPageId);
 
-        if( $rootPageId !== NULL ) {
+        if ($rootPageId !== NULL ) {
             $domain = RootPageUtility::getDomain($rootPageId);
 
             $query = 'SELECT page_url
                         FROM tx_metaseo_sitemap
-                       WHERE page_rootpid = '.DatabaseUtility::quote($rootPageId, 'tx_metaseo_sitemap').'
+                       WHERE page_rootpid = ' . DatabaseUtility::quote($rootPageId, 'tx_metaseo_sitemap') . '
                          AND is_blacklisted = 0';
             $urlList = DatabaseUtility::getCol($query);
 
-            foreach($urlList as $url) {
-                if( $domain ) {
+            foreach ($urlList as $url) {
+                if ($domain ) {
                     $url = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($url, $domain);
                 }
 
@@ -105,7 +105,7 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
 
 
     /**
-     * Get Root page id from id
+     * Detect root page from id (either PID or sys_domain)
      *
      * @param  $var
      * @return int|mixed|null
@@ -113,17 +113,17 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
     protected function _getRootPageIdFromId($var) {
         $ret = NULL;
 
-        if( is_numeric($var) ) {
+        if (is_numeric($var) ) {
             // TODO: check if var is a valid root page
             $ret = (int)$var;
         } else {
             $query = 'SELECT pid
                         FROM sys_domain
-                       WHERE domainName = '.DatabaseUtility::quote($var, 'sys_domain').'
+                       WHERE domainName = ' . DatabaseUtility::quote($var, 'sys_domain') . '
                          AND hidden = 0';
             $pid = DatabaseUtility::getOne($query);
 
-            if( !empty($pid ) ) {
+            if (!empty($pid ) ) {
                 $ret = $pid;
             }
         }

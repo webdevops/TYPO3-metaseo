@@ -32,7 +32,7 @@ namespace Metaseo\Metaseo\Hook;
  * @subpackage  lib
  * @version     $Id: SitemapIndexHook.php 84520 2014-03-28 10:33:24Z mblaschke $
  */
-class SitemapIndexHook implements SingletonInterface {
+class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
 
     // ########################################################################
     // Attributes
@@ -71,7 +71,7 @@ class SitemapIndexHook implements SingletonInterface {
         }
 
         // check current page
-        if( !$this->checkIfCurrentPageIsIndexable() ) {
+        if (!$this->checkIfCurrentPageIsIndexable() ) {
             return;
         }
 
@@ -199,7 +199,7 @@ class SitemapIndexHook implements SingletonInterface {
         }
 
         // check current page
-        if( !$this->checkIfCurrentPageIsIndexable() ) {
+        if (!$this->checkIfCurrentPageIsIndexable() ) {
             return;
         }
 
@@ -222,7 +222,7 @@ class SitemapIndexHook implements SingletonInterface {
             return;
         }
 
-        if( empty($linkUrl) ) {
+        if (empty($linkUrl) ) {
             // invalid url? should be never empty!
             return;
         }
@@ -347,7 +347,7 @@ class SitemapIndexHook implements SingletonInterface {
 			return FALSE;
 		}
 		// Check for type blacklisting
-		if( in_array($GLOBALS['TSFE']->type, $this->typeBlacklist) ) {
+		if (in_array($GLOBALS['TSFE']->type, $this->typeBlacklist) ) {
 			return FALSE;
 		}
 

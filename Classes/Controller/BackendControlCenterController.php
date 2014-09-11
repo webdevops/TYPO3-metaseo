@@ -50,12 +50,12 @@ class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\Abs
         // Root page list
         // #################
 
-        $rootPageList   = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
-        $rootIdList     = array_keys($rootPageList);
+        $rootPageList = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
+        $rootIdList   = array_keys($rootPageList);
 
         $rootPidCondition = NULL;
-        if( !empty($rootIdList) ) {
-            $rootPidCondition = 'p.uid IN ('.implode(',', $rootIdList).')';
+        if (!empty($rootIdList) ) {
+            $rootPidCondition = 'p.uid IN (' . implode(',', $rootIdList) . ')';
         } else {
             $rootPidCondition = '1=0';
         }
@@ -70,16 +70,16 @@ class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\Abs
                          LEFT JOIN tx_metaseo_setting_root seosr
                             ON   seosr.pid = p.uid
                              AND seosr.deleted = 0
-                    WHERE '.$rootPidCondition.'
+                    WHERE ' . $rootPidCondition . '
                       AND seosr.uid IS NULL';
         $res = $GLOBALS['TYPO3_DB']->sql_query($query);
         while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
             $tmpUid = $row['uid'];
             $query = 'INSERT INTO tx_metaseo_setting_root (pid, tstamp, crdate, cruser_id)
-                            VALUES ('.(int)$tmpUid.',
-                                    '.(int)time().',
-                                    '.(int)time().',
-                                    '.(int)$GLOBALS['BE_USER']->user['uid'].')';
+                            VALUES (' . (int)$tmpUid . ',
+                                    ' . (int)time() . ',
+                                    ' . (int)time() . ',
+                                    ' . (int)$GLOBALS['BE_USER']->user['uid'] . ')';
             DatabaseUtility::execInsert($query);
         }
 
@@ -90,16 +90,17 @@ class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\Abs
         // ##################
 
         // Fetch domain name
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-            'uid, pid, domainName, forced',
-            'sys_domain',
-            'hidden = 0',
-            '',
-            'forced DESC, sorting'
-        );
+        $query = 'SELECT uid,
+                         pid,
+                         domainName,
+                         forced
+                    FROM sys_domain
+                   WHERE hidden = 0
+                ORDER BY forced DESC, sorting';
+        $rowList = DatabaseUtility::getAll($query);
 
         $domainList = array();
-        while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
+        foreach ($rowList as $row) {
             $domainList[ $row['pid'] ][ $row['uid'] ] = $row;
         }
 
@@ -108,16 +109,16 @@ class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\Abs
         // #################
 
         unset($page);
-        foreach($rootPageList as $pageId => &$page) {
+        foreach ($rootPageList as $pageId => &$page) {
             // Domain list
             $page['domainList'] = '';
-            if( !empty($domainList[$pageId]) ) {
+            if (!empty($domainList[$pageId]) ) {
                 $page['domainList'] = $domainList[$pageId];
             }
 
             // Settings
             $page['rootSettings'] = array();
-            if( !empty($rootSettingList[$pageId]) ) {
+            if (!empty($rootSettingList[$pageId]) ) {
                 $page['rootSettings'] = $rootSettingList[$pageId];
             }
 
@@ -131,7 +132,7 @@ class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\Abs
         unset($page);
 
         // check if there is any root page
-        if( empty($rootPageList) ) {
+        if (empty($rootPageList) ) {
             $message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
                 $this->translate('message.warning.noRootPage.message'),
                 $this->translate('message.warning.noRootPage.title'),

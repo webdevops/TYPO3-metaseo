@@ -32,7 +32,7 @@ namespace MetaSeo\MetaSeo;
  * @subpackage  lib
  * @version     $Id: Connector.php 84267 2014-03-14 13:39:05Z mblaschke $
  */
-class Connector {
+class Connector implements \TYPO3\CMS\Core\SingletonInterface {
 
     // ########################################################################
     // Attributes
@@ -128,7 +128,7 @@ class Connector {
         $key   = (string)$key;
         $value = (string)$value;
 
-        if( strpos($key, 'og:') === 0 ) {
+        if (strpos($key, 'og:') === 0 ) {
             return self::setOpenGraphTag($key, $value);
         }
 

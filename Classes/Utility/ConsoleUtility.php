@@ -40,7 +40,7 @@ class ConsoleUtility {
 	 * @param integer $padding Pad message
 	 */
 	public static function write($message = NULL, $padding = NULL) {
-		if($padding > 0) {
+		if ($padding > 0) {
             $message = str_pad($message, $padding, ' ');
 		}
 
@@ -63,7 +63,7 @@ class ConsoleUtility {
 	 * @param integer $padding Pad message
 	 */
 	public static function writeError($message = NULL, $padding = NULL) {
-		if($padding > 0) {
+		if ($padding > 0) {
             $message = str_pad($message, $padding, ' ');
 		}
 
@@ -87,7 +87,7 @@ class ConsoleUtility {
 	 * @param string $message Message text
 	 */
 	public static function stdOut($message = NULL) {
-		if( defined('TYPO3_cliMode') ) {
+		if (defined('TYPO3_cliMode') ) {
 			file_put_contents('php://stdout', $message);
 		}
 	}
@@ -98,7 +98,7 @@ class ConsoleUtility {
 	 * @param string $message Message text
 	 */
 	public static function stdError($message = NULL) {
-		if( defined('TYPO3_cliMode') ) {
+		if (defined('TYPO3_cliMode') ) {
 			file_put_contents('php://stderr', $message);
 		}
 	}
@@ -109,7 +109,7 @@ class ConsoleUtility {
      * @param integer $exitCode Exit code (0 = success)
 	 */
 	public static function teminate($exitCode) {
-		if( defined('TYPO3_cliMode') ) {
+		if (defined('TYPO3_cliMode') ) {
 			exit($exitCode);
 		}
 	}
