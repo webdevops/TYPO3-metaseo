@@ -60,7 +60,7 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 
         // Not translated handling
         if ($ret === NULL ) {
-            $ret = '[-'.$key.'-]';
+            $ret = '[-' . $key . '-]';
         }
 
         return $ret;
@@ -106,7 +106,7 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
      * @return  string
      */
     protected function ajaxControllerUrl($ajaxCall) {
-        return $this->doc->backPath . 'ajax.php?ajaxID='.urlencode($ajaxCall);
+        return $this->doc->backPath . 'ajax.php?ajaxID=' . urlencode($ajaxCall);
     }
 
 }

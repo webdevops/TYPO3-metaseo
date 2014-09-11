@@ -192,7 +192,7 @@ class DatabaseUtility {
      * @return integer
      */
 	public static function getCount($query) {
-        $query = 'SELECT COUNT(*) FROM ('.$query.') tmp';
+        $query = 'SELECT COUNT(*) FROM (' . $query . ') tmp';
         return self::getOne($query);
     }
 
@@ -310,9 +310,9 @@ class DatabaseUtility {
 
         if (!empty($condition) ) {
             if (is_array($condition) ) {
-                $ret .= ' AND (( '. implode(" )\nAND (",$condition) .' ))';
+                $ret .= ' AND (( ' . implode(" )\nAND (",$condition) . ' ))';
             } else {
-                $ret .= ' AND ( '.$condition.' )';
+                $ret .= ' AND ( ' . $condition . ' )';
             }
         }
 
@@ -331,7 +331,7 @@ class DatabaseUtility {
         if (!empty($values) ) {
             $quotedValues = self::quoteArray($values, 'pages');
 
-            $ret = $field.' IN ('. implode(',', $quotedValues) .')';
+            $ret = $field.' IN (' . implode(',', $quotedValues) . ')';
         } else {
             if ($required ) {
                 $ret = '1=0';
@@ -355,7 +355,7 @@ class DatabaseUtility {
         if (!empty($values) ) {
             $quotedValues = self::quoteArray($values, 'pages');
 
-            $ret = $field.' NOT IN ('. implode(',', $quotedValues) .')';
+            $ret = $field.' NOT IN (' . implode(',', $quotedValues) . ')';
         } else {
             if ($required ) {
                 $ret = '1=0';
@@ -383,12 +383,12 @@ class DatabaseUtility {
 
         if (!$res || $GLOBALS['TYPO3_DB']->sql_errno() ) {
             // SQL statement failed
-            $errorMsg = 'SQL Error: '.$GLOBALS['TYPO3_DB']->sql_error().' [errno: '.$GLOBALS['TYPO3_DB']->sql_errno().']';
+            $errorMsg = 'SQL Error: ' . $GLOBALS['TYPO3_DB']->sql_error() . ' [errno: ' . $GLOBALS['TYPO3_DB']->sql_errno() . ']';
 
             if (defined('TYPO3_cliMode') ) {
                 throw new \Exception($errorMsg);
             } else {
-                debug('SQL-QUERY: '.$query, $errorMsg, __LINE__, __FILE__);
+                debug('SQL-QUERY: ' . $query, $errorMsg, __LINE__, __FILE__);
             }
 
             $res = NULL;

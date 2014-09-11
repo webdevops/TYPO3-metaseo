@@ -272,10 +272,10 @@ class GeneralUtility {
 
             if ($domain !== NULL ) {
                 // specified domain
-                $url = 'http://'.$domain.'/'.$url;
+                $url = 'http://' . $domain . '/' . $url;
             } else {
                 // domain from env
-                $url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL').$url;
+                $url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $url;
             }
         }
 

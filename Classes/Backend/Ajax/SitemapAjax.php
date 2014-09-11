@@ -97,7 +97,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         // Fetch total count of items with this filter settings
         $query = 'SELECT COUNT(*) as count
                     FROM tx_metaseo_sitemap
-                   WHERE '.$where;
+                   WHERE ' . $where;
         $itemCount = DatabaseUtility::getOne($query);
 
         // ############################

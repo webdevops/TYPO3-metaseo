@@ -46,45 +46,45 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
      * Main action
      */
     public function mainAction() {
-        return $this->_handleSubAction('metadata');
+        return $this->handleSubAction('metadata');
     }
 
     /**
      * Geo action
      */
     public function geoAction() {
-        return $this->_handleSubAction('geo');
+        return $this->handleSubAction('geo');
     }
 
     /**
      * searchengines action
      */
     public function searchenginesAction() {
-        return $this->_handleSubAction('searchengines');
+        return $this->handleSubAction('searchengines');
     }
 
     /**
      * url action
      */
     public function urlAction() {
-        return $this->_handleSubAction('url');
+        return $this->handleSubAction('url');
     }
 
     /**
      * pagetitle action
      */
     public function pagetitleAction() {
-        return $this->_handleSubAction('pagetitle');
+        return $this->handleSubAction('pagetitle');
     }
 
     /**
      * pagetitle action
      */
     public function pagetitlesimAction() {
-        return $this->_handleSubAction('pagetitlesim');
+        return $this->handleSubAction('pagetitlesim');
     }
 
-    protected function _handleSubAction($type) {
+    protected function handleSubAction($type) {
         $pageId		= (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 
         if (empty($pageId) ) {
@@ -143,7 +143,7 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
             // Flag (if available)
             if (!empty($langRow['flag']) ) {
-                $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-'.$langRow['flag'].' t3-icon-'.$langRow['flag'].'"></span>';
+                $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-' . $langRow['flag'] . ' t3-icon-' . $langRow['flag'] . '"></span>';
                 $flag .= '&nbsp;';
             }
 
@@ -284,8 +284,8 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
             'MetaSeo.overview',
 
             'Ext.namespace("MetaSeo.overview");
-            MetaSeo.overview.conf = '.json_encode($metaSeoConf).';
-            MetaSeo.overview.conf.lang = '.json_encode($metaSeoLang).';
+            MetaSeo.overview.conf      = ' . json_encode($metaSeoConf) . ';
+            MetaSeo.overview.conf.lang = ' . json_encode($metaSeoLang) . ';
         ');
     }
 

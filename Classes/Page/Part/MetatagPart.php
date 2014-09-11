@@ -574,7 +574,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         }
 
         if (!empty($advMetaTagCondition) ) {
-            $advMetaTagCondition = '( '.implode(') AND (', $advMetaTagCondition).' )';
+            $advMetaTagCondition = '( ' . implode(') AND (', $advMetaTagCondition) . ' )';
 
         } else {
             $advMetaTagCondition = '1=1';
@@ -583,9 +583,9 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         // Fetch list of meta tags from database
         $query = 'SELECT tag_name, tag_value
                     FROM tx_metaseo_metatag
-                   WHERE pid = '.(int)$tsfePageId.'
-                     AND sys_language_uid = '.(int)$sysLanguageId.'
-                     AND '.$advMetaTagCondition;
+                   WHERE pid = ' . (int)$tsfePageId . '
+                     AND sys_language_uid = ' . (int)$sysLanguageId . '
+                     AND ' . $advMetaTagCondition;
         $advMetaTagList = DatabaseUtility::getList($query);
 
         // Add metadata to tag list

@@ -55,7 +55,7 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
      * @return  string
      */
     public function clearSitemapCommand($rootPageId) {
-        $rootPageId = $this->_getRootPageIdFromId($rootPageId);
+        $rootPageId = $this->getRootPageIdFromId($rootPageId);
 
         if ($rootPageId !== NULL ) {
             $domain = RootPageUtility::getDomain($rootPageId);
@@ -79,7 +79,7 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
      * @return  string
      */
     public function sitemapCommand($rootPageId) {
-        $rootPageId = $this->_getRootPageIdFromId($rootPageId);
+        $rootPageId = $this->getRootPageIdFromId($rootPageId);
 
         if ($rootPageId !== NULL ) {
             $domain = RootPageUtility::getDomain($rootPageId);
@@ -110,7 +110,7 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
      * @param  $var
      * @return int|mixed|null
      */
-    protected function _getRootPageIdFromId($var) {
+    protected function getRootPageIdFromId($var) {
         $ret = NULL;
 
         if (is_numeric($var) ) {

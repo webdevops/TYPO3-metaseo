@@ -218,7 +218,7 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
             // Flag (if available)
             if (!empty($langRow['flag']) ) {
-                $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-'.$langRow['flag'].' t3-icon-'.$langRow['flag'].'"></span>';
+                $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-' . $langRow['flag'] . ' t3-icon-' . $langRow['flag'] . '"></span>';
                 $flag .= '&nbsp;';
             }
 
@@ -242,7 +242,7 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
             'DISTINCT page_depth',
             'tx_metaseo_sitemap',
-            'page_rootpid = '.(int)$rootPid
+            'page_rootpid = ' . (int)$rootPid
         );
         while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
             $depth = $row['page_depth'];
@@ -373,8 +373,8 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         $pageRenderer->addJsInlineCode(
             'MetaSeo.sitemap',
             'Ext.namespace("MetaSeo.sitemap");
-            MetaSeo.sitemap.conf = '.json_encode($metaSeoConf).';
-            MetaSeo.sitemap.conf.lang = '.json_encode($metaSeoLang).';
+            MetaSeo.sitemap.conf      = ' . json_encode($metaSeoConf) . ';
+            MetaSeo.sitemap.conf.lang = ' . json_encode($metaSeoLang) . ';
         ');
 
     }
