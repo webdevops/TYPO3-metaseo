@@ -1,8 +1,6 @@
 <?php
 namespace Metaseo\Metaseo\Backend\Ajax;
 
-use Metaseo\Metaseo\Utility\DatabaseUtility;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -26,6 +24,8 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use Metaseo\Metaseo\Utility\DatabaseUtility;
 
 /**
  * TYPO3 Backend ajax module sitemap
@@ -145,8 +145,6 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
      * @return    boolean
      */
     protected function _executeBlacklist() {
-        $ret = FALSE;
-
         $uidList = $this->_postVar['uidList'];
         $rootPid = (int)$this->_postVar['pid'];
 
@@ -161,17 +159,10 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         $where[] = DatabaseUtility::conditionIn('uid', $uidList);
         $where   = '( ' . implode(' ) AND ( ', $where) . ' )';
 
-        $res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
-            'tx_metaseo_sitemap',
-            $where,
-            array(
-                'is_blacklisted' => 1
-            )
-        );
-
-        if ($res) {
-            $ret = TRUE;
-        }
+        $query = 'UPDATE tx_metaseo_sitemap
+                     SET is_blacklisted = 1
+                   WHERE ' . $where;
+        $ret = DatabaseUtility::exec($query);
 
         return $ret;
     }
@@ -182,8 +173,6 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
      * @return    boolean
      */
     protected function _executeWhitelist() {
-        $ret = FALSE;
-
         $uidList = $this->_postVar['uidList'];
         $rootPid = (int)$this->_postVar['pid'];
 
@@ -198,17 +187,10 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         $where[] = DatabaseUtility::conditionIn('uid', $uidList);
         $where   = '( ' . implode(' ) AND ( ', $where) . ' )';
 
-        $res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
-            'tx_metaseo_sitemap',
-            $where,
-            array(
-                'is_blacklisted' => 0
-            )
-        );
-
-        if ($res) {
-            $ret = TRUE;
-        }
+        $query = 'UPDATE tx_metaseo_sitemap
+                     SET is_blacklisted = 0
+                   WHERE ' . $where;
+        $ret = DatabaseUtility::exec($query);
 
         return $ret;
     }
@@ -221,8 +203,6 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
      * @return    boolean
      */
     protected function _executeDelete() {
-        $ret = FALSE;
-
         $uidList = $this->_postVar['uidList'];
         $rootPid = (int)$this->_postVar['pid'];
 
@@ -237,14 +217,9 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         $where[] = DatabaseUtility::conditionIn('uid', $uidList);
         $where   = '( ' . implode(' ) AND ( ', $where) . ' )';
 
-        $res = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
-            'tx_metaseo_sitemap',
-            $where
-        );
-
-        if ($res) {
-            $ret = TRUE;
-        }
+        $query = 'DELETE FROM tx_metaseo_sitemap
+                         WHERE ' . $where;
+        $ret = DatabaseUtility::exec($query);
 
         return $ret;
     }
@@ -255,8 +230,6 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
      * @return    boolean
      */
     protected function _executeDeleteAll() {
-        $ret = FALSE;
-
         $rootPid = (int)$this->_postVar['pid'];
 
         if( empty($rootPid) ) {
@@ -267,14 +240,9 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         $where[] = 'page_rootpid = ' . (int)$rootPid;
         $where   = '( ' . implode(' ) AND ( ', $where) . ' )';
 
-        $res = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
-            'tx_metaseo_sitemap',
-            $where
-        );
-
-        if ($res) {
-            $ret = TRUE;
-        }
+        $query = 'DELETE FROM tx_metaseo_sitemap
+                         WHERE ' . $where;
+        $ret = DatabaseUtility::exec($query);
 
         return $ret;
     }

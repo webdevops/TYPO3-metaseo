@@ -1,8 +1,6 @@
 <?php
 namespace Metaseo\Metaseo\Controller;
 
-use Metaseo\Metaseo\Utility\DatabaseUtility;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -89,8 +87,8 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
         if( empty($pageId) ) {
             $message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-                $this->_translate('message.warning.no_valid_page.message'),
-                $this->_translate('message.warning.no_valid_page.title'),
+                $this->translate('message.warning.no_valid_page.message'),
+                $this->translate('message.warning.no_valid_page.title'),
                 \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
             );
             \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($message);
@@ -102,11 +100,11 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
 
         // Build langauge list
-        $defaultLanguageText = $this->_translate('default.language');
+        $defaultLanguageText = $this->translate('default.language');
 
         $languageFullList = array(
             0 => array(
-                'label'	=> $this->_translate('default.language'),
+                'label'	=> $this->translate('default.language'),
                 'flag'	=> '',
             ),
         );
@@ -180,8 +178,8 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
 
         $metaSeoConf = array(
-            'sessionToken'   => $this->_sessionToken('metaseo_metaseo_backend_ajax_pageajax'),
-            'ajaxController' => $this->_ajaxControllerUrl('tx_metaseo_backend_ajax::page'),
+            'sessionToken'   => $this->sessionToken('metaseo_metaseo_backend_ajax_pageajax'),
+            'ajaxController' => $this->ajaxControllerUrl('tx_metaseo_backend_ajax::page'),
             'pid'            => (int)$pageId,
             'renderTo'       => 'tx-metaseo-sitemap-grid',
 
@@ -275,7 +273,7 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         );
 
         // translate list
-        $metaSeoLang = $this->_translateList($metaSeoLang);
+        $metaSeoLang = $this->translateList($metaSeoLang);
         $metaSeoLang['emptySearchPageLanguage'] = $defaultLanguageText;
 
         // Include Ext JS inline code

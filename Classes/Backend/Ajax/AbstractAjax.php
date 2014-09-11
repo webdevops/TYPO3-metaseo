@@ -202,7 +202,7 @@ abstract class AbstractAjax {
      * @param   string $formName    Form name/Session token name
      * @return  string
      */
-    protected function _sessionToken($formName) {
+    protected function sessionToken($formName) {
         $token = $this->_formProtection->generateToken($formName);
         return $token;
     }
@@ -221,7 +221,7 @@ abstract class AbstractAjax {
 
         $className = strtolower(str_replace('\\', '_', get_class($this)));
 
-        $sessionToken = $this->_sessionToken($className);
+        $sessionToken = $this->sessionToken($className);
 
         if ($this->_postVar['sessionToken'] === $sessionToken) {
             return TRUE;

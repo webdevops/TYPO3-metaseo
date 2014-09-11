@@ -1,11 +1,6 @@
 <?php
 namespace Metaseo\Metaseo\Command;
 
-use Causal\Sphinx\Utility\GeneralUtility;
-use Metaseo\Metaseo\Utility\ConsoleUtility;
-use Metaseo\Metaseo\Utility\DatabaseUtility;
-use Metaseo\Metaseo\Utility\RootPageUtility;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -27,6 +22,10 @@ use Metaseo\Metaseo\Utility\RootPageUtility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use Metaseo\Metaseo\Utility\ConsoleUtility;
+use Metaseo\Metaseo\Utility\DatabaseUtility;
+use Metaseo\Metaseo\Utility\RootPageUtility;
 
 /**
  * TYPO3 Command controller
@@ -105,8 +104,13 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
     }
 
 
+    /**
+     * Get Root page id from id
+     *
+     * @param  $var
+     * @return int|mixed|null
+     */
     protected function _getRootPageIdFromId($var) {
-        global $TYPO3_DB;
         $ret = NULL;
 
         if( is_numeric($var) ) {

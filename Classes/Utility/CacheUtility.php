@@ -1,8 +1,6 @@
 <?php
 namespace Metaseo\Metaseo\Utility;
 
-use Metaseo\Metaseo\Utility\DatabaseUtility;
-
 /***************************************************************
  *  Copyright notice
  *
