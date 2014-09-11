@@ -136,17 +136,14 @@ class SitemapUtility {
         //  Deleted or
         // excluded pages
         // #####################
-        $query = 'SELECT
-                        ts.uid
-                    FROM
-                        tx_metaseo_sitemap ts
-                        LEFT JOIN pages p
+        $query = 'SELECT ts.uid
+                    FROM tx_metaseo_sitemap ts
+                         LEFT JOIN pages p
                             ON p.uid = ts.page_uid
                            AND p.deleted = 0
                            AND p.hidden = 0
                            AND p.tx_metaseo_is_exclude = 0
-                    WHERE
-                        p.uid IS NULL';
+                   WHERE p.uid IS NULL';
         $deletedSitemapPages = DatabaseUtility::getColWithIndex($query);
 
         // delete pages
