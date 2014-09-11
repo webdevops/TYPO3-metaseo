@@ -1,8 +1,6 @@
 <?php
 namespace Metaseo\Metaseo\Utility;
 
-use Metaseo\Metaseo\Utility\DatabaseUtility;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -26,6 +24,8 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use Metaseo\Metaseo\Utility\DatabaseUtility;
 
 /**
  * Backend utility

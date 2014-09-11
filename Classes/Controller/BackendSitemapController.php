@@ -1,8 +1,6 @@
 <?php
 namespace Metaseo\Metaseo\Controller;
 
-use Metaseo\Metaseo\Utility\DatabaseUtility;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -139,7 +137,7 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
                 $pagesPerXmlSitemap = $settingRow['sitemap_page_limit'];
             }
             $sumXmlPages = ceil( $stats['sum_total'] / $pagesPerXmlSitemap ) ;
-            $stats['sum_xml_pages'] = sprintf( $this->_translate('sitemap.xml.pages.total'), $sumXmlPages );
+            $stats['sum_xml_pages'] = sprintf( $this->translate('sitemap.xml.pages.total'), $sumXmlPages );
 
 
             $page['stats'] = $stats;
@@ -150,8 +148,8 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         // check if there is any root page
         if( empty($rootPageList) ) {
             $message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-                $this->_translate('message.warning.noRootPage.message'),
-                $this->_translate('message.warning.noRootPage.title'),
+                $this->translate('message.warning.noRootPage.message'),
+                $this->translate('message.warning.noRootPage.title'),
                 \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
             );
             \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($message);
@@ -181,7 +179,7 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
         $languageFullList = array(
             0 => array(
-                'label'	=> $this->_translate('default.language'),
+                'label'	=> $this->translate('default.language'),
                 'flag'	=> '',
             ),
         );
@@ -211,7 +209,7 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         $languageList = array();
         $languageList[] =	array(
             -1,
-            $this->_translate('empty.search.page_language'),
+            $this->translate('empty.search.page_language'),
         );
 
         foreach($languageFullList as $langId => $langRow) {
@@ -237,7 +235,7 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         $depthList = array();
         $depthList[] =	array(
             -1,
-            $this->_translate('empty.search.page_depth'),
+            $this->translate('empty.search.page_depth'),
         );
 
         $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -272,8 +270,8 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
 
         $metaSeoConf = array(
-            'sessionToken'      => $this->_sessionToken('metaseo_metaseo_backend_ajax_sitemapajax'),
-            'ajaxController'    => $this->_ajaxControllerUrl('tx_metaseo_backend_ajax::sitemap'),
+            'sessionToken'      => $this->sessionToken('metaseo_metaseo_backend_ajax_sitemapajax'),
+            'ajaxController'    => $this->ajaxControllerUrl('tx_metaseo_backend_ajax::sitemap'),
             'pid'               => (int)$rootPid,
             'renderTo'          => 'tx-metaseo-sitemap-grid',
             'pagingSize'        => 50,
@@ -367,7 +365,7 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         );
 
         // translate list
-        $metaSeoLang = $this->_translateList($metaSeoLang);
+        $metaSeoLang = $this->translateList($metaSeoLang);
         $metaSeoLang['title'] = sprintf( $metaSeoLang['title'], $rootPage['title'], $rootPid );
 
         // Include Ext JS inline code

@@ -1,8 +1,6 @@
 <?php
 namespace Metaseo\Metaseo\Backend\Ajax;
 
-use Metaseo\Metaseo\Utility\DatabaseUtility;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -26,6 +24,8 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use Metaseo\Metaseo\Utility\DatabaseUtility;
 
 /**
  * TYPO3 Backend ajax module page
@@ -655,7 +655,8 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
 
 
         // check uid of pages language overlay
-        $query = 'SELECT tag_name, tag_value
+        $query = 'SELECT tag_name,
+                         tag_value
                     FROM tx_metaseo_metatag
                    WHERE pid = '.(int)$pid.'
                      AND sys_language_uid = '.(int)$sysLanguage;
