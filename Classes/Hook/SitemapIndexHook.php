@@ -137,7 +137,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
      * @param   string  $linkUrl    Link url
      * @return  string
      */
-    protected static function _processLinkUrl($linkUrl) {
+    protected static function processLinkUrl($linkUrl) {
         static $absRefPrefix = NULL;
         static $absRefPrefixLength = 0;
         $ret = $linkUrl;

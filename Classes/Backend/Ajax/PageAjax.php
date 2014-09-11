@@ -359,7 +359,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
             }
 
             $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-                'uid,pid,title,'.implode(',',$overlayFieldList),
+                'uid,pid,title,' . implode(',',$overlayFieldList),
                 'pages_language_overlay',
                 'pid IN('.implode(',',$pageIdList).') AND sys_language_uid = '.(int)$sysLanguage
             );
@@ -711,8 +711,8 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
      */
     protected function clearMetaTags($pid, $sysLanguage) {
         $query = 'DELETE FROM tx_metaseo_metatag
-                        WHERE pid = '.(int)$pid.'
-                          AND sys_language_uid = '.(int)$sysLanguage;
+                        WHERE pid = ' . (int)$pid . '
+                          AND sys_language_uid = ' . (int)$sysLanguage;
         DatabaseUtility::exec($query);
     }
 
@@ -741,15 +741,15 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         $query = 'INSERT INTO tx_metaseo_metatag
                               (pid, tstamp, crdate, cruser_id, sys_language_uid, tag_name, tag_subname, tag_value, tag_group)
                         VALUES (
-                              '.(int)$pid.',
-                              '.(int)$tstamp.',
-                              '.(int)$crdate.',
-                              '.(int)$cruserId.',
-                              '.(int)$sysLanguage.',
-                              '.DatabaseUtility::quote($metaTag).',
-                              '.DatabaseUtility::quote($subTagName).',
-                              '.DatabaseUtility::quote($value).',
-                              '.(int)$tagGroup.'
+                              ' . (int)$pid . ',
+                              ' . (int)$tstamp . ',
+                              ' . (int)$crdate . ',
+                              ' . (int)$cruserId . ',
+                              ' . (int)$sysLanguage . ',
+                              ' . DatabaseUtility::quote($metaTag) . ',
+                              ' . DatabaseUtility::quote($subTagName) . ',
+                              ' . DatabaseUtility::quote($value) . ',
+                              ' . (int)$tagGroup . '
                         ) ON DUPLICATE KEY UPDATE
                                 tstamp    = VALUES(tstamp),
                                 tag_value = VALUES(tag_value)';
@@ -783,8 +783,8 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
                 // check uid of pages language overlay
                 $query = 'SELECT uid
                             FROM pages_language_overlay
-                           WHERE pid = '.(int)$pid.'
-                             AND sys_language_uid = '.(int)$sysLanguage;
+                           WHERE pid = ' . (int)$pid . '
+                             AND sys_language_uid = ' . (int)$sysLanguage;
                 $overlayId = DatabaseUtility::getOne($query);
 
                 if ( !empty($overlayId) ) {

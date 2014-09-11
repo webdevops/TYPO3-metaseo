@@ -55,7 +55,7 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
 
         $rootPidCondition = NULL;
         if (!empty($rootIdList) ) {
-            $rootPidCondition = 'p.uid IN ('.implode(',', $rootIdList).')';
+            $rootPidCondition = 'p.uid IN (' . implode(',', $rootIdList) . ')';
         } else {
             $rootPidCondition = '1=0';
         }
@@ -70,15 +70,15 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
                          LEFT JOIN tx_metaseo_setting_root seosr
                               ON seosr.pid = p.uid
                              AND seosr.deleted = 0
-                    WHERE '.$rootPidCondition.'
+                    WHERE ' . $rootPidCondition . '
                       AND seosr.uid IS NULL';
         $uidList = DatabaseUtility::getCol($query);
         foreach ($uidList as $tmpUid) {
             $query = 'INSERT INTO tx_metaseo_setting_root (pid, tstamp, crdate, cruser_id)
-                            VALUES ('.(int)$tmpUid.',
-                                    '.(int)time().',
-                                    '.(int)time().',
-                                    '.(int)$GLOBALS['BE_USER']->user['uid'].')';
+                            VALUES (' . (int)$tmpUid . ',
+                                    ' . (int)time() . ',
+                                    ' . (int)time() . ',
+                                    ' . (int)$GLOBALS['BE_USER']->user['uid'] . ')';
             DatabaseUtility::execInsert($query);
         }
 
@@ -122,7 +122,7 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
             }
 
             // Settings available
-            $page['settingsLink'] = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_metaseo_setting_root]['.$rootSettingList[$pageId]['uid'].']=edit',$this->doc->backPath);
+            $page['settingsLink'] = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_metaseo_setting_root][' . $rootSettingList[$pageId]['uid'] . ']=edit',$this->doc->backPath);
         }
         unset($page);
 

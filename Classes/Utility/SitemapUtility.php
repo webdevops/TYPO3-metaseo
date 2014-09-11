@@ -205,7 +205,7 @@ class SitemapUtility {
         if (!empty($typo3Pids)) {
             $query = 'SELECT *
                         FROM pages
-                       WHERE '.DatabaseUtility::conditionIn('uid', $typo3Pids);
+                       WHERE ' . DatabaseUtility::conditionIn('uid', $typo3Pids);
             $pageList = DatabaseUtility::getAllWithIndex($query, 'uid');
 
             if ( empty($pageList) ) {

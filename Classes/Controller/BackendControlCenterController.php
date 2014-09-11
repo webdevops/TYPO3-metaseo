@@ -64,7 +64,7 @@ class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\Abs
         // Root setting list (w/ automatic creation)
         // #################
 
-        // check which root lages have no root settings
+        // check which root pages have no root settings
         $query = 'SELECT p.uid
                     FROM pages p
                          LEFT JOIN tx_metaseo_setting_root seosr
@@ -72,8 +72,8 @@ class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\Abs
                              AND seosr.deleted = 0
                     WHERE ' . $rootPidCondition . '
                       AND seosr.uid IS NULL';
-        $res = $GLOBALS['TYPO3_DB']->sql_query($query);
-        while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
+        $rowList = DatabaseUtility::getAll($query);
+        foreach ($rowList as $row) {
             $tmpUid = $row['uid'];
             $query = 'INSERT INTO tx_metaseo_setting_root (pid, tstamp, crdate, cruser_id)
                             VALUES (' . (int)$tmpUid . ',
@@ -123,7 +123,7 @@ class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\Abs
             }
 
             // Settings available
-            $page['settingsLink'] = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_metaseo_setting_root]['.$rootSettingList[$pageId]['uid'].']=edit',$this->doc->backPath);
+            $page['settingsLink'] = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_metaseo_setting_root][' . $rootSettingList[$pageId]['uid'] . ']=edit',$this->doc->backPath);
 
 
             $page['sitemapLink']   = \Metaseo\Metaseo\Utility\RootPageUtility::getSitemapIndexUrl($pageId);
