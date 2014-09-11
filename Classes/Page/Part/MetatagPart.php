@@ -34,7 +34,7 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  * @subpackage  lib
  * @version     $Id: MetatagPart.php 84520 2014-03-28 10:33:24Z mblaschke $
  */
-class MetatagPart {
+class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
     /**
      * List of stdWrap manipulations
@@ -192,7 +192,7 @@ class MetatagPart {
             // #################
 
             /** @var \Metaseo\Metaseo\Connector $connector */
-            $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Metaseo\\Metaseo\\Connector');
+            $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
             $storeMeta = $connector->getStore();
 
             // Std meta tags
@@ -554,7 +554,7 @@ class MetatagPart {
     protected function _advMetaTags(&$metaTags, $tsfePage, $sysLanguageId, $customMetaTagList) {
         $tsfePageId    = $tsfePage['uid'];
 
-        $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Metaseo\\Metaseo\\Connector');
+        $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
         $storeMeta = $connector->getStore();
 
         // #################
@@ -624,7 +624,7 @@ class MetatagPart {
         }
 
         /** @var \Metaseo\Metaseo\Connector $connector */
-        $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Metaseo\\Metaseo\\Connector');
+        $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
 
         if (isset($GLOBALS['TSFE']->register['newsTitle']) ) {
             $connector->setMetaTag('title', $GLOBALS['TSFE']->register['newsTitle']);
@@ -681,7 +681,7 @@ class MetatagPart {
      */
     protected function _getRelevantUpPagePid($uid){
         /** @var \TYPO3\CMS\Frontend\Page\PageRepository  $sysPageObj */
-        $sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        $sysPageObj = $this->objectManager->get(
             'TYPO3\\CMS\\Frontend\\Page\\PageRepository'
         );
 

@@ -32,7 +32,7 @@ namespace Metaseo\Metaseo\Page\Part;
  * @subpackage  lib
  * @version     $Id: FooterPart.php 84520 2014-03-28 10:33:24Z mblaschke $
  */
-class FooterPart {
+class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
     /**
      * Add Page Footer
