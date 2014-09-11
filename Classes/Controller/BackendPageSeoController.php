@@ -88,7 +88,7 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         $pageId		= (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 
         if (empty($pageId) ) {
-            $message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+            $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
                 $this->translate('message.warning.no_valid_page.message'),
                 $this->translate('message.warning.no_valid_page.title'),
                 \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
@@ -167,7 +167,7 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         // HTML
         // ############################
         // FIXME: do we really need a template engine here?
-        $this->template = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+        $this->template = $this->objectManager->get('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
         $pageRenderer = $this->template->getPageRenderer();
 
         $pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript/Ext.ux.plugin.FitToParent.js');
