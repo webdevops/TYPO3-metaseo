@@ -114,22 +114,20 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         // ############################
         // Fetch sitemap
         // ############################
-        $list = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-            'uid,
-             page_rootpid,
-             page_uid,
-             page_language,
-             page_url,
-             page_depth,
-             is_blacklisted,
-             FROM_UNIXTIME(tstamp) as tstamp,
-             FROM_UNIXTIME(crdate) as crdate',
-            'tx_metaseo_sitemap',
-            $where,
-            '',
-            $sort,
-            $offset . ', ' . $itemsPerPage
-        );
+        $query = 'SELECT uid,
+                         page_rootpid,
+                         page_uid,
+                         page_language,
+                         page_url,
+                         page_depth,
+                         is_blacklisted,
+                         FROM_UNIXTIME(tstamp) as tstamp,
+                         FROM_UNIXTIME(crdate) as crdate
+                    FROM tx_metaseo_sitemap
+                   WHERE ' . $where . '
+                ORDER BY ' . $sort . '
+                   LIMIT ' . $offset . ', ' . $itemsPerPage;
+        $list = DatabaseUtility::getAll($query);
 
         $ret = array(
             'results' => $itemCount,
