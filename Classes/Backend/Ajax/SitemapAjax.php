@@ -88,7 +88,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         }
 
         // Build where
-        $where = '( ' . implode(' ) AND ( ', $where) . ' )';
+        $where = DatabaseUtility::buildCondition($where);
 
         // ############################
         // Pager
@@ -155,7 +155,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         $where   = array();
         $where[] = 'page_rootpid = ' . (int)$rootPid;
         $where[] = DatabaseUtility::conditionIn('uid', $uidList);
-        $where   = '( ' . implode(' ) AND ( ', $where) . ' )';
+        $where   = DatabaseUtility::buildCondition($where);
 
         $query = 'UPDATE tx_metaseo_sitemap
                      SET is_blacklisted = 1
@@ -183,7 +183,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         $where   = array();
         $where[] = 'page_rootpid = ' . (int)$rootPid;
         $where[] = DatabaseUtility::conditionIn('uid', $uidList);
-        $where   = '( ' . implode(' ) AND ( ', $where) . ' )';
+        $where   = DatabaseUtility::buildCondition($where);
 
         $query = 'UPDATE tx_metaseo_sitemap
                      SET is_blacklisted = 0
@@ -213,7 +213,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         $where   = array();
         $where[] = 'page_rootpid = ' . (int)$rootPid;
         $where[] = DatabaseUtility::conditionIn('uid', $uidList);
-        $where   = '( ' . implode(' ) AND ( ', $where) . ' )';
+        $where   = DatabaseUtility::buildCondition($where);
 
         $query = 'DELETE FROM tx_metaseo_sitemap
                          WHERE ' . $where;
@@ -236,7 +236,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
 
         $where   = array();
         $where[] = 'page_rootpid = ' . (int)$rootPid;
-        $where   = '( ' . implode(' ) AND ( ', $where) . ' )';
+        $where   = DatabaseUtility::buildCondition($where);
 
         $query = 'DELETE FROM tx_metaseo_sitemap
                          WHERE ' . $where;

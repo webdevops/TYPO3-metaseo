@@ -367,6 +367,22 @@ class DatabaseUtility {
         return $ret;
     }
 
+	/**
+	 * Build condition
+	 *
+	 * @param  array $where Where condition
+	 * @return string
+	 */
+	public static function buildCondition($where) {
+		$ret = ' ';
+
+		if (!empty($where)) {
+			$ret = ' ( ' . implode(' ) AND ( ', $where) . ' ) ';
+		}
+
+		return $ret;
+	}
+
 	###########################################################################
 	# SQL warpper functions
 	###########################################################################
