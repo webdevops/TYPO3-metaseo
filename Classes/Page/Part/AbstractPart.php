@@ -1,5 +1,5 @@
 <?php
-namespace Metaseo\Metaseo\Scheduler\Task;
+namespace Metaseo\Metaseo\Page\Part;
 
 /***************************************************************
  *  Copyright notice
@@ -24,54 +24,37 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Scheduler Task Sitemap TXT
+ * Abstract part
  *
  * @package     metaseo
- * @subpackage  lib
- * @version     $Id: SitemapTxtTask.php 81080 2013-10-28 09:54:33Z mblaschke $
+ * @subpackage  Page
+ * @version     $Id: class.robots_txt.php 62700 2012-05-22 15:53:22Z mblaschke $
  */
-class SitemapTxtTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask {
-
+abstract class AbstractPart {
     // ########################################################################
     // Attributes
     // ########################################################################
 
     /**
-     * Sitemap base directory
-     *
-     * @var string
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     * @inject
      */
-    protected $sitemapDir = 'uploads/tx_metaseo/sitemap_txt';
+    protected $objectManager;
+
 
     // ########################################################################
     // Methods
     // ########################################################################
 
     /**
-     * Build sitemap
-     *
-     * @param   integer $rootPageId Root page id
-     * @param   integer $languageId Language id
-     * @return  boolean
+     * Constuctor
      */
-    protected function buildSitemap($rootPageId, $languageId) {
-
-        if ($languageId !== NULL) {
-            // Language lock enabled
-            $sitemapFileName = 'sitemap-r%s-l%s.txt.gz';
-        } else {
-            $sitemapFileName = 'sitemap-r%s.txt.gz';
-        }
-
-        $generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\TxtGenerator');
-        $content   = $generator->sitemap();
-
-        $fileName = sprintf($sitemapFileName, $rootPageId, $languageId);
-        $this->writeToFile(PATH_site . '/' . $this->sitemapDir . '/' . $fileName, $content);
-
-        return TRUE;
+    public function __construct() {
+        // Init object manager
+        $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
     }
 
 }

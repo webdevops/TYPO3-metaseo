@@ -1,8 +1,6 @@
 <?php
 namespace Metaseo\Metaseo\Utility;
 
-use Metaseo\Metaseo\Utility\DatabaseUtility;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -27,6 +25,8 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Metaseo\Metaseo\Utility\DatabaseUtility;
+
 /**
  * Sitemap utility
  *
@@ -50,7 +50,7 @@ class SitemapUtility {
         static $cache = array();
 
         // do not index empty urls
-        if( empty($pageData['page_url']) ) {
+        if (empty($pageData['page_url']) ) {
             return;
         }
 
@@ -118,7 +118,7 @@ class SitemapUtility {
         // Expired pages
         // #####################
         $expireDays = (int)\Metaseo\Metaseo\Utility\GeneralUtility::getExtConf('sitemap_pageSitemapExpireDays', 60);
-        if( empty($expireDays) ) {
+        if (empty($expireDays) ) {
             $expireDays = 60;
         }
 
@@ -136,17 +136,14 @@ class SitemapUtility {
         //  Deleted or
         // excluded pages
         // #####################
-        $query = 'SELECT
-                        ts.uid
-                    FROM
-                        tx_metaseo_sitemap ts
-                        LEFT JOIN pages p
+        $query = 'SELECT ts.uid
+                    FROM tx_metaseo_sitemap ts
+                         LEFT JOIN pages p
                             ON p.uid = ts.page_uid
                            AND p.deleted = 0
                            AND p.hidden = 0
                            AND p.tx_metaseo_is_exclude = 0
-                    WHERE
-                        p.uid IS NULL';
+                   WHERE p.uid IS NULL';
         $deletedSitemapPages = DatabaseUtility::getColWithIndex($query);
 
         // delete pages
@@ -205,7 +202,7 @@ class SitemapUtility {
         if (!empty($typo3Pids)) {
             $query = 'SELECT *
                         FROM pages
-                       WHERE '.DatabaseUtility::conditionIn('uid', $typo3Pids);
+                       WHERE ' . DatabaseUtility::conditionIn('uid', $typo3Pids);
             $pageList = DatabaseUtility::getAllWithIndex($query, 'uid');
 
             if ( empty($pageList) ) {

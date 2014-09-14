@@ -24,6 +24,7 @@ namespace Metaseo\Metaseo\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * General utility
@@ -38,29 +39,30 @@ class FrontendUtility {
         static $cacheTSFE = array();
         static $lastTsSetupPid = NULL;
 
+		/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+		$objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+
         // FIXME: add sys langauge or check if sys langauge is needed
 
         // Fetch page if needed
-        if( $pageData === NULL ) {
-            $sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                'TYPO3\\CMS\\Frontend\\Page\\PageRepository'
-            );
+        if ($pageData === NULL ) {
+            $sysPageObj = $objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
 
             $pageData = $sysPageObj->getPage_noCheck($pageUid);
         }
 
         // create time tracker if needed
         if (empty($GLOBALS['TT'])) {
-            $GLOBALS['TT'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                'TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker'
-            );
+			/** @var \TYPO3\CMS\Core\TimeTracker\NullTimeTracker $timeTracker */
+			$timeTracker = $objectManager->get('TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker');
+
+            $GLOBALS['TT'] = $timeTracker;
             $GLOBALS['TT']->start();
         }
 
         if ($rootLine === NULL) {
-            $sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                'TYPO3\\CMS\\Frontend\\Page\\PageRepository'
-            );
+			/** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPageObj */
+            $sysPageObj = $objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
             $rootLine   = $sysPageObj->getRootLine($pageUid);
 
             // save full rootline, we need it in TSFE
@@ -72,25 +74,35 @@ class FrontendUtility {
 
             // Cache TSFE if possible to prevent reinit (is still slow but we need the TSFE)
             if (empty($cacheTSFE[$pageUid])) {
-                $GLOBALS['TSFE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                    'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
-                    $GLOBALS['TYPO3_CONF_VARS']
-                );
-                $GLOBALS['TSFE']->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                    'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'
-                );
+				/** @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $tsfeController */
+				$tsfeController = $objectManager->get(
+					'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
+					$GLOBALS['TYPO3_CONF_VARS'],
+					$pageUid,
+					0
+				);
 
-                $TSObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                    'TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService'
-                );
+				/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObjRenderer */
+				$cObjRenderer = $objectManager->get('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+
+				/** @var \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService  $TSObj */
+                $TSObj = $objectManager->get('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
                 $TSObj->tt_track = 0;
                 $TSObj->init();
                 $TSObj->runThroughTemplates($rootLine);
                 $TSObj->generateConfig();
 
                 $_GET['id'] = $pageUid;
+
+				// Init TSFE
+				$GLOBALS['TSFE'] = $tsfeController;
+				$GLOBALS['TSFE']->cObj = $cObjRenderer;
                 $GLOBALS['TSFE']->initFEuser();
                 $GLOBALS['TSFE']->determineId();
+
+				if (empty($GLOBALS['TSFE']->tmpl)) {
+					$GLOBALS['TSFE']->tmpl = new \stdClass();
+				}
 
                 $GLOBALS['TSFE']->tmpl->setup = $TSObj->setup;
                 $GLOBALS['TSFE']->initTemplate();

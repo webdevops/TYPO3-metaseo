@@ -32,7 +32,7 @@ namespace MetaSeo\MetaSeo;
  * @subpackage  lib
  * @version     $Id: Connector.php 84267 2014-03-14 13:39:05Z mblaschke $
  */
-class Connector {
+class Connector implements \TYPO3\CMS\Core\SingletonInterface {
 
     // ########################################################################
     // Attributes
@@ -43,7 +43,7 @@ class Connector {
      *
      * @var array
      */
-    protected static $_store = array(
+    protected static $store = array(
         'flag'      => array(),
         'meta'      => array(),
         'meta:og'   => array(),
@@ -69,7 +69,7 @@ class Connector {
             $GLOBAL['TSFE']->indexedDocTitle = $value;
         }
 
-        self::$_store['pagetitle']['pagetitle.title'] = $value;
+        self::$store['pagetitle']['pagetitle.title'] = $value;
     }
 
     /**
@@ -78,7 +78,7 @@ class Connector {
      * @param   string $value  Page title suffix
      */
     public static function setPageTitleSuffix($value) {
-        self::$_store['pagetitle']['pagetitle.suffix'] = $value;
+        self::$store['pagetitle']['pagetitle.suffix'] = $value;
     }
 
     /**
@@ -87,7 +87,7 @@ class Connector {
      * @param   string $value  Page title Prefix
      */
     public static function setPageTitlePrefix($value) {
-        self::$_store['pagetitle']['pagetitle.prefix'] = $value;
+        self::$store['pagetitle']['pagetitle.prefix'] = $value;
     }
 
     /**
@@ -102,7 +102,7 @@ class Connector {
             $GLOBALS['TSFE']->indexedDocTitle = $value;
         }
 
-        self::$_store['pagetitle']['pagetitle.absolute'] = $value;
+        self::$store['pagetitle']['pagetitle.absolute'] = $value;
     }
 
     /**
@@ -111,7 +111,7 @@ class Connector {
      * @param   string $value  Page title
      */
     public static function setPageTitleSitetitle($value) {
-        self::$_store['pagetitle']['pagetitle.sitetitle'] = $value;
+        self::$store['pagetitle']['pagetitle.sitetitle'] = $value;
     }
 
     // ########################################################################
@@ -128,11 +128,11 @@ class Connector {
         $key   = (string)$key;
         $value = (string)$value;
 
-        if( strpos($key, 'og:') === 0 ) {
+        if (strpos($key, 'og:') === 0 ) {
             return self::setOpenGraphTag($key, $value);
         }
 
-        self::$_store['meta'][$key] = $value;
+        self::$store['meta'][$key] = $value;
     }
 
     /**
@@ -145,8 +145,8 @@ class Connector {
         $key   = (string)$key;
         $value = (string)$value;
 
-        self::$_store['flag']['meta:og:external'] = true;
-        self::$_store['meta:og'][$key] = $value;
+        self::$store['flag']['meta:og:external'] = true;
+        self::$store['meta:og'][$key] = $value;
     }
 
     /**
@@ -159,7 +159,7 @@ class Connector {
         $key   = (string)$key;
         $value = (string)$value;
 
-        self::$_store['custom'][$key] = $value;
+        self::$store['custom'][$key] = $value;
     }
 
     /**
@@ -170,7 +170,7 @@ class Connector {
     public static function disableMetaTag($key) {
         $key = (string)$key;
 
-        self::$_store['meta'][$key] = NULL;
+        self::$store['meta'][$key] = NULL;
     }
 
     // ########################################################################
@@ -194,11 +194,11 @@ class Connector {
         $ret = NULL;
 
         if ($key !== NULL) {
-            if (isset(self::$_store[$key])) {
-                $ret = self::$_store[$key];
+            if (isset(self::$store[$key])) {
+                $ret = self::$store[$key];
             }
         } else {
-            $ret = self::$_store;
+            $ret = self::$store;
         }
 
         return $ret;

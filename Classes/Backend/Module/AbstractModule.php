@@ -40,26 +40,13 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
      * Backend Form Protection object
      *
      * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection
+     * @inject
      */
-    protected $_formProtection = NULL;
+    protected $formProtection = NULL;
 
     // ########################################################################
     // Methods
     // ########################################################################
-
-    /**
-     * Initializes the controller before invoking an action method.
-     *
-     * @return void
-     */
-    protected function initializeAction() {
-
-        // Init form protection instance
-        $this->_formProtection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            'TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection'
-        );
-
-    }
 
     /**
      * Translate key
@@ -68,12 +55,12 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
      * @param   NULL|array  $arguments  Arguments (vsprintf)
      * @return  NULL|string
      */
-    protected function _translate($key, $arguments = NULL) {
+    protected function translate($key, $arguments = NULL) {
         $ret = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $this->extensionName, $arguments);
 
         // Not translated handling
-        if( $ret === NULL ) {
-            $ret = '[-'.$key.'-]';
+        if ($ret === NULL ) {
+            $ret = '[-' . $key . '-]';
         }
 
         return $ret;
@@ -85,14 +72,14 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
      * @param   array $list   Translation keys
      * @return  array
      */
-    protected function _translateList($list) {
+    protected function translateList($list) {
         unset($token);
-        foreach($list as &$token) {
-            if( !empty($token) ) {
-                if( is_array($token) ) {
-                    $token = $this->_translateList($token);
+        foreach ($list as &$token) {
+            if (!empty($token) ) {
+                if (is_array($token) ) {
+                    $token = $this->translateList($token);
                 } else {
-                    $token = $this->_translate($token);
+                    $token = $this->translate($token);
                 }
             }
         }
@@ -107,8 +94,8 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
      * @param    string $formName    Form name/Session token name
      * @return    string
      */
-    protected function _sessionToken($formName) {
-        $token = $this->_formProtection->generateToken($formName);
+    protected function sessionToken($formName) {
+        $token = $this->formProtection->generateToken($formName);
         return $token;
     }
 
@@ -118,8 +105,8 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
      * @param   string  $ajaxCall Ajax Call
      * @return  string
      */
-    protected function _ajaxControllerUrl($ajaxCall) {
-        return $this->doc->backPath . 'ajax.php?ajaxID='.urlencode($ajaxCall);
+    protected function ajaxControllerUrl($ajaxCall) {
+        return $this->doc->backPath . 'ajax.php?ajaxID=' . urlencode($ajaxCall);
     }
 
 }

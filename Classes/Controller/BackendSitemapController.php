@@ -1,8 +1,6 @@
 <?php
 namespace Metaseo\Metaseo\Controller;
 
-use Metaseo\Metaseo\Utility\DatabaseUtility;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -26,6 +24,8 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use Metaseo\Metaseo\Utility\DatabaseUtility;
 
 /**
  * TYPO3 Backend module sitemap
@@ -64,21 +64,22 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         );
 
         // Fetch domain name
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-            'pid, domainName, forced',
-            'sys_domain',
-            'hidden = 0',
-            '',
-            'forced DESC, sorting'
-        );
+        $query = 'SELECT uid,
+                         pid,
+                         domainName,
+                         forced
+                    FROM sys_domain
+                   WHERE hidden = 0
+                ORDER BY forced DESC, sorting';
+        $rowList = DatabaseUtility::getAll($query);
 
         $domainList = array();
-        while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
+        foreach ($rowList as $row) {
             $pid = $row['pid'];
 
-            if( !empty($row['forced']) ) {
+            if (!empty($row['forced']) ) {
                 $domainList[$pid] = $row['domainName'];
-            } elseif( empty($domainList[$pid]) ) {
+            } elseif (empty($domainList[$pid]) ) {
                 $domainList[$pid] = $row['domainName'];
             }
         }
@@ -89,7 +90,7 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
 
         unset($page);
-        foreach($rootPageList as $pageId => &$page) {
+        foreach ($rootPageList as $pageId => &$page) {
             $stats = array(
                 'sum_pages'		=> 0,
                 'sum_total' 	=> 0,
@@ -98,33 +99,29 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
             // Get domain
             $domain = NULL;
-            if( !empty($domainList[$pageId]) ) {
+            if (!empty($domainList[$pageId]) ) {
                 $domain = $domainList[$pageId];
             }
 
             // Setting row
             $settingRow = array();
-            if( !empty($rootSettingList[$pageId]) ) {
+            if (!empty($rootSettingList[$pageId]) ) {
                 $settingRow = $rootSettingList[$pageId];
             }
 
 
             // Calc stats
-            foreach($statsList as $statsKey => $statsTmpList) {
-                if( !empty($statsTmpList[$pageId]) ) {
+            foreach ($statsList as $statsKey => $statsTmpList) {
+                if (!empty($statsTmpList[$pageId]) ) {
                     $stats[$statsKey] = $statsTmpList[$pageId]['count'];
                 }
             }
 
             // Root statistics
-            $tmp = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-                'DISTINCT page_uid',
-                'tx_metaseo_sitemap',
-                'page_rootpid = '.(int)$pageId
-            );
-            if( !empty($tmp) ) {
-                $stats['sum_pages'] = count($tmp);
-            }
+            $query = 'SELECT COUNT(page_uid)
+                        FROM tx_metaseo_sitemap
+                       WHERE page_rootpid = ' . (int)$pageId;
+            $stats['sum_pages'] = DatabaseUtility::getOne($query);
 
 
             // FIXME: fix link
@@ -135,11 +132,11 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
 
             $pagesPerXmlSitemap = 1000;
-            if( !empty($settingRow['sitemap_page_limit']) ) {
+            if (!empty($settingRow['sitemap_page_limit']) ) {
                 $pagesPerXmlSitemap = $settingRow['sitemap_page_limit'];
             }
             $sumXmlPages = ceil( $stats['sum_total'] / $pagesPerXmlSitemap ) ;
-            $stats['sum_xml_pages'] = sprintf( $this->_translate('sitemap.xml.pages.total'), $sumXmlPages );
+            $stats['sum_xml_pages'] = sprintf( $this->translate('sitemap.xml.pages.total'), $sumXmlPages );
 
 
             $page['stats'] = $stats;
@@ -148,10 +145,10 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
 
         // check if there is any root page
-        if( empty($rootPageList) ) {
-            $message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-                $this->_translate('message.warning.noRootPage.message'),
-                $this->_translate('message.warning.noRootPage.title'),
+        if (empty($rootPageList) ) {
+            $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+                $this->translate('message.warning.noRootPage.message'),
+                $this->translate('message.warning.noRootPage.title'),
                 \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
             );
             \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($message);
@@ -167,7 +164,7 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         $params  = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_metaseo_metaseometaseo_metaseositemap');
         $rootPid = $params['pageId'];
 
-        if( empty($rootPid) ) {
+        if (empty($rootPid) ) {
             return '';
         }
 
@@ -181,26 +178,28 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
         $languageFullList = array(
             0 => array(
-                'label'	=> $this->_translate('default.language'),
+                'label'	=> $this->translate('default.language'),
                 'flag'	=> '',
             ),
         );
 
-        if( !empty($pageTsConf['mod.']['SHARED.']['defaultLanguageFlag']) ) {
+        if (!empty($pageTsConf['mod.']['SHARED.']['defaultLanguageFlag']) ) {
             $languageFullList[0]['flag'] = $pageTsConf['mod.']['SHARED.']['defaultLanguageFlag'];
         }
 
-        if( !empty($pageTsConf['mod.']['SHARED.']['defaultLanguageLabel']) ) {
+        if (!empty($pageTsConf['mod.']['SHARED.']['defaultLanguageLabel'])) {
             $languageFullList[0]['label'] = $pageTsConf['mod.']['SHARED.']['defaultLanguageLabel'];
         }
 
-        // Fetch other flags
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-            'uid, title, flag',
-            'sys_language',
-            'hidden = 0'
-        );
-        while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
+        // Fetch domain name
+        $query = 'SELECT uid,
+                         title,
+                         flag
+                    FROM sys_language
+                   WHERE hidden = 0';
+        $rowList = DatabaseUtility::getAll($query);
+
+        foreach ($rowList as $row) {
             $languageFullList[$row['uid']] = array(
                 'label' => htmlspecialchars($row['title']),
                 'flag'  => htmlspecialchars($row['flag']),
@@ -211,15 +210,15 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         $languageList = array();
         $languageList[] =	array(
             -1,
-            $this->_translate('empty.search.page_language'),
+            $this->translate('empty.search.page_language'),
         );
 
-        foreach($languageFullList as $langId => $langRow) {
+        foreach ($languageFullList as $langId => $langRow) {
             $flag = '';
 
             // Flag (if available)
-            if( !empty($langRow['flag']) ) {
-                $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-'.$langRow['flag'].' t3-icon-'.$langRow['flag'].'"></span>';
+            if (!empty($langRow['flag']) ) {
+                $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-' . $langRow['flag'] . ' t3-icon-' . $langRow['flag'] . '"></span>';
                 $flag .= '&nbsp;';
             }
 
@@ -237,13 +236,13 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         $depthList = array();
         $depthList[] =	array(
             -1,
-            $this->_translate('empty.search.page_depth'),
+            $this->translate('empty.search.page_depth'),
         );
 
         $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
             'DISTINCT page_depth',
             'tx_metaseo_sitemap',
-            'page_rootpid = '.(int)$rootPid
+            'page_rootpid = ' . (int)$rootPid
         );
         while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
             $depth = $row['page_depth'];
@@ -258,7 +257,7 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         // ###############################
 
         // FIXME: do we really need a template engine here?
-        $this->template = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+        $this->template = $this->objectManager->get('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
         $pageRenderer = $this->template->getPageRenderer();
 
         $basePathJs  = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript';
@@ -272,8 +271,8 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
 
         $metaSeoConf = array(
-            'sessionToken'      => $this->_sessionToken('metaseo_metaseo_backend_ajax_sitemapajax'),
-            'ajaxController'    => $this->_ajaxControllerUrl('tx_metaseo_backend_ajax::sitemap'),
+            'sessionToken'      => $this->sessionToken('metaseo_metaseo_backend_ajax_sitemapajax'),
+            'ajaxController'    => $this->ajaxControllerUrl('tx_metaseo_backend_ajax::sitemap'),
             'pid'               => (int)$rootPid,
             'renderTo'          => 'tx-metaseo-sitemap-grid',
             'pagingSize'        => 50,
@@ -367,15 +366,15 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         );
 
         // translate list
-        $metaSeoLang = $this->_translateList($metaSeoLang);
+        $metaSeoLang = $this->translateList($metaSeoLang);
         $metaSeoLang['title'] = sprintf( $metaSeoLang['title'], $rootPage['title'], $rootPid );
 
         // Include Ext JS inline code
         $pageRenderer->addJsInlineCode(
             'MetaSeo.sitemap',
             'Ext.namespace("MetaSeo.sitemap");
-            MetaSeo.sitemap.conf = '.json_encode($metaSeoConf).';
-            MetaSeo.sitemap.conf.lang = '.json_encode($metaSeoLang).';
+            MetaSeo.sitemap.conf      = ' . json_encode($metaSeoConf) . ';
+            MetaSeo.sitemap.conf.lang = ' . json_encode($metaSeoLang) . ';
         ');
 
     }

@@ -1,7 +1,5 @@
 <?php
 
-use TYPO3\CMS\Core\Messaging\FlashMessage;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -26,6 +24,8 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+
 /**
  * Update class for the extension manager.
  *
@@ -43,14 +43,14 @@ class ext_update {
      *
      * @var array
      */
-    protected $_messageList = array();
+    protected $messageList = array();
 
     /**
      * Clear cache (after update)
      *
      * @var boolean
      */
-    protected $_clearCache = FALSE;
+    protected $clearCache = FALSE;
 
     // ########################################################################
     // Methods
@@ -62,9 +62,9 @@ class ext_update {
      * @return string
      */
     public function main() {
-        $this->_processUpdates();
+        $this->processUpdates();
 
-        $ret = $this->_generateOutput();
+        $ret = $this->generateOutput();
 
         return $ret;
     }
@@ -84,19 +84,19 @@ class ext_update {
     /**
      * The actual update function. Add your update task in here.
      */
-    protected function _processUpdates() {
-        //$this->_processUpdateTypoScriptIncludes();
-        //$this->_processUpdateScheduler();
+    protected function processUpdates() {
+        //$this->processUpdateTypoScriptIncludes();
+        //$this->processUpdateScheduler();
 
-        $this->_processClearCache();
+        $this->processClearCache();
     }
 
     /**
      * Clear cache
      */
-    protected function _processClearCache() {
+    protected function processClearCache() {
 
-        if( $this->_clearCache ) {
+        if( $this->clearCache ) {
 
             // Init TCE
             $TCE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
@@ -108,7 +108,7 @@ class ext_update {
             $msgStatus = FlashMessage::INFO;
             $msgText   = 'Cleared all caches due migration';
 
-            $this->_addMessage($msgStatus, $msgTitle, $msgText);
+            $this->addMessage($msgStatus, $msgTitle, $msgText);
         }
     }
 
@@ -119,14 +119,14 @@ class ext_update {
      * @param string  $title    Title
      * @param string  $message  Message
      */
-    protected function _addMessage($status, $title, $message) {
+    protected function addMessage($status, $title, $message) {
         if( !empty($message) && is_array($message) ) {
             $liStyle = 'style="margin-bottom: 0;"';
 
             $message = '<ul><li '.$liStyle.'>'.implode('</li><li '.$liStyle.'>', $message).'</li></ul>';
         }
 
-        $this->_messageList[] = array($status, $title, $message);
+        $this->messageList[] = array($status, $title, $message);
     }
 
     /**
@@ -135,7 +135,7 @@ class ext_update {
      * @param   array   $row    Database row
      * @return  string
      */
-    protected function _messageTitleFromRow($row) {
+    protected function messageTitleFromRow($row) {
         $ret = array();
 
         if( !empty($row['title']) ) {
@@ -154,10 +154,10 @@ class ext_update {
      *
      * @return string
      */
-    protected function _generateOutput() {
+    protected function generateOutput() {
         $output = '';
 
-        foreach ($this->_messageList as $message) {
+        foreach ($this->messageList as $message) {
             $flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
                 'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
                 $message[2],

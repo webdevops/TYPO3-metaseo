@@ -25,6 +25,8 @@ namespace Metaseo\Metaseo\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Metaseo\Metaseo\Utility\DatabaseUtility;
+
 /**
  * General utility
  *
@@ -268,12 +270,12 @@ class GeneralUtility {
     public static function fullUrl($url, $domain = NULL) {
         if (!preg_match('/^https?:\/\//i', $url)) {
 
-            if( $domain !== NULL ) {
+            if ($domain !== NULL ) {
                 // specified domain
-                $url = 'http://'.$domain.'/'.$url;
+                $url = 'http://' . $domain . '/' . $url;
             } else {
                 // domain from env
-                $url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL').$url;
+                $url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $url;
             }
         }
 
@@ -284,7 +286,7 @@ class GeneralUtility {
         $url = preg_replace('_(?<!:)\//_', '/', $url);
 
         // Fallback
-        //if( !empty($GLOBALS['TSFE']) && !preg_match('/^https?:\/\//i', $url ) ) {
+        //if (!empty($GLOBALS['TSFE']) && !preg_match('/^https?:\/\//i', $url ) ) {
         //	$url = $GLOBALS['TSFE']->baseUrlWrap($url);
         //}
 

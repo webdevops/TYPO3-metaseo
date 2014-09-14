@@ -57,7 +57,7 @@ class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage {
             $this->showError('Sitemap is not available, please check your configuration [control-center]');
         }
 
-        $ret = $this->_build();
+        $ret = $this->build();
 
         return $ret;
     }
@@ -67,12 +67,11 @@ class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage {
      *
      * @return mixed
      */
-    protected function _build() {
+    protected function build() {
         $page = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('page');
 
-        $generator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            'Metaseo\\Metaseo\\Sitemap\\Generator\\XmlGenerator'
-        );
+        /** @var \Metaseo\Metaseo\Sitemap\Generator\XmlGenerator $generator */
+        $generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\XmlGenerator');
 
         if (empty($page) || $page == 'index') {
             $ret = $generator->sitemapIndex();

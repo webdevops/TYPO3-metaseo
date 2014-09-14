@@ -47,8 +47,8 @@ class DatabaseUtility {
         $ret = NULL;
 
         $res = self::query($query);
-        if( $res ) {
-            if( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
+        if ($res ) {
+            if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
                 $ret = reset($row);
             }
             self::free($res);
@@ -67,8 +67,8 @@ class DatabaseUtility {
         $ret = NULL;
 
         $res = self::query($query);
-        if( $res ) {
-            if( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
+        if ($res ) {
+            if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
                 $ret = $row;
             }
             self::free($res);
@@ -87,7 +87,7 @@ class DatabaseUtility {
         $ret = array();
 
         $res = self::query($query);
-        if( $res ) {
+        if ($res ) {
             while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
                 $ret[] = $row;
             }
@@ -108,9 +108,9 @@ class DatabaseUtility {
         $ret = array();
 
         $res = self::query($query);
-        if( $res ) {
+        if ($res ) {
             while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
-                if( $indexCol === NULL ) {
+                if ($indexCol === NULL ) {
                     // use first key as index
                     $index = reset($row);
                 } else {
@@ -135,7 +135,7 @@ class DatabaseUtility {
         $ret = array();
 
         $res = self::query($query);
-        if( $res ) {
+        if ($res ) {
             while ( $row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res) ) {
                 $ret[ $row[0] ] = $row[1];
             }
@@ -155,7 +155,7 @@ class DatabaseUtility {
         $ret = array();
 
         $res = self::query($query);
-        if( $res ) {
+        if ($res ) {
             while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res) ) {
                 $ret[] = $row[0];
             }
@@ -175,7 +175,7 @@ class DatabaseUtility {
         $ret = array();
 
         $res = self::query($query);
-        if( $res ) {
+        if ($res ) {
             while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res) ) {
                 $ret[ $row[0] ] = $row[0];
             }
@@ -192,7 +192,7 @@ class DatabaseUtility {
      * @return integer
      */
 	public static function getCount($query) {
-        $query = 'SELECT COUNT(*) FROM ('.$query.') tmp';
+        $query = 'SELECT COUNT(*) FROM (' . $query . ') tmp';
         return self::getOne($query);
     }
 
@@ -207,7 +207,7 @@ class DatabaseUtility {
 
         $res = self::query($query);
 
-        if( $res ) {
+        if ($res ) {
             $ret = $GLOBALS['TYPO3_DB']->sql_insert_id();
             self::free($res);
         }
@@ -226,7 +226,7 @@ class DatabaseUtility {
 
         $res = self::query($query);
 
-        if( $res ) {
+        if ($res ) {
             $ret = $GLOBALS['TYPO3_DB']->sql_affected_rows();
             self::free($res);
         }
@@ -247,11 +247,11 @@ class DatabaseUtility {
      * @return  string
      */
     public static function quote($value, $table = NULL) {
-        if( $table === NULL ) {
+        if ($table === NULL ) {
             $table = 'Pages';
         }
 
-        if( $value === NULL ) {
+        if ($value === NULL ) {
             return 'NULL';
         }
 
@@ -308,11 +308,11 @@ class DatabaseUtility {
 	public static function addCondition($condition) {
         $ret = ' ';
 
-        if( !empty($condition) ) {
-            if( is_array($condition) ) {
-                $ret .= ' AND (( '. implode(" )\nAND (",$condition) .' ))';
+        if (!empty($condition) ) {
+            if (is_array($condition) ) {
+                $ret .= ' AND (( ' . implode(" )\nAND (",$condition) . ' ))';
             } else {
-                $ret .= ' AND ( '.$condition.' )';
+                $ret .= ' AND ( ' . $condition . ' )';
             }
         }
 
@@ -328,12 +328,12 @@ class DatabaseUtility {
      * @return string
      */
 	public static function conditionIn($field, $values, $required = TRUE) {
-        if( !empty($values) ) {
+        if (!empty($values) ) {
             $quotedValues = self::quoteArray($values, 'pages');
 
-            $ret = $field.' IN ('. implode(',', $quotedValues) .')';
+            $ret = $field.' IN (' . implode(',', $quotedValues) . ')';
         } else {
-            if( $required ) {
+            if ($required ) {
                 $ret = '1=0';
             } else {
                 $ret = '1=1';
@@ -352,12 +352,12 @@ class DatabaseUtility {
      * @return string
      */
 	public static function conditionNotIn($field, $values, $required = TRUE) {
-        if( !empty($values) ) {
+        if (!empty($values) ) {
             $quotedValues = self::quoteArray($values, 'pages');
 
-            $ret = $field.' NOT IN ('. implode(',', $quotedValues) .')';
+            $ret = $field.' NOT IN (' . implode(',', $quotedValues) . ')';
         } else {
-            if( $required ) {
+            if ($required ) {
                 $ret = '1=0';
             } else {
                 $ret = '1=1';
@@ -381,14 +381,14 @@ class DatabaseUtility {
 	public static function query($query) {
         $res = $GLOBALS['TYPO3_DB']->sql_query($query);
 
-        if( !$res || $GLOBALS['TYPO3_DB']->sql_errno() ) {
+        if (!$res || $GLOBALS['TYPO3_DB']->sql_errno() ) {
             // SQL statement failed
-            $errorMsg = 'SQL Error: '.$GLOBALS['TYPO3_DB']->sql_error().' [errno: '.$GLOBALS['TYPO3_DB']->sql_errno().']';
+            $errorMsg = 'SQL Error: ' . $GLOBALS['TYPO3_DB']->sql_error() . ' [errno: ' . $GLOBALS['TYPO3_DB']->sql_errno() . ']';
 
-            if( defined('TYPO3_cliMode') ) {
+            if (defined('TYPO3_cliMode') ) {
                 throw new \Exception($errorMsg);
             } else {
-                debug('SQL-QUERY: '.$query, $errorMsg, __LINE__, __FILE__);
+                debug('SQL-QUERY: ' . $query, $errorMsg, __LINE__, __FILE__);
             }
 
             $res = NULL;
@@ -403,7 +403,7 @@ class DatabaseUtility {
      * @param resource $res SQL resource
      */
 	public static function free($res) {
-        if( $res && $res !== TRUE ) {
+        if ($res && $res !== TRUE ) {
             $GLOBALS['TYPO3_DB']->sql_free_result($res);
         }
     }

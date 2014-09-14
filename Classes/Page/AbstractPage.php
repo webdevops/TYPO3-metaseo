@@ -33,7 +33,34 @@ namespace Metaseo\Metaseo\Page;
  * @version     $Id: class.robots_txt.php 62700 2012-05-22 15:53:22Z mblaschke $
  */
 abstract class AbstractPage {
+    // ########################################################################
+    // Attributes
+    // ########################################################################
 
+    /**
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     * @inject
+     */
+    protected $objectManager;
+
+
+    // ########################################################################
+    // Methods
+    // ########################################################################
+
+    /**
+     * Constuctor
+     */
+    public function __construct() {
+        // Init object manager
+        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+    }
+
+    /**
+     * Main
+     *
+     * @return mixed
+     */
     abstract public function main();
 
     /**

@@ -32,13 +32,13 @@ namespace Metaseo\Metaseo\Hook;
  * @subpackage  lib
  * @version     $Id: SitemapIndexHook.php 84520 2014-03-28 10:33:24Z mblaschke $
  */
-class SitemapIndexHook {
+class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
 
     // ########################################################################
     // Attributes
     // ########################################################################
 
-    static protected $_typeBlacklist = array(
+    protected $typeBlacklist = array(
         6,      // Backend Section (TYPO3 CMS)
         199,    // Menu separator  (TYPO3 CMS)
         254,    // Folder          (TYPO3 CMS)
@@ -49,11 +49,12 @@ class SitemapIndexHook {
     );
 
 	/**
-	 * Current cache status
+	 * Page index status
 	 *
 	 * @var null|boolean
 	 */
-	protected static $currentCacheStatus = null;
+	protected $pageIndexFlag = NULL;
+
 
     // ########################################################################
     // Methods
@@ -71,7 +72,7 @@ class SitemapIndexHook {
         }
 
         // check current page
-        if( !self::_checkIfCurrentPageIsIndexable() ) {
+        if (!$this->checkIfCurrentPageIsIndexable() ) {
             return;
         }
 
@@ -105,7 +106,7 @@ class SitemapIndexHook {
             );
 
             $pageUrl = $GLOBALS['TSFE']->cObj->typoLink_URL($linkConf);
-            $pageUrl = self::_processLinkUrl($pageUrl);
+            $pageUrl = $this->processLinkUrl($pageUrl);
         }
 
         $tstamp = $_SERVER['REQUEST_TIME'];
@@ -137,7 +138,7 @@ class SitemapIndexHook {
      * @param   string  $linkUrl    Link url
      * @return  string
      */
-    protected static function _processLinkUrl($linkUrl) {
+    protected static function processLinkUrl($linkUrl) {
         static $absRefPrefix = NULL;
         static $absRefPrefixLength = 0;
         $ret = $linkUrl;
@@ -190,7 +191,7 @@ class SitemapIndexHook {
      * @param   object          $pObj    Object
      * @return  boolean|null
      */
-    public static function hook_linkParse(&$pObj) {
+    public function hook_linkParse(&$pObj) {
         // check if sitemap is enabled in root
         if (!\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap', TRUE)
             || !\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_typolink_indexer', TRUE)
@@ -199,7 +200,7 @@ class SitemapIndexHook {
         }
 
         // check current page
-        if( !self::_checkIfCurrentPageIsIndexable() ) {
+        if (!$this->checkIfCurrentPageIsIndexable() ) {
             return;
         }
 
@@ -215,14 +216,14 @@ class SitemapIndexHook {
         // Init link informations
         $linkConf = $pObj['conf'];
         $linkUrl  = $pObj['finalTagParts']['url'];
-        $linkUrl  = self::_processLinkUrl($linkUrl);
+        $linkUrl  = $this->processLinkUrl($linkUrl);
 
         if (!is_numeric($linkConf['parameter'])) {
             // not valid internal link
             return;
         }
 
-        if( empty($linkUrl) ) {
+        if (empty($linkUrl) ) {
             // invalid url? should be never empty!
             return;
         }
@@ -331,14 +332,18 @@ class SitemapIndexHook {
 	 *
 	 * @return bool
 	 */
-	protected static function _checkIfCurrentPageIsIndexable() {
+	protected function checkIfCurrentPageIsIndexable() {
 		// check caching status
-		if (self::$currentCacheStatus !== NULL) {
-			return self::$currentCacheStatus;
+		if ($this->pageIndexFlag !== NULL) {
+			return $this->pageIndexFlag;
 		}
 
 		// by default page is not cacheable
-		self::$currentCacheStatus = FALSE;
+		$this->pageIndexFlag = FALSE;
+
+		// ############################
+		// Basic checks
+		// ############################
 
 		// skip POST-calls and feuser login
 		if ($_SERVER['REQUEST_METHOD'] !== 'GET'
@@ -346,10 +351,15 @@ class SitemapIndexHook {
 		) {
 			return FALSE;
 		}
+
 		// Check for type blacklisting
-		if( in_array($GLOBALS['TSFE']->type, self::$_typeBlacklist) ) {
+		if (in_array($GLOBALS['TSFE']->type, $this->typeBlacklist) ) {
 			return FALSE;
 		}
+
+		// ############################
+		// Cache checks
+		// ############################
 
 		// dont parse if page is not cacheable
 		if (!$GLOBALS['TSFE']->isStaticCacheble()) {
@@ -362,7 +372,7 @@ class SitemapIndexHook {
 		}
 
 		// all checks successfull, page is cacheable
-		self::$currentCacheStatus = TRUE;
+		$this->pageIndexFlag = TRUE;
 
 		return TRUE;
 	}

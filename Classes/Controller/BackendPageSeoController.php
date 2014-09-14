@@ -1,8 +1,6 @@
 <?php
 namespace Metaseo\Metaseo\Controller;
 
-use Metaseo\Metaseo\Utility\DatabaseUtility;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -27,6 +25,8 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Metaseo\Metaseo\Utility\DatabaseUtility;
+
 /**
  * TYPO3 Backend module page seo
  *
@@ -46,51 +46,51 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
      * Main action
      */
     public function mainAction() {
-        return $this->_handleSubAction('metadata');
+        return $this->handleSubAction('metadata');
     }
 
     /**
      * Geo action
      */
     public function geoAction() {
-        return $this->_handleSubAction('geo');
+        return $this->handleSubAction('geo');
     }
 
     /**
      * searchengines action
      */
     public function searchenginesAction() {
-        return $this->_handleSubAction('searchengines');
+        return $this->handleSubAction('searchengines');
     }
 
     /**
      * url action
      */
     public function urlAction() {
-        return $this->_handleSubAction('url');
+        return $this->handleSubAction('url');
     }
 
     /**
      * pagetitle action
      */
     public function pagetitleAction() {
-        return $this->_handleSubAction('pagetitle');
+        return $this->handleSubAction('pagetitle');
     }
 
     /**
      * pagetitle action
      */
     public function pagetitlesimAction() {
-        return $this->_handleSubAction('pagetitlesim');
+        return $this->handleSubAction('pagetitlesim');
     }
 
-    protected function _handleSubAction($type) {
+    protected function handleSubAction($type) {
         $pageId		= (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 
-        if( empty($pageId) ) {
-            $message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-                $this->_translate('message.warning.no_valid_page.message'),
-                $this->_translate('message.warning.no_valid_page.title'),
+        if (empty($pageId) ) {
+            $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+                $this->translate('message.warning.no_valid_page.message'),
+                $this->translate('message.warning.no_valid_page.title'),
                 \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
             );
             \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($message);
@@ -102,32 +102,33 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
 
         // Build langauge list
-        $defaultLanguageText = $this->_translate('default.language');
+        $defaultLanguageText = $this->translate('default.language');
 
         $languageFullList = array(
             0 => array(
-                'label'	=> $this->_translate('default.language'),
+                'label'	=> $this->translate('default.language'),
                 'flag'	=> '',
             ),
         );
 
-        if( !empty($pageTsConf['mod.']['SHARED.']['defaultLanguageFlag']) ) {
+        if (!empty($pageTsConf['mod.']['SHARED.']['defaultLanguageFlag']) ) {
             $languageFullList[0]['flag'] = $pageTsConf['mod.']['SHARED.']['defaultLanguageFlag'];
         }
 
-        if( !empty($pageTsConf['mod.']['SHARED.']['defaultLanguageLabel']) ) {
+        if (!empty($pageTsConf['mod.']['SHARED.']['defaultLanguageLabel']) ) {
             $languageFullList[0]['label'] = $pageTsConf['mod.']['SHARED.']['defaultLanguageLabel'];
 
             $defaultLanguageText = $pageTsConf['mod.']['SHARED.']['defaultLanguageLabel'];
         }
 
         // Fetch other flags
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-            'uid, title, flag',
-            'sys_language',
-            'hidden = 0'
-        );
-        while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
+        $query = 'SELECT uid,
+                         title,
+                         flag
+                    FROM sys_language
+                   WHERE hidden = 0';
+        $rowList = DatabaseUtility::getAll($query);
+        foreach ($rowList as $row) {
             $languageFullList[$row['uid']] = array(
                 'label'	=> htmlspecialchars($row['title']),
                 'flag'	=> htmlspecialchars($row['flag']),
@@ -137,12 +138,12 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         // Langauges
         $languageList = array();
 
-        foreach($languageFullList as $langId => $langRow) {
+        foreach ($languageFullList as $langId => $langRow) {
             $flag = '';
 
             // Flag (if available)
-            if( !empty($langRow['flag']) ) {
-                $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-'.$langRow['flag'].' t3-icon-'.$langRow['flag'].'"></span>';
+            if (!empty($langRow['flag']) ) {
+                $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-' . $langRow['flag'] . ' t3-icon-' . $langRow['flag'] . '"></span>';
                 $flag .= '&nbsp;';
             }
 
@@ -158,7 +159,7 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
         $sysLangaugeDefault = (int)$GLOBALS['BE_USER']->getSessionData('TQSeo.sysLanguage');
 
-        if( empty($sysLangaugeDefault) ) {
+        if (empty($sysLangaugeDefault) ) {
             $sysLangaugeDefault = 0;
         }
 
@@ -166,7 +167,7 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         // HTML
         // ############################
         // FIXME: do we really need a template engine here?
-        $this->template = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+        $this->template = $this->objectManager->get('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
         $pageRenderer = $this->template->getPageRenderer();
 
         $pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript/Ext.ux.plugin.FitToParent.js');
@@ -180,8 +181,8 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
 
         $metaSeoConf = array(
-            'sessionToken'   => $this->_sessionToken('metaseo_metaseo_backend_ajax_pageajax'),
-            'ajaxController' => $this->_ajaxControllerUrl('tx_metaseo_backend_ajax::page'),
+            'sessionToken'   => $this->sessionToken('metaseo_metaseo_backend_ajax_pageajax'),
+            'ajaxController' => $this->ajaxControllerUrl('tx_metaseo_backend_ajax::page'),
             'pid'            => (int)$pageId,
             'renderTo'       => 'tx-metaseo-sitemap-grid',
 
@@ -275,7 +276,7 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         );
 
         // translate list
-        $metaSeoLang = $this->_translateList($metaSeoLang);
+        $metaSeoLang = $this->translateList($metaSeoLang);
         $metaSeoLang['emptySearchPageLanguage'] = $defaultLanguageText;
 
         // Include Ext JS inline code
@@ -283,8 +284,8 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
             'MetaSeo.overview',
 
             'Ext.namespace("MetaSeo.overview");
-            MetaSeo.overview.conf = '.json_encode($metaSeoConf).';
-            MetaSeo.overview.conf.lang = '.json_encode($metaSeoLang).';
+            MetaSeo.overview.conf      = ' . json_encode($metaSeoConf) . ';
+            MetaSeo.overview.conf.lang = ' . json_encode($metaSeoLang) . ';
         ');
     }
 

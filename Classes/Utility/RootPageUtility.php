@@ -25,6 +25,8 @@ namespace Metaseo\Metaseo\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Metaseo\Metaseo\Utility\DatabaseUtility;
+
 /**
  * Root page utility
  *
@@ -60,7 +62,7 @@ class RootPageUtility {
     public static function getSitemapIndexUrl($rootPid) {
         $domain = self::getDomain($rootPid);
 
-        if( !empty($domain) ) {
+        if (!empty($domain) ) {
             $domain = 'http://' . $domain . '/';
         } else {
             $domain = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
@@ -81,7 +83,7 @@ class RootPageUtility {
     public static function getRobotsTxtUrl($rootPid) {
         $domain = self::getDomain($rootPid);
 
-        if( !empty($domain) ) {
+        if (!empty($domain) ) {
             $domain = 'http://' . $domain . '/';
         } else {
             $domain = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');

@@ -32,7 +32,7 @@ namespace Metaseo\Metaseo\Page\Part;
  * @subpackage  lib
  * @version     $Id: PagetitlePart.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class PagetitlePart {
+class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
     /**
      * Add SEO-Page Title
@@ -145,7 +145,7 @@ class PagetitlePart {
             // #################
             // Process settings from access point
             // #################
-            $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Metaseo\\Metaseo\\Connector');
+            $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
             $store     = $connector->getStore('pagetitle');
 
             if (!empty($store)) {

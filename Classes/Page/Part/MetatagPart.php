@@ -1,8 +1,6 @@
 <?php
 namespace Metaseo\Metaseo\Page\Part;
 
-use Metaseo\Metaseo\Utility\DatabaseUtility;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -27,6 +25,8 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Metaseo\Metaseo\Utility\DatabaseUtility;
+
 /**
  * Metatags generator
  *
@@ -34,7 +34,7 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  * @subpackage  lib
  * @version     $Id: MetatagPart.php 84520 2014-03-28 10:33:24Z mblaschke $
  */
-class MetatagPart {
+class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
     /**
      * List of stdWrap manipulations
@@ -60,7 +60,7 @@ class MetatagPart {
         $tsfePage = $GLOBALS['TSFE']->page;
 
         $sysLanguageId = 0;
-        if( !empty($tsSetup['config.']['sys_language_uid']) ) {
+        if (!empty($tsSetup['config.']['sys_language_uid']) ) {
             $sysLanguageId = $tsSetup['config.']['sys_language_uid'];
         }
 
@@ -68,14 +68,14 @@ class MetatagPart {
         $enableMetaDc      = TRUE;
 
         // Init News extension
-        $this->_initExtensionSupport();
+        $this->initExtensionSupport();
 
         if (!empty($tsSetup['plugin.']['metaseo.']['metaTags.'])) {
             $tsSetupSeo = $tsSetup['plugin.']['metaseo.']['metaTags.'];
 
             // get stdwrap list
             if (!empty($tsSetupSeo['stdWrap.'])) {
-                $this->_stdWrapList = $tsSetupSeo['stdWrap.'];
+                $this->stdWrapList = $tsSetupSeo['stdWrap.'];
             }
 
             if (empty($tsSetupSeo['enableDC'])) {
@@ -192,7 +192,7 @@ class MetatagPart {
             // #################
 
             /** @var \Metaseo\Metaseo\Connector $connector */
-            $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Metaseo\\Metaseo\\Connector');
+            $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
             $storeMeta = $connector->getStore();
 
             // Std meta tags
@@ -236,7 +236,7 @@ class MetatagPart {
                 'lastUpdate',
             );
             foreach ($stdWrapItemList as $key) {
-                $tsSetupSeo[$key] = $this->_applyStdWrap($key, $tsSetupSeo[$key]);
+                $tsSetupSeo[$key] = $this->applyStdWrap($key, $tsSetupSeo[$key]);
             }
 
             // Call hook
@@ -336,7 +336,7 @@ class MetatagPart {
             // #################
 
             // robots
-            if( !empty($tsSetupSeo['robotsEnable']) ) {
+            if (!empty($tsSetupSeo['robotsEnable']) ) {
                 $crawlerOrder = array();
 
                 if (!empty($tsSetupSeo['robotsIndex']) && empty($tsfePage['tx_metaseo_is_exclude'])) {
@@ -458,26 +458,26 @@ class MetatagPart {
                 $rootPage    = reset($rootLine);
                 $rootPageUrl = NULL;
                 if (!empty($rootPage)) {
-                    $rootPageUrl = $this->_generateLink($rootPage['uid']);
+                    $rootPageUrl = $this->generateLink($rootPage['uid']);
                 }
 
                 $upPage    = $currentPage['pid'];
                 $upPageUrl = NULL;
                 if (!empty($upPage)) {
-                    $upPage    = $this->_getRelevantUpPagePid($upPage);
-                    $upPageUrl = $this->_generateLink($upPage);
+                    $upPage    = $this->getRelevantUpPagePid($upPage);
+                    $upPageUrl = $this->generateLink($upPage);
                 }
 
                 $prevPage    = $GLOBALS['TSFE']->cObj->HMENU($tsSetupSeo['sectionLinks.']['prev.']);
                 $prevPageUrl = NULL;
                 if (!empty($prevPage)) {
-                    $prevPageUrl = $this->_generateLink($prevPage);
+                    $prevPageUrl = $this->generateLink($prevPage);
                 }
 
                 $nextPage    = $GLOBALS['TSFE']->cObj->HMENU($tsSetupSeo['sectionLinks.']['next.']);
                 $nextPageUrl = NULL;
                 if (!empty($nextPage)) {
-                    $nextPageUrl = $this->_generateLink($nextPage);
+                    $nextPageUrl = $this->generateLink($nextPage);
                 }
 
                 // Root (First page in rootline)
@@ -508,11 +508,11 @@ class MetatagPart {
                 $canonicalUrl = $tsfePage['tx_metaseo_canonicalurl'];
             } elseif (!empty($tsSetupSeo['useCanonical'])) {
                 $strictMode   = (bool)(int)$tsSetupSeo['useCanonical.']['strict'];
-                $canonicalUrl = $this->_detectCanonicalPage($strictMode);
+                $canonicalUrl = $this->detectCanonicalPage($strictMode);
             }
 
             if (!empty($canonicalUrl)) {
-                $canonicalUrl = $this->_generateLink($canonicalUrl);
+                $canonicalUrl = $this->generateLink($canonicalUrl);
 
                 if (!empty($canonicalUrl)) {
                     $ret['link.rel.canonical'] = '<link rel="canonical" href="' . htmlspecialchars($canonicalUrl) . '">';
@@ -522,7 +522,7 @@ class MetatagPart {
             // #################
             // Advanced meta tags
             // #################
-            $this->_advMetaTags($ret, $tsfePage, $sysLanguageId, $customMetaTagList);
+            $this->advMetaTags($ret, $tsfePage, $sysLanguageId, $customMetaTagList);
         }
 
         // #################
@@ -536,7 +536,7 @@ class MetatagPart {
             }
         }
 
-        $this->_processMetaTags($ret);
+        $this->processMetaTags($ret);
 
         $separator = "\n";
         return $separator . implode($separator, $ret) . $separator;
@@ -551,10 +551,10 @@ class MetatagPart {
      * @param integer $sysLanguageId     Sys Language ID
      * @param array   $customMetaTagList Custom Meta Tag list
      */
-    protected function _advMetaTags(&$metaTags, $tsfePage, $sysLanguageId, $customMetaTagList) {
+    protected function advMetaTags(&$metaTags, $tsfePage, $sysLanguageId, $customMetaTagList) {
         $tsfePageId    = $tsfePage['uid'];
 
-        $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Metaseo\\Metaseo\\Connector');
+        $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
         $storeMeta = $connector->getStore();
 
         // #################
@@ -563,18 +563,18 @@ class MetatagPart {
         $advMetaTagList      = array();
         $advMetaTagCondition = array();
 
-        if( !empty($storeMeta['flag']['meta:og:external']) ) {
+        if (!empty($storeMeta['flag']['meta:og:external']) ) {
             // External OpenGraph support
             $advMetaTagCondition[] = 'tag_name NOT LIKE \'og:%\'';
 
             // Add external og-tags to adv meta tag list
-            if( !empty($storeMeta['meta:og']) ) {
+            if (!empty($storeMeta['meta:og']) ) {
                 $advMetaTagList = array_merge($advMetaTagList, $storeMeta['meta:og']);
             }
         }
 
-        if( !empty($advMetaTagCondition) ) {
-            $advMetaTagCondition = '( '.implode(') AND (', $advMetaTagCondition).' )';
+        if (!empty($advMetaTagCondition) ) {
+            $advMetaTagCondition = '( ' . implode(') AND (', $advMetaTagCondition) . ' )';
 
         } else {
             $advMetaTagCondition = '1=1';
@@ -583,13 +583,13 @@ class MetatagPart {
         // Fetch list of meta tags from database
         $query = 'SELECT tag_name, tag_value
                     FROM tx_metaseo_metatag
-                   WHERE pid = '.(int)$tsfePageId.'
-                     AND sys_language_uid = '.(int)$sysLanguageId.'
-                     AND '.$advMetaTagCondition;
+                   WHERE pid = ' . (int)$tsfePageId . '
+                     AND sys_language_uid = ' . (int)$sysLanguageId . '
+                     AND ' . $advMetaTagCondition;
         $advMetaTagList = DatabaseUtility::getList($query);
 
         // Add metadata to tag list
-        foreach($advMetaTagList as $tagName => $tagValue) {
+        foreach ($advMetaTagList as $tagName => $tagValue) {
             $metaTags['adv.' . $tagName] = '<meta name="' . htmlspecialchars($tagName) . '" content="' . htmlspecialchars($tagValue) . '">';
         }
 
@@ -605,11 +605,11 @@ class MetatagPart {
     /**
      * Init extension support
      */
-    protected function _initExtensionSupport() {
+    protected function initExtensionSupport() {
 
         // Extension: news
-        if( \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('news') ) {
-            $this->_initExtensionSupportNews();
+        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('news') ) {
+            $this->initExtensionSupportNews();
         }
 
     }
@@ -618,35 +618,35 @@ class MetatagPart {
     /**
      * Init extension support for "news" extension
      */
-    protected function _initExtensionSupportNews() {
-        if( empty($GLOBALS['TSFE']->register) ) {
+    protected function initExtensionSupportNews() {
+        if (empty($GLOBALS['TSFE']->register) ) {
             return;
         }
 
         /** @var \Metaseo\Metaseo\Connector $connector */
-        $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Metaseo\\Metaseo\\Connector');
+        $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
 
-        if( isset($GLOBALS['TSFE']->register['newsTitle']) ) {
+        if (isset($GLOBALS['TSFE']->register['newsTitle']) ) {
             $connector->setMetaTag('title', $GLOBALS['TSFE']->register['newsTitle']);
         }
 
-        if( isset($GLOBALS['TSFE']->register['newsAuthor']) ) {
+        if (isset($GLOBALS['TSFE']->register['newsAuthor']) ) {
             $connector->setMetaTag('author', $GLOBALS['TSFE']->register['newsAuthor']);
         }
 
-        if( isset($GLOBALS['TSFE']->register['newsAuthoremail']) ) {
+        if (isset($GLOBALS['TSFE']->register['newsAuthoremail']) ) {
             $connector->setMetaTag('email', $GLOBALS['TSFE']->register['newsAuthoremail']);
         }
 
-        if( isset($GLOBALS['TSFE']->register['newsAuthorEmail']) ) {
+        if (isset($GLOBALS['TSFE']->register['newsAuthorEmail']) ) {
             $connector->setMetaTag('email', $GLOBALS['TSFE']->register['newsAuthorEmail']);
         }
 
-        if( isset($GLOBALS['TSFE']->register['newsKeywords']) ) {
+        if (isset($GLOBALS['TSFE']->register['newsKeywords']) ) {
             $connector->setMetaTag('keywords', $GLOBALS['TSFE']->register['newsKeywords']);
         }
 
-        if( isset($GLOBALS['TSFE']->register['newsTeaser']) ) {
+        if (isset($GLOBALS['TSFE']->register['newsTeaser']) ) {
             $connector->setMetaTag('description', $GLOBALS['TSFE']->register['newsTeaser']);
         }
     }
@@ -659,7 +659,7 @@ class MetatagPart {
      * @param    array|NULL     $conf   URL configuration
      * @return   string                 URL
      */
-    protected function _generateLink($url, $conf = NULL) {
+    protected function generateLink($url, $conf = NULL) {
         if ($conf === NULL) {
             $conf = array();
         }
@@ -679,9 +679,9 @@ class MetatagPart {
      * @param   int $uid    Page ID
      * @return  int
      */
-    protected function _getRelevantUpPagePid($uid){
+    protected function getRelevantUpPagePid($uid){
         /** @var \TYPO3\CMS\Frontend\Page\PageRepository  $sysPageObj */
-        $sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        $sysPageObj = $this->objectManager->get(
             'TYPO3\\CMS\\Frontend\\Page\\PageRepository'
         );
 
@@ -704,7 +704,7 @@ class MetatagPart {
      * @param    boolean $strictMode        Enable strict mode
      * @return   string                     Page Id or url
      */
-    protected function _detectCanonicalPage($strictMode = FALSE) {
+    protected function detectCanonicalPage($strictMode = FALSE) {
         // Skip no_cache-pages
         if (!empty($GLOBALS['TSFE']->no_cache)) {
             if ($strictMode) {
@@ -741,7 +741,7 @@ class MetatagPart {
     /**
      * Process meta tags
      */
-    protected function _processMetaTags(&$tags) {
+    protected function processMetaTags(&$tags) {
         // Call hook
         \Metaseo\Metaseo\Utility\GeneralUtility::callHook('metatag-output', $this, $tags);
 
@@ -780,13 +780,13 @@ class MetatagPart {
      * @param    string $value  Value
      * @return   string
      */
-    protected function _applyStdWrap($key, $value) {
+    protected function applyStdWrap($key, $value) {
         $key .= '.';
 
-        if (empty($this->_stdWrapList[$key])) {
+        if (empty($this->stdWrapList[$key])) {
             return $value;
         }
 
-        return $this->cObj->stdWrap($value, $this->_stdWrapList[$key]);
+        return $this->cObj->stdWrap($value, $this->stdWrapList[$key]);
     }
 }
