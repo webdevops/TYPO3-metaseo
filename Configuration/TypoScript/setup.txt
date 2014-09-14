@@ -332,9 +332,8 @@ plugin.metaseo {
 		# indexer settings
 		index {
 
-			# blacklist
+			# blacklist (RegExp, eg /typo3/)
 			blacklist {
-				
 			}
 
 		}

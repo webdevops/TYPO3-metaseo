@@ -55,10 +55,46 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected $pageIndexFlag = NULL;
 
+	/**
+	 * MetaSEO configuration
+	 *
+	 * @var array
+	 */
+	protected $conf = array();
+
+	/**
+	 * Blacklist configuration
+	 *
+	 * @var array
+	 */
+	protected $blacklistConf = array();
+
 
     // ########################################################################
     // Methods
     // ########################################################################
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->initConfiguration();
+	}
+
+	/**
+	 * Init configuration
+	 */
+	protected function initConfiguration() {
+		// Get configuration
+		if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.'])) {
+			$this->conf = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.'];
+		}
+
+		// Store blacklist configuration
+		if (!empty($this->conf['sitemap.']['index.']['blacklist.'])) {
+			$this->blacklistConf = $this->conf['sitemap.']['index.']['blacklist.'];
+		}
+	}
 
     /**
      * Add Page to sitemap table
@@ -89,8 +125,8 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
         $pageChangeFrequency = 0;
         if (!empty($GLOBALS['TSFE']->page['tx_metaseo_change_frequency'])) {
             $pageChangeFrequency = (int)$GLOBALS['TSFE']->page['tx_metaseo_change_frequency'];
-        } elseif (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['changeFrequency'])) {
-            $pageChangeFrequency = (int)$GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['changeFrequency'];
+        } elseif (!empty($this->conf['sitemap.']['changeFrequency'])) {
+            $pageChangeFrequency = (int)$this->conf['sitemap.']['changeFrequency'];
         }
 
         if (empty($pageChangeFrequency)) {
@@ -108,6 +144,16 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
             $pageUrl = $GLOBALS['TSFE']->cObj->typoLink_URL($linkConf);
             $pageUrl = $this->processLinkUrl($pageUrl);
         }
+
+		if (empty($pageUrl)) {
+			// should not be emtpy
+			return;
+		}
+
+		// check blacklisting
+		if ($this->checkIfUrlIsBlacklisted($pageUrl)) {
+			return;
+		}
 
         $tstamp = $_SERVER['REQUEST_TIME'];
 
@@ -228,6 +274,11 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
             return;
         }
 
+		// check blacklisting
+		if ($this->checkIfUrlIsBlacklisted($linkUrl)) {
+			return;
+		}
+
         // ####################################
         //  Init
         // ####################################
@@ -289,8 +340,8 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
         $pageChangeFrequency = 0;
         if (!empty($page['tx_metaseo_change_frequency'])) {
             $pageChangeFrequency = (int)$page['tx_metaseo_change_frequency'];
-        } elseif (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['changeFrequency'])) {
-            $pageChangeFrequency = (int)$GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['changeFrequency'];
+        } elseif (!empty($this->conf['sitemap.']['changeFrequency'])) {
+            $pageChangeFrequency = (int)$this->conf['sitemap.']['changeFrequency'];
         }
 
         // Fetch sysLanguage
@@ -328,13 +379,19 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
     }
 
     /**
-     * Check if page is blacklisted
+     * Check if url is blacklisted
      *
      * @param   string  $url Url
      * @return  boolean
      */
-    protected static function checkIfPageIsBlacklisted($url) {
-        // TODO
+    protected function checkIfUrlIsBlacklisted($url) {
+		foreach ($this->blacklistConf as $blacklistRegExp) {
+			if (preg_match($blacklistRegExp, $url)) {
+				return TRUE;
+			}
+		}
+
+		return FALSE;
     }
 
 	/**
