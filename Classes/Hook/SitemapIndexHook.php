@@ -49,11 +49,12 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
     );
 
 	/**
-	 * Current cache status
+	 * Page index status
 	 *
 	 * @var null|boolean
 	 */
-	protected $currentCacheStatus = null;
+	protected $pageIndexFlag = NULL;
+
 
     // ########################################################################
     // Methods
@@ -333,12 +334,16 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function checkIfCurrentPageIsIndexable() {
 		// check caching status
-		if ($this->currentCacheStatus !== NULL) {
-			return $this->currentCacheStatus;
+		if ($this->pageIndexFlag !== NULL) {
+			return $this->pageIndexFlag;
 		}
 
 		// by default page is not cacheable
-		$this->currentCacheStatus = FALSE;
+		$this->pageIndexFlag = FALSE;
+
+		// ############################
+		// Basic checks
+		// ############################
 
 		// skip POST-calls and feuser login
 		if ($_SERVER['REQUEST_METHOD'] !== 'GET'
@@ -346,10 +351,15 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
 		) {
 			return FALSE;
 		}
+
 		// Check for type blacklisting
 		if (in_array($GLOBALS['TSFE']->type, $this->typeBlacklist) ) {
 			return FALSE;
 		}
+
+		// ############################
+		// Cache checks
+		// ############################
 
 		// dont parse if page is not cacheable
 		if (!$GLOBALS['TSFE']->isStaticCacheble()) {
@@ -362,7 +372,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 
 		// all checks successfull, page is cacheable
-		$this->currentCacheStatus = TRUE;
+		$this->pageIndexFlag = TRUE;
 
 		return TRUE;
 	}
