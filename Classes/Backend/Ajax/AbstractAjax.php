@@ -117,7 +117,7 @@ abstract class AbstractAjax {
         }
 
         // Output json data
-        header('Content-type: application/json');
+        header('Content-type: application/json;charset=UTF-8');
         echo json_encode($ret);
         exit;
     }
