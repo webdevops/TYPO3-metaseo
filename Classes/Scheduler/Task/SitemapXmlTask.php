@@ -43,7 +43,7 @@ class SitemapXmlTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
      *
      * @var string
      */
-    protected $_sitemapDir = 'uploads/tx_metaseo/sitemap_xml';
+    protected $sitemapDir = 'uploads/tx_metaseo/sitemap_xml';
 
     // ########################################################################
     // Methods
@@ -56,7 +56,7 @@ class SitemapXmlTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
      * @param   integer $languageId Language id
      * @return  boolean
      */
-    protected function _buildSitemap($rootPageId, $languageId) {
+    protected function buildSitemap($rootPageId, $languageId) {
         if ($languageId !== NULL) {
             // Language lock enabled
             $rootPageLinkTempalte = 'sitemap-r%s-l%s-p###PAGE###.xml.gz';
@@ -69,11 +69,9 @@ class SitemapXmlTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
         }
 
         // Init builder
-        $generator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            'Metaseo\\Metaseo\\Sitemap\\Generator\\XmlGenerator'
-        );
+        $generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\XmlGenerator');
         $fileName = sprintf($rootPageLinkTempalte, $rootPageId, $languageId);
-        $generator->indexPathTemplate = $this->_generateSitemapLinkTemplate($fileName);
+        $generator->indexPathTemplate = $this->generateSitemapLinkTemplate($fileName);
 
         // Get list of pages
         $pageCount = $generator->pageCount();
@@ -81,13 +79,13 @@ class SitemapXmlTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
         // Index
         $content  = $generator->sitemapIndex();
         $fileName = sprintf($sitemapIndexFileName, $rootPageId, $languageId);
-        $this->_writeToFile(PATH_site . '/' . $this->_sitemapDir . '/' . $fileName, $content);
+        $this->writeToFile(PATH_site . '/' . $this->sitemapDir . '/' . $fileName, $content);
 
         // Page
         for ($i = 0; $i < $pageCount; $i++) {
             $content  = $generator->sitemap($i);
             $fileName = sprintf($sitemapPageFileName, $rootPageId, $languageId, $i);
-            $this->_writeToFile(PATH_site . '/' . $this->_sitemapDir . '/' . $fileName, $content);
+            $this->writeToFile(PATH_site . '/' . $this->sitemapDir . '/' . $fileName, $content);
         }
 
         return TRUE;
