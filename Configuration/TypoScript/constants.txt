@@ -122,8 +122,6 @@ plugin.metaseo {
   services.googleAnalytics.anonymizeIp = 0
     # cat=plugin.metaseo.services/page/09; type=boolean; label= Google Analytics Track Downloads: Track downloads (with javascript) (BETA!)
   services.googleAnalytics.trackDownloads = 0
-    # cat=plugin.metaseo.services/page/10; type=boolean; label= Google Universal Analytics: Enable Universal Analytics code
-  services.googleAnalytics.universalAnalytics = 0
 
 
     # cat=plugin.metaseo.services/page/11; type=string; label= Piwik URL: Url to your piwik installation (eg. www.example.com/piwik/ - don't use http:// or https:// as prefix!)

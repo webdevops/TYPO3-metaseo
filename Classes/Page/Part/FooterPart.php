@@ -74,34 +74,11 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             }
 
             if ($gaEnabled && !(empty($gaConf['showIfBeLogin']) && $beLoggedIn)) {
-                $tmp = '';
-
-                $customCode = '';
-                if (!empty($gaConf['customizationCode'])) {
-                    $customCode .= "\n" . $this->cObj->cObjGetSingle(
-                            $gaConf['customizationCode'],
-                            $gaConf['customizationCode.']
-                        );
-                }
-
-                $this->cObj->data['gaCode']                  = $tsServices['googleAnalytics'];
-                $this->cObj->data['gaIsAnonymize']           = (int)!empty($gaConf['anonymizeIp']);
-                $this->cObj->data['gaDomainName']            = $gaConf['domainName'];
-                $this->cObj->data['gaCustomizationCode']     = $customCode;
-                $this->cObj->data['gaUseUniversalAnalytics'] = (int)!empty($gaConf['universalAnalytics']);
-
-                // Build code
-                $ret['ga'] = $this->cObj->cObjGetSingle($gaConf['template'], $gaConf['template.']);
+                // Build Google Analytics service
+                $ret['ga'] = $this->serviceGoogleAnalytics($tsServices, $gaConf);
 
                 if (!empty($gaConf['trackDownloads']) && !empty($gaConf['trackDownloadsScript'])) {
-                    $jsFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
-                        $gaConf['trackDownloadsScript']
-                    );
-                    $jsfile = preg_replace('/^' . preg_quote(PATH_site, '/') . '/i', '', $jsFile);
-
-                    $ret['ga.trackdownload'] = '<script type="text/javascript" src="' . htmlspecialchars(
-                            $jsfile
-                        ) . '"></script>';
+                    $ret['ga.trackdownload'] = $this->serviceGoogleAnalyticsTrackDownloads($tsServices, $gaConf);
                 }
             } elseif ($gaEnabled && $beLoggedIn) {
 				$GLOBALS['TSFE']->set_no_cache('MetaSEO: Google Analytics code disabled, backend login detected');
@@ -125,29 +102,8 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             }
 
             if ($piwikEnabled && !(empty($piwikConf['showIfBeLogin']) && $beLoggedIn)) {
-                $tmp = '';
-
-                $customCode = '';
-                if (!empty($piwikConf['customizationCode'])) {
-                    $customCode .= "\n" . $this->cObj->cObjGetSingle(
-                            $piwikConf['customizationCode'],
-                            $piwikConf['customizationCode.']
-                        );
-                }
-
-                // remove last slash
-                $piwikConf['url'] = rtrim($piwikConf['url'], '/');
-
-                $this->cObj->data['piwikUrl']               = $piwikConf['url'];
-                $this->cObj->data['piwikId']                = $piwikConf['id'];
-                $this->cObj->data['piwikDomainName']        = $piwikConf['domainName'];
-                $this->cObj->data['piwikCookieDomainName']  = $piwikConf['cookieDomainName'];
-                $this->cObj->data['piwikDoNotTrack']        = $piwikConf['doNotTrack'];
-                $this->cObj->data['piwikCustomizationCode'] = $customCode;
-
-                // Build code
-                $ret['piwik'] = $this->cObj->cObjGetSingle($piwikConf['template'], $piwikConf['template.']);
-
+                // Build Piwik service
+                $ret['piwik'] = $this->servicePiwik($tsServices, $piwikConf);
             } elseif ($piwikEnabled && $beLoggedIn) {
 				$GLOBALS['TSFE']->set_no_cache('MetaSEO: Piwik code disabled, backend login detected');
 
@@ -161,4 +117,82 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
         return implode("\n", $ret);
     }
+
+    /**
+     * Google analytics
+     *
+     * @param  array $tsServices  SetupTS of services
+     * @param  array $gaConf      Google Analytics configuration
+     * @return string
+     */
+    public function serviceGoogleAnalytics($tsServices, $gaConf) {
+        $customCode = '';
+        if (!empty($gaConf['customizationCode'])) {
+            $customCode .= "\n" . $this->cObj->cObjGetSingle(
+                    $gaConf['customizationCode'],
+                    $gaConf['customizationCode.']
+                );
+        }
+
+        $this->cObj->data['gaCode']                  = $tsServices['googleAnalytics'];
+        $this->cObj->data['gaIsAnonymize']           = (int)!empty($gaConf['anonymizeIp']);
+        $this->cObj->data['gaDomainName']            = $gaConf['domainName'];
+        $this->cObj->data['gaCustomizationCode']     = $customCode;
+        $this->cObj->data['gaUseUniversalAnalytics'] = (int)!empty($gaConf['universalAnalytics']);
+
+        // Build code
+        $ret  = $this->cObj->cObjGetSingle($gaConf['template'], $gaConf['template.']);
+
+        return $ret;
+    }
+
+    /**
+     * Google analytics
+     *
+     * @param  array $tsServices  SetupTS of services
+     * @param  array $gaConf      Google Analytics configuration
+     * @return string
+     */
+    public function serviceGoogleAnalyticsTrackDownloads($tsServices, $gaConf) {
+        $jsFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
+            $gaConf['trackDownloadsScript']
+        );
+        $jsfile = preg_replace('/^' . preg_quote(PATH_site, '/') . '/i', '', $jsFile);
+
+        $ret = '<script type="text/javascript" src="' . htmlspecialchars($jsfile) . '"></script>';
+        return $ret;
+    }
+
+    /**
+     * Piwik
+     *
+     * @param  array $tsServices  SetupTS of services
+     * @param  array $piwikConf   Piwik configuration
+     * @return string
+     */
+    public function servicePiwik($tsServices, $piwikConf) {
+        $customCode = '';
+        if (!empty($piwikConf['customizationCode'])) {
+            $customCode .= "\n" . $this->cObj->cObjGetSingle(
+                    $piwikConf['customizationCode'],
+                    $piwikConf['customizationCode.']
+                );
+        }
+
+        // remove last slash
+        $piwikConf['url'] = rtrim($piwikConf['url'], '/');
+
+        $this->cObj->data['piwikUrl']               = $piwikConf['url'];
+        $this->cObj->data['piwikId']                = $piwikConf['id'];
+        $this->cObj->data['piwikDomainName']        = $piwikConf['domainName'];
+        $this->cObj->data['piwikCookieDomainName']  = $piwikConf['cookieDomainName'];
+        $this->cObj->data['piwikDoNotTrack']        = $piwikConf['doNotTrack'];
+        $this->cObj->data['piwikCustomizationCode'] = $customCode;
+
+        // Build code
+        $ret = $this->cObj->cObjGetSingle($piwikConf['template'], $piwikConf['template.']);
+
+        return $ret;
+    }
+
 }
