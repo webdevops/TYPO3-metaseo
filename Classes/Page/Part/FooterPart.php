@@ -104,8 +104,10 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                         ) . '"></script>';
                 }
             } elseif ($gaEnabled && $beLoggedIn) {
-                // Backend login detected, disable cache because this page is viewed by BE-users
-                $ret['ga.disabled'] = '<!-- Google Analytics disabled - Backend-Login detected -->';
+				$GLOBALS['TSFE']->set_no_cache('MetaSEO: Google Analytics code disabled, backend login detected');
+
+				// Backend login detected, disable cache because this page is viewed by BE-users
+                $ret['ga.disabled'] = '<!-- Google Analytics disabled, Page cache disabled - Backend-Login detected -->';
             }
         }
 
@@ -147,8 +149,10 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                 $ret['piwik'] = $this->cObj->cObjGetSingle($piwikConf['template'], $piwikConf['template.']);
 
             } elseif ($piwikEnabled && $beLoggedIn) {
+				$GLOBALS['TSFE']->set_no_cache('MetaSEO: Piwik code disabled, backend login detected');
+
                 // Backend login detected, disable cache because this page is viewed by BE-users
-                $ret['piwik.disabled'] = '<!-- Piwik disabled - Backend-Login detected -->';
+                $ret['piwik.disabled'] = '<!-- Piwik disabled, Page cache disabled - Backend-Login detected -->';
             }
         }
 
