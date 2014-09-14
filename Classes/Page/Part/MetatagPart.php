@@ -68,14 +68,14 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         $enableMetaDc      = TRUE;
 
         // Init News extension
-        $this->_initExtensionSupport();
+        $this->initExtensionSupport();
 
         if (!empty($tsSetup['plugin.']['metaseo.']['metaTags.'])) {
             $tsSetupSeo = $tsSetup['plugin.']['metaseo.']['metaTags.'];
 
             // get stdwrap list
             if (!empty($tsSetupSeo['stdWrap.'])) {
-                $this->_stdWrapList = $tsSetupSeo['stdWrap.'];
+                $this->stdWrapList = $tsSetupSeo['stdWrap.'];
             }
 
             if (empty($tsSetupSeo['enableDC'])) {
@@ -236,7 +236,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                 'lastUpdate',
             );
             foreach ($stdWrapItemList as $key) {
-                $tsSetupSeo[$key] = $this->_applyStdWrap($key, $tsSetupSeo[$key]);
+                $tsSetupSeo[$key] = $this->applyStdWrap($key, $tsSetupSeo[$key]);
             }
 
             // Call hook
@@ -458,26 +458,26 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                 $rootPage    = reset($rootLine);
                 $rootPageUrl = NULL;
                 if (!empty($rootPage)) {
-                    $rootPageUrl = $this->_generateLink($rootPage['uid']);
+                    $rootPageUrl = $this->generateLink($rootPage['uid']);
                 }
 
                 $upPage    = $currentPage['pid'];
                 $upPageUrl = NULL;
                 if (!empty($upPage)) {
-                    $upPage    = $this->_getRelevantUpPagePid($upPage);
-                    $upPageUrl = $this->_generateLink($upPage);
+                    $upPage    = $this->getRelevantUpPagePid($upPage);
+                    $upPageUrl = $this->generateLink($upPage);
                 }
 
                 $prevPage    = $GLOBALS['TSFE']->cObj->HMENU($tsSetupSeo['sectionLinks.']['prev.']);
                 $prevPageUrl = NULL;
                 if (!empty($prevPage)) {
-                    $prevPageUrl = $this->_generateLink($prevPage);
+                    $prevPageUrl = $this->generateLink($prevPage);
                 }
 
                 $nextPage    = $GLOBALS['TSFE']->cObj->HMENU($tsSetupSeo['sectionLinks.']['next.']);
                 $nextPageUrl = NULL;
                 if (!empty($nextPage)) {
-                    $nextPageUrl = $this->_generateLink($nextPage);
+                    $nextPageUrl = $this->generateLink($nextPage);
                 }
 
                 // Root (First page in rootline)
@@ -508,11 +508,11 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                 $canonicalUrl = $tsfePage['tx_metaseo_canonicalurl'];
             } elseif (!empty($tsSetupSeo['useCanonical'])) {
                 $strictMode   = (bool)(int)$tsSetupSeo['useCanonical.']['strict'];
-                $canonicalUrl = $this->_detectCanonicalPage($strictMode);
+                $canonicalUrl = $this->detectCanonicalPage($strictMode);
             }
 
             if (!empty($canonicalUrl)) {
-                $canonicalUrl = $this->_generateLink($canonicalUrl);
+                $canonicalUrl = $this->generateLink($canonicalUrl);
 
                 if (!empty($canonicalUrl)) {
                     $ret['link.rel.canonical'] = '<link rel="canonical" href="' . htmlspecialchars($canonicalUrl) . '">';
@@ -522,7 +522,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             // #################
             // Advanced meta tags
             // #################
-            $this->_advMetaTags($ret, $tsfePage, $sysLanguageId, $customMetaTagList);
+            $this->advMetaTags($ret, $tsfePage, $sysLanguageId, $customMetaTagList);
         }
 
         // #################
@@ -536,7 +536,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             }
         }
 
-        $this->_processMetaTags($ret);
+        $this->processMetaTags($ret);
 
         $separator = "\n";
         return $separator . implode($separator, $ret) . $separator;
@@ -551,7 +551,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      * @param integer $sysLanguageId     Sys Language ID
      * @param array   $customMetaTagList Custom Meta Tag list
      */
-    protected function _advMetaTags(&$metaTags, $tsfePage, $sysLanguageId, $customMetaTagList) {
+    protected function advMetaTags(&$metaTags, $tsfePage, $sysLanguageId, $customMetaTagList) {
         $tsfePageId    = $tsfePage['uid'];
 
         $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
@@ -605,11 +605,11 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     /**
      * Init extension support
      */
-    protected function _initExtensionSupport() {
+    protected function initExtensionSupport() {
 
         // Extension: news
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('news') ) {
-            $this->_initExtensionSupportNews();
+            $this->initExtensionSupportNews();
         }
 
     }
@@ -618,7 +618,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     /**
      * Init extension support for "news" extension
      */
-    protected function _initExtensionSupportNews() {
+    protected function initExtensionSupportNews() {
         if (empty($GLOBALS['TSFE']->register) ) {
             return;
         }
@@ -659,7 +659,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      * @param    array|NULL     $conf   URL configuration
      * @return   string                 URL
      */
-    protected function _generateLink($url, $conf = NULL) {
+    protected function generateLink($url, $conf = NULL) {
         if ($conf === NULL) {
             $conf = array();
         }
@@ -679,7 +679,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      * @param   int $uid    Page ID
      * @return  int
      */
-    protected function _getRelevantUpPagePid($uid){
+    protected function getRelevantUpPagePid($uid){
         /** @var \TYPO3\CMS\Frontend\Page\PageRepository  $sysPageObj */
         $sysPageObj = $this->objectManager->get(
             'TYPO3\\CMS\\Frontend\\Page\\PageRepository'
@@ -704,7 +704,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      * @param    boolean $strictMode        Enable strict mode
      * @return   string                     Page Id or url
      */
-    protected function _detectCanonicalPage($strictMode = FALSE) {
+    protected function detectCanonicalPage($strictMode = FALSE) {
         // Skip no_cache-pages
         if (!empty($GLOBALS['TSFE']->no_cache)) {
             if ($strictMode) {
@@ -741,7 +741,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     /**
      * Process meta tags
      */
-    protected function _processMetaTags(&$tags) {
+    protected function processMetaTags(&$tags) {
         // Call hook
         \Metaseo\Metaseo\Utility\GeneralUtility::callHook('metatag-output', $this, $tags);
 
@@ -780,13 +780,13 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      * @param    string $value  Value
      * @return   string
      */
-    protected function _applyStdWrap($key, $value) {
+    protected function applyStdWrap($key, $value) {
         $key .= '.';
 
-        if (empty($this->_stdWrapList[$key])) {
+        if (empty($this->stdWrapList[$key])) {
             return $value;
         }
 
-        return $this->cObj->stdWrap($value, $this->_stdWrapList[$key]);
+        return $this->cObj->stdWrap($value, $this->stdWrapList[$key]);
     }
 }
