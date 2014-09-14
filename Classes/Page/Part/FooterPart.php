@@ -81,6 +81,7 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                     $ret['ga.trackdownload'] = $this->serviceGoogleAnalyticsTrackDownloads($tsServices, $gaConf);
                 }
             } elseif ($gaEnabled && $beLoggedIn) {
+				// Disable caching
 				$GLOBALS['TSFE']->set_no_cache('MetaSEO: Google Analytics code disabled, backend login detected');
 
 				// Backend login detected, disable cache because this page is viewed by BE-users
@@ -105,6 +106,7 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                 // Build Piwik service
                 $ret['piwik'] = $this->servicePiwik($tsServices, $piwikConf);
             } elseif ($piwikEnabled && $beLoggedIn) {
+				// Disable caching
 				$GLOBALS['TSFE']->set_no_cache('MetaSEO: Piwik code disabled, backend login detected');
 
                 // Backend login detected, disable cache because this page is viewed by BE-users
