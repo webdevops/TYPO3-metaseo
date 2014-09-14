@@ -242,8 +242,6 @@ plugin.metaseo {
 			trackDownloads = {$plugin.metaseo.services.googleAnalytics.trackDownloads}
 			trackDownloadsScript = EXT:metaseo/Resources/Public/Frontend/JavaScript/GoogleAnalyticsTrackDownload.js
 			customizationCode =
-            universalAnalytics = {$plugin.metaseo.services.googleAnalytics.universalAnalytics}
-
 			enableIfHeaderIsDisabled  = {$plugin.metaseo.services.enableIfHeaderIsDisabled}
 
 			## google analytics template code
