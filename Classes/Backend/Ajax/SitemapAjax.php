@@ -160,9 +160,9 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         $query = 'UPDATE tx_metaseo_sitemap
                      SET is_blacklisted = 1
                    WHERE ' . $where;
-        $ret = DatabaseUtility::exec($query);
+        DatabaseUtility::exec($query);
 
-        return $ret;
+        return TRUE;
     }
 
     /*
@@ -188,9 +188,9 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         $query = 'UPDATE tx_metaseo_sitemap
                      SET is_blacklisted = 0
                    WHERE ' . $where;
-        $ret = DatabaseUtility::exec($query);
+        DatabaseUtility::exec($query);
 
-        return $ret;
+        return TRUE;
     }
 
 
@@ -217,9 +217,9 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
 
         $query = 'DELETE FROM tx_metaseo_sitemap
                          WHERE ' . $where;
-        $ret = DatabaseUtility::exec($query);
+        DatabaseUtility::exec($query);
 
-        return $ret;
+        return TRUE;
     }
 
     /**
@@ -240,9 +240,9 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
 
         $query = 'DELETE FROM tx_metaseo_sitemap
                          WHERE ' . $where;
-        $ret = DatabaseUtility::exec($query);
+        DatabaseUtility::exec($query);
 
-        return $ret;
+        return TRUE;
     }
 
 }
