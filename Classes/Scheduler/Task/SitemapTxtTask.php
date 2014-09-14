@@ -43,7 +43,7 @@ class SitemapTxtTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
      *
      * @var string
      */
-    protected $_sitemapDir = 'uploads/tx_metaseo/sitemap_txt';
+    protected $sitemapDir = 'uploads/tx_metaseo/sitemap_txt';
 
     // ########################################################################
     // Methods
@@ -56,7 +56,7 @@ class SitemapTxtTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
      * @param   integer $languageId Language id
      * @return  boolean
      */
-    protected function _buildSitemap($rootPageId, $languageId) {
+    protected function buildSitemap($rootPageId, $languageId) {
 
         if ($languageId !== NULL) {
             // Language lock enabled
@@ -65,13 +65,11 @@ class SitemapTxtTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
             $sitemapFileName = 'sitemap-r%s.txt.gz';
         }
 
-        $generator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            'Metaseo\\Metaseo\\Sitemap\\Generator\\TxtGenerator'
-        );
+        $generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\TxtGenerator');
         $content   = $generator->sitemap();
 
         $fileName = sprintf($sitemapFileName, $rootPageId, $languageId);
-        $this->_writeToFile(PATH_site . '/' . $this->_sitemapDir . '/' . $fileName, $content);
+        $this->writeToFile(PATH_site . '/' . $this->sitemapDir . '/' . $fileName, $content);
 
         return TRUE;
     }

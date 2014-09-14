@@ -1,7 +1,6 @@
 <?php
 namespace Metaseo\Metaseo\Scheduler\Task;
 
-use Metaseo\Metaseo\Utility\DatabaseUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -27,6 +26,9 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Metaseo\Metaseo\Utility\DatabaseUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Scheduler Task Sitemap Base
  *
@@ -40,30 +42,45 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
     // Attributes
     // ########################################################################
 
+	/**
+	 * Backend Form Protection object
+	 *
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+	 * @inject
+	 */
+	protected $objectManager = NULL;
+
     /**
      * Language lock
      *
      * @var integer
      */
-    protected $_languageLock = FALSE;
+    protected $languageLock = FALSE;
 
     /**
      * Language list
      *
      * @var array
      */
-    protected $_languageIdList = NULL;
+    protected $languageIdList = NULL;
 
     // ########################################################################
     // Methods
     // ########################################################################
+
+	/**
+	 * Initialize task
+	 */
+	protected function initialize() {
+		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+	}
 
     /**
      * Get list of root pages in current typo3
      *
      * @return  array
      */
-    protected function _getRootPages() {
+    protected function getRootPages() {
         $ret = array();
 
         $query = 'SELECT uid
@@ -81,21 +98,21 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
      *
      * @return  array
      */
-    protected function _initLanguages() {
-        $this->_languageIdList[0] = 0;
+    protected function initLanguages() {
+        $this->languageIdList[0] = 0;
 
         $query = 'SELECT uid
                     FROM sys_language
                    WHERE hidden = 0';
-        $this->_languageIdList = DatabaseUtility::getColWithIndex($query);
+        $this->languageIdList = DatabaseUtility::getColWithIndex($query);
     }
 
     /**
      * Set root page language
      */
-    protected function _setRootPageLanguage($languageId) {
+    protected function setRootPageLanguage($languageId) {
         $GLOBALS['TSFE']->tmpl->setup['config.']['sys_language_uid'] = $languageId;
-        $this->_languageLock = $languageId;
+        $this->languageLock = $languageId;
     }
 
     /**
@@ -103,7 +120,7 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
      *
      * @param   integer $rootPageId $rootPageId
      */
-    protected function _initRootPage($rootPageId) {
+    protected function initRootPage($rootPageId) {
         \Metaseo\Metaseo\Utility\FrontendUtility::init($rootPageId);
     }
 
@@ -114,7 +131,7 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
      * @param   string $content    Content
      * @throws  \Exception
      */
-    protected function _writeToFile($file, $content) {
+    protected function writeToFile($file, $content) {
         if (!function_exists('gzopen')) {
             throw new \Exception('metaseo needs zlib support');
         }
