@@ -74,7 +74,9 @@ class FrontendUtility {
             if (empty($cacheTSFE[$pageUid])) {
                 $GLOBALS['TSFE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
                     'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
-                    $GLOBALS['TYPO3_CONF_VARS']
+                    $GLOBALS['TYPO3_CONF_VARS'],
+                    $pageUid,
+                    0
                 );
                 $GLOBALS['TSFE']->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
                     'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'
@@ -91,6 +93,10 @@ class FrontendUtility {
                 $_GET['id'] = $pageUid;
                 $GLOBALS['TSFE']->initFEuser();
                 $GLOBALS['TSFE']->determineId();
+
+                if (empty($GLOBALS['TSFE']->tmpl)) {
+                    $GLOBALS['TSFE']->tmpl = new \stdClass();
+                }
 
                 $GLOBALS['TSFE']->tmpl->setup = $TSObj->setup;
                 $GLOBALS['TSFE']->initTemplate();
