@@ -72,7 +72,7 @@ class BackendUtility {
                                 ON  p.uid = seosr.pid
                                 AND p.is_siteroot = 1
                                 AND p.deleted = 0
-                        WHERE seosr.deleted = 0';
+                       WHERE seosr.deleted = 0';
             $cache = DatabaseUtility::getAllWithIndex($query, 'pid');
         }
 

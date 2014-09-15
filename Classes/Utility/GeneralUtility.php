@@ -119,7 +119,7 @@ class GeneralUtility {
             $ret = (int)$GLOBALS['TSFE']->rootLine;
         } else {
             if (!isset($cache[$uid])) {
-                $cache[$uid] = self::_getSysPageObj()->getRootLine($uid);
+                $cache[$uid] = self::getSysPageObj()->getRootLine($uid);
             }
 
             $ret = $cache[$uid];
@@ -259,9 +259,9 @@ class GeneralUtility {
     }
 
     /**
-     * Full url
-     *g
-     * Make sure the url is absolute (http://....)
+     * Generate full url
+     *
+     * Makes sure the url is absolute (http://....)
      *
      * @param   string $url    URL
      * @param   string $domain Domain
@@ -302,7 +302,7 @@ class GeneralUtility {
      *
      * @return  \TYPO3\CMS\Frontend\Page\PageRepository
      */
-    protected static function _getSysPageObj() {
+    protected static function getSysPageObj() {
         if (self::$sysPageObj === NULL) {
             self::$sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
                 'TYPO3\\CMS\\Frontend\\Page\\PageRepository'

@@ -1,7 +1,5 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die ('Access denied.');
-}
+defined('TYPO3_MODE') or exit();
 
 $tempColumns = array(
 	'tx_metaseo_pagetitle'        => array(

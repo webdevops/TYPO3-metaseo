@@ -35,6 +35,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FrontendUtility {
 
+    /**
+     * Init TSFE with all needed classes eg. for backend usage ($GLOBALS['TSFE'])
+     *
+     * @param integer      $pageUid      PageUID
+     * @param null|array   $rootLine     Rootline
+     * @param null|array   $pageData     Page data array
+     * @param null|array   $rootlineFull Full rootline
+     * @param null|integer $sysLanguage  Sys language uid
+     */
     public static function init($pageUid, $rootLine = NULL, $pageData = NULL, $rootlineFull = NULL, $sysLanguage = NULL) {
         static $cacheTSFE = array();
         static $lastTsSetupPid = NULL;

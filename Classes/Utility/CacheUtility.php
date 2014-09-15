@@ -43,12 +43,10 @@ class CacheUtility {
      * @return  string
      */
     static public function get($pageId, $section, $identifier) {
-        $ret = NULL;
-
         $query = 'SELECT cache_content FROM tx_metaseo_cache
-                    WHERE page_uid = ' . (int)$pageId . '
-                      AND cache_section = ' . DatabaseUtility::quote($section, 'tx_metaseo_cache') . '
-                      AND cache_identifier = ' . DatabaseUtility::quote($identifier, 'tx_metaseo_cache');
+                   WHERE page_uid = ' . (int)$pageId . '
+                     AND cache_section = ' . DatabaseUtility::quote($section, 'tx_metaseo_cache') . '
+                     AND cache_identifier = ' . DatabaseUtility::quote($identifier, 'tx_metaseo_cache');
         $ret = DatabaseUtility::getOne($query);
 
         return $ret;
@@ -89,9 +87,11 @@ class CacheUtility {
      * @return  array
      */
     static public function getList($section, $identifier) {
-        $query = 'SELECT page_uid, cache_content FROM tx_metaseo_cache
-                    WHERE cache_section = ' . DatabaseUtility::quote($section, 'tx_metaseo_cache') . '
-                      AND cache_identifier = ' . DatabaseUtility::quote($identifier, 'tx_metaseo_cache');
+        $query = 'SELECT page_uid,
+                         cache_content
+                    FROM tx_metaseo_cache
+                   WHERE cache_section = ' . DatabaseUtility::quote($section, 'tx_metaseo_cache') . '
+                     AND cache_identifier = ' . DatabaseUtility::quote($identifier, 'tx_metaseo_cache');
         $ret = DatabaseUtility::getList($query);
 
         return $ret;
@@ -110,9 +110,9 @@ class CacheUtility {
 
         try {
             $query = 'DELETE FROM tx_metaseo_cache
-                    WHERE page_uid = ' . (int)$pageId . '
-                      AND cache_section = ' . DatabaseUtility::quote($section, 'tx_metaseo_cache') . '
-                      AND cache_identifier = ' . DatabaseUtility::quote($identifier, 'tx_metaseo_cache');
+                            WHERE page_uid = ' . (int)$pageId . '
+                              AND cache_section = ' . DatabaseUtility::quote($section, 'tx_metaseo_cache') . '
+                              AND cache_identifier = ' . DatabaseUtility::quote($identifier, 'tx_metaseo_cache');
             DatabaseUtility::exec($query);
         } catch ( \Exception $e ) {
             return FALSE;
