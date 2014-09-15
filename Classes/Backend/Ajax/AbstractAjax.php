@@ -177,7 +177,7 @@ abstract class AbstractAjax {
             $this->_tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
                 'TYPO3\\CMS\\Core\\DataHandling\\DataHandler'
             );
-            $this->_tce->start();
+            $this->_tce->start(null, null);
         }
 
         return $this->_tce;
