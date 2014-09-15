@@ -185,10 +185,8 @@ abstract class AbstractAjax {
 
         if ($this->tce === NULL) {
             /** @var \TYPO3\CMS\Core\DataHandling\DataHandler tce */
-            $this->tce = $this->objectManager->get(
-                'TYPO3\\CMS\\Core\\DataHandling\\DataHandler'
-            );
-            $this->tce->start();
+            $this->tce = $this->objectManager->get('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+            $this->tce->start(null, null);
         }
 
         return $this->tce;
