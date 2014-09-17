@@ -304,9 +304,13 @@ class GeneralUtility {
      */
     protected static function getSysPageObj() {
         if (self::$sysPageObj === NULL) {
-            self::$sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                'TYPO3\\CMS\\Frontend\\Page\\PageRepository'
-            );
+            /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+
+            /** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPageObj */
+            $sysPageObj = $objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+
+            self::$sysPageObj = $sysPageObj;
         }
         return self::$sysPageObj;
     }
