@@ -155,7 +155,6 @@ class SitemapUtility {
         }
     }
 
-
     /**
      * Return list of sitemap pages
      *
