@@ -65,7 +65,7 @@ abstract class AbstractAjax {
     protected $tce = NULL;
 
     /**
-     * Backend Form Protection object
+     * TYPO3 Object manager
      *
      * @var \TYPO3\CMS\Extbase\Object\ObjectManager
      */
