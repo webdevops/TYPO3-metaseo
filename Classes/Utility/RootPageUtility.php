@@ -36,6 +36,17 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  */
 class RootPageUtility {
 
+	/**
+	 * Domain cache
+	 *
+	 * array(
+	 *   rootPid => domainName
+	 * );
+	 *
+	 * @var array
+	 */
+	protected static $domainCache = array();
+
     /**
      * Get domain
      *
@@ -43,12 +54,22 @@ class RootPageUtility {
      * @return  null|string
      */
     public static function getDomain($rootPid) {
+
+		// Use cached one if exists
+		if (isset(self::$domainCache[$rootPid])) {
+			return self::$domainCache[$rootPid];
+		}
+
         // Fetch domain name
         $query = 'SELECT domainName
                     FROM sys_domain
                    WHERE hidden = 0 AND pid = ' . (int)$rootPid.'
-                ORDER BY forced DESC, sorting';
+                ORDER BY forced DESC, sorting
+                LIMIT 1';
         $ret = DatabaseUtility::getOne($query);
+
+		// Cache entry
+		self::$domainCache[$rootPid] = $ret;
 
         return $ret;
     }
