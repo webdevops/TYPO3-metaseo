@@ -134,5 +134,6 @@ Thanks to...
 - Carsten Hager
 - Thomas Deuling
 - Florian Duffner
+- Georg Tiefenbrunn
 - and for all other contributors and bug reporters
 - famfamfam for these cool silk icons http://www.famfamfam.com/lab/icons/silk/

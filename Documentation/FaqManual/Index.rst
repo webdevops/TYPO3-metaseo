@@ -30,7 +30,7 @@ Indexed Sitemap
 | **Problem:**
 |    The sitemap is empy.
 | **Solution:**
-|     Check if you created the “tx_metaseo_sitemap_pages” database-table! We're using InnoDB as MySQL-Engine so you have to make sure that you have InnoDB-Support in your Hosting-Account (if not you should switch your hoster, InnoDB is a Standard-Feature in MySQL). As with 2.0.1 there is an error-message if the table doesn't exist.
+|     Check if you created the “tx_metaseo_sitemap” database-table! We're using InnoDB as MySQL-Engine so you have to make sure that you have InnoDB-Support in your Hosting-Account (if not you should switch your hoster, InnoDB is a Standard-Feature in MySQL). As with 2.0.1 there is an error-message if the table doesn't exist.
 |
 | **Problem:**
 |     My sitemap is still empty, but the database is ok.
@@ -53,7 +53,7 @@ Indexed Sitemap
 |     You've enabled RealURL? Please check the RealURL configuration if you have specified values that are not passed with your url. All variables that are not passed with the url will result in a NO-CACHE.
 |
 | **Problem:**
-|     The sitemap is still not working! No page is indexed and the table tx_metaseo_sitemap_pages is empty!
+|     The sitemap is still not working! No page is indexed and the table tx_metaseo_sitemap is empty!
 | **Solution:**
 |     Double check your installation and disable all third-party extensions, make sure that no extension disables the TYPO3-cache! RealUrl (if properly configured) and TemplaVoila are working wonderfull with MetaSEO Sitemap but some old extensions might break the TYPO3 caching system and you will not notice it. Our sitemap indexer relies on the indexing system to make sure that only valid urls are stored and delivered to the search engines like google.
 |
