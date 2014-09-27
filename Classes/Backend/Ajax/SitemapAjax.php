@@ -120,6 +120,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
                          s.page_language,
                          s.page_url,
                          s.page_depth,
+                         s.page_type,
                          s.is_blacklisted,
                          p.tx_metaseo_is_exclude,
                          FROM_UNIXTIME(s.tstamp) as tstamp,

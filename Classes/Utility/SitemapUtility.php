@@ -36,6 +36,9 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  */
 class SitemapUtility {
 
+    CONST SITEMAP_TYPE_PAGE = 0;
+    CONST SITEMAP_TYPE_FILE = 1;
+
     // ########################################################################
     // Public methods
     // ########################################################################
@@ -44,9 +47,8 @@ class SitemapUtility {
      * Insert into sitemap
      *
      * @param   array $pageData   Page informations
-     * @param   string $type       Parser type (page/link)
      */
-    public static function index($pageData, $type) {
+    public static function index($pageData) {
         static $cache = array();
 
         // do not index empty urls
@@ -60,6 +62,11 @@ class SitemapUtility {
         // calc page hash
         $pageData['page_hash'] = md5($pageData['page_url']);
         $pageHash = $pageData['page_hash'];
+
+        // set default type if not set
+        if (!isset($pageData['page_type'])) {
+            $pageData['page_type'] = self::SITEMAP_TYPE_PAGE;
+        }
 
         // Escape/Quote data
         unset($pageDataValue);
@@ -87,7 +94,8 @@ class SitemapUtility {
                         FROM tx_metaseo_sitemap
                        WHERE page_uid      = ' . $pageData['page_uid'] . '
                          AND page_language = ' . $pageData['page_language'] . '
-                         AND page_hash     = ' . $pageData['page_hash'];
+                         AND page_hash     = ' . $pageData['page_hash'] . '
+                         AND page_type     = ' . $pageData['page_type'];
             $sitemapUid = DatabaseUtility::getOne($query);
 
             if ( !empty($sitemapUid) ) {
@@ -97,7 +105,8 @@ class SitemapUtility {
                                  page_language         = ' . $pageData['page_language'] . ',
                                  page_url              = ' . $pageData['page_url'] . ',
                                  page_depth            = ' . $pageData['page_depth'] . ',
-                                 page_change_frequency = ' . $pageData['page_change_frequency'] . '
+                                 page_change_frequency = ' . $pageData['page_change_frequency'] . ',
+                                 page_type             = ' . $pageData['page_type'] . '
                             WHERE uid = ' . (int)$sitemapUid;
                 DatabaseUtility::exec($query);
             } else {

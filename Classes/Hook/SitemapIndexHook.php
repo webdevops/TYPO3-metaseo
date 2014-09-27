@@ -24,6 +24,10 @@ namespace Metaseo\Metaseo\Hook;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Metaseo\Metaseo\Utility\FrontendUtility;
+use Metaseo\Metaseo\Utility\RootPageUtility;
+use Metaseo\Metaseo\Utility\SitemapUtility;
+use Metaseo\Metaseo\Utility\GeneralUtility;
 
 /**
  * Sitemap Indexer
@@ -101,8 +105,8 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
      */
     public function addPageToSitemapIndex() {
         // check if sitemap is enabled in root
-        if (!\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap', TRUE)
-            || !\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_page_indexer', TRUE)
+        if (!GeneralUtility::getRootSettingValue('is_sitemap', TRUE)
+            || !GeneralUtility::getRootSettingValue('is_sitemap_page_indexer', TRUE)
         ) {
             return TRUE;
         }
@@ -119,7 +123,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
         }
 
         // Fetch sysLanguage
-        $pageLanguage = \Metaseo\Metaseo\Utility\GeneralUtility::getLanguageId();
+        $pageLanguage = GeneralUtility::getLanguageId();
 
         // Fetch page changeFrequency
         $pageChangeFrequency = 0;
@@ -155,16 +159,17 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
         $pageData = array(
             'tstamp'                => $tstamp,
             'crdate'                => $tstamp,
-            'page_rootpid'          => \Metaseo\Metaseo\Utility\GeneralUtility::getRootPid(),
+            'page_rootpid'          => GeneralUtility::getRootPid(),
             'page_uid'              => $GLOBALS['TSFE']->id,
             'page_language'         => $pageLanguage,
             'page_url'              => $pageUrl,
             'page_depth'            => count($GLOBALS['TSFE']->rootLine),
             'page_change_frequency' => $pageChangeFrequency,
+            'page_type'             => SitemapUtility::SITEMAP_TYPE_PAGE,
         );
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('sitemap-index-page', NULL, $pageData);
+        GeneralUtility::callHook('sitemap-index-page', NULL, $pageData);
 
         if (!empty($pageData)) {
             \Metaseo\Metaseo\Utility\SitemapUtility::index($pageData, 'page');
@@ -214,7 +219,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
     public function hook_indexContent(&$pObj) {
         $this->addPageToSitemapIndex();
 
-        $possibility = (int)\Metaseo\Metaseo\Utility\GeneralUtility::getExtConf('sitemap_clearCachePossibility', 0);
+        $possibility = (int)GeneralUtility::getExtConf('sitemap_clearCachePossibility', 0);
 
         if ($possibility > 0) {
 
@@ -234,8 +239,8 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
      */
     public function hook_linkParse(&$pObj) {
         // check if sitemap is enabled in root
-        if (!\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap', TRUE)
-            || !\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_typolink_indexer', TRUE)
+        if (!GeneralUtility::getRootSettingValue('is_sitemap', TRUE)
+            || !GeneralUtility::getRootSettingValue('is_sitemap_typolink_indexer', TRUE)
         ) {
             return TRUE;
         }
@@ -257,10 +262,11 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
         // Init link informations
         $linkConf = $pObj['conf'];
         $linkUrl  = $pObj['finalTagParts']['url'];
+        list($linkPageUid, $linkType) = $this->parseLinkConf($pObj);
         $linkUrl  = $this->processLinkUrl($linkUrl);
 
-        if (!is_numeric($linkConf['parameter'])) {
-            // not valid internal link
+        if (!$linkType || !$linkPageUid) {
+            // no valid link
             return;
         }
 
@@ -272,7 +278,6 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
         // ####################################
         //  Init
         // ####################################
-        $uid = $linkConf['parameter'];
 
         $addParameters = array();
         if (!empty($linkConf['additionalParams'])) {
@@ -306,7 +311,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
         // #####################################
         // Rootline
         // #####################################
-        $rootline = \Metaseo\Metaseo\Utility\GeneralUtility::getRootLine($uid);
+        $rootline = GeneralUtility::getRootLine($linkPageUid);
 
         if (empty($rootline)) {
             return;
@@ -351,21 +356,54 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
             'tstamp'                => $tstamp,
             'crdate'                => $tstamp,
             'page_rootpid'          => $rootline[0]['uid'],
-            'page_uid'              => $linkConf['parameter'],
+            'page_uid'              => $linkPageUid,
             'page_language'         => $pageLanguage,
             'page_url'              => $pageUrl,
             'page_depth'            => count($rootline),
             'page_change_frequency' => $pageChangeFrequency,
+            'page_type'             => $linkType,
         );
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('sitemap-index-link', NULL, $pageData);
+        GeneralUtility::callHook('sitemap-index-link', NULL, $pageData);
 
         if (!empty($pageData)) {
-            \Metaseo\Metaseo\Utility\SitemapUtility::index($pageData, 'link');
+            \Metaseo\Metaseo\Utility\SitemapUtility::index($pageData);
         }
 
         return TRUE;
+    }
+
+    /**
+     * Parse uid and type from generated link (from config array)
+     *
+     * @param  array $conf Generated Link config array
+     * @return array
+     */
+    protected function parseLinkConf($conf) {
+        $uid  = NULL;
+        $type = NULL;
+
+        // Check link type
+        switch ($conf['finalTagParts']['TYPE']) {
+            case 'page':
+
+                // TODO: Add support for more parameter checks
+                if (is_numeric($conf['conf']['parameter'])) {
+                    $uid = $conf['conf']['parameter'];
+                }
+
+                $type = SitemapUtility::SITEMAP_TYPE_PAGE;
+                break;
+
+            case 'file':
+                // File will be registered from the root page
+                $uid  = GeneralUtility::getRootPid();
+                $type = SitemapUtility::SITEMAP_TYPE_FILE;
+                break;
+        }
+
+        return array($uid, $type);
     }
 
     /**
