@@ -145,11 +145,6 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
             $pageUrl = $this->processLinkUrl($pageUrl);
         }
 
-		if (empty($pageUrl)) {
-			// should not be emtpy
-			return;
-		}
-
 		// check blacklisting
 		if ($this->checkIfUrlIsBlacklisted($pageUrl)) {
 			return;
@@ -269,11 +264,6 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
             return;
         }
 
-        if (empty($linkUrl) ) {
-            // invalid url? should be never empty!
-            return;
-        }
-
 		// check blacklisting
 		if ($this->checkIfUrlIsBlacklisted($linkUrl)) {
 			return;
@@ -385,6 +375,12 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
      * @return  boolean
      */
     protected function checkIfUrlIsBlacklisted($url) {
+
+		// check for valid url
+		if (empty($url)) {
+			return TRUE;
+		}
+
 		foreach ($this->blacklistConf as $blacklistRegExp) {
 			if (preg_match($blacklistRegExp, $url)) {
 				return TRUE;

@@ -54,6 +54,9 @@ class SitemapUtility {
             return;
         }
 
+		// Trim url
+		$pageData['page_url'] = trim($pageData['page_url']);
+
         // calc page hash
         $pageData['page_hash'] = md5($pageData['page_url']);
         $pageHash = $pageData['page_hash'];
@@ -77,6 +80,8 @@ class SitemapUtility {
         if (empty($cache[$pageHash])) {
 
             // $pageData is already quoted
+
+			// TODO: INSERT INTO ... ON DUPLICATE KEY UPDATE?
 
             $query = 'SELECT uid
                         FROM tx_metaseo_sitemap
