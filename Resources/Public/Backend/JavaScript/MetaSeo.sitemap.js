@@ -56,7 +56,8 @@ MetaSeo.sitemap.grid = {
                     {name: 'page_type', type: 'int' },
                     {name: 'tstamp', type: 'string' },
                     {name: 'crdate', type: 'string' },
-                    {name: 'is_blacklisted', type: 'bool' }
+                    {name: 'is_blacklisted', type: 'bool' },
+                    {name: 'tx_metaseo_is_exclude', type: 'bool' },
                 ]
             ),
             sortInfo: {
@@ -367,6 +368,13 @@ MetaSeo.sitemap.grid = {
                     width    : 10,
                     sortable : true,
                     dataIndex: 'is_blacklisted',
+                    renderer : rendererBoolean
+                },{
+                    id       : 'tx_metaseo_is_exclude',
+                    header   : MetaSeo.sitemap.conf.lang.page_tx_metaseo_is_exclude,
+                    width    : 10,
+                    sortable : true,
+                    dataIndex: 'tx_metaseo_is_exclude',
                     renderer : rendererBoolean
                 },{
                     id       : 'crdate',

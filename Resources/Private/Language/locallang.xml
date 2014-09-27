@@ -160,6 +160,7 @@
 			<label index="header.sitemap.page_url">URL</label>
 			<label index="header.sitemap.page_language">Language</label>
 			<label index="header.sitemap.page_is_blacklisted">Blacklisted</label>
+			<label index="header.sitemap.page_tx_metaseo_is_exclude">Excl.</label>
             <label index="header.sitemap.page_type">Type</label>
 			<label index="header.sitemap.page_depth">Depth</label>
 			<label index="header.sitemap.crdate">Created</label>
@@ -395,6 +396,7 @@
 			<label index="header.sitemap.page_url">URL</label>
 			<label index="header.sitemap.page_language">Sprache</label>
 			<label index="header.sitemap.page_is_blacklisted">Blacklist</label>
+            <label index="header.sitemap.page_tx_metaseo_is_exclude">Excl.</label>
             <label index="header.sitemap.page_type">Typ</label>
 			<label index="header.sitemap.page_depth">Tiefe</label>
 			<label index="header.sitemap.crdate">Erstellt am</label>

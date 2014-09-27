@@ -123,14 +123,6 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
                        WHERE page_rootpid = ' . (int)$pageId;
             $stats['sum_pages'] = DatabaseUtility::getOne($query);
 
-
-            // FIXME: fix link
-            //$args = array(
-            //    'rootPid'	=> $pageId
-            //);
-            //$listLink = $this->_moduleLinkOnClick('sitemapList', $args);
-
-
             $pagesPerXmlSitemap = 1000;
             if (!empty($settingRow['sitemap_page_limit']) ) {
                 $pagesPerXmlSitemap = $settingRow['sitemap_page_limit'];
@@ -239,13 +231,10 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
             $this->translate('empty.search.page_depth'),
         );
 
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-            'DISTINCT page_depth',
-            'tx_metaseo_sitemap',
-            'page_rootpid = ' . (int)$rootPid
-        );
-        while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
-            $depth = $row['page_depth'];
+		$query = 'SELECT DISTINCT page_depth
+					FROM tx_metaseo_sitemap
+				   WHERE page_rootpid = ' . (int)$rootPid;
+        foreach (DatabaseUtility::getCol($query) as $depth) {
             $depthList[] = array(
                 $depth,
                 $depth,
@@ -306,6 +295,8 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
             'sitemap_page_depth'          => 'header.sitemap.page_depth',
             'sitemap_page_language'       => 'header.sitemap.page_language',
             'sitemap_page_is_blacklisted' => 'header.sitemap.page_is_blacklisted',
+
+            'page_tx_metaseo_is_exclude'  => 'header.sitemap.page_tx_metaseo_is_exclude',
 
             'sitemap_tstamp' => 'header.sitemap.tstamp',
             'sitemap_crdate' => 'header.sitemap.crdate',

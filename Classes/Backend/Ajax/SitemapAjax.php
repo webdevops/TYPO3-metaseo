@@ -61,30 +61,30 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         $where = array();
 
         // Root pid limit
-        $where[] = 'page_rootpid = ' . (int)$rootPid;
+        $where[] = 's.page_rootpid = ' . (int)$rootPid;
 
         // Fulltext
         if (!empty($searchFulltext)) {
-            $where[] = 'page_url LIKE ' . DatabaseUtility::quote('%' . $searchFulltext . '%', 'tx_metaseo_sitemap');
+            $where[] = 's.page_url LIKE ' . DatabaseUtility::quote('%' . $searchFulltext . '%', 'tx_metaseo_sitemap');
         }
 
         // Page id
         if (!empty($searchPageUid)) {
-            $where[] = 'page_uid = ' . (int)$searchPageUid;
+            $where[] = 's.page_uid = ' . (int)$searchPageUid;
         }
 
         // Lannguage
         if ($searchPageLanguage != -1 && strlen($searchPageLanguage) >= 1) {
-            $where[] = 'page_language = ' . (int)$searchPageLanguage;
+            $where[] = 's.page_language = ' . (int)$searchPageLanguage;
         }
 
         // Depth
         if ($searchPageDepth != -1 && strlen($searchPageDepth) >= 1) {
-            $where[] = 'page_depth = ' . (int)$searchPageDepth;
+            $where[] = 's.page_depth = ' . (int)$searchPageDepth;
         }
 
         if ($searchIsBlacklisted) {
-            $where[] = 'is_blacklisted = 1';
+            $where[] = 's.is_blacklisted = 1';
         }
 
         // Build where
@@ -96,7 +96,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
 
         // Fetch total count of items with this filter settings
         $query = 'SELECT COUNT(*) as count
-                    FROM tx_metaseo_sitemap
+                    FROM tx_metaseo_sitemap s
                    WHERE ' . $where;
         $itemCount = DatabaseUtility::getOne($query);
 
@@ -104,7 +104,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         // Sort
         // ############################
         // default sort
-        $sort = 'page_depth ASC, page_uid ASC';
+        $sort = 's.page_depth ASC, s.page_uid ASC';
 
         if (!empty($this->sortField) && !empty($this->sortDir)) {
             // already filered
@@ -114,19 +114,21 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         // ############################
         // Fetch sitemap
         // ############################
-        $query = 'SELECT uid,
-                         page_rootpid,
-                         page_uid,
-                         page_language,
-                         page_url,
-                         page_depth,
-                         is_blacklisted,
-                         FROM_UNIXTIME(tstamp) as tstamp,
-                         FROM_UNIXTIME(crdate) as crdate
-                    FROM tx_metaseo_sitemap
+        $query = 'SELECT s.uid,
+                         s.page_rootpid,
+                         s.page_uid,
+                         s.page_language,
+                         s.page_url,
+                         s.page_depth,
+                         s.is_blacklisted,
+                         p.tx_metaseo_is_exclude,
+                         FROM_UNIXTIME(s.tstamp) as tstamp,
+                         FROM_UNIXTIME(s.crdate) as crdate
+                    FROM tx_metaseo_sitemap s
+                         INNER JOIN pages p ON p.uid = s.page_uid
                    WHERE ' . $where . '
                 ORDER BY ' . $sort . '
-                   LIMIT ' . $offset . ', ' . $itemsPerPage;
+                   LIMIT ' . (int)$offset . ', ' . (int)$itemsPerPage;
         $list = DatabaseUtility::getAll($query);
 
         $ret = array(
