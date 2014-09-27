@@ -38,9 +38,10 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
     /**
      * List of stdWrap manipulations
+	 *
      * @var array
      */
-    protected $_stdWrapList = array();
+    protected $stdWrapList = array();
 
     /**
      * Add MetaTags
