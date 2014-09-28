@@ -73,6 +73,13 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected $blacklistConf = array();
 
+    /**
+     * File extension list
+     *
+     * @var array
+     */
+    protected $fileExtList = array();
+
 
     // ########################################################################
     // Methods
@@ -98,6 +105,15 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
 		if (!empty($this->conf['sitemap.']['index.']['blacklist.'])) {
 			$this->blacklistConf = $this->conf['sitemap.']['index.']['blacklist.'];
 		}
+
+        // Store blacklist configuration
+        if (!empty($this->conf['sitemap.']['index.']['fileExtension.'])) {
+            # File extensions can be a comma separated list
+            foreach ($this->conf['sitemap.']['index.']['fileExtension.'] as $fileExtListRaw) {
+                $fileExtList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fileExtListRaw);
+                $this->fileExtList = array_merge($this->fileExtList, $fileExtList);
+            };
+        }
 	}
 
     /**
@@ -265,7 +281,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
         list($linkPageUid, $linkType) = $this->parseLinkConf($pObj);
         $linkUrl  = $this->processLinkUrl($linkUrl);
 
-        if (!$linkType || !$linkPageUid) {
+        if ($linkType === NULL || empty($linkPageUid)) {
             // no valid link
             return;
         }
@@ -386,6 +402,9 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
 
         // Check link type
         switch ($conf['finalTagParts']['TYPE']) {
+            // ##############
+            // Page URL
+            // ##############
             case 'page':
 
                 // TODO: Add support for more parameter checks
@@ -396,10 +415,19 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
                 $type = SitemapUtility::SITEMAP_TYPE_PAGE;
                 break;
 
+            // ##############
+            // File URL
+            // ##############
             case 'file':
-                // File will be registered from the root page
-                $uid  = GeneralUtility::getRootPid();
-                $type = SitemapUtility::SITEMAP_TYPE_FILE;
+
+                $fileUrl = $conf['finalTagParts']['url'];
+
+                if ($this->checkIfFileIsWhitelisted($fileUrl)) {
+                    // File will be registered from the root page
+                    // to prevent duplicate urls
+                    $uid  = GeneralUtility::getRootPid();
+                    $type = SitemapUtility::SITEMAP_TYPE_FILE;
+                }
                 break;
         }
 
@@ -407,9 +435,50 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
     }
 
     /**
+     * Check if file is whitelisted
+     *
+     * Configuration specified in
+     * plugin.metaseo.sitemap.index.fileExtension
+     *
+     * @param   string  $url    Url to file
+     * @return  boolean
+     */
+    protected function checkIfFileIsWhitelisted($url) {
+        $ret = FALSE;
+
+        // check for valid url
+        if (empty($url)) {
+            return FALSE;
+        }
+
+        // parse url to extract only path
+        $urlParts = parse_url($url);
+        $filePath = $urlParts['path'];
+
+        // Extract last file extension
+        if (preg_match('/\.([^\.]+)$/', $filePath, $matches)) {
+            $fileExt = trim(strtolower($matches[1]));
+
+            // Check if file extension is whitelisted
+            foreach ($this->fileExtList as $allowedFileExt) {
+                if ($allowedFileExt === $fileExt) {
+                    // File is whitelisted, not blacklisted
+                    $ret = TRUE;
+                    break;
+                }
+            }
+        }
+
+        return $ret;
+    }
+
+    /**
      * Check if url is blacklisted
      *
-     * @param   string  $url Url
+     * Configuration specified in
+     * plugin.metaseo.sitemap.index.blacklist
+     *
+     * @param   string  $url Url to TYPO3 page
      * @return  boolean
      */
     protected function checkIfUrlIsBlacklisted($url) {
@@ -429,7 +498,16 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
     }
 
 	/**
-	 * Check current page
+	 * Check if current page is indexable
+     *
+     * Will do following checks:
+     * - REQUEST_METHOD (must be GET)
+     * - If there is a feuser session
+     * - Page type blacklisting
+     * - If page is static cacheable
+     * - If no_cache is not set
+     *
+     * (checks will be cached)
 	 *
 	 * @return bool
 	 */

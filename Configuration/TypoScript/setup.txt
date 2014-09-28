@@ -115,10 +115,10 @@ plugin.metaseo {
 		conf =
 		conf {
 			description_page.field = description
-			keywords_page.field = keywords
-			title_page.field    = title
-			author_page.field   = author
-			email_page.field    = author_email
+			keywords_page.field    = keywords
+			title_page.field       = title
+			author_page.field      = author
+			email_page.field       = author_email
 
 			tx_metaseo_geo_lat.field    = tx_metaseo_geo_lat
 			tx_metaseo_geo_long.field   = tx_metaseo_geo_long
@@ -168,6 +168,7 @@ plugin.metaseo {
 				}
 			}
 		}
+
 
 		# list of stdWraps for advanced metatag manipulations
 		stdWrap =
@@ -334,6 +335,18 @@ plugin.metaseo {
 
 			# blacklist (RegExp, eg /typo3/)
 			blacklist {
+			}
+
+			# Whitelist of allowed file extensions
+			fileExtension {
+				# PDF
+				1 = pdf
+
+				# Microsoft Office
+				2 = doc,docx,xls,xlsx,ppt,pptx
+
+				# OpenOffice
+				3 = odt,odp,ods,odg
 			}
 
 		}
