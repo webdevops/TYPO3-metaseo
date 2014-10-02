@@ -25,7 +25,7 @@ if (TYPO3_MODE == 'BE') {
 $GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields'] .= ',tx_metaseo_pagetitle,tx_metaseo_pagetitle_rel,tx_metaseo_pagetitle_prefix,tx_metaseo_pagetitle_suffix,tx_metaseo_canonicalurl';
 $GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'] .= ',tx_metaseo_pagetitle_prefix,tx_metaseo_pagetitle_suffix,tx_metaseo_inheritance';
 
-//$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'][] = 'EXT:metaseo/lib/class.linkparser.php:user_metaseo_linkparser->main';
+//$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'][] = 'EXT:metaseo/lib/class.linkparser.php:user_tqseo_linkparser->main';
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'][] = 'Metaseo\\Metaseo\\Hook\\SitemapIndexHook->hook_linkParse';
 
 // HTTP Header extension

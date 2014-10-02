@@ -157,7 +157,7 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
             );
         }
 
-        $sysLangaugeDefault = (int)$GLOBALS['BE_USER']->getSessionData('MetaSEO.sysLanguage');
+        $sysLangaugeDefault = (int)$GLOBALS['BE_USER']->getSessionData('TQSeo.sysLanguage');
 
         if (empty($sysLangaugeDefault) ) {
             $sysLangaugeDefault = 0;
@@ -242,10 +242,10 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
             'page_geo_place'  => 'header.sitemap.page_geo_place',
             'page_geo_region' => 'header.sitemap.page_geo_region',
 
-            'page_tx_metaseo_pagetitle'        => 'header.sitemap.page_tx_metaseo_pagetitle',
-            'page_tx_metaseo_pagetitle_rel'    => 'header.sitemap.page_tx_metaseo_pagetitle_rel',
-            'page_tx_metaseo_pagetitle_prefix' => 'header.sitemap.page_tx_metaseo_pagetitle_prefix',
-            'page_tx_metaseo_pagetitle_suffix' => 'header.sitemap.page_tx_metaseo_pagetitle_suffix',
+            'page_tx_tqseo_pagetitle'        => 'header.sitemap.page_tx_tqseo_pagetitle',
+            'page_tx_tqseo_pagetitle_rel'    => 'header.sitemap.page_tx_tqseo_pagetitle_rel',
+            'page_tx_tqseo_pagetitle_prefix' => 'header.sitemap.page_tx_tqseo_pagetitle_prefix',
+            'page_tx_tqseo_pagetitle_suffix' => 'header.sitemap.page_tx_tqseo_pagetitle_suffix',
 
             'page_title_simulated' => 'header.pagetitlesim.title_simulated',
 
