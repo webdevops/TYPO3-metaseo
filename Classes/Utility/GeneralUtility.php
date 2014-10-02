@@ -76,7 +76,7 @@ class GeneralUtility {
         $ret = NULL;
 
         if ($uid === NULL) {
-            $ret = (int)$GLOBALS['TSFE']->rootLine[0]['uid'];
+            $ret = (int)$GLOBALS['TSFE']->tmpl->rootLine[0]['uid'];
         } else {
 
             if (!isset($cache[$uid])) {
@@ -107,14 +107,14 @@ class GeneralUtility {
      * Get current root pid
      *
      * @param   integer $uid    Page UID
-     * @return  integer
+     * @return  array
      */
     public static function getRootLine($uid = NULL) {
         static $cache = array();
         $ret = array();
 
         if ($uid === NULL) {
-            $ret = (int)$GLOBALS['TSFE']->rootLine;
+            $ret = $GLOBALS['TSFE']->tmpl->rootLine;
         } else {
             if (!isset($cache[$uid])) {
                 $cache[$uid] = self::_getSysPageObj()->getRootLine($uid);
