@@ -68,7 +68,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         $listType     = (string)$this->_postVar['listType'];
 
         // Store last selected language
-        $GLOBALS['BE_USER']->setAndSaveSessionData('MetaSeo.sysLanguage', $sysLanguage);
+        $GLOBALS['BE_USER']->setAndSaveSessionData('MetaSEO.sysLanguage', $sysLanguage);
 
         if (!empty($pid)) {
             $page = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pid);
