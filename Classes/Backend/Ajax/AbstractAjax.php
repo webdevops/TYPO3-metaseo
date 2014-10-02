@@ -42,42 +42,33 @@ abstract class AbstractAjax {
      *
      * @var array
      */
-    protected $postVar = array();
+    protected $_postVar = array();
 
     /**
      * Sorting field
      */
-    protected $sortField = NULL;
+    protected $_sortField = NULL;
 
     /**
      * Sorting dir
      *
      * @var string
      */
-    protected $sortDir = NULL;
+    protected $_sortDir = NULL;
 
     /**
      * TCE
      *
      * @var \TYPO3\CMS\Core\DataHandling\DataHandler
-     * @inject
      */
-    protected $tce = NULL;
-
-    /**
-     * TYPO3 Object manager
-     *
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-     */
-    protected $objectManager = NULL;
+    protected $_tce = NULL;
 
     /**
      * Backend Form Protection object
      *
      * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection
-     * @inject
      */
-    protected $formProtection = NULL;
+    protected $_formProtection = NULL;
 
     // ########################################################################
     // Methods
@@ -88,6 +79,7 @@ abstract class AbstractAjax {
      */
     public function main() {
         $ret = NULL;
+
 
         // Try to find method
         $function = '';
@@ -102,14 +94,14 @@ abstract class AbstractAjax {
 
         // Call function
         if (!empty($function)) {
-            $method = 'execute' . $function;
+            $method = '_execute' . $function;
             $call   = array($this, $method);
 
             if (is_callable($call)) {
-                $this->fetchParams();
+                $this->_fetchParams();
 
-                $this->init();
-                if ($this->checkSessionToken()) {
+                $this->_init();
+                if ($this->_checkSessionToken()) {
                     $ret = $this->$method();
                 }
 
@@ -117,7 +109,7 @@ abstract class AbstractAjax {
         }
 
         // Output json data
-        header('Content-type: application/json;charset=UTF-8');
+        header('Content-type: application/json');
         echo json_encode($ret);
         exit;
     }
@@ -126,40 +118,38 @@ abstract class AbstractAjax {
     /**
      * Init
      */
-    protected function init() {
+    protected function _init() {
         // Include ajax local lang
         $GLOBALS['LANG']->includeLLFile('EXT:metaseo/locallang_ajax.xml');
 
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-
         // Init form protection instance
-        $this->formProtection = $this->objectManager->get(
+        $this->_formProtection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection'
         );
     }
 
     /**
-     * Collect and process POST vars and stores them into $this->postVars
+     * Collect and process POST vars and stores them into $this->_postVars
      */
-    protected function fetchParams() {
+    protected function _fetchParams() {
         $rawPostVarList = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
         foreach ($rawPostVarList as $key => $value) {
-            $this->postVar[$key] = json_decode($value);
+            $this->_postVar[$key] = json_decode($value);
         }
 
         // Sorting data
         if (!empty($rawPostVarList['sort'])) {
-            $this->sortField = $this->escapeSortField((string)$rawPostVarList['sort']);
+            $this->_sortField = $this->_escapeSortField((string)$rawPostVarList['sort']);
         }
 
         if (!empty($rawPostVarList['dir'])) {
             switch (strtoupper($rawPostVarList['dir'])) {
                 case 'ASC':
-                    $this->sortDir = 'ASC';
+                    $this->_sortDir = 'ASC';
                     break;
 
                 case 'DESC':
-                    $this->sortDir = 'DESC';
+                    $this->_sortDir = 'DESC';
                     break;
             }
         }
@@ -172,7 +162,7 @@ abstract class AbstractAjax {
      * @param    string $value    Sort value
      * @return    string
      */
-    protected function escapeSortField($value) {
+    protected function _escapeSortField($value) {
         return preg_replace('[^_a-zA-Z]', '', $value);
     }
 
@@ -181,15 +171,16 @@ abstract class AbstractAjax {
      *
      * @return \TYPO3\CMS\Core\DataHandling\DataHandler
      */
-    protected function tce() {
+    protected function _tce() {
 
-        if ($this->tce === NULL) {
-            /** @var \TYPO3\CMS\Core\DataHandling\DataHandler tce */
-            $this->tce = $this->objectManager->get('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
-            $this->tce->start(null, null);
+        if ($this->_tce === NULL) {
+            $this->_tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                'TYPO3\\CMS\\Core\\DataHandling\\DataHandler'
+            );
+            $this->_tce->start(null, null);
         }
 
-        return $this->tce;
+        return $this->_tce;
     }
 
 
@@ -200,7 +191,7 @@ abstract class AbstractAjax {
      * @param   string $field  Field
      * @return  boolean
      */
-    protected function isFieldInTcaTable($table, $field) {
+    protected function _isFieldInTcaTable($table, $field) {
         return isset($GLOBALS['TCA'][$table]['columns'][$field]);
     }
 
@@ -211,8 +202,8 @@ abstract class AbstractAjax {
      * @param   string $formName    Form name/Session token name
      * @return  string
      */
-    protected function sessionToken($formName) {
-        $token = $this->formProtection->generateToken($formName);
+    protected function _sessionToken($formName) {
+        $token = $this->_formProtection->generateToken($formName);
         return $token;
     }
 
@@ -221,18 +212,18 @@ abstract class AbstractAjax {
      *
      * @return    boolean
      */
-    protected function checkSessionToken() {
+    protected function _checkSessionToken() {
 
-        if (empty($this->postVar['sessionToken'])) {
+        if (empty($this->_postVar['sessionToken'])) {
             // No session token exists
             return FALSE;
         }
 
         $className = strtolower(str_replace('\\', '_', get_class($this)));
 
-        $sessionToken = $this->sessionToken($className);
+        $sessionToken = $this->_sessionToken($className);
 
-        if ($this->postVar['sessionToken'] === $sessionToken) {
+        if ($this->_postVar['sessionToken'] === $sessionToken) {
             return TRUE;
         }
 
