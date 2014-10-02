@@ -141,6 +141,7 @@ Crawler Verification             Verification code for Google, MSN and Yahoo
                                  webmaster tools and Web of trust
 
 Google Analytics                 The google analytics code for using on your site
+                                 Multiple GA Codes possible, comma separated
                                  (Will not be shown in frontend if BE-user is logged in,
                                  can be re-enabled in BE-Login-Mode:
                                  plugin.metaseo.services.googleAnalytics.showIfBeLogin = 1)
@@ -170,6 +171,8 @@ Piwik URL                        Url to your Piwik installation
                                  (without http:// and https://)
 
 Piwik ID                         Tracking id of your website in your piwik
+                                 Multiple Piwik IDs possible, comma separated
+
 Piwik Download & Click Domain    Specifies which domains are internal domains:
 
                                  - single domain (eg. “example.com”)

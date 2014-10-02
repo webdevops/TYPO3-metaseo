@@ -114,7 +114,7 @@ plugin.metaseo {
     # cat=plugin.metaseo.services/page/05; type=string; label= Web Of Trust Verification: Verification code for Web of trust (mywot.com)
   metaTags.wotVerification =
 
-    # cat=plugin.metaseo.services/page/06; type=string; label= Google Analytics: Code for google analytics (eg. UA-12345456-1)
+    # cat=plugin.metaseo.services/page/06; type=string; label= Google Analytics: Code for google analytics (eg. UA-12345456-1)  (multiple codes, comma separated)
   services.googleAnalytics =
     # cat=plugin.metaseo.services/page/07; type=string; label= Google Analytics Download & Click Domain Name: "auto", "none", single domain support: "example.com", subdomain support: ".example.com"
   services.googleAnalytics.domainName =
@@ -126,7 +126,7 @@ plugin.metaseo {
 
     # cat=plugin.metaseo.services/page/11; type=string; label= Piwik URL: Url to your piwik installation (eg. www.example.com/piwik/ - don't use http:// or https:// as prefix!)
   services.piwik.url =
-    # cat=plugin.metaseo.services/page/12; type=string; label= Piwik Id: Id of your website
+    # cat=plugin.metaseo.services/page/12; type=string; label= Piwik Id: Id of your website (multiple ids, comma separated)
   services.piwik.id =
     # cat=plugin.metaseo.services/page/13; type=string; label= Piwik Download & Click Domain Name: single domain support: "example.com", subdomain support: ".example.com"
   services.piwik.domainName =

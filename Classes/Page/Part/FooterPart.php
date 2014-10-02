@@ -24,6 +24,7 @@ namespace Metaseo\Metaseo\Page\Part;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Page Footer
@@ -75,7 +76,7 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
             if ($gaEnabled && !(empty($gaConf['showIfBeLogin']) && $beLoggedIn)) {
                 // Build Google Analytics service
-                $ret['ga'] = $this->serviceGoogleAnalytics($tsServices, $gaConf);
+                $ret['ga'] = $this->buildGoogleAnalyticsCode($tsServices, $gaConf);
 
                 if (!empty($gaConf['trackDownloads']) && !empty($gaConf['trackDownloadsScript'])) {
                     $ret['ga.trackdownload'] = $this->serviceGoogleAnalyticsTrackDownloads($tsServices, $gaConf);
@@ -104,7 +105,7 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
             if ($piwikEnabled && !(empty($piwikConf['showIfBeLogin']) && $beLoggedIn)) {
                 // Build Piwik service
-                $ret['piwik'] = $this->servicePiwik($tsServices, $piwikConf);
+                $ret['piwik'] = $this->buildPiwikCode($tsServices, $piwikConf);
             } elseif ($piwikEnabled && $beLoggedIn) {
 				// Disable caching
 				$GLOBALS['TSFE']->set_no_cache('MetaSEO: Piwik code disabled, backend login detected');
@@ -127,23 +128,31 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      * @param  array $gaConf      Google Analytics configuration
      * @return string
      */
-    public function serviceGoogleAnalytics($tsServices, $gaConf) {
-        $customCode = '';
-        if (!empty($gaConf['customizationCode'])) {
-            $customCode .= "\n" . $this->cObj->cObjGetSingle(
-                    $gaConf['customizationCode'],
-                    $gaConf['customizationCode.']
-                );
+    public function buildGoogleAnalyticsCode($tsServices, $gaConf) {
+        $ret = array();
+        $gaCodeList = GeneralUtility::trimExplode(',', $tsServices['googleAnalytics']);
+
+        foreach ($gaCodeList as $gaCode) {
+            $customCode = '';
+            if (!empty($gaConf['customizationCode'])) {
+                $customCode .= "\n" . $this->cObj->cObjGetSingle(
+                        $gaConf['customizationCode'],
+                        $gaConf['customizationCode.']
+                    );
+            }
+
+            $this->cObj->data['gaCode']                  = $gaCode;
+            $this->cObj->data['gaIsAnonymize']           = (int)!empty($gaConf['anonymizeIp']);
+            $this->cObj->data['gaDomainName']            = $gaConf['domainName'];
+            $this->cObj->data['gaCustomizationCode']     = $customCode;
+            $this->cObj->data['gaUseUniversalAnalytics'] = (int)!empty($gaConf['universalAnalytics']);
+
+            // Build code
+            $ret[] = $this->cObj->cObjGetSingle($gaConf['template'], $gaConf['template.']);
         }
 
-        $this->cObj->data['gaCode']                  = $tsServices['googleAnalytics'];
-        $this->cObj->data['gaIsAnonymize']           = (int)!empty($gaConf['anonymizeIp']);
-        $this->cObj->data['gaDomainName']            = $gaConf['domainName'];
-        $this->cObj->data['gaCustomizationCode']     = $customCode;
-        $this->cObj->data['gaUseUniversalAnalytics'] = (int)!empty($gaConf['universalAnalytics']);
-
-        // Build code
-        $ret  = $this->cObj->cObjGetSingle($gaConf['template'], $gaConf['template.']);
+        // Build all GA codes
+        $ret = implode("\n", $ret);
 
         return $ret;
     }
@@ -172,27 +181,35 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      * @param  array $piwikConf   Piwik configuration
      * @return string
      */
-    public function servicePiwik($tsServices, $piwikConf) {
-        $customCode = '';
-        if (!empty($piwikConf['customizationCode'])) {
-            $customCode .= "\n" . $this->cObj->cObjGetSingle(
-                    $piwikConf['customizationCode'],
-                    $piwikConf['customizationCode.']
-                );
+    public function buildPiwikCode($tsServices, $piwikConf) {
+        $ret = array();
+        $piwikCodeList = GeneralUtility::trimExplode(',', $piwikConf['id']);
+
+        foreach ($piwikCodeList as $piwikCode) {
+            $customCode = '';
+            if (!empty($piwikConf['customizationCode'])) {
+                $customCode .= "\n" . $this->cObj->cObjGetSingle(
+                        $piwikConf['customizationCode'],
+                        $piwikConf['customizationCode.']
+                    );
+            }
+
+            // remove last slash
+            $piwikConf['url'] = rtrim($piwikConf['url'], '/');
+
+            $this->cObj->data['piwikUrl']               = $piwikConf['url'];
+            $this->cObj->data['piwikId']                = $piwikCode;
+            $this->cObj->data['piwikDomainName']        = $piwikConf['domainName'];
+            $this->cObj->data['piwikCookieDomainName']  = $piwikConf['cookieDomainName'];
+            $this->cObj->data['piwikDoNotTrack']        = $piwikConf['doNotTrack'];
+            $this->cObj->data['piwikCustomizationCode'] = $customCode;
+
+            // Build code
+            $ret[] = $this->cObj->cObjGetSingle($piwikConf['template'], $piwikConf['template.']);
         }
 
-        // remove last slash
-        $piwikConf['url'] = rtrim($piwikConf['url'], '/');
-
-        $this->cObj->data['piwikUrl']               = $piwikConf['url'];
-        $this->cObj->data['piwikId']                = $piwikConf['id'];
-        $this->cObj->data['piwikDomainName']        = $piwikConf['domainName'];
-        $this->cObj->data['piwikCookieDomainName']  = $piwikConf['cookieDomainName'];
-        $this->cObj->data['piwikDoNotTrack']        = $piwikConf['doNotTrack'];
-        $this->cObj->data['piwikCustomizationCode'] = $customCode;
-
-        // Build code
-        $ret = $this->cObj->cObjGetSingle($piwikConf['template'], $piwikConf['template.']);
+        // Build all piwik codes
+        $ret = implode("\n", $ret);
 
         return $ret;
     }
