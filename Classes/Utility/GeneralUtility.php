@@ -301,8 +301,9 @@ class GeneralUtility {
         // Fix url stuff
         $url = str_replace('?&', '?', $url);
 
+        // Removed by request of https://forge.typo3.org/issues/61845
         // replace double slashes but not before a : (eg. http://)
-        $url = preg_replace('_(?<!:)\//_', '/', $url);
+        //$url = preg_replace('_(?<!:)\//_', '/', $url);
 
         // Fallback
         //if( !empty($GLOBALS['TSFE']) && !preg_match('/^https?:\/\//i', $url ) ) {
