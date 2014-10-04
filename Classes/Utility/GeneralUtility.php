@@ -119,7 +119,7 @@ class GeneralUtility {
             // TODO: Maybe we could search cached rootlines for $uid to avoid lookup
             if (!isset($cache[$uid])) {
                 // Fetch full rootline to TYPO3 root (0)
-                $cache[$uid] = self::_getSysPageObj()->getRootLine($uid);
+                $fullRootline = self::_getSysPageObj()->getRootLine($uid);
 
                 // Reverse rootline to begin with the current page
                 $fullRootline = array_reverse($fullRootline);
