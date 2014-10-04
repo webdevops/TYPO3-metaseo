@@ -116,8 +116,29 @@ class GeneralUtility {
         if ($uid === NULL) {
             $ret = $GLOBALS['TSFE']->tmpl->rootLine;
         } else {
+            // TODO: Maybe we could search cached rootlines for $uid to avoid lookup
             if (!isset($cache[$uid])) {
+                // Fetch full rootline to TYPO3 root (0)
                 $cache[$uid] = self::_getSysPageObj()->getRootLine($uid);
+
+                // Reverse rootline to begin with the current page
+                $fullRootline = array_reverse($fullRootline);
+
+                // Build reversed rootline up to a possible siteroot
+                $siteRootline = array();
+                foreach($fullRootline as $rootlinePage) {
+                    $siteRootline[] = $rootlinePage;
+
+                    if (!empty($rootlinePage['is_siteroot'])) {
+                        // Siteroot page detected, we will stop here
+                        break;
+                    }
+                }
+
+                // Reverse rootline to begin with the current page
+                $siteRootline = array_reverse($siteRootline);
+
+                $cache[$uid] = $siteRootline;
             }
 
             $ret = $cache[$uid];
