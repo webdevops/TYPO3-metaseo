@@ -45,6 +45,13 @@ class GeneralUtility {
      */
     protected static $sysPageObj = NULL;
 
+    /**
+     * Rootline cache
+     *
+     * @var array
+     */
+    protected static $rootlineCache = array();
+
 
     // ########################################################################
     // Public methods
@@ -110,40 +117,49 @@ class GeneralUtility {
      * @return  array
      */
     public static function getRootLine($uid = NULL) {
-        static $cache = array();
-        $ret = array();
 
         if ($uid === NULL) {
+            // Current rootline
             $ret = $GLOBALS['TSFE']->tmpl->rootLine;
         } else {
-            // TODO: Maybe we could search cached rootlines for $uid to avoid lookup
-            if (!isset($cache[$uid])) {
+            if (empty(self::$rootlineCache[$uid])) {
                 // Fetch full rootline to TYPO3 root (0)
-                $fullRootline = self::_getSysPageObj()->getRootLine($uid);
+                $rootline = self::_getSysPageObj()->getRootLine($uid);
 
-                // Reverse rootline to begin with the current page
-                $fullRootline = array_reverse($fullRootline);
+                // Filter rootline by siteroot
+                $rootline = self::filterRootlineBySiteroot($rootline);
 
-                // Build reversed rootline up to a possible siteroot
-                $siteRootline = array();
-                foreach($fullRootline as $rootlinePage) {
-                    $siteRootline[] = $rootlinePage;
-
-                    if (!empty($rootlinePage['is_siteroot'])) {
-                        // Siteroot page detected, we will stop here
-                        break;
-                    }
-                }
-
-                // Reverse rootline to begin with the current page
-                $siteRootline = array_reverse($siteRootline);
-
-                $cache[$uid] = $siteRootline;
+                self::$rootlineCache[$uid] = $rootline;
             }
 
-            $ret = $cache[$uid];
+            $ret = self::$rootlineCache[$uid];
         }
 
+        return $ret;
+    }
+
+    /**
+     * Filter rootline to get the real one up to siteroot page
+     *
+     * @param $rootline
+     * @return array
+     */
+    protected static function filterRootlineBySiteroot($rootline) {
+        $ret = array();
+
+        // Make sure sorting is right (first root, last page)
+        ksort($rootline, SORT_NUMERIC);
+
+        //reverse rootline
+        $rootline = array_reverse($rootline);
+
+        foreach ($rootline as $page) {
+            $ret[] = $page;
+            if (!empty($page['is_siteroot'])) {
+                break;
+            }
+        }
+        $ret = array_reverse($ret);
         return $ret;
     }
 
