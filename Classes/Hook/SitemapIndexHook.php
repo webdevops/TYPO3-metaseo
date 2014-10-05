@@ -339,7 +339,17 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
         // Build relative url
         // #####################################
         $linkParts = parse_url($linkUrl);
-        $pageUrl   = ltrim($linkParts['path'], '/');
+
+        // Remove left / (but only if not root page)
+        if ($linkParts['path'] === '/') {
+            // Link points to root page
+            $pageUrl = '/';
+        } else {
+            // Link points to another page, strip left /
+            $pageUrl = ltrim($linkParts['path'], '/');
+        }
+
+        // Add query
         if (!empty($linkParts['query'])) {
             $pageUrl .= '?' . $linkParts['query'];
         }
