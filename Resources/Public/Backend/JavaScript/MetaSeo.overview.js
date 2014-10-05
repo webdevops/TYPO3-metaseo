@@ -230,18 +230,25 @@ MetaSeo.overview.grid = {
             grid.addClass('metaseo-grid-editable');
 
             grid.on('cellclick', function(grid, rowIndex, colIndex, e) {
-                var record = grid.getStore().getAt(rowIndex);
-                var fieldName = grid.getColumnModel().getDataIndex(colIndex);
-                var fieldId = grid.getColumnModel().getColumnId(colIndex);
-                var col = grid.getColumnModel().getColumnById(fieldId);
-                var data = record.get(fieldName);
+                var record        = grid.getStore().getAt(rowIndex);
+                var fieldName     = grid.getColumnModel().getDataIndex(colIndex);
+                var fieldId       = grid.getColumnModel().getColumnId(colIndex);
+                var col           = grid.getColumnModel().getColumnById(fieldId);
+                var data          = record.get(fieldName);
+                var overlayStatus = record.get('_overlay')[fieldName];
+
+                // overlayStatus = 2 => only in base
+                // overlayStatus = 1 => value from overlay
+                // overlayStatus = 0 => value from base
 
                 var title = record.get('title');
 
-                if( col.tqSeoOnClick ) {
-                    col.tqSeoOnClick(record, fieldName, fieldId, col, data);
+                // Fire custom MetaSEO onClick event
+                if( col.metaSeoOnClick ) {
+                    col.metaSeoOnClick(record, fieldName, fieldId, col, data);
                 }
 
+                // Auto. MetaSEO Click Edit field
                 if( col.metaSeoClickEdit ) {
                     // Init editor field
                     var field = col.metaSeoClickEdit;
@@ -465,10 +472,21 @@ MetaSeo.overview.grid = {
         var fieldRenderer = function(value, metaData, record, rowIndex, colIndex, store) {
             var fieldName     = me.grid.getColumnModel().getDataIndex(colIndex);
             var overlayStatus = record.get('_overlay')[fieldName];
+            var qtip          = value;
+
+            var currentLanguage = Ext.getCmp('sysLanguage').getRawValue();
+
+            if( overlayStatus == 2 ) {
+                qtip = '<b>' + String.format(MetaSeo.overview.conf.lang.value_base_only, currentLanguage) + '</b>:<br>' + qtip;
+            } else if( overlayStatus == 1 ) {
+                qtip = '<b>' + String.format(MetaSeo.overview.conf.lang.value_from_overlay, currentLanguage) + '</b>:<br>' + qtip;
+            } else {
+                qtip = '<b>' + String.format(MetaSeo.overview.conf.lang.value_from_base, currentLanguage) + '</b>:<br>' + qtip;
+            }
+
+            var html = me._fieldRendererCallback(value, qtip, 23, true);
 
             // check for overlay
-            var html = me._fieldRenderer(value);
-
             if( overlayStatus == 2 ) {
                 html = '<div class="metaseo-info-only-in-base">'+html+'</div>';
             } else if( overlayStatus == 1 ) {
@@ -600,7 +618,7 @@ MetaSeo.overview.grid = {
 //                    sortable : false,
 //                    dataIndex: 'metatag',
 //                    renderer	: fieldRendererAdvEditor,
-//                    tqSeoOnClick: function(record, fieldName, fieldId, col, data) {
+//                    metaSeoOnClick: function(record, fieldName, fieldId, col, data) {
 //
 //                        // Init editor window
 //                        var editWindow = new MetaSeo.metaeditor({
@@ -867,7 +885,7 @@ MetaSeo.overview.grid = {
                         width    : 50,
                         sortable : false,
                         renderer : fieldRendererUrlSimulate,
-                        tqSeoOnClick: function(record, fieldName, fieldId, col, data) {
+                        metaSeoOnClick: function(record, fieldName, fieldId, col, data) {
                             me.grid.loadMask.show();
 
                             var callbackFinish = function(response) {
@@ -916,7 +934,7 @@ MetaSeo.overview.grid = {
                     sortable : false,
                     dataIndex: 'metatag',
                     renderer	: fieldRendererAdvEditor,
-                    tqSeoOnClick: function(record, fieldName, fieldId, col, data) {
+                    metaSeoOnClick: function(record, fieldName, fieldId, col, data) {
 
                         // Init editor window
                         var editWindow = new MetaSeo.metaeditor({
@@ -987,7 +1005,7 @@ MetaSeo.overview.grid = {
                     width    : 50,
                     sortable : false,
                     renderer : fieldRendererTitleSimulate,
-                    tqSeoOnClick: function(record, fieldName, fieldId, col, data) {
+                    metaSeoOnClick: function(record, fieldName, fieldId, col, data) {
                         me.grid.loadMask.show();
 
                         var callbackFinish = function(response) {

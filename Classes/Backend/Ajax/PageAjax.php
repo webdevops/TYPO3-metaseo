@@ -338,6 +338,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
             // Set field as main fields
             foreach($fieldList as $fieldName) {
                 $row['_overlay'][$fieldName] = $defaultOverlayStatus;
+                $row['_base'][$fieldName]    = $row[$fieldName];
             }
 
             $row['_depth'] = $this->_listCalcDepth($row['uid'], $rootLineRaw);
@@ -358,8 +359,16 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
                 }
             }
 
+            // Build list of fields which we need to query
+            $queryFieldList = array(
+                'uid',
+                'pid',
+                'title',
+            );
+            $queryFieldList = array_merge($queryFieldList, $overlayFieldList);
+
             $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-                'uid,pid,title,'.implode(',',$overlayFieldList),
+                implode(',', $queryFieldList),
                 'pages_language_overlay',
                 'pid IN('.implode(',',$pageIdList).') AND sys_language_uid = '.(int)$sysLanguage
             );
