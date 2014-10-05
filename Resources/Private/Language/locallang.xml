@@ -25,6 +25,11 @@
 
 			<label index="value_default">Default</label>
 			<label index="default.language">Default</label>
+            <label index="default.language.named">%s (Default)</label>
+
+            <label index="value.from_base">Value from default language</label>
+            <label index="value.from_overlay">Value from {0}</label>
+            <label index="value.only_base">Base value (no translation available)</label>
 
             <label index="link.open">open</label>
 
@@ -263,6 +268,11 @@
 
 			<label index="value_default">Standard</label>
 			<label index="default.language">Standard</label>
+            <label index="default.language.named">%s (Standard)</label>
+
+            <label index="value.from_base">Wert von Standardsprache</label>
+            <label index="value.from_overlay">Wert aus {0}</label>
+            <label index="value.only_base">Basiswert (Keine Übersetzung möglich)</label>
 
             <label index="link.open">öffnen</label>
 

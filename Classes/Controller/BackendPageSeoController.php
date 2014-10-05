@@ -116,7 +116,9 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         }
 
         if (!empty($pageTsConf['mod.']['SHARED.']['defaultLanguageLabel']) ) {
-            $languageFullList[0]['label'] = $pageTsConf['mod.']['SHARED.']['defaultLanguageLabel'];
+            $label = $pageTsConf['mod.']['SHARED.']['defaultLanguageLabel'];
+
+            $languageFullList[0]['label'] = $this->translate('default.language.named', array($label));
 
             $defaultLanguageText = $pageTsConf['mod.']['SHARED.']['defaultLanguageLabel'];
         }
@@ -271,6 +273,10 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
             'metaeditor_title'         => 'metaeditor.title',
             'metaeditor_tab_opengraph' => 'metaeditor.tab.opengraph',
             'metaeditor_button_hin'    => 'metaeditor.button.hint',
+
+            'value_from_base'    => 'value.from_base',
+            'value_from_overlay' => 'value.from_overlay',
+            'value_only_base'    => 'value.only_base',
 
             'value_default' => 'value_default',
         );

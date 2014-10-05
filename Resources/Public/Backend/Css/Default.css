@@ -24,11 +24,12 @@
 }
 
 .metaseo-info-from-base {
+    color: #969696;
+    font-style: italic;
 }
 
 .metaseo-info-from-overlay {
-    color: #808080;
-    font-style: italic;
+
 }
 
 .metaseo-info-only-in-base {

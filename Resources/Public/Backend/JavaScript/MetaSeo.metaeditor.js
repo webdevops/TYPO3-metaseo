@@ -197,10 +197,10 @@ MetaSeo.metaeditor = Ext.extend(Ext.Window, {
 
         // dynamic dis- and enable form elements
         formOpenGraph.items.each(function(formField) {
-            if( formField.tqSeoFieldCat ) {
-                if( MetaSeo.inList(formField.tqSeoFieldCat, ogTypeDefault)
-                    || MetaSeo.inList(formField.tqSeoFieldCat, ogTypeMain)
-                    || MetaSeo.inList(formField.tqSeoFieldCat, ogTypeMainAndSub) ) {
+            if( formField.metaSeoFieldCat ) {
+                if( MetaSeo.inList(formField.metaSeoFieldCat, ogTypeDefault)
+                    || MetaSeo.inList(formField.metaSeoFieldCat, ogTypeMain)
+                    || MetaSeo.inList(formField.metaSeoFieldCat, ogTypeMainAndSub) ) {
                     formField.show();
                 } else {
                     formField.hide();
@@ -238,7 +238,7 @@ MetaSeo.metaeditor = Ext.extend(Ext.Window, {
                 fieldLabel: 'og:title',
                 name: 'og:title',
                 width: fieldWidth,
-                tqSeoFieldCat: 'og:general'
+                metaSeoFieldCat: 'og:general'
             },{
                 xtype: 'combo',
                 fieldLabel: 'og:type',
@@ -281,19 +281,19 @@ MetaSeo.metaeditor = Ext.extend(Ext.Window, {
                 valueField: 'id',
                 displayField: 'label',
                 width: fieldWidth,
-                tqSeoFieldCat: 'og:general'
+                metaSeoFieldCat: 'og:general'
             }, {
                 xtype: "textfield",
                 fieldLabel: 'og:image',
                 name: 'og:image',
                 width: fieldWidth,
-                tqSeoFieldCat: 'og:general'
+                metaSeoFieldCat: 'og:general'
             }, {
                 xtype: "textfield",
                 fieldLabel: 'og:description',
                 name: 'og:description',
                 width: fieldWidth,
-                tqSeoFieldCat: 'og:general'
+                metaSeoFieldCat: 'og:general'
             }
         );
 
@@ -311,31 +311,31 @@ MetaSeo.metaeditor = Ext.extend(Ext.Window, {
 //                fieldLabel: 'og:music:duration',
 //                name: 'og:music:duration',
 //                width: fieldWidth,
-//                tqSeoFieldCat: 'og:music:song'
+//                metaSeoFieldCat: 'og:music:song'
 //            }, {
 //                xtype: "textfield",
 //                fieldLabel: 'og:music:album',
 //                name: 'og:music:duration',
 //                width: fieldWidth,
-//                tqSeoFieldCat: 'og:music:song'
+//                metaSeoFieldCat: 'og:music:song'
 //            }, {
 //                xtype: "textfield",
 //                fieldLabel: 'og:music:album:disc',
 //                name: 'og:music:album:disc',
 //                width: fieldWidth,
-//                tqSeoFieldCat: 'og:music:song'
+//                metaSeoFieldCat: 'og:music:song'
 //            }, {
 //                xtype: "textfield",
 //                fieldLabel: 'og:music:album:track',
 //                name: 'og:music:album:track',
 //                width: fieldWidth,
-//                tqSeoFieldCat: 'og:music:song'
+//                metaSeoFieldCat: 'og:music:song'
 //            }, {
 //                xtype: "textfield",
 //                fieldLabel: 'og:music:musician',
 //                name: 'og:music:musician',
 //                width: fieldWidth,
-//                tqSeoFieldCat: 'og:music:song'
+//                metaSeoFieldCat: 'og:music:song'
 //            }
 //        );
 
@@ -382,43 +382,43 @@ MetaSeo.metaeditor = Ext.extend(Ext.Window, {
 //                fieldLabel: 'og:article:author',
 //                name: 'og:article:author',
 //                width: fieldWidth,
-//                tqSeoFieldCat: 'og:article'
+//                metaSeoFieldCat: 'og:article'
 //            }, {
 //                xtype: "textfield",
 //                fieldLabel: 'og:article:isbn',
 //                name: 'og:article:isbn',
 //                width: fieldWidth,
-//                tqSeoFieldCat: 'og:article'
+//                metaSeoFieldCat: 'og:article'
 //            }, {
 //                xtype: "textfield",
 //                fieldLabel: 'og:article:published_time',
 //                name: 'og:article:published_time',
 //                width: fieldWidth,
-//                tqSeoFieldCat: 'og:article'
+//                metaSeoFieldCat: 'og:article'
 //            }, {
 //                xtype: "textfield",
 //                fieldLabel: 'og:article:modified_time',
 //                name: 'og:article:modified_time',
 //                width: fieldWidth,
-//                tqSeoFieldCat: 'og:article'
+//                metaSeoFieldCat: 'og:article'
 //            }, {
 //                xtype: "textfield",
 //                fieldLabel: 'og:article:expiration_time',
 //                name: 'og:article:expiration_time',
 //                width: fieldWidth,
-//                tqSeoFieldCat: 'og:article'
+//                metaSeoFieldCat: 'og:article'
 //            }, {
 //                xtype: "textfield",
 //                fieldLabel: 'og:article:section',
 //                name: 'og:article:section',
 //                width: fieldWidth,
-//                tqSeoFieldCat: 'og:article'
+//                metaSeoFieldCat: 'og:article'
 //            }, {
 //                xtype: "textfield",
 //                fieldLabel: 'og:article:tag',
 //                name: 'og:article:tag',
 //                width: fieldWidth,
-//                tqSeoFieldCat: 'og:article'
+//                metaSeoFieldCat: 'og:article'
 //            }
 //        );
 
@@ -432,25 +432,25 @@ MetaSeo.metaeditor = Ext.extend(Ext.Window, {
 //                fieldLabel: 'og:book:author',
 //                name: 'og:book:author',
 //                width: fieldWidth,
-//                tqSeoFieldCat: 'og:book'
+//                metaSeoFieldCat: 'og:book'
 //            }, {
 //                xtype: "textfield",
 //                fieldLabel: 'og:book:isbn',
 //                name: 'og:book:isbn',
 //                width: fieldWidth,
-//                tqSeoFieldCat: 'og:book'
+//                metaSeoFieldCat: 'og:book'
 //            }, {
 //                xtype: "textfield",
 //                fieldLabel: 'og:book:release_date',
 //                name: 'og:book:release_date',
 //                width: fieldWidth,
-//                tqSeoFieldCat: 'og:book'
+//                metaSeoFieldCat: 'og:book'
 //            }, {
 //                xtype: "textfield",
 //                fieldLabel: 'og:book:tag',
 //                name: 'og:book:tag',
 //                width: fieldWidth,
-//                tqSeoFieldCat: 'og:book'
+//                metaSeoFieldCat: 'og:book'
 //            }
 //        );
 
@@ -463,19 +463,19 @@ MetaSeo.metaeditor = Ext.extend(Ext.Window, {
                 fieldLabel: 'og:profile:first_name',
                 name: 'og:profile:first_name',
                 width: fieldWidth,
-                tqSeoFieldCat: 'og:profile'
+                metaSeoFieldCat: 'og:profile'
             }, {
                 xtype: "textfield",
                 fieldLabel: 'og:profile:last_name',
                 name: 'og:profile:last_name',
                 width: fieldWidth,
-                tqSeoFieldCat: 'og:profile'
+                metaSeoFieldCat: 'og:profile'
             }, {
                 xtype: "textfield",
                 fieldLabel: 'og:profile:username',
                 name: 'og:profile:username',
                 width: fieldWidth,
-                tqSeoFieldCat: 'og:profile'
+                metaSeoFieldCat: 'og:profile'
             }, {
                 xtype: 'combo',
                 fieldLabel: 'og:profile:gender',
@@ -506,7 +506,7 @@ MetaSeo.metaeditor = Ext.extend(Ext.Window, {
                 valueField: 'id',
                 displayField: 'label',
                 width: fieldWidth,
-                tqSeoFieldCat: 'og:profile'
+                metaSeoFieldCat: 'og:profile'
             }
         );
 
