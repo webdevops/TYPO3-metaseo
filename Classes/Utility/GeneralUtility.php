@@ -305,6 +305,11 @@ class GeneralUtility {
     public static function fullUrl($url, $domain = NULL) {
         if (!preg_match('/^https?:\/\//i', $url)) {
 
+            // Fix for root page link
+            if ($url === '/') {
+                $url = '';
+            }
+
             if( $domain !== NULL ) {
                 // specified domain
                 $url = 'http://'.$domain.'/'.$url;
