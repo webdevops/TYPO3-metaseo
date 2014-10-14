@@ -85,7 +85,10 @@ class GeneralUtility {
         $ret = NULL;
 
         if ($uid === NULL) {
-            $ret = (int)$GLOBALS['TSFE']->tmpl->rootLine[0]['uid'];
+            $rootline = self::filterRootlineBySiteroot($GLOBALS['TSFE']->tmpl->rootLine);
+            if (!empty($rootline[0])) {
+                $ret = $rootline[0]['uid'];
+            }
         } else {
 
             if (!isset($cache[$uid])) {
