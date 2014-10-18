@@ -75,7 +75,7 @@ class GeneralUtility {
     /**
      * Get current root pid
      *
-     * @param   integer $uid    Page UID
+     * @param   integer|null $uid    Page UID
      * @return  integer
      */
     public static function getRootPid($uid = NULL) {
@@ -83,12 +83,17 @@ class GeneralUtility {
         $ret = NULL;
 
         if ($uid === NULL) {
-            $rootline = self::filterRootlineBySiteroot($GLOBALS['TSFE']->tmpl->rootLine);
+            #################
+            # Current root PID
+            #################
+            $rootline = self::getRootLine();
             if (!empty($rootline[0])) {
                 $ret = $rootline[0]['uid'];
             }
         } else {
-
+            #################
+            # Other root PID
+            #################
             if (!isset($cache[$uid])) {
                 $cache[$uid] = NULL;
                 $rootline    = self::getRootLine($uid);
@@ -114,17 +119,31 @@ class GeneralUtility {
     }
 
     /**
-     * Get current root pid
+     * Get current root line
      *
-     * @param   integer $uid    Page UID
+     * @param   integer|null $uid    Page UID
      * @return  array
      */
     public static function getRootLine($uid = NULL) {
-
         if ($uid === NULL) {
-            // Current rootline
-            $ret = $GLOBALS['TSFE']->tmpl->rootLine;
+            #################
+            # Current rootline
+            #################
+            if (empty(self::$rootlineCache['__CURRENT__'])) {
+                // Current rootline
+                $rootline = $GLOBALS['TSFE']->tmpl->rootLine;
+
+                // Filter rootline by siteroot
+                $rootline = self::filterRootlineBySiteroot($rootline);
+
+                self::$rootlineCache['__CURRENT__'] = $rootline;
+            }
+
+            $ret = self::$rootlineCache['__CURRENT__'];
         } else {
+            #################
+            # Other rootline
+            #################
             if (empty(self::$rootlineCache[$uid])) {
                 // Fetch full rootline to TYPO3 root (0)
                 $rootline = self::_getSysPageObj()->getRootLine($uid);
@@ -137,7 +156,7 @@ class GeneralUtility {
 
             $ret = self::$rootlineCache[$uid];
         }
-
+        
         return $ret;
     }
 
