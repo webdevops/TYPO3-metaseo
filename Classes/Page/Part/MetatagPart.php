@@ -691,7 +691,7 @@ class MetatagPart {
           $uid = $page['pid'];
           $page =  $sysPageObj->getPage_noCheck($uid);
             if ($page['nav_hide'] === '1') {
-               $uid = $this->getRelevantUpPagePid($uid);
+               $uid = $this->_getRelevantUpPagePid($uid);
             }
         }
 
