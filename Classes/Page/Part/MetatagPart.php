@@ -729,10 +729,20 @@ class MetatagPart {
         } else {
             // Fetch pageUrl
             if ($pageHash !== NULL) {
-                $ret = $GLOBALS['TSFE']->anchorPrefix;
+                // Virtual plugin page, we have to use achnor or site script
+                if (!empty($GLOBALS['TSFE']->anchorPrefix)) {
+                    $ret = $GLOBALS['TSFE']->anchorPrefix;
+                } else {
+                    $ret = $GLOBALS['TSFE']->siteScript;
+                }
             } else {
                 $ret = $GLOBALS['TSFE']->id;
             }
+        }
+
+        // Fallback to main page if strict mode is active
+        if ($strictMode && empty($ret)) {
+            $ret = $GLOBALS['TSFE']->id;
         }
 
         return $ret;
