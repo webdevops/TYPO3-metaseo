@@ -262,7 +262,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
             );
         } else {
             $ret = array(
-                'error' => $GLOBALS['LANG']->getLL('error.url_generation_failed'),
+                'error' => $GLOBALS['LANG']->getLL('message.error.url_generation_failed'),
             );
         }
 
@@ -587,7 +587,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         if (!$GLOBALS['BE_USER']->check('tables_modify', 'pages')) {
             // No access
             return array(
-                'error' => $GLOBALS['LANG']->getLL('error.access_denied') . ' [0x4FBF3BE2]',
+                'error' => $GLOBALS['LANG']->getLL('message.error.access_denied') . ' [0x4FBF3BE2]',
             );
         }
 
@@ -597,7 +597,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         if (empty($page) || !$GLOBALS['BE_USER']->doesUserHaveAccess($page, 2)) {
             // No access
             return array(
-                'error' => $GLOBALS['LANG']->getLL('error.access_denied') . ' [0x4FBF3BCF]',
+                'error' => $GLOBALS['LANG']->getLL('message.error.access_denied') . ' [0x4FBF3BCF]',
             );
         }
 
@@ -605,7 +605,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         if (!$GLOBALS['BE_USER']->check('non_exclude_fields', 'pages:' . $fieldName)) {
             // No access
             return array(
-                'error' => $GLOBALS['LANG']->getLL('error.access_denied') . ' [0x4FBF3BD9]',
+                'error' => $GLOBALS['LANG']->getLL('message.error.access_denied') . ' [0x4FBF3BD9]',
             );
         }
 
@@ -615,7 +615,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
             if (!$GLOBALS['BE_USER']->check('tables_modify', 'pages_language_overlay')) {
                 // No access
                 return array(
-                    'error' => $GLOBALS['LANG']->getLL('error.access_denied') . ' [0x4FBF3BE2]',
+                    'error' => $GLOBALS['LANG']->getLL('message.error.access_denied') . ' [0x4FBF3BE2]',
                 );
             }
 
@@ -623,7 +623,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
             if (!$GLOBALS['BE_USER']->check('non_exclude_fields', 'pages_language_overlay:' . $fieldName)) {
                 // No access
                 return array(
-                    'error' => $GLOBALS['LANG']->getLL('error.access_denied') . ' [0x4FBF3BD9]',
+                    'error' => $GLOBALS['LANG']->getLL('message.error.access_denied') . ' [0x4FBF3BD9]',
                 );
             }
         }
@@ -811,7 +811,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
                 } else {
                     // No access
                     return array(
-                        'error' => $GLOBALS['LANG']->getLL('error.no_language_overlay_found'),
+                        'error' => $GLOBALS['LANG']->getLL('message.error.no_language_overlay_found'),
                     );
                 }
                 break;

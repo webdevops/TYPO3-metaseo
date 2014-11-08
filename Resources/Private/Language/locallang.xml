@@ -69,10 +69,14 @@
 
 			<label index="message.warning.no_domain_entries_found">No domains found</label>
 
+            <label index="message.error.access_denied">Access to this element was denied.</label>
+            <label index="message.error.url_generation_failed">URL could not be generated (not possible for access protected pages)</label>
+            <label index="message.error.no_language_overlay_found">No language overlay for current page found, please create one first.</label>
 
-			<!--
-			   Category: Tables
-			-->
+
+            <!--
+               Category: Tables
+            -->
 			<label index="table.header.rootpage">Root-Page</label>
 			<label index="table.header.domain">Website-Domain</label>
 			<label index="table.header.sitemap">Sitemap</label>
@@ -312,9 +316,13 @@
 
 			<label index="message.warning.no_domain_entries_found">Keine Domains gefunden</label>
 
-			<!--
-			   Category: Tables
-			-->
+            <label index="message.error.access_denied">Der Zugriff auf dieses Element wurde verweigert.</label>
+            <label index="message.error.url_generation_failed">Der URL konnte nicht generiert werden (nicht möglich für geschützte Seiten)</label>
+            <label index="message.error.no_language_overlay_found">Für diese Seite gibt es noch kein Sprach-Overlay, bitte erst einen anlegen.</label>
+
+            <!--
+               Category: Tables
+            -->
 			<label index="table.header.rootpage">Root-Seite</label>
 			<label index="table.header.domain">Webseiten-Domain</label>
 			<label index="table.header.sitemap">Sitemap</label>

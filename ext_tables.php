@@ -13,7 +13,7 @@ defined('TYPO3_MODE') or exit;
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
 	'tx_metaseo_setting_root',
-	'EXT:metaseo/locallang_csh_setting_root.xml'
+	'EXT:metaseo/Resources/Private/Language/locallang.tca.xml'
 );
 
 
