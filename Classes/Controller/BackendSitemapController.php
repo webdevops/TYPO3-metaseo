@@ -70,7 +70,8 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
                          forced
                     FROM sys_domain
                    WHERE hidden = 0
-                ORDER BY forced DESC, sorting';
+                ORDER BY forced DESC,
+                         sorting';
         $rowList = DatabaseUtility::getAll($query);
 
         $domainList = array();

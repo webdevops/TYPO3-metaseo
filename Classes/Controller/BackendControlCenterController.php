@@ -68,7 +68,7 @@ class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\Abs
         $query = 'SELECT p.uid
                     FROM pages p
                          LEFT JOIN tx_metaseo_setting_root seosr
-                            ON   seosr.pid = p.uid
+                              ON seosr.pid = p.uid
                              AND seosr.deleted = 0
                     WHERE ' . $rootPidCondition . '
                       AND seosr.uid IS NULL';
