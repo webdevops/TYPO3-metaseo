@@ -4,7 +4,7 @@ defined('TYPO3_MODE') or exit();
 $tempColumns = array(
 	'tx_metaseo_pagetitle'        => array(
 		'exclude' => 1,
-		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/locallang.tca.xml:pages_language_overlay.tx_metaseo_pagetitle',
+		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xml:pages_language_overlay.tx_metaseo_pagetitle',
 		'config'  => array(
 			'type'     => 'input',
 			'size'     => '30',
@@ -15,7 +15,7 @@ $tempColumns = array(
 	),
 	'tx_metaseo_pagetitle_rel'    => array(
 		'exclude' => 1,
-		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/locallang.tca.xml:pages_language_overlay.tx_metaseo_pagetitle_rel',
+		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xml:pages_language_overlay.tx_metaseo_pagetitle_rel',
 		'config'  => array(
 			'type'     => 'input',
 			'size'     => '30',
@@ -25,7 +25,7 @@ $tempColumns = array(
 		)
 	),
 	'tx_metaseo_pagetitle_prefix' => array(
-		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/locallang.tca.xml:pages.tx_metaseo_pagetitle_prefix',
+		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xml:pages.tx_metaseo_pagetitle_prefix',
 		'exclude' => 1,
 		'config'  => array(
 			'type'     => 'input',
@@ -36,7 +36,7 @@ $tempColumns = array(
 		)
 	),
 	'tx_metaseo_pagetitle_suffix' => array(
-		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/locallang.tca.xml:pages.tx_metaseo_pagetitle_suffix',
+		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xml:pages.tx_metaseo_pagetitle_suffix',
 		'exclude' => 1,
 		'config'  => array(
 			'type'     => 'input',
@@ -47,7 +47,7 @@ $tempColumns = array(
 		)
 	),
 	'tx_metaseo_canonicalurl'     => array(
-		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/locallang.tca.xml:pages.tx_metaseo_canonicalurl',
+		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xml:pages.tx_metaseo_canonicalurl',
 		'exclude' => 1,
 		'config'  => array(
 			'type'     => 'input',
@@ -95,7 +95,7 @@ $GLOBALS['TCA']['pages_language_overlay']['palettes']['tx_metaseo_crawler'] = ar
 // Put it for standard page overlay
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
 	'pages_language_overlay',
-	'--div--;LLL:EXT:metaseo/Resources/Private/Language/locallang.tca.xml:pages.tab.seo;,--palette--;LLL:EXT:metaseo/Resources/Private/Language/locallang.tca.xml:pages.palette.pagetitle;tx_metaseo_pagetitle,--palette--;LLL:EXT:metaseo/Resources/Private/Language/locallang.tca.xml:pages.palette.crawler;tx_metaseo_crawler',
+	'--div--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xml:pages.tab.seo;,--palette--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xml:pages.palette.pagetitle;tx_metaseo_pagetitle,--palette--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xml:pages.palette.crawler;tx_metaseo_crawler',
 	'',
 	'after:author_email'
 );
