@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2014-11-08T14:44:56Z" product-name="metaseo">
+		<header/>
+		<body>
+			<trans-unit id="mlang_tabs_tab" xml:space="preserve" approved="yes">
+				<source>SEO</source>
+				<target>SEO</target>
+			</trans-unit>
+			<trans-unit id="mlang_labels_tabdescr" xml:space="preserve" approved="yes">
+				<source>SEO Management tool</source>
+				<target>SEO Verwaltungsmodul</target>
+			</trans-unit>
+			<trans-unit id="boolean.yes" xml:space="preserve" approved="yes">
+				<source>Yes</source>
+				<target>Ja</target>
+			</trans-unit>
+			<trans-unit id="boolean.no" xml:space="preserve" approved="yes">
+				<source>No</source>
+				<target>Nein</target>
+			</trans-unit>
+			<trans-unit id="today" xml:space="preserve" approved="yes">
+				<source>Today</source>
+				<target>Heute</target>
+			</trans-unit>
+			<trans-unit id="yesterday" xml:space="preserve" approved="yes">
+				<source>Yesterday</source>
+				<target>Gestern</target>
+			</trans-unit>
+			<trans-unit id="value_default" xml:space="preserve" approved="yes">
+				<source>Default</source>
+				<target>Standard</target>
+			</trans-unit>
+			<trans-unit id="default.language" xml:space="preserve" approved="yes">
+				<source>Default</source>
+				<target>Standard</target>
+			</trans-unit>
+			<trans-unit id="default.language.named" xml:space="preserve" approved="yes">
+				<source>%s (Default)</source>
+				<target>%s (Standard)</target>
+			</trans-unit>
+			<trans-unit id="value.from_base" xml:space="preserve" approved="yes">
+				<source>Value from default language</source>
+				<target>Wert von Standardsprache</target>
+			</trans-unit>
+			<trans-unit id="value.from_overlay" xml:space="preserve" approved="yes">
+				<source>Value from {0}</source>
+				<target>Wert aus {0}</target>
+			</trans-unit>
+			<trans-unit id="value.only_base" xml:space="preserve" approved="yes">
+				<source>Base value (no translation available)</source>
+				<target>Basiswert (Keine Übersetzung möglich)</target>
+			</trans-unit>
+			<trans-unit id="link.open" xml:space="preserve" approved="yes">
+				<source>open</source>
+				<target>öffnen</target>
+			</trans-unit>
+			<trans-unit id="title.sitemap.main" xml:space="preserve" approved="yes">
+				<source>Sitemaps</source>
+				<target>Sitemaps</target>
+			</trans-unit>
+			<trans-unit id="title.rootsettings.main" xml:space="preserve" approved="yes">
+				<source>Control Center</source>
+				<target>Kontrollzentrum</target>
+			</trans-unit>
+			<trans-unit id="title.seo.pagetitle.geo" xml:space="preserve" approved="yes">
+				<source>SEO - Geo informations</source>
+				<target>SEO - Geo-Informationen</target>
+			</trans-unit>
+			<trans-unit id="title.seo.pagetitle.main" xml:space="preserve" approved="yes">
+				<source>SEO - MetaTags</source>
+				<target>SEO - MetaTags</target>
+			</trans-unit>
+			<trans-unit id="title.seo.pagetitle" xml:space="preserve" approved="yes">
+				<source>SEO - Pagetitle</source>
+				<target>SEO - Seitentitel</target>
+			</trans-unit>
+			<trans-unit id="title.seo.pagetitle.simulaton" xml:space="preserve" approved="yes">
+				<source>SEO - Pagetitle simulator</source>
+				<target>SEO - Seitentitel-Simulator</target>
+			</trans-unit>
+			<trans-unit id="title.seo.searchengines" xml:space="preserve" approved="yes">
+				<source>SEO - Search engines</source>
+				<target>SEO - Suchmaschinen</target>
+			</trans-unit>
+			<trans-unit id="title.seo.url" xml:space="preserve" approved="yes">
+				<source>SEO - URL settings</source>
+				<target>SEO - URL-Einstellungen</target>
+			</trans-unit>
+			<trans-unit id="message.warning.noRootPage.title" xml:space="preserve" approved="yes">
+				<source>Missing root pages</source>
+				<target>Keine Root-Seiten gefunden</target>
+			</trans-unit>
+			<trans-unit id="message.warning.noRootPage.message" xml:space="preserve" approved="yes">
+				<source>In this TYPO3 installation no page is flagged with &quot;Use as root page&quot;.</source>
+				<target>In dieser TYPO3 installation wurden keine Seiten mit  &quot;Als Anfang der Website benutzen&quot; versehen worden.</target>
+			</trans-unit>
+			<trans-unit id="message.delete.title" xml:space="preserve" approved="yes">
+				<source>Delete entries</source>
+				<target>Einträge löschen</target>
+			</trans-unit>
+			<trans-unit id="message.delete.question" xml:space="preserve" approved="yes">
+				<source>Do you really want to delete these entries?</source>
+				<target>Möchten Sie wirklich diese Einträge löschen?</target>
+			</trans-unit>
+			<trans-unit id="message.delete_all.title" xml:space="preserve" approved="yes">
+				<source>Delete all entries</source>
+				<target>Alle Einträge löschen</target>
+			</trans-unit>
+			<trans-unit id="message.delete_all.question" xml:space="preserve" approved="yes">
+				<source>Do you really want to delete ALL entries?</source>
+				<target>Möchten Sie wirklich ALLE Einträge löschen?</target>
+			</trans-unit>
+			<trans-unit id="message.blacklist.title" xml:space="preserve" approved="yes">
+				<source>Blacklist entries</source>
+				<target>Einträge auf Blacklist setzen</target>
+			</trans-unit>
+			<trans-unit id="message.blacklist.question" xml:space="preserve" approved="yes">
+				<source>Do you really want to blacklist these entries?</source>
+				<target>Möchten Sie wirklich diese Einträge auf die Blacklist setzen?</target>
+			</trans-unit>
+			<trans-unit id="message.whitelist.title" xml:space="preserve" approved="yes">
+				<source>Whitelist entries</source>
+				<target>Einträge von der Blacklist nehmen</target>
+			</trans-unit>
+			<trans-unit id="message.whitelist.question" xml:space="preserve" approved="yes">
+				<source>Do you really want to whitelist these entries?</source>
+				<target>Möchten Sie wirklich diese Einträge von der Blacklist nehmen?</target>
+			</trans-unit>
+			<trans-unit id="message.no_selected_items" xml:space="preserve" approved="yes">
+				<source>You must select at least one entry.</source>
+				<target>Es wurden keine Einträge ausgewählt.</target>
+			</trans-unit>
+			<trans-unit id="message.warning.no_valid_page.title" xml:space="preserve" approved="yes">
+				<source>No page selected</source>
+				<target>Keine Seite ausgewählt</target>
+			</trans-unit>
+			<trans-unit id="message.warning.no_valid_page.message" xml:space="preserve" approved="yes">
+				<source>Please select a page from the left tree.</source>
+				<target>Bitte wählen Sie eine Seite aus dem Seitenbaum.</target>
+			</trans-unit>
+			<trans-unit id="message.warning.no_domain_entries_found" xml:space="preserve" approved="yes">
+				<source>No domains found</source>
+				<target>Keine Domains gefunden</target>
+			</trans-unit>
+			<trans-unit id="message.error.access_denied" xml:space="preserve" approved="yes">
+				<source>Access to this element was denied.</source>
+				<target>Der Zugriff auf dieses Element wurde verweigert.</target>
+			</trans-unit>
+			<trans-unit id="message.error.url_generation_failed" xml:space="preserve" approved="yes">
+				<source>URL could not be generated (not possible for access protected pages)</source>
+				<target>Der URL konnte nicht generiert werden (nicht möglich für geschützte Seiten)</target>
+			</trans-unit>
+			<trans-unit id="message.error.no_language_overlay_found" xml:space="preserve" approved="yes">
+				<source>No language overlay for current page found, please create one first.</source>
+				<target>Für diese Seite gibt es noch kein Sprach-Overlay, bitte erst einen anlegen.</target>
+			</trans-unit>
+			<trans-unit id="table.header.rootpage" xml:space="preserve" approved="yes">
+				<source>Root-Page</source>
+				<target>Root-Seite</target>
+			</trans-unit>
+			<trans-unit id="table.header.domain" xml:space="preserve" approved="yes">
+				<source>Website-Domain</source>
+				<target>Webseiten-Domain</target>
+			</trans-unit>
+			<trans-unit id="table.header.sitemap" xml:space="preserve" approved="yes">
+				<source>Sitemap</source>
+				<target>Sitemap</target>
+			</trans-unit>
+			<trans-unit id="table.header.robotstxt" xml:space="preserve" approved="yes">
+				<source>Robots.txt</source>
+				<target>Robots.txt</target>
+			</trans-unit>
+			<trans-unit id="table.header.sitemap.pages" xml:space="preserve" approved="yes">
+				<source>Pages</source>
+				<target>Seiten</target>
+			</trans-unit>
+			<trans-unit id="table.header.sitemap.total" xml:space="preserve" approved="yes">
+				<source>Sitemap entries</source>
+				<target>Sitemap Einträge</target>
+			</trans-unit>
+			<trans-unit id="table.header.sitemap.xmlPages" xml:space="preserve" approved="yes">
+				<source>Sitemap.xml pages</source>
+				<target>Sitemap.xml-Seiten</target>
+			</trans-unit>
+			<trans-unit id="menu.seo.page.metadata" xml:space="preserve" approved="yes">
+				<source>Metadata</source>
+				<target>Metadaten</target>
+			</trans-unit>
+			<trans-unit id="menu.seo.page.geo" xml:space="preserve" approved="yes">
+				<source>Geo informations</source>
+				<target>Geo-Tags</target>
+			</trans-unit>
+			<trans-unit id="menu.seo.page.searchengines" xml:space="preserve" approved="yes">
+				<source>Searchengine information</source>
+				<target>Suchmaschinen-Infos</target>
+			</trans-unit>
+			<trans-unit id="menu.seo.page.url" xml:space="preserve" approved="yes">
+				<source>URL</source>
+				<target>URL</target>
+			</trans-unit>
+			<trans-unit id="menu.seo.page.advanced" xml:space="preserve" approved="yes">
+				<source>Advanced Meta</source>
+				<target>Erweiterte Metatags</target>
+			</trans-unit>
+			<trans-unit id="menu.seo.page.pagetitle" xml:space="preserve" approved="yes">
+				<source>Pagetitle</source>
+				<target>Seitentitel</target>
+			</trans-unit>
+			<trans-unit id="menu.seo.page.pagetitlesim" xml:space="preserve" approved="yes">
+				<source>Pagetitle Simulator (SLOW!)</source>
+				<target>Seitentitel Simulator (LANGSAM!)</target>
+			</trans-unit>
+			<trans-unit id="button.yes" xml:space="preserve" approved="yes">
+				<source>Yes</source>
+				<target>Ja</target>
+			</trans-unit>
+			<trans-unit id="button.no" xml:space="preserve" approved="yes">
+				<source>No</source>
+				<target>Nein</target>
+			</trans-unit>
+			<trans-unit id="button.save" xml:space="preserve" approved="yes">
+				<source>Save</source>
+				<target>Speichern</target>
+			</trans-unit>
+			<trans-unit id="button.cancel" xml:space="preserve" approved="yes">
+				<source>Cancel</source>
+				<target>Abbrechen</target>
+			</trans-unit>
+			<trans-unit id="button.delete" xml:space="preserve" approved="yes">
+				<source>Delete</source>
+				<target>Löschen</target>
+			</trans-unit>
+			<trans-unit id="button.delete.hint" xml:space="preserve" approved="yes">
+				<source>Delete all selected entries</source>
+				<target>Alle ausgewählten Einträge löschen</target>
+			</trans-unit>
+			<trans-unit id="button.delete_all" xml:space="preserve" approved="yes">
+				<source>Delete all entries</source>
+				<target>Alle Einträge löschen</target>
+			</trans-unit>
+			<trans-unit id="button.blacklist" xml:space="preserve" approved="yes">
+				<source>Blacklist</source>
+				<target>Blacklist</target>
+			</trans-unit>
+			<trans-unit id="button.blacklist.hint" xml:space="preserve" approved="yes">
+				<source>Blacklist selected entries</source>
+				<target>Einträge auf Blacklist setzen</target>
+			</trans-unit>
+			<trans-unit id="button.whitelist" xml:space="preserve" approved="yes">
+				<source>Whitelist</source>
+				<target>Whitelist</target>
+			</trans-unit>
+			<trans-unit id="button.whitelist.hint" xml:space="preserve" approved="yes">
+				<source>Whitelist selected entries</source>
+				<target>Einträge von Blacklist entfernen</target>
+			</trans-unit>
+			<trans-unit id="pager.desc" xml:space="preserve" approved="yes">
+				<source>Page %s of %s</source>
+				<target>Seite %s von %s</target>
+			</trans-unit>
+			<trans-unit id="pager.results" xml:space="preserve" approved="yes">
+				<source>Show rows {0} - {1} of {2}</source>
+				<target>Zeige Zeilen {0} - {1} von {2}</target>
+			</trans-unit>
+			<trans-unit id="pager.noresults" xml:space="preserve" approved="yes">
+				<source>There are no entries</source>
+				<target>Es wurden keine Einträge gefunden.</target>
+			</trans-unit>
+			<trans-unit id="sitemap.xml.pages.total" xml:space="preserve" approved="yes">
+				<source>&lt;b&gt;One&lt;/b&gt; Sitemap.xml INDEX page with &lt;b&gt;%s&lt;/b&gt; sitemap sub-page(s)</source>
+				<target>&lt;b&gt;Eine&lt;/b&gt; Sitemap.xml-INDEX-Seite mit &lt;b&gt;%s&lt;/b&gt; Sitemap-Unterseite(n)</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.page_uid" xml:space="preserve" approved="yes">
+				<source>PID</source>
+				<target>PID</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.page_title" xml:space="preserve" approved="yes">
+				<source>Page</source>
+				<target>Seite</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.page_keywords" xml:space="preserve" approved="yes">
+				<source>Keywords</source>
+				<target>Stichwörter</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.page_description" xml:space="preserve" approved="yes">
+				<source>Description</source>
+				<target>Beschreibung</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.page_abstract" xml:space="preserve" approved="yes">
+				<source>Abstract</source>
+				<target>Abstract</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.page_author" xml:space="preserve" approved="yes">
+				<source>Author Name</source>
+				<target>Autor-Name</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.page_author_email" xml:space="preserve" approved="yes">
+				<source>Author E-Mail</source>
+				<target>Autor E-Mail</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.page_lastupdated" xml:space="preserve" approved="yes">
+				<source>Last updated</source>
+				<target>Letztes Update</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.page_geo_lat" xml:space="preserve" approved="yes">
+				<source>Latitude</source>
+				<target>Breitengrad (lat)</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.page_geo_long" xml:space="preserve" approved="yes">
+				<source>Longitude</source>
+				<target>Längengrad (long)</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.page_geo_place" xml:space="preserve" approved="yes">
+				<source>City/Place</source>
+				<target>Stadt/Ort</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.page_geo_region" xml:space="preserve" approved="yes">
+				<source>Region</source>
+				<target>Region</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.page_tx_metaseo_pagetitle" xml:space="preserve" approved="yes">
+				<source>Title (Absolute)</source>
+				<target>Titel (Absolut)</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.page_tx_metaseo_pagetitle_rel" xml:space="preserve" approved="yes">
+				<source>Browsertitle</source>
+				<target>Browser-Titel</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.page_tx_metaseo_pagetitle_prefix" xml:space="preserve" approved="yes">
+				<source>Prefix</source>
+				<target>Prefix</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.page_tx_metaseo_pagetitle_suffix" xml:space="preserve" approved="yes">
+				<source>Suffix</source>
+				<target>Suffix</target>
+			</trans-unit>
+			<trans-unit id="header.pagetitlesim_title_simulated" xml:space="preserve" approved="yes">
+				<source>Title (Simulated)</source>
+				<target>Titel (Simuliert)</target>
+			</trans-unit>
+			<trans-unit id="header.url_alias" xml:space="preserve" approved="yes">
+				<source>Alias</source>
+				<target>Alias</target>
+			</trans-unit>
+			<trans-unit id="header.url_realurl_pathsegment" xml:space="preserve" approved="yes">
+				<source>RealURL Path Segment</source>
+				<target>RealURL Pfad-Segment</target>
+			</trans-unit>
+			<trans-unit id="header.url_realurl_pathoverride" xml:space="preserve" approved="yes">
+				<source>RealURL Path Override</source>
+				<target>RealURL Pfad-Überschreibung</target>
+			</trans-unit>
+			<trans-unit id="header.url_realurl_exclude" xml:space="preserve" approved="yes">
+				<source>RealURL Exclude</source>
+				<target>RealURL Ausschluss</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.priority" xml:space="preserve" approved="yes">
+				<source>Sitemap Priority</source>
+				<target>Sitemap-Priorität</target>
+			</trans-unit>
+			<trans-unit id="header_rootpage" xml:space="preserve" approved="yes">
+				<source>Root Website</source>
+				<target>Root-Webseite</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.pages" xml:space="preserve" approved="yes">
+				<source>Pages</source>
+				<target>Seiten</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.total" xml:space="preserve" approved="yes">
+				<source>Pages (with virtual pages/extensions)</source>
+				<target>Seiten (mit virtuellen Seiten/Erweiterungen)</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.xml_pages" xml:space="preserve" approved="yes">
+				<source>Sitemap.xml pages</source>
+				<target>Sitemap.xml-Seiten</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.page_url" xml:space="preserve" approved="yes">
+				<source>URL</source>
+				<target>URL</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.page_language" xml:space="preserve" approved="yes">
+				<source>Language</source>
+				<target>Sprache</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.page_is_blacklisted" xml:space="preserve" approved="yes">
+				<source>Blacklisted</source>
+				<target>Blacklist</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.page_tx_metaseo_is_exclude" xml:space="preserve" approved="yes">
+				<source>Excl.</source>
+				<target>Excl.</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.page_type" xml:space="preserve" approved="yes">
+				<source>Type</source>
+				<target>Typ</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.page_depth" xml:space="preserve" approved="yes">
+				<source>Depth</source>
+				<target>Tiefe</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.crdate" xml:space="preserve" approved="yes">
+				<source>Created</source>
+				<target>Erstellt am</target>
+			</trans-unit>
+			<trans-unit id="header.sitemap.tstamp" xml:space="preserve" approved="yes">
+				<source>Last indexed</source>
+				<target>Indiziert am</target>
+			</trans-unit>
+			<trans-unit id="header.url_scheme" xml:space="preserve" approved="yes">
+				<source>Scheme</source>
+				<target>Schema</target>
+			</trans-unit>
+			<trans-unit id="header.searchengine_canonicalurl" xml:space="preserve" approved="yes">
+				<source>Canonical URL</source>
+				<target>Canonical URL</target>
+			</trans-unit>
+			<trans-unit id="header.searchengine_is_excluded" xml:space="preserve" approved="yes">
+				<source>Excluded</source>
+				<target>Ausgeschlossen</target>
+			</trans-unit>
+			<trans-unit id="header.pagetitlesim.title_simulated" xml:space="preserve" approved="yes">
+				<source>Simulated title</source>
+				<target>Simulierter Titel</target>
+			</trans-unit>
+			<trans-unit id="qtip.pagetitle_simulate" xml:space="preserve" approved="yes">
+				<source>Show simulated pagetitle</source>
+				<target>Generiere simulierten Seitentitel</target>
+			</trans-unit>
+			<trans-unit id="qtip.url_simulate" xml:space="preserve" approved="yes">
+				<source>Show simulated url</source>
+				<target>Generiere simulierte URL</target>
+			</trans-unit>
+			<trans-unit id="qtip.link_sitemap_xml" xml:space="preserve" approved="yes">
+				<source>Goto sitemap.xml INDEX page</source>
+				<target>Gehe zu sitemap.xml-INDEX-Seite</target>
+			</trans-unit>
+			<trans-unit id="qtip.link_sitemap_list" xml:space="preserve" approved="yes">
+				<source>Goto sitemap list</source>
+				<target>Gehe zu Sitemap-Verwaltung</target>
+			</trans-unit>
+			<trans-unit id="label.depth" xml:space="preserve" approved="yes">
+				<source>Depth</source>
+				<target>Tiefe</target>
+			</trans-unit>
+			<trans-unit id="label.search.fulltext" xml:space="preserve" approved="yes">
+				<source>Search</source>
+				<target>Suche</target>
+			</trans-unit>
+			<trans-unit id="empty.search.fulltext" xml:space="preserve" approved="yes">
+				<source>Search...</source>
+				<target>Suche...</target>
+			</trans-unit>
+			<trans-unit id="label.search.page_uid" xml:space="preserve" approved="yes">
+				<source>PID</source>
+				<target>PID</target>
+			</trans-unit>
+			<trans-unit id="empty.search.page_uid" xml:space="preserve" approved="yes">
+				<source>ID</source>
+				<target>ID</target>
+			</trans-unit>
+			<trans-unit id="label.search.page_language" xml:space="preserve" approved="yes">
+				<source>Language</source>
+				<target>Sprache</target>
+			</trans-unit>
+			<trans-unit id="empty.search.page_language" xml:space="preserve" approved="yes">
+				<source>-- All --</source>
+				<target>-- Alle --</target>
+			</trans-unit>
+			<trans-unit id="default.search.page_language" xml:space="preserve" approved="yes">
+				<source>-- Default --</source>
+				<target>-- Standard --</target>
+			</trans-unit>
+			<trans-unit id="label.search.page_depth" xml:space="preserve" approved="yes">
+				<source>Depth</source>
+				<target>Tiefe</target>
+			</trans-unit>
+			<trans-unit id="empty.search.page_depth" xml:space="preserve" approved="yes">
+				<source>-- All --</source>
+				<target>-- Alle --</target>
+			</trans-unit>
+			<trans-unit id="label.search.is_blacklisted" xml:space="preserve" approved="yes">
+				<source>Blacklist</source>
+				<target>Blacklist</target>
+			</trans-unit>
+			<trans-unit id="label.yes" xml:space="preserve" approved="yes">
+				<source>Yes</source>
+				<target>Ja</target>
+			</trans-unit>
+			<trans-unit id="label.no" xml:space="preserve" approved="yes">
+				<source>No</source>
+				<target>Nein</target>
+			</trans-unit>
+			<trans-unit id="title.sitemap.list" xml:space="preserve" approved="yes">
+				<source>Sitemap list for &quot;%s&quot; (UID:%s)</source>
+				<target>Sitemap-Liste für &quot;%s&quot; (UID:%s)</target>
+			</trans-unit>
+			<trans-unit id="searchengine.is_exclude_disabled" xml:space="preserve" approved="yes">
+				<source>No, visible to SearchEngines</source>
+				<target>Nein, sichtbar für Suchmaschinen</target>
+			</trans-unit>
+			<trans-unit id="searchengine.is_exclude_enabled" xml:space="preserve" approved="yes">
+				<source>Yes, EXCLUDE page from SearchEngines index</source>
+				<target>Ja, für Suchmaschinen AUSGESCHLOSSEN.</target>
+			</trans-unit>
+			<trans-unit id="page.url_scheme_default" xml:space="preserve" approved="yes">
+				<source>Default</source>
+				<target>Standard</target>
+			</trans-unit>
+			<trans-unit id="page.url_scheme_http" xml:space="preserve" approved="yes">
+				<source>HTTP</source>
+				<target>HTTP</target>
+			</trans-unit>
+			<trans-unit id="page.url_scheme_https" xml:space="preserve" approved="yes">
+				<source>HTTPS</source>
+				<target>HTTPS</target>
+			</trans-unit>
+			<trans-unit id="metaeditor.button.hint" xml:space="preserve" approved="yes">
+				<source>Advanced MetaTag Editor</source>
+				<target>Erweiterter MetaTag Editor</target>
+			</trans-unit>
+			<trans-unit id="metaeditor.title" xml:space="preserve" approved="yes">
+				<source>Advanced MetaTag Editor</source>
+				<target>Erweiterter MetaTag Editor</target>
+			</trans-unit>
+			<trans-unit id="metaeditor.tab.opengraph" xml:space="preserve" approved="yes">
+				<source>OpenGraph</source>
+				<target>OpenGraph</target>
+			</trans-unit>
+			<trans-unit id="sitemap.pagetype.0" xml:space="preserve" approved="yes">
+				<source>Page</source>
+				<target>Seite</target>
+			</trans-unit>
+			<trans-unit id="sitemap.pagetype.1" xml:space="preserve" approved="yes">
+				<source>File</source>
+				<target>Datei</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

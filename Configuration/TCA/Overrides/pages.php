@@ -3,7 +3,7 @@ defined('TYPO3_MODE') or exit();
 
 $tempColumns = array(
 	'tx_metaseo_pagetitle'        => array(
-		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xml:pages.tx_metaseo_pagetitle',
+		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_pagetitle',
 		'exclude' => 1,
 		'config'  => array(
 			'type'     => 'input',
@@ -14,7 +14,7 @@ $tempColumns = array(
 		)
 	),
 	'tx_metaseo_pagetitle_rel'    => array(
-		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xml:pages.tx_metaseo_pagetitle_rel',
+		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_pagetitle_rel',
 		'exclude' => 1,
 		'config'  => array(
 			'type'     => 'input',
@@ -25,7 +25,7 @@ $tempColumns = array(
 		)
 	),
 	'tx_metaseo_pagetitle_prefix' => array(
-		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xml:pages.tx_metaseo_pagetitle_prefix',
+		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_pagetitle_prefix',
 		'exclude' => 1,
 		'config'  => array(
 			'type'     => 'input',
@@ -36,7 +36,7 @@ $tempColumns = array(
 		)
 	),
 	'tx_metaseo_pagetitle_suffix' => array(
-		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xml:pages.tx_metaseo_pagetitle_suffix',
+		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_pagetitle_suffix',
 		'exclude' => 1,
 		'config'  => array(
 			'type'     => 'input',
@@ -66,14 +66,14 @@ $tempColumns = array(
 		)
 	),
 	'tx_metaseo_is_exclude'       => array(
-		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xml:pages.tx_metaseo_is_exclude',
+		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_is_exclude',
 		'exclude' => 1,
 		'config'  => array(
 			'type' => 'check'
 		)
 	),
 	'tx_metaseo_canonicalurl'     => array(
-		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xml:pages.tx_metaseo_canonicalurl',
+		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_canonicalurl',
 		'exclude' => 1,
 		'config'  => array(
 			'type'     => 'input',
@@ -97,7 +97,7 @@ $tempColumns = array(
 		)
 	),
 	'tx_metaseo_priority'         => array(
-		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xml:pages.tx_metaseo_priority',
+		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_priority',
 		'exclude' => 1,
 		'config'  => array(
 			'type'     => 'input',
@@ -151,7 +151,7 @@ $tempColumns = array(
 		)
 	),
 	'tx_metaseo_geo_lat'          => array(
-		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xml:pages.tx_metaseo_geo_lat',
+		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_geo_lat',
 		'exclude' => 1,
 		'config'  => array(
 			'type'     => 'input',
@@ -162,7 +162,7 @@ $tempColumns = array(
 		)
 	),
 	'tx_metaseo_geo_long'         => array(
-		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xml:pages.tx_metaseo_geo_long',
+		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_geo_long',
 		'exclude' => 1,
 		'config'  => array(
 			'type'     => 'input',
@@ -173,7 +173,7 @@ $tempColumns = array(
 		)
 	),
 	'tx_metaseo_geo_place'        => array(
-		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xml:pages.tx_metaseo_geo_place',
+		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_geo_place',
 		'exclude' => 1,
 		'config'  => array(
 			'type'     => 'input',
@@ -184,7 +184,7 @@ $tempColumns = array(
 		)
 	),
 	'tx_metaseo_geo_region'       => array(
-		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xml:pages.tx_metaseo_geo_region',
+		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_geo_region',
 		'exclude' => 1,
 		'config'  => array(
 			'type'     => 'input',
@@ -232,7 +232,7 @@ $GLOBALS['TCA']['pages']['palettes']['tx_metaseo_geo'] = array(
 // Put it for standard page
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
 	'pages',
-	'--div--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xml:pages.tab.seo;,--palette--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xml:pages.palette.pagetitle;tx_metaseo_pagetitle,--palette--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xml:pages.palette.geo;tx_metaseo_geo,--palette--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xml:pages.palette.crawler;tx_metaseo_crawler,--palette--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xml:pages.palette.sitemap;tx_metaseo_sitemap',
+	'--div--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tab.seo;,--palette--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.palette.pagetitle;tx_metaseo_pagetitle,--palette--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.palette.geo;tx_metaseo_geo,--palette--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.palette.crawler;tx_metaseo_crawler,--palette--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.palette.sitemap;tx_metaseo_sitemap',
 	'1,4,7,3',
 	'after:author_email'
 );

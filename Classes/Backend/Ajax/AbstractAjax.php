@@ -128,7 +128,7 @@ abstract class AbstractAjax {
      */
     protected function init() {
         // Include ajax local lang
-        $GLOBALS['LANG']->includeLLFile('EXT:metaseo/Resources/Private/Language/locallang.xml');
+        $GLOBALS['LANG']->includeLLFile('EXT:metaseo/Resources/Private/Language/locallang.xlf');
 
         $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 
