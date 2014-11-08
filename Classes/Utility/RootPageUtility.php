@@ -54,7 +54,6 @@ class RootPageUtility {
      * @return  null|string
      */
     public static function getDomain($rootPid) {
-
 		// Use cached one if exists
 		if (isset(self::$domainCache[$rootPid])) {
 			return self::$domainCache[$rootPid];
@@ -63,9 +62,11 @@ class RootPageUtility {
         // Fetch domain name
         $query = 'SELECT domainName
                     FROM sys_domain
-                   WHERE hidden = 0 AND pid = ' . (int)$rootPid.'
-                ORDER BY forced DESC, sorting
-                LIMIT 1';
+                   WHERE pid = ' . (int)$rootPid.'
+                     AND hidden = 0
+                ORDER BY forced DESC,
+                         sorting
+                   LIMIT 1';
         $ret = DatabaseUtility::getOne($query);
 
 		// Cache entry

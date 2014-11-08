@@ -107,7 +107,7 @@ class SitemapUtility {
                                  page_depth            = ' . $pageData['page_depth'] . ',
                                  page_change_frequency = ' . $pageData['page_change_frequency'] . ',
                                  page_type             = ' . $pageData['page_type'] . '
-                            WHERE uid = ' . (int)$sitemapUid;
+                           WHERE uid = ' . (int)$sitemapUid;
                 DatabaseUtility::exec($query);
             } else {
                 // #####################################

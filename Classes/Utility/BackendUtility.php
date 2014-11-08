@@ -69,7 +69,7 @@ class BackendUtility {
             $query = 'SELECT seosr.*
                         FROM tx_metaseo_setting_root seosr
                              INNER JOIN pages p
-                                ON  p.uid = seosr.pid
+                                 ON p.uid = seosr.pid
                                 AND p.is_siteroot = 1
                                 AND p.deleted = 0
                        WHERE seosr.deleted = 0';
