@@ -36,7 +36,7 @@ if (TYPO3_MODE == 'BE') {
         array(
             'access' => 'user,group',
             'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Backend/Icons/ModuleSeo.png',
-            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.pageseo.xml',
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/ModuleSeo/locallang.xml',
         )
     );
 
@@ -52,7 +52,7 @@ if (TYPO3_MODE == 'BE') {
         array(),
         array(
             'access' => 'user,group',
-            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.main.xml',
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/ModuleMain/locallang.xml',
         )
     );
 
@@ -66,7 +66,7 @@ if (TYPO3_MODE == 'BE') {
         array(
             'access' => 'user,group',
             'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Backend/Icons/ModuleControlCenter.png',
-            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.controlcenter.xml',
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/ModuleControlCenter/locallang.xml',
         )
     );
 
@@ -79,7 +79,7 @@ if (TYPO3_MODE == 'BE') {
         array(
             'access' => 'user,group',
             'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Backend/Icons/ModuleSitemap.png',
-            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.sitemap.xml',
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/ModuleSitemap/locallang.xml',
         )
     );
 }
