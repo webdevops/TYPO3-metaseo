@@ -156,7 +156,7 @@ class GeneralUtility {
 
             $ret = self::$rootlineCache[$uid];
         }
-        
+
         return $ret;
     }
 
@@ -332,6 +332,11 @@ class GeneralUtility {
                 $url = '';
             }
 
+            // remove first /
+            if (strpos($url, '/') === 0) {
+                $url = substr($url, 1);
+            }
+
             if( $domain !== NULL ) {
                 // specified domain
                 $url = 'http://'.$domain.'/'.$url;
@@ -340,6 +345,7 @@ class GeneralUtility {
                 $url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL').$url;
             }
         }
+
 
         // Fix url stuff
         $url = str_replace('?&', '?', $url);
