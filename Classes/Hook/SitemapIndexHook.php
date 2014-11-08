@@ -24,6 +24,7 @@ namespace Metaseo\Metaseo\Hook;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 use Metaseo\Metaseo\Utility\FrontendUtility;
 use Metaseo\Metaseo\Utility\RootPageUtility;
 use Metaseo\Metaseo\Utility\SitemapUtility;
