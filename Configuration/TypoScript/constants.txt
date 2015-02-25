@@ -21,9 +21,6 @@ plugin.metaseo {
     # cat=plugin.metaseo.metaTags/page/06; type=string; label= Meta Publisher: Enter name of publisher.
   metaTags.publisher =
 
-    # cat=plugin.metaseo.metaTags/page/07; type=options[,Arabic=ar,Chinese=zh,Danish=dk,Dutch=nl,English=en,Finnish=fi,French=fr,German=de,Greek=el,Hebrew=he,Icelandic=is,Italian=it,Japanese=ja,Norwegian=no,Polish=pl,Portuguese=pt,Russian=ru,Spanish=es,Swedish=sv,Turkish=tr,Multi language=mul]; label= Meta Language: Select language of the content.
-  metaTags.language =
-
     # cat=plugin.metaseo.metaTags/page/08; type=string; label= Distribution
   metaTags.distribution =
 
@@ -50,9 +47,6 @@ plugin.metaseo {
 
     # cat=plugin.metaseo.metaTags/enable/20; type=boolean; label= Publish LastUpdate-Time: Should the crawler be informed about the time a page was last updated.
   metaTags.useLastUpdate = 1
-
-    # cat=plugin.metaseo.metaTags/enable/21; type=boolean; label= Detect Language: Should the language information automatically be detected.
-  metaTags.useDetectLanguage = 1
 
     # cat=plugin.metaseo.metaTags/enable/22; type=boolean; label= Canonical Tag: Autogenerate Canonical-Metatag if possible.
   metaTags.useCanonical = 1

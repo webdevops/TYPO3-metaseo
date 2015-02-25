@@ -101,7 +101,6 @@ plugin.metaseo {
 		picsLabel = {$plugin.metaseo.metaTags.picsLabel}
 
 		useLastUpdate = {$plugin.metaseo.metaTags.useLastUpdate}
-		useDetectLanguage = {$plugin.metaseo.metaTags.useDetectLanguage}
 		# canonical tag generator settings
 		useCanonical = {$plugin.metaseo.metaTags.useCanonical}
 		useCanonical {

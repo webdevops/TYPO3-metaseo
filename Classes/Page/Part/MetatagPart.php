@@ -165,17 +165,6 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             }
 
             // #################
-            // Misc
-            // #################
-
-            // language
-            if (!empty($tsSetupSeo['useDetectLanguage'])
-                && !empty($tsSetup['config.']['language'])
-            ) {
-                $pageMeta['language'] = $tsSetup['config.']['language'];
-            }
-
-            // #################
             // Process meta tags
             // #################
 
@@ -228,7 +217,6 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                 'description',
                 'keywords',
                 'copyright',
-                'language',
                 'email',
                 'author',
                 'publisher',
@@ -276,15 +264,6 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
                 if ($enableMetaDc) {
                     $ret['meta.copyright.dc'] = '<meta name="DC.Rights" content="' . htmlspecialchars($tsSetupSeo['copyright']) . '">';
-                }
-            }
-
-            // language
-            if (!empty($tsSetupSeo['language'])) {
-                $ret['meta.language'] = '<meta http-equiv="content-language" content="' . htmlspecialchars($tsSetupSeo['language']) . '">';
-
-                if ($enableMetaDc) {
-                    $ret['meta.language.dc'] = '<meta name="DC.Language" scheme="NISOZ39.50" content="' . htmlspecialchars($tsSetupSeo['language']) . '">';
                 }
             }
 
