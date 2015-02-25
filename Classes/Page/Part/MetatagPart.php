@@ -509,11 +509,18 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                 $canonicalUrl = $tsfePage['tx_metaseo_canonicalurl'];
             } elseif (!empty($tsSetupSeo['useCanonical'])) {
                 $strictMode   = (bool)(int)$tsSetupSeo['useCanonical.']['strict'];
-                $canonicalUrl = $this->detectCanonicalPage($strictMode);
+                $noMpMode     = (bool)(int)$tsSetupSeo['useCanonical.']['noMP'];
+                $canonicalUrl = $this->detectCanonicalPage($strictMode, $noMpMode);
             }
 
             if (!empty($canonicalUrl)) {
-                $canonicalUrl = $this->generateLink($canonicalUrl);
+                if (is_array($canonicalUrl)) {
+                    // complex typolink generation
+                    $canonicalUrl = call_user_func_array( array($this, 'generateLink'), $canonicalUrl);
+                } else {
+                    // simple typolink generation
+                    $canonicalUrl = $this->generateLink($canonicalUrl);
+                }
 
                 if (!empty($canonicalUrl)) {
                     $ret['link.rel.canonical'] = '<link rel="canonical" href="' . htmlspecialchars($canonicalUrl) . '">';
@@ -656,20 +663,32 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     /**
      * Generate a link via TYPO3-Api
      *
-     * @param    integer|string $url    URL (id or string)
-     * @param    array|NULL     $conf   URL configuration
-     * @return   string                 URL
+     * @param    integer|string $url        URL (id or string)
+     * @param    array|NULL     $conf       URL configuration
+     * @param    boolean        $disableMP  Disable mountpoint linking
+     * @return   string                      URL
      */
-    protected function generateLink($url, $conf = NULL) {
+    protected function generateLink($url, $conf = NULL, $disableMP = FALSE) {
         if ($conf === NULL) {
             $conf = array();
         }
 
+        if ($disableMP) {
+            // Disable MP usage in typolink - link to the real page instead
+            $mpOldConfValue = $GLOBALS['TSFE']->config['config']['MP_disableTypolinkClosestMPvalue'];
+            $GLOBALS['TSFE']->config['config']['MP_disableTypolinkClosestMPvalue'] = 1;
+        }
+
         $conf['parameter'] = $url;
 
-        $ret = $GLOBALS['TSFE']->cObj->typoLink_URL($conf);
+        $ret = $this->cObj->typoLink_URL($conf);
         // maybe baseUrlWrap is better? but breaks with realurl currently?
         $ret = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($ret);
+
+        if ($disableMP) {
+            // Restore old MP linking configuration
+            $GLOBALS['TSFE']->config['config']['MP_disableTypolinkClosestMPvalue'] = $mpOldConfValue;
+        }
 
         return $ret;
     }
@@ -703,9 +722,12 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      * Detect canonical page
      *
      * @param    boolean $strictMode        Enable strict mode
+     * @param    boolean $noMpMode          Enable no-mountpoint mode
      * @return   string                     Page Id or url
      */
-    protected function detectCanonicalPage($strictMode = FALSE) {
+    protected function detectCanonicalPage($strictMode = FALSE, $noMpMode = FALSE) {
+        $ret = NULL;
+
         // Skip no_cache-pages
         if (!empty($GLOBALS['TSFE']->no_cache)) {
             if ($strictMode) {
@@ -722,12 +744,44 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             $pageHash = $GLOBALS['TSFE']->cHash;
         }
 
-        if (!empty($this->cObj->data['content_from_pid'])) {
-            // ###############################
-            // Content from pid
-            // ###############################
+
+        #####################
+        # Content from PID
+        #####################
+
+        if (!$ret && !empty($this->cObj->data['content_from_pid'])) {
             $ret = $this->cObj->data['content_from_pid'];
-        } else {
+        }
+
+        #####################
+        # Mountpoint
+        #####################
+
+        if (!$ret && $noMpMode && \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('MP')) {
+            // Possible mountpoint detected, check rootline for mount-informations
+
+            foreach ($GLOBALS['TSFE']->rootLine as $page) {
+                if (!empty($page['_MOUNT_OL'])) {
+                    // Mountpoint detected
+                    $ret = array(
+                        $GLOBALS['TSFE']->id,
+                        array(
+                            'addQueryString' => 1,
+                            'addQueryString.' => array(
+                                'exclude' => 'id,MP'
+                            ),
+                        ),
+                        TRUE,
+                    );
+                }
+            }
+        }
+
+        #####################
+        # Normal page
+        #####################
+
+        if (!$ret) {
             // Fetch pageUrl
             if ($pageHash !== NULL) {
                 // Virtual plugin page, we have to use achnor or site script

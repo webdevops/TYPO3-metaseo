@@ -24,12 +24,16 @@ Canonical Tag                    Publish canonical link if possible             
                                  (TYPO3-Cache is enabled and cHash is valid)
                                  or if user entered canonical tag into page options.          *disabled*
 
-Canonical Tag (Strict mode)      Enable strict mode (all wrong GET-parameters will
+Canonical Tag (Strict mode)      Enable strict mode (all wrong GET-parameters will            *enabled*
                                  generate a canonical-tag to the self without GET-params).
 
                                  eg. /index.php?id=123&foo=bar would generate a
                                  Canonical-Tag poiting to /index.php?id=123
                                  if the cHash is wrong or caching is disabled
+
+Canonical Tag (No MP mode)       Prevent canonical links to contain mountpoint information.   *disabled*
+                                 Usefull if some pages would count as duplicate content
+                                 because of mountpoints.
 
 Publish Page Expire Time         Publish expire date from the “End Date” of the page.         *enabled*
                                  Currently only used for Google.

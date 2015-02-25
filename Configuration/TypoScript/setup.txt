@@ -106,6 +106,7 @@ plugin.metaseo {
 		useCanonical = {$plugin.metaseo.metaTags.useCanonical}
 		useCanonical {
 			strict = {$plugin.metaseo.metaTags.useCanonical.strict}
+			noMP = {$plugin.metaseo.metaTags.useCanonical.noMP}
 		}
 		useExpire = {$plugin.metaseo.metaTags.useExpire}
 

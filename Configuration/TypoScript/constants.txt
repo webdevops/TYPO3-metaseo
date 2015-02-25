@@ -1,7 +1,7 @@
 ###
 # This are the default TS-constants for metaseo
 ##
-
+plugin.metaseo.metaTags.useCanonical.noMP
 plugin.metaseo {
     # cat=plugin.metaseo.metaTags/page/01; type=string; label= Meta Description: Short description of your webpage.
   metaTags.description =
@@ -59,6 +59,9 @@ plugin.metaseo {
 
     # cat=plugin.metaseo.metaTags/enable/23; type=boolean; label= Canonical Tag (Strict mode): Enable strict mode (all wrong GET-parameters will generate a canonical-tag to the self without GET-params).
   metaTags.useCanonical.strict = 1
+
+    # cat=plugin.metaseo.metaTags/enable/23; type=boolean; label= Canonical Tag (No MP mode): Link all mount point links to origin pages.
+  metaTags.useCanonical.noMP = 0
 
     # cat=plugin.metaseo.metaTags/enable/24; type=boolean; label= Publish Page Expire Time: Anounce Expire Tag (TYPO3's enddate in content elements).
   metaTags.useExpire = 1
