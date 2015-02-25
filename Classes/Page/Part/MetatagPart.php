@@ -451,34 +451,41 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             // Link-Tags
             // #################
             if (!empty($tsSetupSeo['linkGeneration'])) {
-                $rootLine = $GLOBALS['TSFE']->rootLine;
-                ksort($rootLine);
+                $rootLine = \Metaseo\Metaseo\Utility\GeneralUtility::getRootLine();
 
                 $currentPage = end($rootLine);
-
                 $rootPage    = reset($rootLine);
+
+                $currentIsRootpage = ($currentPage['uid'] === $rootPage['uid']);
+
+                // Generate rootpage url
                 $rootPageUrl = NULL;
                 if (!empty($rootPage)) {
                     $rootPageUrl = $this->generateLink($rootPage['uid']);
                 }
 
-                $upPage    = $currentPage['pid'];
-                $upPageUrl = NULL;
-                if (!empty($upPage)) {
-                    $upPage    = $this->getRelevantUpPagePid($upPage);
-                    $upPageUrl = $this->generateLink($upPage);
-                }
+                // Only generate up, prev and next if NOT rootpage
+                // to prevent linking to other domains
+                // see https://github.com/mblaschke/TYPO3-metaseo/issues/5
+                if (!$currentIsRootpage) {
+                    $upPage = $currentPage['pid'];
+                    $upPageUrl = NULL;
+                    if (!empty($upPage)) {
+                        $upPage = $this->getRelevantUpPagePid($upPage);
+                        $upPageUrl = $this->generateLink($upPage);
+                    }
 
-                $prevPage    = $GLOBALS['TSFE']->cObj->HMENU($tsSetupSeo['sectionLinks.']['prev.']);
-                $prevPageUrl = NULL;
-                if (!empty($prevPage)) {
-                    $prevPageUrl = $this->generateLink($prevPage);
-                }
+                    $prevPage = $GLOBALS['TSFE']->cObj->HMENU($tsSetupSeo['sectionLinks.']['prev.']);
+                    $prevPageUrl = NULL;
+                    if (!empty($prevPage)) {
+                        $prevPageUrl = $this->generateLink($prevPage);
+                    }
 
-                $nextPage    = $GLOBALS['TSFE']->cObj->HMENU($tsSetupSeo['sectionLinks.']['next.']);
-                $nextPageUrl = NULL;
-                if (!empty($nextPage)) {
-                    $nextPageUrl = $this->generateLink($nextPage);
+                    $nextPage = $GLOBALS['TSFE']->cObj->HMENU($tsSetupSeo['sectionLinks.']['next.']);
+                    $nextPageUrl = NULL;
+                    if (!empty($nextPage)) {
+                        $nextPageUrl = $this->generateLink($nextPage);
+                    }
                 }
 
                 // Root (First page in rootline)
