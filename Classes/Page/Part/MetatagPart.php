@@ -235,9 +235,13 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             // Generate MetaTags
             // #####################################
 
+            if ($enableMetaDc) {
+                $ret['meta.schema.dc'] = '<link rel="schema.DCTERMS" href="http://purl.org/dc/terms/" >';
+            }
+
             // title
             if (!empty($tsSetupSeo['title']) && $enableMetaDc) {
-                $ret['meta.title'] = '<meta name="DC.title" content="' . htmlspecialchars($tsSetupSeo['title']) . '">';
+                $ret['meta.title'] = '<meta name="DCTERMS.title" content="' . htmlspecialchars($tsSetupSeo['title']) . '">';
             }
 
             // description
@@ -245,7 +249,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                 $ret['meta.description'] = '<meta name="description" content="' . htmlspecialchars($tsSetupSeo['description']) . '">';
 
                 if ($enableMetaDc) {
-                    $ret['meta.description.dc'] = '<meta name="DC.Description" content="' . htmlspecialchars($tsSetupSeo['description']) . '">';
+                    $ret['meta.description.dc'] = '<meta name="DCTERMS.description" content="' . htmlspecialchars($tsSetupSeo['description']) . '">';
                 }
             }
 
@@ -254,7 +258,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                 $ret['meta.keywords'] = '<meta name="keywords" content="' . htmlspecialchars($tsSetupSeo['keywords']) . '">';
 
                 if ($enableMetaDc) {
-                    $ret['meta.keywords.dc'] = '<meta name="DC.Subject" content="' . htmlspecialchars($tsSetupSeo['keywords']) . '">';
+                    $ret['meta.keywords.dc'] = '<meta name="DCTERMS.subject" content="' . htmlspecialchars($tsSetupSeo['keywords']) . '">';
                 }
             }
 
@@ -263,7 +267,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                 $ret['meta.copyright'] = '<meta name="copyright" content="' . htmlspecialchars($tsSetupSeo['copyright']) . '">';
 
                 if ($enableMetaDc) {
-                    $ret['meta.copyright.dc'] = '<meta name="DC.Rights" content="' . htmlspecialchars($tsSetupSeo['copyright']) . '">';
+                    $ret['meta.copyright.dc'] = '<meta name="DCTERMS.rights" content="' . htmlspecialchars($tsSetupSeo['copyright']) . '">';
                 }
             }
 
@@ -278,13 +282,13 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                 $ret['meta.author'] = '<meta name="author" content="' . htmlspecialchars($tsSetupSeo['author']) . '">';
 
                 if ($enableMetaDc) {
-                    $ret['meta.author.dc'] = '<meta name="DC.Creator" content="' . htmlspecialchars($tsSetupSeo['author']) . '">';
+                    $ret['meta.author.dc'] = '<meta name="DCTERMS.creator" content="' . htmlspecialchars($tsSetupSeo['author']) . '">';
                 }
             }
 
             // author
             if (!empty($tsSetupSeo['publisher']) && $enableMetaDc) {
-                $ret['meta.publisher.dc'] = '<meta name="DC.Publisher" content="' . htmlspecialchars($tsSetupSeo['publisher']) . '">';
+                $ret['meta.publisher.dc'] = '<meta name="DCTERMS.publisher" content="' . htmlspecialchars($tsSetupSeo['publisher']) . '">';
             }
 
             // distribution
@@ -302,7 +306,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                 $ret['meta.date'] = '<meta name="date" content="' . htmlspecialchars($tsSetupSeo['lastUpdate']) . '">';
 
                 if ($enableMetaDc) {
-                    $ret['meta.date.dc'] = '<meta name="DC.date" content="' . htmlspecialchars($tsSetupSeo['lastUpdate']) . '">';
+                    $ret['meta.date.dc'] = '<meta name="DCTERMS.date" content="' . htmlspecialchars($tsSetupSeo['lastUpdate']) . '">';
                 }
             }
 
