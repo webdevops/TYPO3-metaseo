@@ -13,11 +13,11 @@ Version status
 --------------
 
 * Version **1.x**:
-  - Branch **master**
-  - Composer: dev-master
+  * Branch **master**
+  * Composer: dev-master
 * Version **2.x**:
-  - Branch **develop**
-  - Composer: dev-develop
+  * Branch **develop**
+  * Composer: dev-develop
 
 
 Composer Support
