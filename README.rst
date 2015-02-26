@@ -12,8 +12,12 @@ It's an replacement of the "metatag"-extension and the successor of "tq_seo".
 Version status
 --------------
 
-* Version **1.x**: Branch **master** (Composer: dev-master)
-* Version **2.x**: Branch **develop** (Composer: dev-develop)
+* Version **1.x**:
+  - Branch **master**
+  - Composer: dev-master
+* Version **2.x**:
+  - Branch **develop**
+  - Composer: dev-develop
 
 
 Composer Support
