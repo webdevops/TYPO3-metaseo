@@ -78,7 +78,7 @@ plugin.metaseo {
 
 		linkGeneration = {$plugin.metaseo.metaTags.linkGeneration}
 
-        robotsEnable = {$plugin.metaseo.metaTags.robotsEnable}
+		robotsEnable = {$plugin.metaseo.metaTags.robotsEnable}
 		robotsIndex = {$plugin.metaseo.metaTags.robotsIndex}
 		robotsFollow = {$plugin.metaseo.metaTags.robotsFollow}
 		robotsArchive = {$plugin.metaseo.metaTags.robotsArchive}
@@ -106,6 +106,10 @@ plugin.metaseo {
 		useCanonical {
 			strict = {$plugin.metaseo.metaTags.useCanonical.strict}
 			noMP = {$plugin.metaseo.metaTags.useCanonical.noMP}
+
+			# Default typolink configuration for canonical link
+			typolink {
+			}
 		}
 		useExpire = {$plugin.metaseo.metaTags.useExpire}
 
@@ -264,8 +268,8 @@ plugin.metaseo {
 						gaDomainName = TEXT
 						gaDomainName.field = gaDomainName
 
-                        gaUseUniversalAnalytics = TEXT
-                        gaUseUniversalAnalytics.field = gaUseUniversalAnalytics
+						gaUseUniversalAnalytics = TEXT
+						gaUseUniversalAnalytics.field = gaUseUniversalAnalytics
 					}
 				}
 			}

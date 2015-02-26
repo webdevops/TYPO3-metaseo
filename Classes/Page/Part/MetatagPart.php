@@ -495,22 +495,34 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             // Canonical URL
             $canonicalUrl = NULL;
 
+
+            // FIXME: Refactor canonical link generation
             if (!empty($tsfePage['tx_metaseo_canonicalurl'])) {
                 $canonicalUrl = $tsfePage['tx_metaseo_canonicalurl'];
             } elseif (!empty($tsSetupSeo['useCanonical'])) {
                 $strictMode   = (bool)(int)$tsSetupSeo['useCanonical.']['strict'];
                 $noMpMode     = (bool)(int)$tsSetupSeo['useCanonical.']['noMP'];
-                $canonicalUrl = $this->detectCanonicalPage($strictMode, $noMpMode);
+                $canonicalUrlArgs = $this->detectCanonicalPage($strictMode, $noMpMode);
             }
 
-            if (!empty($canonicalUrl)) {
-                if (is_array($canonicalUrl)) {
-                    // complex typolink generation
-                    $canonicalUrl = call_user_func_array( array($this, 'generateLink'), $canonicalUrl);
-                } else {
-                    // simple typolink generation
-                    $canonicalUrl = $this->generateLink($canonicalUrl);
+            if (!empty($canonicalUrlArgs)) {
+                // Make sure the args is an array
+                if (!is_array($canonicalUrlArgs)) {
+                    $canonicalUrlArgs = array($canonicalUrlArgs);
                 }
+
+
+                // Inject default configuration if available
+                if (!empty($tsSetupSeo['useCanonical.']['typolink.'])) {
+                    if (empty($canonicalUrlArgs[1])) {
+                        $canonicalUrlArgs[1] = array();
+                    }
+                    // Apply defaults from SetupTS with setup from detectCanonicalPage
+                    $canonicalUrlArgs[1] = array_merge_recursive($tsSetupSeo['useCanonical.']['typolink.'], $canonicalUrlArgs[1]);
+                }
+
+                // Generate canonical url
+                $canonicalUrl = call_user_func_array( array($this, 'generateLink'), $canonicalUrlArgs);
 
                 if (!empty($canonicalUrl)) {
                     $ret['link.rel.canonical'] = '<link rel="canonical" href="' . htmlspecialchars($canonicalUrl) . '">';
