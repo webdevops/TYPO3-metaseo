@@ -61,42 +61,42 @@ plugin.metaseo {
 	# Page metatag generator
 	metaTags =
 	metaTags {
-		enableDC = {$plugin.metaseo.metaTags.enableDC}
-		description = {$plugin.metaseo.metaTags.description}
-		keywords = {$plugin.metaseo.metaTags.keywords}
-		copyright = {$plugin.metaseo.metaTags.copyright}
-		email = {$plugin.metaseo.metaTags.email}
-		author = {$plugin.metaseo.metaTags.author}
-		publisher = {$plugin.metaseo.metaTags.publisher}
-		language = {$plugin.metaseo.metaTags.language}
+		enableDC     = {$plugin.metaseo.metaTags.enableDC}
+		description  = {$plugin.metaseo.metaTags.description}
+		keywords     = {$plugin.metaseo.metaTags.keywords}
+		copyright    = {$plugin.metaseo.metaTags.copyright}
+		email        = {$plugin.metaseo.metaTags.email}
+		author       = {$plugin.metaseo.metaTags.author}
+		publisher    = {$plugin.metaseo.metaTags.publisher}
+		language     = {$plugin.metaseo.metaTags.language}
 		distribution = {$plugin.metaseo.metaTags.distribution}
-		rating = {$plugin.metaseo.metaTags.rating}
-		revisit = {$plugin.metaseo.metaTags.revisit}
+		rating       = {$plugin.metaseo.metaTags.rating}
+		revisit      = {$plugin.metaseo.metaTags.revisit}
 
-		p3pCP = {$plugin.metaseo.metaTags.p3pCP}
+		p3pCP        = {$plugin.metaseo.metaTags.p3pCP}
 		p3pPolicyUrl = {$plugin.metaseo.metaTags.p3pPolicyUrl}
 
 		linkGeneration = {$plugin.metaseo.metaTags.linkGeneration}
 
-		robotsEnable = {$plugin.metaseo.metaTags.robotsEnable}
-		robotsIndex = {$plugin.metaseo.metaTags.robotsIndex}
-		robotsFollow = {$plugin.metaseo.metaTags.robotsFollow}
-		robotsArchive = {$plugin.metaseo.metaTags.robotsArchive}
-		robotsSnippet = {$plugin.metaseo.metaTags.robotsSnippet}
+		robotsEnable       = {$plugin.metaseo.metaTags.robotsEnable}
+		robotsIndex        = {$plugin.metaseo.metaTags.robotsIndex}
+		robotsFollow       = {$plugin.metaseo.metaTags.robotsFollow}
+		robotsArchive      = {$plugin.metaseo.metaTags.robotsArchive}
+		robotsSnippet      = {$plugin.metaseo.metaTags.robotsSnippet}
 		robotsNoImageindex = {$plugin.metaseo.metaTags.robotsNoImageindex}
-		robotsNoTranslate = {$plugin.metaseo.metaTags.robotsNoTranslate}
-		robotsOdp = {$plugin.metaseo.metaTags.robotsOdp}
-		robotsYdir = {$plugin.metaseo.metaTags.robotsYdir}
+		robotsNoTranslate  = {$plugin.metaseo.metaTags.robotsNoTranslate}
+		robotsOdp          = {$plugin.metaseo.metaTags.robotsOdp}
+		robotsYdir         = {$plugin.metaseo.metaTags.robotsYdir}
 
-		geoPositionLatitude = {$plugin.metaseo.metaTags.geoPositionLatitude}
+		geoPositionLatitude  = {$plugin.metaseo.metaTags.geoPositionLatitude}
 		geoPositionLongitude = {$plugin.metaseo.metaTags.geoPositionLongitude}
-		geoRegion = {$plugin.metaseo.metaTags.geoRegion}
-		geoPlacename = {$plugin.metaseo.metaTags.geoPlacename}
+		geoRegion            = {$plugin.metaseo.metaTags.geoRegion}
+		geoPlacename         = {$plugin.metaseo.metaTags.geoPlacename}
 
 		googleVerification = {$plugin.metaseo.metaTags.googleVerification}
-		msnVerification = {$plugin.metaseo.metaTags.msnVerification}
-		yahooVerification = {$plugin.metaseo.metaTags.yahooVerification}
-		wotVerification = {$plugin.metaseo.metaTags.wotVerification}
+		msnVerification    = {$plugin.metaseo.metaTags.msnVerification}
+		yahooVerification  = {$plugin.metaseo.metaTags.yahooVerification}
+		wotVerification    = {$plugin.metaseo.metaTags.wotVerification}
 
 		picsLabel = {$plugin.metaseo.metaTags.picsLabel}
 
@@ -242,12 +242,15 @@ plugin.metaseo {
 		googleAnalytics {
 			# show google analytics if user is logged in be (default is disable, we don't want to track be-users)
 			showIfBeLogin = 0
+
 			anonymizeIp = {$plugin.metaseo.services.googleAnalytics.anonymizeIp}
-			domainName = {$plugin.metaseo.services.googleAnalytics.domainName}
-			trackDownloads = {$plugin.metaseo.services.googleAnalytics.trackDownloads}
+			domainName  = {$plugin.metaseo.services.googleAnalytics.domainName}
+
+			trackDownloads       = {$plugin.metaseo.services.googleAnalytics.trackDownloads}
 			trackDownloadsScript = EXT:metaseo/Resources/Public/Frontend/JavaScript/GoogleAnalyticsTrackDownload.js
-			customizationCode =
-			enableIfHeaderIsDisabled  = {$plugin.metaseo.services.enableIfHeaderIsDisabled}
+
+			customizationCode        =
+			enableIfHeaderIsDisabled = {$plugin.metaseo.services.enableIfHeaderIsDisabled}
 
 			## google analytics template code
 			template = COA
@@ -281,10 +284,11 @@ plugin.metaseo {
 			# show piwik if user is logged in be (default is disable, we don't want to track be-users)
 			showIfBeLogin = 0
 			url = {$plugin.metaseo.services.piwik.url}
-			id = {$plugin.metaseo.services.piwik.id}
-			domainName = {$plugin.metaseo.services.piwik.domainName}
-			cookieDomainName = {$plugin.metaseo.services.piwik.cookieDomainName}
-			doNotTrack = {$plugin.metaseo.services.piwik.doNotTrack}
+			id  = {$plugin.metaseo.services.piwik.id}
+
+			domainName        = {$plugin.metaseo.services.piwik.domainName}
+			cookieDomainName  = {$plugin.metaseo.services.piwik.cookieDomainName}
+			doNotTrack        = {$plugin.metaseo.services.piwik.doNotTrack}
 			customizationCode =
 
 			enableIfHeaderIsDisabled  = {$plugin.metaseo.services.enableIfHeaderIsDisabled}
@@ -331,7 +335,7 @@ plugin.metaseo {
 	# Sitemap indexer and generator
 	sitemap =
 	sitemap {
-		pagePriority = {$plugin.metaseo.sitemap.pagePriority}
+		pagePriority    = {$plugin.metaseo.sitemap.pagePriority}
 		changeFrequency = {$plugin.metaseo.sitemap.changeFrequency}
 
 		# indexer settings
