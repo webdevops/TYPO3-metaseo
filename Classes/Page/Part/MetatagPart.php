@@ -747,24 +747,18 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         # Mountpoint
         #####################
 
-        if (!$ret && $noMpMode && \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('MP')) {
-            // Possible mountpoint detected, check rootline for mount-informations
-
-            foreach ($GLOBALS['TSFE']->rootLine as $page) {
-                if (!empty($page['_MOUNT_OL'])) {
-                    // Mountpoint detected
-                    $ret = array(
-                        $GLOBALS['TSFE']->id,
-                        array(
-                            'addQueryString' => 1,
-                            'addQueryString.' => array(
-                                'exclude' => 'id,MP'
-                            ),
-                        ),
-                        TRUE,
-                    );
-                }
-            }
+        if (!$ret && $noMpMode && \Metaseo\Metaseo\Utility\GeneralUtility::isMountpointInRootLine()) {
+            // Mountpoint detected
+            $ret = array(
+                $GLOBALS['TSFE']->id,
+                array(
+                    'addQueryString' => 1,
+                    'addQueryString.' => array(
+                        'exclude' => 'id,MP'
+                    ),
+                ),
+                TRUE,
+            );
         }
 
         #####################

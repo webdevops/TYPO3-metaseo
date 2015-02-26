@@ -163,6 +163,29 @@ class GeneralUtility {
     }
 
     /**
+     * Check if there is any mountpoint in rootline
+     *
+     * @param   integer|null $uid    Page UID
+     * @return  boolean
+     */
+    public static function isMountpointInRootLine($uid = NULL) {
+        $ret = FALSE;
+
+        // Performance check, there must be an MP-GET value
+        if(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('MP')) {
+            // Possible mount point detected, let's check the rootline
+            foreach (self::getRootLine($uid) as $page) {
+                if (!empty($page['_MOUNT_OL'])) {
+                    // Mountpoint detected in rootline
+                    $ret = TRUE;
+                }
+            }
+        }
+
+        return $ret;
+    }
+
+    /**
      * Filter rootline to get the real one up to siteroot page
      *
      * @param $rootline
