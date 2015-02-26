@@ -13,7 +13,7 @@ It's an replacement of the "metatag"-extension and the successor of "tq_seo".
 Composer Support
 ----------------
 
-MetaSEO (stable) is available in TYPO3 TER and also available with composer:
+MetaSEO (stable) is available in TYPO3 TER and also available with composer ::
 
     {
         "repositories": [
@@ -26,7 +26,7 @@ MetaSEO (stable) is available in TYPO3 TER and also available with composer:
         }
     }
 
-Or (unstable, don't blame me for bugs - but feel free to report bugs) directly from Github:
+Or (unstable, don't blame me for bugs - but feel free to report bugs) directly from Github ::
 
     {
         "repositories": [
