@@ -9,7 +9,6 @@ return array(
 		'hideTable'         => true,
 		'dividers2tabs'     => true,
 	),
-	'feInterface' => array(),
 	'interface'   => array(
 		'always_description' => true,
 		'showRecordFieldList' => 'is_robotstxt,robotstxt',
