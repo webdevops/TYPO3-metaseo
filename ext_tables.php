@@ -380,7 +380,6 @@ $TCA['tx_metaseo_setting_root'] = array(
         'hideTable'         => true,
         'dividers2tabs'     => true,
     ),
-    'feInterface' => array(),
     'interface'   => array(
         'always_description' => true,
     ),
@@ -400,8 +399,6 @@ $TCA['tx_metaseo_setting_page'] = array(
 		'dynamicConfigFile'	=> $extPath.'tca.php',
 		'iconfile'			=> 'page',
 		'hideTable'			=> TRUE,
-	),
-	'feInterface' => array (
 	),
 	'interface' => array(
 	),
