@@ -5,10 +5,12 @@ This extension provides an indexed google/xml-sitemap, enhanced metatag-support 
 It's an replacement of the "metatag"-extension and the successor of "tq_seo".
 
 Version overview:
+
 * Version **1.x**: Branch**master**
 * Version **2.x**: Branch**develop**
 
 Links:
+
 * Manual:     http://docs.typo3.org/typo3cms/extensions/metaseo/
 * Git:        https://github.com/mblaschke/TYPO3-metaseo
 * Support:    http://forge.typo3.org/projects/extension-metaseo/
