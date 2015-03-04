@@ -110,6 +110,10 @@ plugin.metaseo {
 			# Default typolink configuration for canonical link
 			typolink {
 			}
+
+			# blacklist (RegExp, eg /typo3/)
+			blacklist {
+			}
 		}
 		useExpire = {$plugin.metaseo.metaTags.useExpire}
 

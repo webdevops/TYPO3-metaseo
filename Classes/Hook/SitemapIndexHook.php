@@ -53,26 +53,26 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
         841133, // robots.txt      (metaseo)
     );
 
-	/**
-	 * Page index status
-	 *
-	 * @var null|boolean
-	 */
-	protected $pageIndexFlag = NULL;
+    /**
+     * Page index status
+     *
+     * @var null|boolean
+     */
+    protected $pageIndexFlag = NULL;
 
-	/**
-	 * MetaSEO configuration
-	 *
-	 * @var array
-	 */
-	protected $conf = array();
+    /**
+     * MetaSEO configuration
+     *
+     * @var array
+     */
+    protected $conf = array();
 
-	/**
-	 * Blacklist configuration
-	 *
-	 * @var array
-	 */
-	protected $blacklistConf = array();
+    /**
+     * Blacklist configuration
+     *
+     * @var array
+     */
+    protected $blacklistConf = array();
 
     /**
      * File extension list
@@ -86,26 +86,26 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
     // Methods
     // ########################################################################
 
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		$this->initConfiguration();
-	}
+    /**
+     * Constructor
+     */
+    public function __construct() {
+        $this->initConfiguration();
+    }
 
-	/**
-	 * Init configuration
-	 */
-	protected function initConfiguration() {
-		// Get configuration
-		if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.'])) {
-			$this->conf = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.'];
-		}
+    /**
+     * Init configuration
+     */
+    protected function initConfiguration() {
+        // Get configuration
+        if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.'])) {
+            $this->conf = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.'];
+        }
 
-		// Store blacklist configuration
-		if (!empty($this->conf['sitemap.']['index.']['blacklist.'])) {
-			$this->blacklistConf = $this->conf['sitemap.']['index.']['blacklist.'];
-		}
+        // Store blacklist configuration
+        if (!empty($this->conf['sitemap.']['index.']['blacklist.'])) {
+            $this->blacklistConf = $this->conf['sitemap.']['index.']['blacklist.'];
+        }
 
         // Store blacklist configuration
         if (!empty($this->conf['sitemap.']['index.']['fileExtension.'])) {
@@ -115,7 +115,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
                 $this->fileExtList = array_merge($this->fileExtList, $fileExtList);
             };
         }
-	}
+    }
 
     /**
      * Add Page to sitemap table
@@ -166,10 +166,10 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
             $pageUrl = $this->processLinkUrl($pageUrl);
         }
 
-		// check blacklisting
-		if ($this->checkIfUrlIsBlacklisted($pageUrl)) {
-			return;
-		}
+        // check blacklisting
+        if (GeneralUtility::checkUrlForBlacklisting($pageUrl, $this->blacklistConf)) {
+            return;
+        }
 
         $tstamp = $_SERVER['REQUEST_TIME'];
 
@@ -287,10 +287,10 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
             return;
         }
 
-		// check blacklisting
-		if ($this->checkIfUrlIsBlacklisted($linkUrl)) {
-			return;
-		}
+        // check blacklisting
+        if (GeneralUtility::checkUrlForBlacklisting($linkUrl, $this->blacklistConf)) {
+            return;
+        }
 
         // ####################################
         //  Init
@@ -484,32 +484,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
     }
 
     /**
-     * Check if url is blacklisted
-     *
-     * Configuration specified in
-     * plugin.metaseo.sitemap.index.blacklist
-     *
-     * @param   string  $url Url to TYPO3 page
-     * @return  boolean
-     */
-    protected function checkIfUrlIsBlacklisted($url) {
-
-		// check for valid url
-		if (empty($url)) {
-			return TRUE;
-		}
-
-		foreach ($this->blacklistConf as $blacklistRegExp) {
-			if (preg_match($blacklistRegExp, $url)) {
-				return TRUE;
-			}
-		}
-
-		return FALSE;
-    }
-
-	/**
-	 * Check if current page is indexable
+     * Check if current page is indexable
      *
      * Will do following checks:
      * - REQUEST_METHOD (must be GET)
@@ -519,51 +494,51 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
      * - If no_cache is not set
      *
      * (checks will be cached)
-	 *
-	 * @return bool
-	 */
-	protected function checkIfCurrentPageIsIndexable() {
-		// check caching status
-		if ($this->pageIndexFlag !== NULL) {
-			return $this->pageIndexFlag;
-		}
+     *
+     * @return bool
+     */
+    protected function checkIfCurrentPageIsIndexable() {
+        // check caching status
+        if ($this->pageIndexFlag !== NULL) {
+            return $this->pageIndexFlag;
+        }
 
-		// by default page is not cacheable
-		$this->pageIndexFlag = FALSE;
+        // by default page is not cacheable
+        $this->pageIndexFlag = FALSE;
 
-		// ############################
-		// Basic checks
-		// ############################
+        // ############################
+        // Basic checks
+        // ############################
 
-		// skip POST-calls and feuser login
-		if ($_SERVER['REQUEST_METHOD'] !== 'GET'
-			|| !empty($GLOBALS['TSFE']->fe_user->user['uid'])
-		) {
-			return FALSE;
-		}
+        // skip POST-calls and feuser login
+        if ($_SERVER['REQUEST_METHOD'] !== 'GET'
+            || !empty($GLOBALS['TSFE']->fe_user->user['uid'])
+        ) {
+            return FALSE;
+        }
 
-		// Check for type blacklisting
-		if (in_array($GLOBALS['TSFE']->type, $this->typeBlacklist) ) {
-			return FALSE;
-		}
+        // Check for type blacklisting
+        if (in_array($GLOBALS['TSFE']->type, $this->typeBlacklist) ) {
+            return FALSE;
+        }
 
-		// ############################
-		// Cache checks
-		// ############################
+        // ############################
+        // Cache checks
+        // ############################
 
-		// dont parse if page is not cacheable
-		if (!$GLOBALS['TSFE']->isStaticCacheble()) {
-			return FALSE;
-		}
+        // dont parse if page is not cacheable
+        if (!$GLOBALS['TSFE']->isStaticCacheble()) {
+            return FALSE;
+        }
 
-		// Skip no_cache-pages
-		if (!empty($GLOBALS['TSFE']->no_cache)) {
-			return FALSE;
-		}
+        // Skip no_cache-pages
+        if (!empty($GLOBALS['TSFE']->no_cache)) {
+            return FALSE;
+        }
 
-		// all checks successfull, page is cacheable
-		$this->pageIndexFlag = TRUE;
+        // all checks successfull, page is cacheable
+        $this->pageIndexFlag = TRUE;
 
-		return TRUE;
-	}
+        return TRUE;
+    }
 }

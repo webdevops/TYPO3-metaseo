@@ -387,6 +387,28 @@ class GeneralUtility {
         return $url;
     }
 
+    /**
+     * Check if url is blacklisted
+     *
+     * @param  string  $url            URL
+     * @param  array   $blacklistConf  Blacklist configuration (list of regexp)
+     * @return bool
+     */
+    public static function checkUrlForBlacklisting($url, $blacklistConf) {
+        // check for valid url
+        if (empty($url)) {
+            return TRUE;
+        }
+
+        foreach ($blacklistConf as $blacklistRegExp) {
+            if (preg_match($blacklistRegExp, $url)) {
+                return TRUE;
+            }
+        }
+
+        return FALSE;
+    }
+
     // ########################################################################
     // Protected methods
     // ########################################################################

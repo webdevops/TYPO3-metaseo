@@ -498,14 +498,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             if (!empty($tsfePage['tx_metaseo_canonicalurl'])) {
                 $canonicalUrl = $tsfePage['tx_metaseo_canonicalurl'];
             } elseif (!empty($tsSetupSeo['useCanonical'])) {
-                $strictMode   = (bool)(int)$tsSetupSeo['useCanonical.']['strict'];
-                $noMpMode     = (bool)(int)$tsSetupSeo['useCanonical.']['noMP'];
-                $linkConf     = array();
-                if(!empty($tsSetupSeo['useCanonical.']['typolink.'])) {
-                    $linkConf = $tsSetupSeo['useCanonical.']['typolink.'];
-                }
-
-                list($clUrl, $clLinkConf, $clDisableMpMode) = $this->detectCanonicalPage($strictMode, $noMpMode, $linkConf);
+                list($clUrl, $clLinkConf, $clDisableMpMode) = $this->detectCanonicalPage($tsSetupSeo['useCanonical.']);
             }
 
             if (!empty($clUrl)) {
@@ -710,13 +703,19 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     /**
      * Detect canonical page
      *
-     * @param    boolean $strictMode   Enable strict mode
-     * @param    boolean $noMpMode     Enable no-mountpoint mode
-     * @param    array   $linkConf     Link configuration
-     * @return   string                Page Id or url
+     * @param    array $tsConfig   TypoScript config setup
+     * @return   string            Page Id or url
      */
-    protected function detectCanonicalPage($strictMode = FALSE, $noMpMode = FALSE, $linkConf = NULL) {
-        $linkParam = NULL;
+    protected function detectCanonicalPage($tsConfig = array()) {
+        #####################
+        # Fetch typoscript config
+        #####################
+        $strictMode = (bool)(int)$tsConfig['strict'];
+        $noMpMode   = (bool)(int)$tsConfig['noMP'];
+        $linkConf   = !empty($tsConfig['typolink.']) ? $tsConfig['typolink.']   : array();
+        $blacklist  = !empty($tsConfig['blacklist.']) ? $tsConfig['blacklist.'] : NULL;
+
+        $linkParam  = NULL;
         $linkMpMode = FALSE;
 
         // Init link configuration
@@ -728,6 +727,43 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         $pageHash = NULL;
         if (!empty($GLOBALS['TSFE']->cHash)) {
             $pageHash = $GLOBALS['TSFE']->cHash;
+        }
+
+        // Get page url
+        $pageUrl = NULL;
+        if (!empty($GLOBALS['TSFE']->anchorPrefix)) {
+            $pageUrl = $GLOBALS['TSFE']->anchorPrefix;
+        } else {
+            $pageUrl = $GLOBALS['TSFE']->siteScript;
+        }
+
+        #####################
+        # Blacklisting
+        #####################
+        if(\Metaseo\Metaseo\Utility\GeneralUtility::checkUrlForBlacklisting($pageUrl, $blacklist)) {
+            if ($strictMode) {
+                if($noMpMode && \Metaseo\Metaseo\Utility\GeneralUtility::isMountpointInRootLine()) {
+                    // Mountpoint detected
+                    $linkParam = $GLOBALS['TSFE']->id;
+
+                    // Force removing of MP param
+                    $linkConf['addQueryString'] = 1;
+                    if(!empty($linkConf['addQueryString.']['exclude'])) {
+                        $linkConf['addQueryString.']['exclude'] .= ',id,MP,no_cache';
+                    } else {
+                        $linkConf['addQueryString.']['exclude'] = ',id,MP,no_cache';
+                    }
+
+                    // disable mount point linking
+                    $linkMpMode = TRUE;
+                } else {
+                    // force canonical-url to page url (without any parameters)
+                    $linkParam = $GLOBALS['TSFE']->id;
+                }
+            } else {
+                // Blacklisted and no strict mode, we don't output canonical tag
+                return NULL;
+            }
         }
 
         #####################
@@ -760,9 +796,9 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             // Force removing of MP param
             $linkConf['addQueryString'] = 1;
             if(!empty($linkConf['addQueryString.']['exclude'])) {
-                $linkConf['addQueryString.']['exclude'] .= ',id,MP';
+                $linkConf['addQueryString.']['exclude'] .= ',id,MP,no_cache';
             } else {
-                $linkConf['addQueryString.']['exclude'] = ',id,MP';
+                $linkConf['addQueryString.']['exclude'] = ',id,MP,no_cache';
             }
 
             // disable mount point linking
@@ -777,11 +813,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             // Fetch pageUrl
             if ($pageHash !== NULL) {
                 // Virtual plugin page, we have to use achnor or site script
-                if (!empty($GLOBALS['TSFE']->anchorPrefix)) {
-                    $linkParam = $GLOBALS['TSFE']->anchorPrefix;
-                } else {
-                    $linkParam = $GLOBALS['TSFE']->siteScript;
-                }
+                $linkParam = $pageUrl;
             } else {
                 $linkParam = $GLOBALS['TSFE']->id;
             }
