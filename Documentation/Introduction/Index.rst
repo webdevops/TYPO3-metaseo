@@ -50,6 +50,7 @@ The following metatags are supported:
 - Index, up, prev und next link-metatags
 - P3P-HTTP-Headers
 - OpenGraph (WIP)
+- Blacklist for sitemap, CanonicalURL and searchengine index/noindex switching
 
 The following pagetitle transformations are supported:
 

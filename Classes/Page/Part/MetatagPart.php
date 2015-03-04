@@ -208,6 +208,15 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                     $customMetaTagList[$metaKey] = $metaValue;
                 }
             }
+            // #####################################
+            // Blacklists
+            // #####################################
+
+            // Check search engine indexing blacklist
+            if(!empty($tsSetupSeo['robotsIndex.']['blacklist.'])) {
+                // Page is blacklisted, set to noindex
+                $tsSetupSeo['robotsIndex'] = 0;
+            }
 
             // #####################################
             // Process StdWrap List
@@ -729,18 +738,10 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             $pageHash = $GLOBALS['TSFE']->cHash;
         }
 
-        // Get page url
-        $pageUrl = NULL;
-        if (!empty($GLOBALS['TSFE']->anchorPrefix)) {
-            $pageUrl = $GLOBALS['TSFE']->anchorPrefix;
-        } else {
-            $pageUrl = $GLOBALS['TSFE']->siteScript;
-        }
-
         #####################
         # Blacklisting
         #####################
-        if(\Metaseo\Metaseo\Utility\GeneralUtility::checkUrlForBlacklisting($pageUrl, $blacklist)) {
+        if(\Metaseo\Metaseo\Utility\FrontendUtility::checkPageForBlacklist($blacklist)) {
             if ($strictMode) {
                 if($noMpMode && \Metaseo\Metaseo\Utility\GeneralUtility::isMountpointInRootLine()) {
                     // Mountpoint detected
@@ -813,7 +814,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             // Fetch pageUrl
             if ($pageHash !== NULL) {
                 // Virtual plugin page, we have to use achnor or site script
-                $linkParam = $pageUrl;
+                $linkParam = FrontendUtility::getCurrentUrl();
             } else {
                 $linkParam = $GLOBALS['TSFE']->id;
             }

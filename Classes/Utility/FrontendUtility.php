@@ -132,4 +132,33 @@ class FrontendUtility {
         $GLOBALS['TSFE']->cObj->data = $pageData;
     }
 
+    /**
+     * Return current URL
+     *
+     * @return null|string
+     */
+    public static function getCurrentUrl() {
+        $ret = NULL;
+        if (!empty($GLOBALS['TSFE']->anchorPrefix)) {
+            $ret = (string)$GLOBALS['TSFE']->anchorPrefix;
+        } else {
+            $ret = (string)$GLOBALS['TSFE']->siteScript;
+        }
+
+        return $ret;
+    }
+
+    /**
+     * Check current page for blacklisting
+     *
+     * @param  array $blacklist Blacklist configuration
+     * @return bool
+     */
+    public static function checkPageForBlacklist($blacklist) {
+        return \Metaseo\Metaseo\Utility\GeneralUtility::checkUrlForBlacklisting(
+            self::getCurrentUrl(),
+            $blacklist
+        );
+    }
+
 }

@@ -80,6 +80,14 @@ plugin.metaseo {
 
 		robotsEnable       = {$plugin.metaseo.metaTags.robotsEnable}
 		robotsIndex        = {$plugin.metaseo.metaTags.robotsIndex}
+
+        robotsIndex {
+            # blacklist (RegExp, eg /typo3/)
+            blacklist {
+
+            }
+        }
+
 		robotsFollow       = {$plugin.metaseo.metaTags.robotsFollow}
 		robotsArchive      = {$plugin.metaseo.metaTags.robotsArchive}
 		robotsSnippet      = {$plugin.metaseo.metaTags.robotsSnippet}

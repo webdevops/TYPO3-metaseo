@@ -156,7 +156,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
 
         // Fetch pageUrl
         if ($pageHash !== NULL) {
-            $pageUrl = $GLOBALS['TSFE']->anchorPrefix;
+            $pageUrl = FrontendUtility::getCurrentUrl();
         } else {
             $linkConf = array(
                 'parameter' => $GLOBALS['TSFE']->id,
