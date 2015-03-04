@@ -56,8 +56,8 @@ class SitemapUtility {
             return;
         }
 
-		// Trim url
-		$pageData['page_url'] = trim($pageData['page_url']);
+        // Trim url
+        $pageData['page_url'] = trim($pageData['page_url']);
 
         // calc page hash
         $pageData['page_hash'] = md5($pageData['page_url']);
@@ -88,7 +88,7 @@ class SitemapUtility {
 
             // $pageData is already quoted
 
-			// TODO: INSERT INTO ... ON DUPLICATE KEY UPDATE?
+            // TODO: INSERT INTO ... ON DUPLICATE KEY UPDATE?
 
             $query = 'SELECT uid
                         FROM tx_metaseo_sitemap
@@ -106,7 +106,8 @@ class SitemapUtility {
                                  page_url              = ' . $pageData['page_url'] . ',
                                  page_depth            = ' . $pageData['page_depth'] . ',
                                  page_change_frequency = ' . $pageData['page_change_frequency'] . ',
-                                 page_type             = ' . $pageData['page_type'] . '
+                                 page_type             = ' . $pageData['page_type'] . ',
+                                 expire                = ' . $pageData['expire'] . '
                            WHERE uid = ' . (int)$sitemapUid;
                 DatabaseUtility::exec($query);
             } else {
@@ -136,14 +137,20 @@ class SitemapUtility {
             $expireDays = 60;
         }
 
-		// No negative days allowed
-		$expireDays = abs($expireDays);
+        // No negative days allowed
+        $expireDays = abs($expireDays);
 
+        // tstamp for too old indexed sitemap url
         $tstamp = time() - $expireDays * 24 * 60 * 60;
 
+        // special expire time
+        $expire = time();
+
         $query = 'DELETE FROM tx_metaseo_sitemap
-                        WHERE tstamp <= ' . (int)$tstamp . '
-                          AND is_blacklisted = 0';
+                        WHERE is_blacklisted = 0
+                          AND ( tstamp <= ' . (int)$tstamp . '
+                             OR expire <= ' . (int)$expire . '
+                          ) ';
         DatabaseUtility::exec($query);
 
         // #####################
