@@ -495,34 +495,21 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             // Canonical URL
             $canonicalUrl = NULL;
 
-
-            // FIXME: Refactor canonical link generation
             if (!empty($tsfePage['tx_metaseo_canonicalurl'])) {
                 $canonicalUrl = $tsfePage['tx_metaseo_canonicalurl'];
             } elseif (!empty($tsSetupSeo['useCanonical'])) {
                 $strictMode   = (bool)(int)$tsSetupSeo['useCanonical.']['strict'];
                 $noMpMode     = (bool)(int)$tsSetupSeo['useCanonical.']['noMP'];
-                $canonicalUrlArgs = $this->detectCanonicalPage($strictMode, $noMpMode);
+                $linkConf     = array();
+                if(!empty($tsSetupSeo['useCanonical.']['typolink.'])) {
+                    $linkConf = $tsSetupSeo['useCanonical.']['typolink.'];
+                }
+
+                list($clUrl, $clLinkConf, $clDisableMpMode) = $this->detectCanonicalPage($strictMode, $noMpMode, $linkConf);
             }
 
-            if (!empty($canonicalUrlArgs)) {
-                // Make sure the args is an array
-                if (!is_array($canonicalUrlArgs)) {
-                    $canonicalUrlArgs = array($canonicalUrlArgs);
-                }
-
-
-                // Inject default configuration if available
-                if (!empty($tsSetupSeo['useCanonical.']['typolink.'])) {
-                    if (empty($canonicalUrlArgs[1])) {
-                        $canonicalUrlArgs[1] = array();
-                    }
-                    // Apply defaults from SetupTS with setup from detectCanonicalPage
-                    $canonicalUrlArgs[1] = array_merge_recursive($tsSetupSeo['useCanonical.']['typolink.'], $canonicalUrlArgs[1]);
-                }
-
-                // Generate canonical url
-                $canonicalUrl = call_user_func_array( array($this, 'generateLink'), $canonicalUrlArgs);
+            if (!empty($clUrl)) {
+                $canonicalUrl = $this->generateLink($clUrl, $clLinkConf, $clDisableMpMode);
 
                 if (!empty($canonicalUrl)) {
                     $ret['link.rel.canonical'] = '<link rel="canonical" href="' . htmlspecialchars($canonicalUrl) . '">';
@@ -723,21 +710,18 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     /**
      * Detect canonical page
      *
-     * @param    boolean $strictMode        Enable strict mode
-     * @param    boolean $noMpMode          Enable no-mountpoint mode
-     * @return   string                     Page Id or url
+     * @param    boolean $strictMode   Enable strict mode
+     * @param    boolean $noMpMode     Enable no-mountpoint mode
+     * @param    array   $linkConf     Link configuration
+     * @return   string                Page Id or url
      */
-    protected function detectCanonicalPage($strictMode = FALSE, $noMpMode = FALSE) {
-        $ret = NULL;
+    protected function detectCanonicalPage($strictMode = FALSE, $noMpMode = FALSE, $linkConf = NULL) {
+        $linkParam = NULL;
+        $linkMpMode = FALSE;
 
-        // Skip no_cache-pages
-        if (!empty($GLOBALS['TSFE']->no_cache)) {
-            if ($strictMode) {
-                // force canonical-url to page url (without any parameters)
-                return $GLOBALS['TSFE']->id;
-            } else {
-                return NULL;
-            }
+        // Init link configuration
+        if($linkConf === NULL) {
+            $linkConf = array();
         }
 
         // Fetch chash
@@ -746,57 +730,72 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             $pageHash = $GLOBALS['TSFE']->cHash;
         }
 
+        #####################
+        # No cached pages
+        #####################
+
+        if (!empty($GLOBALS['TSFE']->no_cache)) {
+            if ($strictMode) {
+                // force canonical-url to page url (without any parameters)
+                $linkParam = $GLOBALS['TSFE']->id;
+            }
+        }
 
         #####################
         # Content from PID
         #####################
 
-        if (!$ret && !empty($this->cObj->data['content_from_pid'])) {
-            $ret = $this->cObj->data['content_from_pid'];
+        if (!$linkParam && !empty($this->cObj->data['content_from_pid'])) {
+            $linkParam = $this->cObj->data['content_from_pid'];
         }
 
         #####################
         # Mountpoint
         #####################
 
-        if (!$ret && $noMpMode && \Metaseo\Metaseo\Utility\GeneralUtility::isMountpointInRootLine()) {
+        if (!$linkParam && $noMpMode && \Metaseo\Metaseo\Utility\GeneralUtility::isMountpointInRootLine()) {
             // Mountpoint detected
-            $ret = array(
-                $GLOBALS['TSFE']->id,
-                array(
-                    'addQueryString' => 1,
-                    'addQueryString.' => array(
-                        'exclude' => 'id,MP'
-                    ),
-                ),
-                TRUE,
-            );
+            $linkParam = $GLOBALS['TSFE']->id;
+
+            // Force removing of MP param
+            $linkConf['addQueryString'] = 1;
+            if(!empty($linkConf['addQueryString.']['exclude'])) {
+                $linkConf['addQueryString.']['exclude'] .= ',id,MP';
+            } else {
+                $linkConf['addQueryString.']['exclude'] = ',id,MP';
+            }
+
+            // disable mount point linking
+            $linkMpMode = TRUE;
         }
 
         #####################
         # Normal page
         #####################
 
-        if (!$ret) {
+        if (!$linkParam) {
             // Fetch pageUrl
             if ($pageHash !== NULL) {
                 // Virtual plugin page, we have to use achnor or site script
                 if (!empty($GLOBALS['TSFE']->anchorPrefix)) {
-                    $ret = $GLOBALS['TSFE']->anchorPrefix;
+                    $linkParam = $GLOBALS['TSFE']->anchorPrefix;
                 } else {
-                    $ret = $GLOBALS['TSFE']->siteScript;
+                    $linkParam = $GLOBALS['TSFE']->siteScript;
                 }
             } else {
-                $ret = $GLOBALS['TSFE']->id;
+                $linkParam = $GLOBALS['TSFE']->id;
             }
         }
 
-        // Fallback to main page if strict mode is active
-        if ($strictMode && empty($ret)) {
-            $ret = $GLOBALS['TSFE']->id;
+        #####################
+        # Fallback
+        #####################
+
+        if ($strictMode && empty($linkParam)) {
+            $linkParam = $GLOBALS['TSFE']->id;
         }
 
-        return $ret;
+        return array($linkParam, $linkConf, $linkMpMode);
     }
 
     /**
