@@ -394,12 +394,13 @@ class GeneralUtility {
      * @param  array   $blacklistConf  Blacklist configuration (list of regexp)
      * @return bool
      */
-    public static function checkUrlForBlacklisting($url, $blacklistConf) {
+    public static function checkUrlForBlacklisting($url, array $blacklistConf) {
         // check for valid url
         if (empty($url)) {
             return TRUE;
         }
 
+		$blacklistConf = (array)$blacklistConf;
         foreach ($blacklistConf as $blacklistRegExp) {
             if (preg_match($blacklistRegExp, $url)) {
                 return TRUE;
