@@ -24,7 +24,6 @@ namespace Metaseo\Metaseo\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * General utility
@@ -49,7 +48,7 @@ class FrontendUtility {
         static $lastTsSetupPid = NULL;
 
 		/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-		$objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 
         // FIXME: add sys langauge or check if sys langauge is needed
 
