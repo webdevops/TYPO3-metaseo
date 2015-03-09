@@ -29,6 +29,7 @@ use Metaseo\Metaseo\Utility\FrontendUtility;
 use Metaseo\Metaseo\Utility\RootPageUtility;
 use Metaseo\Metaseo\Utility\SitemapUtility;
 use Metaseo\Metaseo\Utility\GeneralUtility;
+use \TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Sitemap Indexer
@@ -39,18 +40,22 @@ use Metaseo\Metaseo\Utility\GeneralUtility;
  */
 class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
 
+    CONST DOKTYPE_SITEMAP_TXT    = 841131; // sitemap.txt     (metaseo), apply changes in Configuration/TypoScript/setup.txt
+    CONST DOKTYPE_SITEMAP_XML    = 841132; // sitemap.xml     (metaseo)
+    CONST DOKTYPE_ROBOTS_TXT     = 841133; // robots.txt      (metaseo)
+
     // ########################################################################
     // Attributes
     // ########################################################################
 
     protected $typeBlacklist = array(
-        6,      // Backend Section (TYPO3 CMS)
-        199,    // Menu separator  (TYPO3 CMS)
-        254,    // Folder          (TYPO3 CMS)
-        255,    // Recycler        (TYPO3 CMS)
-        841131, // sitemap.txt     (metaseo)
-        841132, // sitemap.xml     (metaseo)
-        841133, // robots.txt      (metaseo)
+        PageRepository::DOKTYPE_BE_USER_SECTION,      // Backend Section (TYPO3 CMS)
+        PageRepository::DOKTYPE_SPACER,               // Menu separator  (TYPO3 CMS)
+        PageRepository::DOKTYPE_SYSFOLDER,            // Folder          (TYPO3 CMS)
+        PageRepository::DOKTYPE_RECYCLER,             // Recycler        (TYPO3 CMS)
+        self::DOKTYPE_SITEMAP_TXT,                    // sitemap.txt     (metaseo)
+        self::DOKTYPE_SITEMAP_XML,                    // sitemap.xml     (metaseo)
+        self::DOKTYPE_ROBOTS_TXT,                     // robots.txt      (metaseo)
     );
 
     /**
