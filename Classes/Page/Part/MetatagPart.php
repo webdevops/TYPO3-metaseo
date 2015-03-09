@@ -722,7 +722,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         $strictMode = (bool)(int)$tsConfig['strict'];
         $noMpMode   = (bool)(int)$tsConfig['noMP'];
         $linkConf   = !empty($tsConfig['typolink.']) ? $tsConfig['typolink.']   : array();
-        $blacklist  = !empty($tsConfig['blacklist.']) ? $tsConfig['blacklist.'] : NULL;
+        $blacklist  = !empty($tsConfig['blacklist.']) ? $tsConfig['blacklist.'] : array();
 
         $linkParam  = NULL;
         $linkMpMode = FALSE;
