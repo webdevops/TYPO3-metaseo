@@ -132,16 +132,10 @@ class SitemapUtility {
         // #####################
         // Expired pages
         // #####################
-        $expireDays = (int)\Metaseo\Metaseo\Utility\GeneralUtility::getExtConf('sitemap_pageSitemapExpireDays', 60);
-        if (empty($expireDays) ) {
-            $expireDays = 60;
-        }
-
-        // No negative days allowed
-        $expireDays = abs($expireDays);
+        $expireDays = (int)\Metaseo\Metaseo\Utility\GeneralUtility::getExpireDaysInSeconds();
 
         // tstamp for too old indexed sitemap url
-        $tstamp = time() - $expireDays * 24 * 60 * 60;
+        $tstamp = time() - $expireDays;
 
         // special expire time
         $expire = time();

@@ -432,4 +432,24 @@ class GeneralUtility {
         return self::$sysPageObj;
     }
 
+	/**
+	 * Get the ExpireDays-Parameter converted to seconds
+	 *
+	 * @return integer
+	 */
+	public static function getExpireDaysInSeconds() {
+		$expireDays = (int)self::getExtConf('sitemap_pageSitemapExpireDays', 60);
+		if (empty($expireDays) ) {
+			$expireDays = 60;
+		}
+
+		// No negative days allowed
+		$expireDays = abs($expireDays);
+
+		// convert to seconds
+		$expireDays = $expireDays * 24 * 60 * 60;
+
+		return $expireDays;
+	}
+
 }
