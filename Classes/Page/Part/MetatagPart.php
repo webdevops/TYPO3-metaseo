@@ -814,7 +814,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             // Fetch pageUrl
             if ($pageHash !== NULL) {
                 // Virtual plugin page, we have to use achnor or site script
-                $linkParam = FrontendUtility::getCurrentUrl();
+                $linkParam = \Metaseo\Metaseo\Utility\FrontendUtility::getCurrentUrl();
             } else {
                 $linkParam = $GLOBALS['TSFE']->id;
             }
