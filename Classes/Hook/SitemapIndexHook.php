@@ -188,7 +188,8 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
             'page_depth'            => count($GLOBALS['TSFE']->rootLine),
             'page_change_frequency' => $pageChangeFrequency,
             'page_type'             => SitemapUtility::SITEMAP_TYPE_PAGE,
-        );
+			'expire'				=> $tstamp + GeneralUtility::getExpireDaysInSeconds()
+		);
 
         // Call hook
         GeneralUtility::callHook('sitemap-index-page', NULL, $pageData);
@@ -394,6 +395,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
             'page_depth'            => count($rootline),
             'page_change_frequency' => $pageChangeFrequency,
             'page_type'             => $linkType,
+			'expire'				=> $tstamp + GeneralUtility::getExpireDaysInSeconds()
         );
 
         // Call hook
