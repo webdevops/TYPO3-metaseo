@@ -34,139 +34,139 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
  */
 class ext_update {
 
-    // ########################################################################
-    // Attributs
-    // ########################################################################
+	// ########################################################################
+	// Attributs
+	// ########################################################################
 
-    /**
-     * Message list
-     *
-     * @var array
-     */
-    protected $messageList = array();
+	/**
+	 * Message list
+	 *
+	 * @var array
+	 */
+	protected $messageList = array();
 
-    /**
-     * Clear cache (after update)
-     *
-     * @var boolean
-     */
-    protected $clearCache = FALSE;
+	/**
+	 * Clear cache (after update)
+	 *
+	 * @var boolean
+	 */
+	protected $clearCache = FALSE;
 
-    // ########################################################################
-    // Methods
-    // ########################################################################
+	// ########################################################################
+	// Methods
+	// ########################################################################
 
-    /**
-     * Main update function called by the extension manager.
-     *
-     * @return string
-     */
-    public function main() {
-        $this->processUpdates();
+	/**
+	 * Main update function called by the extension manager.
+	 *
+	 * @return string
+	 */
+	public function main() {
+		$this->processUpdates();
 
-        $ret = $this->generateOutput();
+		$ret = $this->generateOutput();
 
-        return $ret;
-    }
+		return $ret;
+	}
 
-    /**
-     * Called by the extension manager to determine if the update menu entry
-     * should by showed.
-     *
-     * @return bool
-     * @todo find a better way to determine if update is needed or not.
-     */
-    public function access() {
-        return TRUE;
-    }
+	/**
+	 * Called by the extension manager to determine if the update menu entry
+	 * should by showed.
+	 *
+	 * @return bool
+	 * @todo find a better way to determine if update is needed or not.
+	 */
+	public function access() {
+		return TRUE;
+	}
 
 
-    /**
-     * The actual update function. Add your update task in here.
-     */
-    protected function processUpdates() {
-        //$this->processUpdateTypoScriptIncludes();
-        //$this->processUpdateScheduler();
+	/**
+	 * The actual update function. Add your update task in here.
+	 */
+	protected function processUpdates() {
+		// $this->processUpdateTypoScriptIncludes();
+		// $this->processUpdateScheduler();
 
-        $this->processClearCache();
-    }
+		$this->processClearCache();
+	}
 
-    /**
-     * Clear cache
-     */
-    protected function processClearCache() {
+	/**
+	 * Clear cache
+	 */
+	protected function processClearCache() {
 
-        if( $this->clearCache ) {
+		if( $this->clearCache ) {
 
-            // Init TCE
-            $TCE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
-            $TCE->admin = 1;
-            $TCE->clear_cacheCmd('all');
+			// Init TCE
+			$TCE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$TCE->admin = 1;
+			$TCE->clear_cacheCmd('all');
 
-            // Add msg
-            $msgTitle  = 'Clearing TYPO3 cache';
-            $msgStatus = FlashMessage::INFO;
-            $msgText   = 'Cleared all caches due migration';
+			// Add msg
+			$msgTitle  = 'Clearing TYPO3 cache';
+			$msgStatus = FlashMessage::INFO;
+			$msgText   = 'Cleared all caches due migration';
 
-            $this->addMessage($msgStatus, $msgTitle, $msgText);
-        }
-    }
+			$this->addMessage($msgStatus, $msgTitle, $msgText);
+		}
+	}
 
-    /**
-     * Add message
-     *
-     * @param integer $status   Status code
-     * @param string  $title    Title
-     * @param string  $message  Message
-     */
-    protected function addMessage($status, $title, $message) {
-        if( !empty($message) && is_array($message) ) {
-            $liStyle = 'style="margin-bottom: 0;"';
+	/**
+	 * Add message
+	 *
+	 * @param integer $status   Status code
+	 * @param string  $title    Title
+	 * @param string  $message  Message
+	 */
+	protected function addMessage($status, $title, $message) {
+		if( !empty($message) && is_array($message) ) {
+			$liStyle = 'style="margin-bottom: 0;"';
 
-            $message = '<ul><li '.$liStyle.'>'.implode('</li><li '.$liStyle.'>', $message).'</li></ul>';
-        }
+			$message = '<ul><li '.$liStyle.'>'.implode('</li><li '.$liStyle.'>', $message).'</li></ul>';
+		}
 
-        $this->messageList[] = array($status, $title, $message);
-    }
+		$this->messageList[] = array($status, $title, $message);
+	}
 
-    /**
-     * Generate message title from database row (using title and uid)
-     *
-     * @param   array   $row    Database row
-     * @return  string
-     */
-    protected function messageTitleFromRow($row) {
-        $ret = array();
+	/**
+	 * Generate message title from database row (using title and uid)
+	 *
+	 * @param   array   $row    Database row
+	 * @return  string
+	 */
+	protected function messageTitleFromRow($row) {
+		$ret = array();
 
-        if( !empty($row['title']) ) {
-            $ret[] = '"'.htmlspecialchars($row['title']).'"';
-        }
+		if( !empty($row['title']) ) {
+			$ret[] = '"'.htmlspecialchars($row['title']).'"';
+		}
 
-        if( !empty($row['uid']) ) {
-            $ret[] = '[UID #'.htmlspecialchars($row['uid']).']';
-        }
+		if( !empty($row['uid']) ) {
+			$ret[] = '[UID #'.htmlspecialchars($row['uid']).']';
+		}
 
-        return implode(' ', $ret);
-    }
+		return implode(' ', $ret);
+	}
 
-    /**
-     * Generates output by using flash messages
-     *
-     * @return string
-     */
-    protected function generateOutput() {
-        $output = '';
+	/**
+	 * Generates output by using flash messages
+	 *
+	 * @return string
+	 */
+	protected function generateOutput() {
+		$output = '';
 
-        foreach ($this->messageList as $message) {
-            $flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-                $message[2],
-                $message[1],
-                $message[0]);
-            $output .= $flashMessage->render();
-        }
+		foreach ($this->messageList as $message) {
+			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+				'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+				$message[2],
+				$message[1],
+				$message[0]);
+			$output .= $flashMessage->render();
+		}
 
-        return $output;
-    }
+		return $output;
+	}
 
 }

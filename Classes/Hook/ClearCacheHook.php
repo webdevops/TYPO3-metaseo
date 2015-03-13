@@ -34,11 +34,11 @@ namespace Metaseo\Metaseo\Hook;
  */
 class ClearCacheHook {
 
-    /**
-     * Clear cache hook
-     */
-    public function main() {
-        // TODO: clear cache
-    }
+	/**
+	 * Clear cache hook
+	 */
+	public function main() {
+		// TODO: clear cache
+	}
 
 }

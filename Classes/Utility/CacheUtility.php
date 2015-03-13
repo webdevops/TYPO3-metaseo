@@ -34,158 +34,158 @@ namespace Metaseo\Metaseo\Utility;
  */
 class CacheUtility {
 
-    /**
-     * Get cache entry
-     *
-     * @param   integer $pageId     Page UID
-     * @param   string  $section    Cache section
-     * @param   string  $identifier Cache identifier
-     * @return  string
-     */
-    static public function get($pageId, $section, $identifier) {
-        $query = 'SELECT cache_content
-                    FROM tx_metaseo_cache
-                   WHERE page_uid = ' . (int)$pageId . '
-                     AND cache_section = ' . DatabaseUtility::quote($section, 'tx_metaseo_cache') . '
-                     AND cache_identifier = ' . DatabaseUtility::quote($identifier, 'tx_metaseo_cache');
-        $ret = DatabaseUtility::getOne($query);
+	/**
+	 * Get cache entry
+	 *
+	 * @param   integer $pageId     Page UID
+	 * @param   string  $section    Cache section
+	 * @param   string  $identifier Cache identifier
+	 * @return  string
+	 */
+	static public function get($pageId, $section, $identifier) {
+		$query = 'SELECT cache_content
+					FROM tx_metaseo_cache
+				   WHERE page_uid = ' . (int)$pageId . '
+					 AND cache_section = ' . DatabaseUtility::quote($section, 'tx_metaseo_cache') . '
+					 AND cache_identifier = ' . DatabaseUtility::quote($identifier, 'tx_metaseo_cache');
+		$ret = DatabaseUtility::getOne($query);
 
-        return $ret;
-    }
+		return $ret;
+	}
 
-    /**
-     * Set cache entry
-     *
-     * @param   integer $pageId     Page UID
-     * @param   string  $section    Cache section
-     * @param   string  $identifier Cache identifier
-     * @param   string  $value      Cache content
-     * @return  boolean
-     */
-    static public function set($pageId, $section, $identifier, $value) {
+	/**
+	 * Set cache entry
+	 *
+	 * @param   integer $pageId     Page UID
+	 * @param   string  $section    Cache section
+	 * @param   string  $identifier Cache identifier
+	 * @param   string  $value      Cache content
+	 * @return  boolean
+	 */
+	static public function set($pageId, $section, $identifier, $value) {
 
-        try {
-            $query = 'INSERT INTO tx_metaseo_cache (page_uid, cache_section, cache_identifier, cache_content)
-                        VALUES(
-                            ' . (int)$pageId . ',
-                            ' . DatabaseUtility::quote($section, 'tx_metaseo_cache') . ',
-                            ' . DatabaseUtility::quote($identifier, 'tx_metaseo_cache') . ',
-                            ' . DatabaseUtility::quote($value, 'tx_metaseo_cache') . '
-                        )
-                        ON DUPLICATE KEY UPDATE cache_content = ' . DatabaseUtility::quote($value, 'tx_metaseo_cache');
-            DatabaseUtility::exec($query);
-        } catch ( \Exception $e ) {
-            return FALSE;
-        }
+		try {
+			$query = 'INSERT INTO tx_metaseo_cache (page_uid, cache_section, cache_identifier, cache_content)
+						VALUES(
+							' . (int)$pageId . ',
+							' . DatabaseUtility::quote($section, 'tx_metaseo_cache') . ',
+							' . DatabaseUtility::quote($identifier, 'tx_metaseo_cache') . ',
+							' . DatabaseUtility::quote($value, 'tx_metaseo_cache') . '
+						)
+						ON DUPLICATE KEY UPDATE cache_content = ' . DatabaseUtility::quote($value, 'tx_metaseo_cache');
+			DatabaseUtility::exec($query);
+		} catch ( \Exception $e ) {
+			return FALSE;
+		}
 
-        return TRUE;
-    }
+		return TRUE;
+	}
 
-    /**
-     * Get cache list
-     *
-     * @param   string $section    Cache section
-     * @param   string $identifier Cache identifier
-     * @return  array
-     */
-    static public function getList($section, $identifier) {
-        $query = 'SELECT page_uid,
-                         cache_content
-                    FROM tx_metaseo_cache
-                   WHERE cache_section = ' . DatabaseUtility::quote($section, 'tx_metaseo_cache') . '
-                     AND cache_identifier = ' . DatabaseUtility::quote($identifier, 'tx_metaseo_cache');
-        $ret = DatabaseUtility::getList($query);
+	/**
+	 * Get cache list
+	 *
+	 * @param   string $section    Cache section
+	 * @param   string $identifier Cache identifier
+	 * @return  array
+	 */
+	static public function getList($section, $identifier) {
+		$query = 'SELECT page_uid,
+						 cache_content
+					FROM tx_metaseo_cache
+				   WHERE cache_section = ' . DatabaseUtility::quote($section, 'tx_metaseo_cache') . '
+					 AND cache_identifier = ' . DatabaseUtility::quote($identifier, 'tx_metaseo_cache');
+		$ret = DatabaseUtility::getList($query);
 
-        return $ret;
-    }
+		return $ret;
+	}
 
-    /**
-     * Clear cache entry
-     *
-     * @param   integer $pageId     Page UID
-     * @param   string  $section    Cache section
-     * @param   string  $identifier Cache identifier
-     * @return  boolean
-     */
-    static public function remove($pageId, $section, $identifier) {
-        $pageId     = (int)$pageId;
+	/**
+	 * Clear cache entry
+	 *
+	 * @param   integer $pageId     Page UID
+	 * @param   string  $section    Cache section
+	 * @param   string  $identifier Cache identifier
+	 * @return  boolean
+	 */
+	static public function remove($pageId, $section, $identifier) {
+		$pageId     = (int)$pageId;
 
-        try {
-            $query = 'DELETE FROM tx_metaseo_cache
-                            WHERE page_uid = ' . (int)$pageId . '
-                              AND cache_section = ' . DatabaseUtility::quote($section, 'tx_metaseo_cache') . '
-                              AND cache_identifier = ' . DatabaseUtility::quote($identifier, 'tx_metaseo_cache');
-            DatabaseUtility::exec($query);
-        } catch ( \Exception $e ) {
-            return FALSE;
-        }
+		try {
+			$query = 'DELETE FROM tx_metaseo_cache
+							WHERE page_uid = ' . (int)$pageId . '
+							  AND cache_section = ' . DatabaseUtility::quote($section, 'tx_metaseo_cache') . '
+							  AND cache_identifier = ' . DatabaseUtility::quote($identifier, 'tx_metaseo_cache');
+			DatabaseUtility::exec($query);
+		} catch ( \Exception $e ) {
+			return FALSE;
+		}
 
-        return TRUE;
-    }
+		return TRUE;
+	}
 
-    /**
-     * Clear cache by page
-     *
-     * @param   integer $pageId Page UID
-     * @return  boolean
-     */
-    static public function clearByPage($pageId) {
-        try {
-            $query = 'DELETE FROM tx_metaseo_cache
-                            WHERE page_uid = ' . (int)$pageId;
-            DatabaseUtility::exec($query);
-        } catch ( \Exception $e ) {
-            return FALSE;
-        }
+	/**
+	 * Clear cache by page
+	 *
+	 * @param   integer $pageId Page UID
+	 * @return  boolean
+	 */
+	static public function clearByPage($pageId) {
+		try {
+			$query = 'DELETE FROM tx_metaseo_cache
+							WHERE page_uid = ' . (int)$pageId;
+			DatabaseUtility::exec($query);
+		} catch ( \Exception $e ) {
+			return FALSE;
+		}
 
-        return TRUE;
-    }
+		return TRUE;
+	}
 
-    /**
-     * Clear cache by section
-     *
-     * @param   string $section    Cache section
-     * @return  boolean
-     */
-    static public function clearBySection($section) {
-        try {
-            $query = 'DELETE FROM tx_metaseo_cache
-                            WHERE cache_section = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($section, 'tx_metaseo_cache');
-            DatabaseUtility::exec($query);
-        } catch ( \Exception $e ) {
-            return FALSE;
-        }
+	/**
+	 * Clear cache by section
+	 *
+	 * @param   string $section    Cache section
+	 * @return  boolean
+	 */
+	static public function clearBySection($section) {
+		try {
+			$query = 'DELETE FROM tx_metaseo_cache
+							WHERE cache_section = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($section, 'tx_metaseo_cache');
+			DatabaseUtility::exec($query);
+		} catch ( \Exception $e ) {
+			return FALSE;
+		}
 
-        return TRUE;
-    }
+		return TRUE;
+	}
 
-    /**
-     * Clear all cache
-     *
-     * @return boolean
-     */
-    static public function clearAll() {
-        try {
-            $query = 'TRUNCATE tx_metaseo_cache';
-            DatabaseUtility::exec($query);
-        } catch ( \Exception $e ) {
-            return FALSE;
-        }
+	/**
+	 * Clear all cache
+	 *
+	 * @return boolean
+	 */
+	static public function clearAll() {
+		try {
+			$query = 'TRUNCATE tx_metaseo_cache';
+			DatabaseUtility::exec($query);
+		} catch ( \Exception $e ) {
+			return FALSE;
+		}
 
-        return TRUE;
-    }
+		return TRUE;
+	}
 
 
-    /**
-     * Clear expired entries
-     *
-     * @return boolean
-     */
-    static public function expire() {
+	/**
+	 * Clear expired entries
+	 *
+	 * @return boolean
+	 */
+	static public function expire() {
 
-        // not supported currently
+		// not supported currently
 
-        return TRUE;
-    }
+		return TRUE;
+	}
 
 }

@@ -34,54 +34,54 @@ namespace Metaseo\Metaseo\Page;
  */
 class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage {
 
-    // ########################################################################
-    // Attributes
-    // ########################################################################
+	// ########################################################################
+	// Attributes
+	// ########################################################################
 
 
-    // ########################################################################
-    // Methods
-    // ########################################################################
+	// ########################################################################
+	// Methods
+	// ########################################################################
 
-    /**
-     * Build sitemap xml
-     *
-     * @return  string
-     */
-    public function main() {
-        // INIT
-        $this->tsSetup = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.'];
+	/**
+	 * Build sitemap xml
+	 *
+	 * @return  string
+	 */
+	public function main() {
+		// INIT
+		$this->tsSetup = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.'];
 
 		// TODO: prevent output if scheduler tasks is enabled
 
-        // check if sitemap is enabled in root
-        if (!\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap', TRUE)) {
-            $this->showError('Sitemap is not available, please check your configuration [control-center]');
-        }
+		// check if sitemap is enabled in root
+		if (!\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap', TRUE)) {
+			$this->showError('Sitemap is not available, please check your configuration [control-center]');
+		}
 
-        $ret = $this->build();
+		$ret = $this->build();
 
-        return $ret;
-    }
+		return $ret;
+	}
 
-    /**
-     * Build sitemap index or specific page
-     *
-     * @return mixed
-     */
-    protected function build() {
-        $page = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('page');
+	/**
+	 * Build sitemap index or specific page
+	 *
+	 * @return mixed
+	 */
+	protected function build() {
+		$page = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('page');
 
-        /** @var \Metaseo\Metaseo\Sitemap\Generator\XmlGenerator $generator */
-        $generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\XmlGenerator');
+		/** @var \Metaseo\Metaseo\Sitemap\Generator\XmlGenerator $generator */
+		$generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\XmlGenerator');
 
-        if (empty($page) || $page == 'index') {
-            $ret = $generator->sitemapIndex();
-        } else {
-            $ret = $generator->sitemap($page);
-        }
+		if (empty($page) || $page == 'index') {
+			$ret = $generator->sitemapIndex();
+		} else {
+			$ret = $generator->sitemap($page);
+		}
 
-        return $ret;
-    }
+		return $ret;
+	}
 
 }

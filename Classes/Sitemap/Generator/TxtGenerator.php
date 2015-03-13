@@ -34,42 +34,42 @@ namespace Metaseo\Metaseo\Sitemap\Generator;
  */
 class TxtGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator {
 
-    // ########################################################################
-    // Methods
-    // ########################################################################
+	// ########################################################################
+	// Methods
+	// ########################################################################
 
-    /**
-     * Create sitemap index
-     *
-     * @return  string
-     */
-    public function sitemapIndex() {
-        return '';
-    }
+	/**
+	 * Create sitemap index
+	 *
+	 * @return  string
+	 */
+	public function sitemapIndex() {
+		return '';
+	}
 
-    /**
-     * Create sitemap (for page)
-     *
-     * @param   integer $page   Page
-     * @return  string
-     */
-    public function sitemap($page = NULL) {
-        $ret = array();
+	/**
+	 * Create sitemap (for page)
+	 *
+	 * @param   integer $page   Page
+	 * @return  string
+	 */
+	public function sitemap($page = NULL) {
+		$ret = array();
 
-        foreach ($this->sitemapPages as $sitemapPage) {
-            if (empty($this->pages[$sitemapPage['page_uid']])) {
-                // invalid page
-                continue;
-            }
+		foreach ($this->sitemapPages as $sitemapPage) {
+			if (empty($this->pages[$sitemapPage['page_uid']])) {
+				// invalid page
+				continue;
+			}
 
-            //$page = $this->pages[ $sitemapPage['page_uid'] ];
+			//$page = $this->pages[ $sitemapPage['page_uid'] ];
 
-            $ret[] = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($sitemapPage['page_url']);
-        }
+			$ret[] = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($sitemapPage['page_url']);
+		}
 
-        // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('sitemap-text-output', $this, $ret);
+		// Call hook
+		\Metaseo\Metaseo\Utility\GeneralUtility::callHook('sitemap-text-output', $this, $ret);
 
-        return implode("\n", $ret);
-    }
+		return implode("\n", $ret);
+	}
 }

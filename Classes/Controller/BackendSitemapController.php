@@ -34,342 +34,342 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  * @subpackage  metaseo
  */
 class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule {
-    // ########################################################################
-    // Attributes
-    // ########################################################################
+	// ########################################################################
+	// Attributes
+	// ########################################################################
 
-    // ########################################################################
-    // Methods
-    // ########################################################################
+	// ########################################################################
+	// Methods
+	// ########################################################################
 
-    /**
-     * Main action
-     */
-    public function mainAction() {
-        // Init
-        $rootPageList		= \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
-        $rootSettingList	= \Metaseo\Metaseo\Utility\BackendUtility::getRootPageSettingList();
+	/**
+	 * Main action
+	 */
+	public function mainAction() {
+		// Init
+		$rootPageList		= \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
+		$rootSettingList	= \Metaseo\Metaseo\Utility\BackendUtility::getRootPageSettingList();
 
-        // ############################
-        // Fetch
-        // ############################
-        $statsList['sum_total'] = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-            'page_rootpid, COUNT(*) as count',
-            'tx_metaseo_sitemap',
-            '',
-            'page_rootpid',
-            '',
-            '',
-            'page_rootpid'
-        );
+		// ############################
+		// Fetch
+		// ############################
+		$statsList['sum_total'] = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'page_rootpid, COUNT(*) as count',
+			'tx_metaseo_sitemap',
+			'',
+			'page_rootpid',
+			'',
+			'',
+			'page_rootpid'
+		);
 
-        // Fetch domain name
-        $query = 'SELECT uid,
-                         pid,
-                         domainName,
-                         forced
-                    FROM sys_domain
-                   WHERE hidden = 0
-                ORDER BY forced DESC,
-                         sorting';
-        $rowList = DatabaseUtility::getAll($query);
+		// Fetch domain name
+		$query = 'SELECT uid,
+						 pid,
+						 domainName,
+						 forced
+					FROM sys_domain
+				   WHERE hidden = 0
+				ORDER BY forced DESC,
+						 sorting';
+		$rowList = DatabaseUtility::getAll($query);
 
-        $domainList = array();
-        foreach ($rowList as $row) {
-            $pid = $row['pid'];
+		$domainList = array();
+		foreach ($rowList as $row) {
+			$pid = $row['pid'];
 
-            if (!empty($row['forced']) ) {
-                $domainList[$pid] = $row['domainName'];
-            } elseif (empty($domainList[$pid]) ) {
-                $domainList[$pid] = $row['domainName'];
-            }
-        }
+			if (!empty($row['forced']) ) {
+				$domainList[$pid] = $row['domainName'];
+			} elseif (empty($domainList[$pid]) ) {
+				$domainList[$pid] = $row['domainName'];
+			}
+		}
 
-        // #################
-        // Build root page list
-        // #################
-
-
-        unset($page);
-        foreach ($rootPageList as $pageId => &$page) {
-            $stats = array(
-                'sum_pages'		=> 0,
-                'sum_total' 	=> 0,
-                'sum_xml_pages'	=> 0,
-            );
-
-            // Get domain
-            $domain = NULL;
-            if (!empty($domainList[$pageId]) ) {
-                $domain = $domainList[$pageId];
-            }
-
-            // Setting row
-            $settingRow = array();
-            if (!empty($rootSettingList[$pageId]) ) {
-                $settingRow = $rootSettingList[$pageId];
-            }
+		// #################
+		// Build root page list
+		// #################
 
 
-            // Calc stats
-            foreach ($statsList as $statsKey => $statsTmpList) {
-                if (!empty($statsTmpList[$pageId]) ) {
-                    $stats[$statsKey] = $statsTmpList[$pageId]['count'];
-                }
-            }
+		unset($page);
+		foreach ($rootPageList as $pageId => &$page) {
+			$stats = array(
+				'sum_pages'		=> 0,
+				'sum_total' 	=> 0,
+				'sum_xml_pages'	=> 0,
+			);
 
-            // Root statistics
-            $query = 'SELECT COUNT(page_uid)
-                        FROM tx_metaseo_sitemap
-                       WHERE page_rootpid = ' . (int)$pageId;
-            $stats['sum_pages'] = DatabaseUtility::getOne($query);
+			// Get domain
+			$domain = NULL;
+			if (!empty($domainList[$pageId]) ) {
+				$domain = $domainList[$pageId];
+			}
 
-            $pagesPerXmlSitemap = 1000;
-            if (!empty($settingRow['sitemap_page_limit']) ) {
-                $pagesPerXmlSitemap = $settingRow['sitemap_page_limit'];
-            }
-            $sumXmlPages = ceil( $stats['sum_total'] / $pagesPerXmlSitemap ) ;
-            $stats['sum_xml_pages'] = sprintf( $this->translate('sitemap.xml.pages.total'), $sumXmlPages );
-
-
-            $page['stats'] = $stats;
-        }
-        unset($page);
+			// Setting row
+			$settingRow = array();
+			if (!empty($rootSettingList[$pageId]) ) {
+				$settingRow = $rootSettingList[$pageId];
+			}
 
 
-        // check if there is any root page
-        if (empty($rootPageList) ) {
-            $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-                $this->translate('message.warning.noRootPage.message'),
-                $this->translate('message.warning.noRootPage.title'),
-                \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
-            );
-            \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($message);
-        }
+			// Calc stats
+			foreach ($statsList as $statsKey => $statsTmpList) {
+				if (!empty($statsTmpList[$pageId]) ) {
+					$stats[$statsKey] = $statsTmpList[$pageId]['count'];
+				}
+			}
 
-        $this->view->assign('RootPageList', $rootPageList);
-    }
+			// Root statistics
+			$query = 'SELECT COUNT(page_uid)
+						FROM tx_metaseo_sitemap
+					   WHERE page_rootpid = ' . (int)$pageId;
+			$stats['sum_pages'] = DatabaseUtility::getOne($query);
 
-    /**
-     * Sitemap action
-     */
-    public function sitemapAction() {
-        $params  = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_metaseo_metaseometaseo_metaseositemap');
-        $rootPid = $params['pageId'];
+			$pagesPerXmlSitemap = 1000;
+			if (!empty($settingRow['sitemap_page_limit']) ) {
+				$pagesPerXmlSitemap = $settingRow['sitemap_page_limit'];
+			}
+			$sumXmlPages = ceil( $stats['sum_total'] / $pagesPerXmlSitemap ) ;
+			$stats['sum_xml_pages'] = sprintf( $this->translate('sitemap.xml.pages.total'), $sumXmlPages );
 
-        if (empty($rootPid) ) {
-            return '';
-        }
 
-        $rootPageList = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
-        $rootPage	= $rootPageList[$rootPid];
+			$page['stats'] = $stats;
+		}
+		unset($page);
 
-        // ###############################
-        // Fetch
-        // ###############################
-        $pageTsConf = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($rootPid);
 
-        $languageFullList = array(
-            0 => array(
-                'label'	=> $this->translate('default.language'),
-                'flag'	=> '',
-            ),
-        );
+		// check if there is any root page
+		if (empty($rootPageList) ) {
+			$message = $this->objectManager->get('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+				$this->translate('message.warning.noRootPage.message'),
+				$this->translate('message.warning.noRootPage.title'),
+				\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+			);
+			\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($message);
+		}
 
-        if (!empty($pageTsConf['mod.']['SHARED.']['defaultLanguageFlag']) ) {
-            $languageFullList[0]['flag'] = $pageTsConf['mod.']['SHARED.']['defaultLanguageFlag'];
-        }
+		$this->view->assign('RootPageList', $rootPageList);
+	}
 
-        if (!empty($pageTsConf['mod.']['SHARED.']['defaultLanguageLabel'])) {
-            $languageFullList[0]['label'] = $pageTsConf['mod.']['SHARED.']['defaultLanguageLabel'];
-        }
+	/**
+	 * Sitemap action
+	 */
+	public function sitemapAction() {
+		$params  = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_metaseo_metaseometaseo_metaseositemap');
+		$rootPid = $params['pageId'];
 
-        // Fetch domain name
-        $query = 'SELECT uid,
-                         title,
-                         flag
-                    FROM sys_language
-                   WHERE hidden = 0';
-        $rowList = DatabaseUtility::getAll($query);
+		if (empty($rootPid) ) {
+			return '';
+		}
 
-        foreach ($rowList as $row) {
-            $languageFullList[$row['uid']] = array(
-                'label' => htmlspecialchars($row['title']),
-                'flag'  => htmlspecialchars($row['flag']),
-            );
-        }
+		$rootPageList = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
+		$rootPage	= $rootPageList[$rootPid];
 
-        // Langauges
-        $languageList = array();
-        $languageList[] =	array(
-            -1,
-            $this->translate('empty.search.page_language'),
-        );
+		// ###############################
+		// Fetch
+		// ###############################
+		$pageTsConf = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($rootPid);
 
-        foreach ($languageFullList as $langId => $langRow) {
-            $flag = '';
+		$languageFullList = array(
+			0 => array(
+				'label'	=> $this->translate('default.language'),
+				'flag'	=> '',
+			),
+		);
 
-            // Flag (if available)
-            if (!empty($langRow['flag']) ) {
-                $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-' . $langRow['flag'] . ' t3-icon-' . $langRow['flag'] . '"></span>';
-                $flag .= '&nbsp;';
-            }
+		if (!empty($pageTsConf['mod.']['SHARED.']['defaultLanguageFlag']) ) {
+			$languageFullList[0]['flag'] = $pageTsConf['mod.']['SHARED.']['defaultLanguageFlag'];
+		}
 
-            // label
-            $label = $langRow['label'];
+		if (!empty($pageTsConf['mod.']['SHARED.']['defaultLanguageLabel'])) {
+			$languageFullList[0]['label'] = $pageTsConf['mod.']['SHARED.']['defaultLanguageLabel'];
+		}
 
-            $languageList[] = array(
-                $langId,
-                $label,
-                $flag
-            );
-        }
+		// Fetch domain name
+		$query = 'SELECT uid,
+						 title,
+						 flag
+					FROM sys_language
+				   WHERE hidden = 0';
+		$rowList = DatabaseUtility::getAll($query);
 
-        // Depth
-        $depthList = array();
-        $depthList[] =	array(
-            -1,
-            $this->translate('empty.search.page_depth'),
-        );
+		foreach ($rowList as $row) {
+			$languageFullList[$row['uid']] = array(
+				'label' => htmlspecialchars($row['title']),
+				'flag'  => htmlspecialchars($row['flag']),
+			);
+		}
+
+		// Langauges
+		$languageList = array();
+		$languageList[] =	array(
+			-1,
+			$this->translate('empty.search.page_language'),
+		);
+
+		foreach ($languageFullList as $langId => $langRow) {
+			$flag = '';
+
+			// Flag (if available)
+			if (!empty($langRow['flag']) ) {
+				$flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-' . $langRow['flag'] . ' t3-icon-' . $langRow['flag'] . '"></span>';
+				$flag .= '&nbsp;';
+			}
+
+			// label
+			$label = $langRow['label'];
+
+			$languageList[] = array(
+				$langId,
+				$label,
+				$flag
+			);
+		}
+
+		// Depth
+		$depthList = array();
+		$depthList[] =	array(
+			-1,
+			$this->translate('empty.search.page_depth'),
+		);
 
 		$query = 'SELECT DISTINCT page_depth
 					FROM tx_metaseo_sitemap
 				   WHERE page_rootpid = ' . (int)$rootPid;
-        foreach (DatabaseUtility::getCol($query) as $depth) {
-            $depthList[] = array(
-                $depth,
-                $depth,
-            );
-        }
+		foreach (DatabaseUtility::getCol($query) as $depth) {
+			$depthList[] = array(
+				$depth,
+				$depth,
+			);
+		}
 
-        // ###############################
-        // Page/JS
-        // ###############################
+		// ###############################
+		// Page/JS
+		// ###############################
 
-        // FIXME: do we really need a template engine here?
-        $this->template = $this->objectManager->get('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
-        $pageRenderer = $this->template->getPageRenderer();
+		// FIXME: do we really need a template engine here?
+		$this->template = $this->objectManager->get('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$pageRenderer = $this->template->getPageRenderer();
 
-        $basePathJs  = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript';
-        $basePathCss = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/Css';
+		$basePathJs  = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript';
+		$basePathCss = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/Css';
 
-        $pageRenderer->addJsFile($basePathJs.'/MetaSeo.js');
-        $pageRenderer->addJsFile($basePathJs.'/Ext.ux.plugin.FitToParent.js');
-        $pageRenderer->addJsFile($basePathJs.'/MetaSeo.sitemap.js');
-        $pageRenderer->addCssFile($basePathCss.'/Default.css');
+		$pageRenderer->addJsFile($basePathJs . '/MetaSeo.js');
+		$pageRenderer->addJsFile($basePathJs . '/Ext.ux.plugin.FitToParent.js');
+		$pageRenderer->addJsFile($basePathJs . '/MetaSeo.sitemap.js');
+		$pageRenderer->addCssFile($basePathCss . '/Default.css');
 
 
 
-        $metaSeoConf = array(
-            'sessionToken'      => $this->sessionToken('metaseo_metaseo_backend_ajax_sitemapajax'),
-            'ajaxController'    => $this->ajaxControllerUrl('tx_metaseo_backend_ajax::sitemap'),
-            'pid'               => (int)$rootPid,
-            'renderTo'          => 'tx-metaseo-sitemap-grid',
-            'pagingSize'        => 50,
+		$metaSeoConf = array(
+			'sessionToken'      => $this->sessionToken('metaseo_metaseo_backend_ajax_sitemapajax'),
+			'ajaxController'    => $this->ajaxControllerUrl('tx_metaseo_backend_ajax::sitemap'),
+			'pid'               => (int)$rootPid,
+			'renderTo'          => 'tx-metaseo-sitemap-grid',
+			'pagingSize'        => 50,
 
-            'sortField'         => 'crdate',
-            'sortDir'           => 'DESC',
+			'sortField'         => 'crdate',
+			'sortDir'           => 'DESC',
 
-            'filterIcon'        => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-tree-search-open'),
+			'filterIcon'        => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-tree-search-open'),
 
-            'dataLanguage'      => $languageList,
-            'dataDepth'         => $depthList,
+			'dataLanguage'      => $languageList,
+			'dataDepth'         => $depthList,
 
-            'criteriaFulltext'       => '',
-            'criteriaPageUid'        => '',
-            'criteriaPageLanguage'   => '',
-            'criteriaPageDepth'      => '',
-            'criteriaIsBlacklisted'  => 0,
+			'criteriaFulltext'       => '',
+			'criteriaPageUid'        => '',
+			'criteriaPageLanguage'   => '',
+			'criteriaPageDepth'      => '',
+			'criteriaIsBlacklisted'  => 0,
 
-            'languageFullList'      => $languageFullList,
-        );
+			'languageFullList'      => $languageFullList,
+		);
 
-        $metaSeoLang = array(
-            'title' => 'title.sitemap.list',
+		$metaSeoLang = array(
+			'title' => 'title.sitemap.list',
 
-            'pagingMessage' => 'pager.results',
-            'pagingEmpty'   => 'pager.noresults',
+			'pagingMessage' => 'pager.results',
+			'pagingEmpty'   => 'pager.noresults',
 
-            'sitemap_page_uid'            => 'header.sitemap.page_uid',
-            'sitemap_page_url'            => 'header.sitemap.page_url',
-            'sitemap_page_type'           => 'header.sitemap.page_type',
-            'sitemap_page_depth'          => 'header.sitemap.page_depth',
-            'sitemap_page_language'       => 'header.sitemap.page_language',
-            'sitemap_page_is_blacklisted' => 'header.sitemap.page_is_blacklisted',
+			'sitemap_page_uid'            => 'header.sitemap.page_uid',
+			'sitemap_page_url'            => 'header.sitemap.page_url',
+			'sitemap_page_type'           => 'header.sitemap.page_type',
+			'sitemap_page_depth'          => 'header.sitemap.page_depth',
+			'sitemap_page_language'       => 'header.sitemap.page_language',
+			'sitemap_page_is_blacklisted' => 'header.sitemap.page_is_blacklisted',
 
-            'page_tx_metaseo_is_exclude'  => 'header.sitemap.page_tx_metaseo_is_exclude',
+			'page_tx_metaseo_is_exclude'  => 'header.sitemap.page_tx_metaseo_is_exclude',
 
-            'sitemap_tstamp' => 'header.sitemap.tstamp',
-            'sitemap_crdate' => 'header.sitemap.crdate',
+			'sitemap_tstamp' => 'header.sitemap.tstamp',
+			'sitemap_crdate' => 'header.sitemap.crdate',
 
-            'labelSearchFulltext' => 'label.search.fulltext',
-            'emptySearchFulltext' => 'empty.search.fulltext',
+			'labelSearchFulltext' => 'label.search.fulltext',
+			'emptySearchFulltext' => 'empty.search.fulltext',
 
-            'labelSearchPageUid' => 'label.search.page_uid',
-            'emptySearchPageUid' => 'empty.search.page_uid',
+			'labelSearchPageUid' => 'label.search.page_uid',
+			'emptySearchPageUid' => 'empty.search.page_uid',
 
-            'labelSearchPageLanguage' => 'label.search.page_language',
-            'emptySearchPageLanguage' => 'empty.search.page_language',
+			'labelSearchPageLanguage' => 'label.search.page_language',
+			'emptySearchPageLanguage' => 'empty.search.page_language',
 
-            'labelSearchPageDepth' => 'label.search.page_depth',
-            'emptySearchPageDepth' => 'empty.search.page_depth',
+			'labelSearchPageDepth' => 'label.search.page_depth',
+			'emptySearchPageDepth' => 'empty.search.page_depth',
 
-            'labelSearchIsBlacklisted' => 'label.search.is_blacklisted',
+			'labelSearchIsBlacklisted' => 'label.search.is_blacklisted',
 
-            'labelYes' => 'label.yes',
-            'labelNo'  => 'label.no',
+			'labelYes' => 'label.yes',
+			'labelNo'  => 'label.no',
 
-            'buttonYes' => 'button.yes',
-            'buttonNo'  => 'button.no',
+			'buttonYes' => 'button.yes',
+			'buttonNo'  => 'button.no',
 
-            'buttonDelete'     => 'button.delete',
-            'buttonDeleteHint' => 'button.delete.hint',
+			'buttonDelete'     => 'button.delete',
+			'buttonDeleteHint' => 'button.delete.hint',
 
-            'buttonBlacklist'     => 'button.blacklist',
-            'buttonBlacklistHint' => 'button.blacklist.hint',
-            'buttonWhitelist'     => 'button.whitelist',
-            'buttonWhitelistHint' => 'button.whitelist.hint',
+			'buttonBlacklist'     => 'button.blacklist',
+			'buttonBlacklistHint' => 'button.blacklist.hint',
+			'buttonWhitelist'     => 'button.whitelist',
+			'buttonWhitelistHint' => 'button.whitelist.hint',
 
-            'buttonDeleteAll' => 'button.delete_all',
+			'buttonDeleteAll' => 'button.delete_all',
 
-            'messageDeleteTitle'    => 'message.delete.title',
-            'messageDeleteQuestion' => 'message.delete.question',
+			'messageDeleteTitle'    => 'message.delete.title',
+			'messageDeleteQuestion' => 'message.delete.question',
 
-            'messageDeleteAllTitle'    => 'message.delete_all.title',
-            'messageDeleteAllQuestion' => 'message.delete_all.question',
+			'messageDeleteAllTitle'    => 'message.delete_all.title',
+			'messageDeleteAllQuestion' => 'message.delete_all.question',
 
-            'messageBlacklistTitle'    => 'message.blacklist.title',
-            'messageBlacklistQuestion' => 'message.blacklist.question',
+			'messageBlacklistTitle'    => 'message.blacklist.title',
+			'messageBlacklistQuestion' => 'message.blacklist.question',
 
-            'messageWhitelistTitle'    => 'message.whitelist.title',
-            'messageWhitelistQuestion' => 'message.whitelist.question',
+			'messageWhitelistTitle'    => 'message.whitelist.title',
+			'messageWhitelistQuestion' => 'message.whitelist.question',
 
-            'errorDeleteFailedMessage' => 'message.delete.failed_body',
+			'errorDeleteFailedMessage' => 'message.delete.failed_body',
 
-            'errorNoSelectedItemsBody' => 'message.no_selected_items',
+			'errorNoSelectedItemsBody' => 'message.no_selected_items',
 
-            'today'     => 'today',
-            'yesterday' => 'yesterday',
+			'today'     => 'today',
+			'yesterday' => 'yesterday',
 
-            'sitemapPageType' => array(
-                0 => 'sitemap.pagetype.0',
-                1 => 'sitemap.pagetype.1',
-            ),
-        );
+			'sitemapPageType' => array(
+				0 => 'sitemap.pagetype.0',
+				1 => 'sitemap.pagetype.1',
+			),
+		);
 
-        // translate list
-        $metaSeoLang = $this->translateList($metaSeoLang);
-        $metaSeoLang['title'] = sprintf( $metaSeoLang['title'], $rootPage['title'], $rootPid );
+		// translate list
+		$metaSeoLang = $this->translateList($metaSeoLang);
+		$metaSeoLang['title'] = sprintf( $metaSeoLang['title'], $rootPage['title'], $rootPid );
 
-        // Include Ext JS inline code
-        $pageRenderer->addJsInlineCode(
-            'MetaSeo.sitemap',
-            'Ext.namespace("MetaSeo.sitemap");
-            MetaSeo.sitemap.conf      = ' . json_encode($metaSeoConf) . ';
-            MetaSeo.sitemap.conf.lang = ' . json_encode($metaSeoLang) . ';
-        ');
+		// Include Ext JS inline code
+		$pageRenderer->addJsInlineCode(
+			'MetaSeo.sitemap',
+			'Ext.namespace("MetaSeo.sitemap");
+			MetaSeo.sitemap.conf      = ' . json_encode($metaSeoConf) . ';
+			MetaSeo.sitemap.conf.lang = ' . json_encode($metaSeoLang) . ';
+		');
 
-    }
+	}
 
 
 }

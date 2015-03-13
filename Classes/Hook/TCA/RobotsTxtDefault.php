@@ -34,84 +34,84 @@ namespace Metaseo\Metaseo\Hook\TCA;
  */
 class RobotsTxtDefault {
 
-    /**
-     * TYPO3 Object manager
-     *
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-     */
-    protected $objectManager;
+	/**
+	 * TYPO3 Object manager
+	 *
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+	 */
+	protected $objectManager;
 
-    /**
-     * TYPO3 configuration manager
-     *
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager
-     */
-    protected $configurationManager;
+	/**
+	 * TYPO3 configuration manager
+	 *
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager
+	 */
+	protected $configurationManager;
 
-    /**
-     * TYPO3 Content object renderer
-     *
-     * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
-     */
-    protected $cObj;
+	/**
+	 * TYPO3 Content object renderer
+	 *
+	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+	 */
+	protected $cObj;
 
-    /**
-     * Render default Robots.txt from TypoScript Setup
-     *
-     * @param  array $data TCE Information array
-     * @return string
-     */
-    public function main($data) {
-        // ############################
-        // Init
-        // ############################
+	/**
+	 * Render default Robots.txt from TypoScript Setup
+	 *
+	 * @param  array $data TCE Information array
+	 * @return string
+	 */
+	public function main($data) {
+		// ############################
+		// Init
+		// ############################
 
-        /** @var \TYPO3\CMS\Extbase\Object\ObjectManager objectManager */
-        $this->objectManager        = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		/** @var \TYPO3\CMS\Extbase\Object\ObjectManager objectManager */
+		$this->objectManager        = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 
-        /** @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager configurationManager */
-        $this->configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
+		/** @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager configurationManager */
+		$this->configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
 
-        /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer cObj */
-        $this->cObj                 = $this->objectManager->get('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+		/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer cObj */
+		$this->cObj                 = $this->objectManager->get('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 
-        // ############################
-        // Init TSFE
-        // ############################
-        $rootPageId = $data['row']['pid'];
+		// ############################
+		// Init TSFE
+		// ############################
+		$rootPageId = $data['row']['pid'];
 
-        /** @var \TYPO3\CMS\Core\TimeTracker\NullTimeTracker $timeTracker */
-        $timeTracker = $this->objectManager->get('TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker');
+		/** @var \TYPO3\CMS\Core\TimeTracker\NullTimeTracker $timeTracker */
+		$timeTracker = $this->objectManager->get('TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker');
 
-        $GLOBALS['TT'] = $timeTracker;
-        $GLOBALS['TT']->start();
+		$GLOBALS['TT'] = $timeTracker;
+		$GLOBALS['TT']->start();
 
-        /** @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $tsfeController */
-        $tsfeController = $this->objectManager->get(
-            'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
-            $GLOBALS['TYPO3_CONF_VARS'],
-            $rootPageId,
-            0
-        );
+		/** @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $tsfeController */
+		$tsfeController = $this->objectManager->get(
+			'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
+			$GLOBALS['TYPO3_CONF_VARS'],
+			$rootPageId,
+			0
+		);
 
-        $GLOBALS['TSFE'] = $tsfeController;
+		$GLOBALS['TSFE'] = $tsfeController;
 
-        // ############################
-        // Render default robots.txt content
-        // ############################
+		// ############################
+		// Render default robots.txt content
+		// ############################
 
-        // Fetch TypoScript setup
-        $tsSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::CONFIGURATION_TYPE_FULL_TYPOSCRIPT, 'metaseo', 'plugin');
+		// Fetch TypoScript setup
+		$tsSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::CONFIGURATION_TYPE_FULL_TYPOSCRIPT, 'metaseo', 'plugin');
 
-        $content = '';
-        if (!empty($tsSetup['plugin.']['metaseo.']['robotsTxt.'])) {
-            $content = $this->cObj->cObjGetSingle($tsSetup['plugin.']['metaseo.']['robotsTxt.']['default'], $tsSetup['plugin.']['metaseo.']['robotsTxt.']['default.']);
-        }
+		$content = '';
+		if (!empty($tsSetup['plugin.']['metaseo.']['robotsTxt.'])) {
+			$content = $this->cObj->cObjGetSingle($tsSetup['plugin.']['metaseo.']['robotsTxt.']['default'], $tsSetup['plugin.']['metaseo.']['robotsTxt.']['default.']);
+		}
 
-        $content = htmlspecialchars($content);
-        $content = nl2br($content);
+		$content = htmlspecialchars($content);
+		$content = nl2br($content);
 
-        return $content;
-    }
+		return $content;
+	}
 
 }

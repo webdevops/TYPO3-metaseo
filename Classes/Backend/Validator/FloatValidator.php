@@ -33,13 +33,13 @@ namespace Metaseo\Metaseo\Backend\Validator;
  */
 class FloatValidator {
 
-    /**
-     * Returns Javscript validation function body
-     *
-     * @return string
-     */
-    public function returnFieldJS() {
-        return '
+	/**
+	 * Returns Javscript validation function body
+	 *
+	 * @return string
+	 */
+	public function returnFieldJS() {
+		return '
 value = value.replace(/[^-0-9,.]/g,\'\');
 
 var ret = 0;
@@ -57,17 +57,17 @@ if (isNaN(ret) ) {
 
 return ret;
 ';
-    }
+	}
 
-    /**
-     * Validate number on serverside
-     *
-     * @param    string $value    Value
-     * @param    mixed $is_in    Is in value (config)
-     * @param    mixed $set    Set
-     * @return    float
-     */
-    function evaluateFieldValue($value, $is_in, &$set) {
-        return (float)$value;
-    }
+	/**
+	 * Validate number on serverside
+	 *
+	 * @param    string $value    Value
+	 * @param    mixed $is_in    Is in value (config)
+	 * @param    mixed $set    Set
+	 * @return    float
+	 */
+	function evaluateFieldValue($value, $is_in, &$set) {
+		return (float)$value;
+	}
 }

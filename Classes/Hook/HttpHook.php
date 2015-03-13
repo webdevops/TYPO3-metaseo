@@ -34,90 +34,90 @@ namespace Metaseo\Metaseo\Hook;
  */
 class HttpHook {
 
-    /**
-     * Add HTTP Headers
-     */
-    public function main() {
-        // INIT
-        $tsSetup  = $GLOBALS['TSFE']->tmpl->setup;
-        $headers  = array();
+	/**
+	 * Add HTTP Headers
+	 */
+	public function main() {
+		// INIT
+		$tsSetup  = $GLOBALS['TSFE']->tmpl->setup;
+		$headers  = array();
 
-        // dont send any headers if headers are already sent
-        if (headers_sent()) {
-            return;
-        }
+		// dont send any headers if headers are already sent
+		if (headers_sent()) {
+			return;
+		}
 
-        if (!empty($GLOBALS['TSFE']->tmpl->loaded)) {
-            // ##################################
-            // Non-Cached page
-            // ##################################
+		if (!empty($GLOBALS['TSFE']->tmpl->loaded)) {
+			// ##################################
+			// Non-Cached page
+			// ##################################
 
-            if (!empty($tsSetup['plugin.']['metaseo.']['metaTags.'])) {
-                $tsSetupSeo = $tsSetup['plugin.']['metaseo.']['metaTags.'];
+			if (!empty($tsSetup['plugin.']['metaseo.']['metaTags.'])) {
+				$tsSetupSeo = $tsSetup['plugin.']['metaseo.']['metaTags.'];
 
-                // ##################################
-                // W3C P3P Tags
-                // ##################################
-                $p3pCP        = NULL;
-                $p3pPolicyUrl = NULL;
+				// ##################################
+				// W3C P3P Tags
+				// ##################################
+				$p3pCP        = NULL;
+				$p3pPolicyUrl = NULL;
 
-                if (!empty($tsSetupSeo['p3pCP'])) {
-                    $p3pCP = $tsSetupSeo['p3pCP'];
-                }
+				if (!empty($tsSetupSeo['p3pCP'])) {
+					$p3pCP = $tsSetupSeo['p3pCP'];
+				}
 
-                if (!empty($tsSetupSeo['p3pPolicyUrl'])) {
-                    $p3pPolicyUrl = $tsSetupSeo['p3pPolicyUrl'];
-                }
+				if (!empty($tsSetupSeo['p3pPolicyUrl'])) {
+					$p3pPolicyUrl = $tsSetupSeo['p3pPolicyUrl'];
+				}
 
-                if (!empty($p3pCP) || !empty($p3pPolicyUrl)) {
-                    $p3pHeaders = array();
+				if (!empty($p3pCP) || !empty($p3pPolicyUrl)) {
+					$p3pHeaders = array();
 
-                    if (!empty($p3pCP)) {
-                        $p3pHeader[] = 'CP="' . $p3pCP . '"';
-                    }
+					if (!empty($p3pCP)) {
+						$p3pHeader[] = 'CP="' . $p3pCP . '"';
+					}
 
-                    if (!empty($p3pPolicyUrl)) {
-                        $p3pHeader[] = 'policyref="' . $p3pPolicyUrl . '"';
-                    }
+					if (!empty($p3pPolicyUrl)) {
+						$p3pHeader[] = 'policyref="' . $p3pPolicyUrl . '"';
+					}
 
-                    $headers['P3P'] = implode(' ', $p3pHeader);
+					$headers['P3P'] = implode(' ', $p3pHeader);
 
-                    // cache informations
-                    $curentTemplate     = end($GLOBALS['TSFE']->tmpl->hierarchyInfo);
-                    $currentTemplatePid = $curentTemplate['pid'];
-                    \Metaseo\Metaseo\Utility\CacheUtility::set($currentTemplatePid, 'http', 'p3p', $headers['P3P']);
-                }
-            }
+					// cache informations
+					$curentTemplate     = end($GLOBALS['TSFE']->tmpl->hierarchyInfo);
+					$currentTemplatePid = $curentTemplate['pid'];
+					\Metaseo\Metaseo\Utility\CacheUtility::set($currentTemplatePid, 'http', 'p3p', $headers['P3P']);
+				}
+			}
 
-        } else {
-            // #####################################
-            // Cached page
-            // #####################################
-            // build root pid list
-            $rootPidList = array();
-            foreach ($GLOBALS['TSFE']->rootLine as $pageRow) {
-                $rootPidList[$pageRow['uid']] = $pageRow['uid'];
-            }
+		} else {
+			// #####################################
+			// Cached page
+			// #####################################
+			// build root pid list
+			$rootPidList = array();
+			foreach ($GLOBALS['TSFE']->rootLine as $pageRow) {
+				$rootPidList[$pageRow['uid']] = $pageRow['uid'];
+			}
 
-            // fetch from cache
-            $cacheList = \Metaseo\Metaseo\Utility\CacheUtility::getList('http', 'p3p');
-            foreach ($rootPidList as $pageId) {
-                if (!empty($cacheList[$pageId])) {
-                    $headers['P3P'] = $cacheList[$pageId];
-                    break;
-                }
-            }
-        }
+			// fetch from cache
+			$cacheList = \Metaseo\Metaseo\Utility\CacheUtility::getList('http', 'p3p');
+			foreach ($rootPidList as $pageId) {
+				if (!empty($cacheList[$pageId])) {
+					$headers['P3P'] = $cacheList[$pageId];
+					break;
+				}
+			}
+		}
 
-        // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('httpheader-output', $this, $headers);
+		// Call hook
+		\Metaseo\Metaseo\Utility\GeneralUtility::callHook('httpheader-output', $this, $headers);
 
-        // #####################################
-        // Sender headers
-        // #####################################
-        if (!empty($headers['P3P'])) {
-            header('P3P: ' . $headers['P3P']);
-        }
+		// #####################################
+		// Sender headers
+		// #####################################
+		if (!empty($headers['P3P'])) {
+			header('P3P: ' . $headers['P3P']);
+		}
 
-    }
+	}
 }

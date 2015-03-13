@@ -34,61 +34,61 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  */
 class SitemapXmlTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask {
 
-    // ########################################################################
-    // Attributes
-    // ########################################################################
+	// ########################################################################
+	// Attributes
+	// ########################################################################
 
-    /**
-     * Sitemap base directory
-     *
-     * @var string
-     */
-    protected $sitemapDir = 'uploads/tx_metaseo/sitemap_xml';
+	/**
+	 * Sitemap base directory
+	 *
+	 * @var string
+	 */
+	protected $sitemapDir = 'uploads/tx_metaseo/sitemap_xml';
 
-    // ########################################################################
-    // Methods
-    // ########################################################################
+	// ########################################################################
+	// Methods
+	// ########################################################################
 
-    /**
-     * Build sitemap
-     *
-     * @param   integer $rootPageId Root page id
-     * @param   integer $languageId Language id
-     * @return  boolean
-     */
-    protected function buildSitemap($rootPageId, $languageId) {
-        if ($languageId !== NULL) {
-            // Language lock enabled
-            $rootPageLinkTempalte = 'sitemap-r%s-l%s-p###PAGE###.xml.gz';
-            $sitemapIndexFileName = 'index-r%s-l%s.xml.gz';
-            $sitemapPageFileName  = 'sitemap-r%s-l%s-p%s.xml.gz';
-        } else {
-            $rootPageLinkTempalte = 'sitemap-r%s-p###PAGE###.xml.gz';
-            $sitemapIndexFileName = 'index-r%s.xml.gz';
-            $sitemapPageFileName  = 'sitemap-r%s-p%3$s.xml.gz';
-        }
+	/**
+	 * Build sitemap
+	 *
+	 * @param   integer $rootPageId Root page id
+	 * @param   integer $languageId Language id
+	 * @return  boolean
+	 */
+	protected function buildSitemap($rootPageId, $languageId) {
+		if ($languageId !== NULL) {
+			// Language lock enabled
+			$rootPageLinkTempalte = 'sitemap-r%s-l%s-p###PAGE###.xml.gz';
+			$sitemapIndexFileName = 'index-r%s-l%s.xml.gz';
+			$sitemapPageFileName  = 'sitemap-r%s-l%s-p%s.xml.gz';
+		} else {
+			$rootPageLinkTempalte = 'sitemap-r%s-p###PAGE###.xml.gz';
+			$sitemapIndexFileName = 'index-r%s.xml.gz';
+			$sitemapPageFileName  = 'sitemap-r%s-p%3$s.xml.gz';
+		}
 
-        // Init builder
-        $generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\XmlGenerator');
-        $fileName = sprintf($rootPageLinkTempalte, $rootPageId, $languageId);
-        $generator->indexPathTemplate = $this->generateSitemapLinkTemplate($fileName);
+		// Init builder
+		$generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\XmlGenerator');
+		$fileName = sprintf($rootPageLinkTempalte, $rootPageId, $languageId);
+		$generator->indexPathTemplate = $this->generateSitemapLinkTemplate($fileName);
 
-        // Get list of pages
-        $pageCount = $generator->pageCount();
+		// Get list of pages
+		$pageCount = $generator->pageCount();
 
-        // Index
-        $content  = $generator->sitemapIndex();
-        $fileName = sprintf($sitemapIndexFileName, $rootPageId, $languageId);
-        $this->writeToFile(PATH_site . '/' . $this->sitemapDir . '/' . $fileName, $content);
+		// Index
+		$content  = $generator->sitemapIndex();
+		$fileName = sprintf($sitemapIndexFileName, $rootPageId, $languageId);
+		$this->writeToFile(PATH_site . '/' . $this->sitemapDir . '/' . $fileName, $content);
 
-        // Page
-        for ($i = 0; $i < $pageCount; $i++) {
-            $content  = $generator->sitemap($i);
-            $fileName = sprintf($sitemapPageFileName, $rootPageId, $languageId, $i);
-            $this->writeToFile(PATH_site . '/' . $this->sitemapDir . '/' . $fileName, $content);
-        }
+		// Page
+		for ($i = 0; $i < $pageCount; $i++) {
+			$content  = $generator->sitemap($i);
+			$fileName = sprintf($sitemapPageFileName, $rootPageId, $languageId, $i);
+			$this->writeToFile(PATH_site . '/' . $this->sitemapDir . '/' . $fileName, $content);
+		}
 
-        return TRUE;
-    }
+		return TRUE;
+	}
 
 }

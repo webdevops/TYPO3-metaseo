@@ -35,100 +35,100 @@ use Metaseo\Metaseo\Utility\RootPageUtility;
  */
 class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController {
 
-    /**
-     * Get whole list of sitemap entries
-     *
-     * @return  string
-     */
-    public function garbageCollectorCommand() {
-        // Expire sitemap entries
-        \Metaseo\Metaseo\Utility\SitemapUtility::expire();
+	/**
+	 * Get whole list of sitemap entries
+	 *
+	 * @return  string
+	 */
+	public function garbageCollectorCommand() {
+		// Expire sitemap entries
+		\Metaseo\Metaseo\Utility\SitemapUtility::expire();
 
-        // Expire cache entries
-        \Metaseo\Metaseo\Utility\CacheUtility::expire();
-    }
+		// Expire cache entries
+		\Metaseo\Metaseo\Utility\CacheUtility::expire();
+	}
 
-    /**
-     * Clear sitemap for one root page
-     *
-     * @param   string $rootPageId Site root page id or domain
-     * @return  string
-     */
-    public function clearSitemapCommand($rootPageId) {
-        $rootPageId = $this->getRootPageIdFromId($rootPageId);
+	/**
+	 * Clear sitemap for one root page
+	 *
+	 * @param   string $rootPageId Site root page id or domain
+	 * @return  string
+	 */
+	public function clearSitemapCommand($rootPageId) {
+		$rootPageId = $this->getRootPageIdFromId($rootPageId);
 
-        if ($rootPageId !== NULL ) {
-            $domain = RootPageUtility::getDomain($rootPageId);
+		if ($rootPageId !== NULL ) {
+			$domain = RootPageUtility::getDomain($rootPageId);
 
-            $query = 'DELETE FROM tx_metaseo_sitemap
-                       WHERE page_rootpid = ' . DatabaseUtility::quote($rootPageId, 'tx_metaseo_sitemap') . '
-                         AND is_blacklisted = 0';
-            DatabaseUtility::exec($query);
+			$query = 'DELETE FROM tx_metaseo_sitemap
+					   WHERE page_rootpid = ' . DatabaseUtility::quote($rootPageId, 'tx_metaseo_sitemap') . '
+						 AND is_blacklisted = 0';
+			DatabaseUtility::exec($query);
 
-            ConsoleUtility::writeLine('Sitemap cleared');
-        } else {
-            ConsoleUtility::writeErrorLine('No such root page found');
-            ConsoleUtility::teminate(1);
-        }
-    }
+			ConsoleUtility::writeLine('Sitemap cleared');
+		} else {
+			ConsoleUtility::writeErrorLine('No such root page found');
+			ConsoleUtility::teminate(1);
+		}
+	}
 
-    /**
-     * Get whole list of sitemap entries
-     *
-     * @param   string $rootPageId Site root page id or domain
-     * @return  string
-     */
-    public function sitemapCommand($rootPageId) {
-        $rootPageId = $this->getRootPageIdFromId($rootPageId);
+	/**
+	 * Get whole list of sitemap entries
+	 *
+	 * @param   string $rootPageId Site root page id or domain
+	 * @return  string
+	 */
+	public function sitemapCommand($rootPageId) {
+		$rootPageId = $this->getRootPageIdFromId($rootPageId);
 
-        if ($rootPageId !== NULL ) {
-            $domain = RootPageUtility::getDomain($rootPageId);
+		if ($rootPageId !== NULL ) {
+			$domain = RootPageUtility::getDomain($rootPageId);
 
-            $query = 'SELECT page_url
-                        FROM tx_metaseo_sitemap
-                       WHERE page_rootpid = ' . DatabaseUtility::quote($rootPageId, 'tx_metaseo_sitemap') . '
-                         AND is_blacklisted = 0';
-            $urlList = DatabaseUtility::getCol($query);
+			$query = 'SELECT page_url
+						FROM tx_metaseo_sitemap
+					   WHERE page_rootpid = ' . DatabaseUtility::quote($rootPageId, 'tx_metaseo_sitemap') . '
+						 AND is_blacklisted = 0';
+			$urlList = DatabaseUtility::getCol($query);
 
-            foreach ($urlList as $url) {
-                if ($domain ) {
-                    $url = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($url, $domain);
-                }
+			foreach ($urlList as $url) {
+				if ($domain ) {
+					$url = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($url, $domain);
+				}
 
-                ConsoleUtility::writeLine($url);
-            }
-        } else {
-            ConsoleUtility::writeErrorLine('No such root page found');
-            ConsoleUtility::teminate(1);
-        }
-    }
+				ConsoleUtility::writeLine($url);
+			}
+		} else {
+			ConsoleUtility::writeErrorLine('No such root page found');
+			ConsoleUtility::teminate(1);
+		}
+	}
 
 
-    /**
-     * Detect root page from id (either PID or sys_domain)
-     *
-     * @param  $var
-     * @return int|mixed|null
-     */
-    protected function getRootPageIdFromId($var) {
-        $ret = NULL;
+	/**
+	 * Detect root page from id (either PID or sys_domain)
+	 *
+	 * @param  $var
+	 * @return int|mixed|null
+	 */
+	protected function getRootPageIdFromId($var) {
+		$ret = NULL;
 
-        if (is_numeric($var) ) {
-            // TODO: check if var is a valid root page
-            $ret = (int)$var;
-        } else {
-            $query = 'SELECT pid
-                        FROM sys_domain
-                       WHERE domainName = ' . DatabaseUtility::quote($var, 'sys_domain') . '
-                         AND hidden = 0';
-            $pid = DatabaseUtility::getOne($query);
+		if (is_numeric($var) ) {
+			// TODO: check if var is a valid root page
+			$ret = (int)$var;
+		} else {
+			$query = 'SELECT pid
+						FROM sys_domain
+					   WHERE domainName = ' . DatabaseUtility::quote($var, 'sys_domain') . '
+						 AND hidden = 0';
+			$pid = DatabaseUtility::getOne($query);
 
-            if (!empty($pid ) ) {
-                $ret = $pid;
-            }
-        }
+			if (!empty($pid ) ) {
+				$ret = $pid;
+			}
+		}
 
-        return $ret;
-    }
+		return $ret;
+	}
 
 }

@@ -36,47 +36,47 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  */
 class BackendUtility {
 
-    /**
-     * Fetch list of root pages (is_siteroot) in TYPO3 (cached)
-     *
-     * @return  array
-     */
-    public static function getRootPageList() {
-        static $cache = NULL;
+	/**
+	 * Fetch list of root pages (is_siteroot) in TYPO3 (cached)
+	 *
+	 * @return  array
+	 */
+	public static function getRootPageList() {
+		static $cache = NULL;
 
-        if ($cache === NULL) {
-            $query = 'SELECT uid,
-                             pid,
-                             title
-                        FROM pages
-                       WHERE is_siteroot = 1
-                         AND deleted = 0';
-            $cache = DatabaseUtility::getAllWithIndex($query, 'uid');
-        }
+		if ($cache === NULL) {
+			$query = 'SELECT uid,
+							 pid,
+							 title
+						FROM pages
+					   WHERE is_siteroot = 1
+						 AND deleted = 0';
+			$cache = DatabaseUtility::getAllWithIndex($query, 'uid');
+		}
 
-        return $cache;
-    }
+		return $cache;
+	}
 
-    /**
-     * Fetch list of setting entries
-     *
-     * @return  array
-     */
-    public static function getRootPageSettingList() {
-        static $cache = NULL;
+	/**
+	 * Fetch list of setting entries
+	 *
+	 * @return  array
+	 */
+	public static function getRootPageSettingList() {
+		static $cache = NULL;
 
-        if ($cache === NULL) {
-            $query = 'SELECT seosr.*
-                        FROM tx_metaseo_setting_root seosr
-                             INNER JOIN pages p
-                                 ON p.uid = seosr.pid
-                                AND p.is_siteroot = 1
-                                AND p.deleted = 0
-                       WHERE seosr.deleted = 0';
-            $cache = DatabaseUtility::getAllWithIndex($query, 'pid');
-        }
+		if ($cache === NULL) {
+			$query = 'SELECT seosr.*
+						FROM tx_metaseo_setting_root seosr
+							 INNER JOIN pages p
+								 ON p.uid = seosr.pid
+								AND p.is_siteroot = 1
+								AND p.deleted = 0
+					   WHERE seosr.deleted = 0';
+			$cache = DatabaseUtility::getAllWithIndex($query, 'pid');
+		}
 
-        return $cache;
-    }
+		return $cache;
+	}
 
 }
