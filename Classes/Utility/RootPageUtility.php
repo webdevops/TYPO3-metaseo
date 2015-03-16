@@ -36,16 +36,16 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  */
 class RootPageUtility {
 
-	/**
-	 * Domain cache
-	 *
-	 * array(
-	 *   rootPid => domainName
-	 * );
-	 *
-	 * @var array
-	 */
-	protected static $domainCache = array();
+    /**
+     * Domain cache
+     *
+     * array(
+     *   rootPid => domainName
+     * );
+     *
+     * @var array
+     */
+    protected static $domainCache = array();
 
     /**
      * Get domain
@@ -54,10 +54,10 @@ class RootPageUtility {
      * @return  null|string
      */
     public static function getDomain($rootPid) {
-		// Use cached one if exists
-		if (isset(self::$domainCache[$rootPid])) {
-			return self::$domainCache[$rootPid];
-		}
+        // Use cached one if exists
+        if (isset(self::$domainCache[$rootPid])) {
+            return self::$domainCache[$rootPid];
+        }
 
         // Fetch domain name
         $query = 'SELECT domainName
@@ -72,10 +72,29 @@ class RootPageUtility {
         // Remove possible slash at the end
         $ret = rtrim($ret, '/');
 
-		// Cache entry
-		self::$domainCache[$rootPid] = $ret;
+        // Cache entry
+        self::$domainCache[$rootPid] = $ret;
 
         return $ret;
+    }
+
+    /**
+     * Build a frontend url
+     *
+     * @param integer $rootPid Root Page ID
+     * @param integer $typeNum Type num
+     * @return string
+     */
+    public static function getFrontendUrl($rootPid, $typeNum) {
+        $domain = self::getDomain($rootPid);
+        if (!empty($domain) ) {
+            $domain = 'http://' . $domain . '/';
+        } else {
+            $domain = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+        }
+        // "build", TODO: use typolink to use TYPO3 internals
+        $url = $domain . 'index.php?id=' . (int)$rootPid . '&type=' . (int)$typeNum;
+        return $url;
     }
 
     /**
@@ -85,18 +104,7 @@ class RootPageUtility {
      * @return string
      */
     public static function getSitemapIndexUrl($rootPid) {
-        $domain = self::getDomain($rootPid);
-
-        if (!empty($domain) ) {
-            $domain = 'http://' . $domain . '/';
-        } else {
-            $domain = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-        }
-
-        // Add sitemap
-        $url = $domain . 'index.php?id=' . (int)$rootPid . '&type=841132';
-
-        return $url;
+        return self::getFrontendUrl($rootPid, 841132);
     }
 
     /**
@@ -106,17 +114,7 @@ class RootPageUtility {
      * @return string
      */
     public static function getRobotsTxtUrl($rootPid) {
-        $domain = self::getDomain($rootPid);
-
-        if (!empty($domain) ) {
-            $domain = 'http://' . $domain . '/';
-        } else {
-            $domain = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-        }
-
-        // Add sitemap
-        $url = $domain . 'index.php?id=' . (int)$rootPid . '&type=841133';
-
-        return $url;
+        return self::getFrontendUrl($rootPid, 841133);
     }
+
 }
