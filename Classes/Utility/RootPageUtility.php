@@ -69,6 +69,9 @@ class RootPageUtility {
                    LIMIT 1';
         $ret = DatabaseUtility::getOne($query);
 
+        // Remove possible slash at the end
+        $ret = rtrim($ret, '/');
+
 		// Cache entry
 		self::$domainCache[$rootPid] = $ret;
 
@@ -116,5 +119,4 @@ class RootPageUtility {
 
         return $url;
     }
-
 }
