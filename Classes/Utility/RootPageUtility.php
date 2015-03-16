@@ -85,6 +85,7 @@ class RootPageUtility {
 		$domain = self::getDomain($rootPid);
 
 		if (!empty($domain) ) {
+			$domain = rtrim($domain, '/');
 			$domain = 'http://' . $domain . '/';
 		} else {
 			$domain = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
@@ -106,6 +107,7 @@ class RootPageUtility {
 		$domain = self::getDomain($rootPid);
 
 		if (!empty($domain) ) {
+			$domain = rtrim($domain, '/');
 			$domain = 'http://' . $domain . '/';
 		} else {
 			$domain = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
