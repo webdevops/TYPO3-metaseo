@@ -34,57 +34,57 @@ namespace Metaseo\Metaseo\Hook\Extension;
  */
 class TtnewsExtension {
 
-    /**
-     * Extra item marker hook for metatag fetching
-     *
-     * @param   array  $markerArray  Marker array
-     * @param   array  $row          Current tt_news row
-     * @param   array  $lConf        Local configuration
-     * @param   object $ttnewsObj    Pi-object from tt_news
-     * @return  array                Marker array (not changed)
-     */
-    public function extraItemMarkerProcessor($markerArray, $row, $lConf, $ttnewsObj) {
-        $theCode = (string)strtoupper(trim($ttnewsObj->theCode));
+	/**
+	 * Extra item marker hook for metatag fetching
+	 *
+	 * @param   array  $markerArray  Marker array
+	 * @param   array  $row          Current tt_news row
+	 * @param   array  $lConf        Local configuration
+	 * @param   object $ttnewsObj    Pi-object from tt_news
+	 * @return  array                Marker array (not changed)
+	 */
+	public function extraItemMarkerProcessor($markerArray, $row, $lConf, $ttnewsObj) {
+		$theCode = (string)strtoupper(trim($ttnewsObj->theCode));
 
-        $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Metaseo\\Metaseo\\Connector');
+		$connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Metaseo\\Metaseo\\Connector');
 
-        switch ($theCode) {
-            case 'SINGLE':
-            case 'SINGLE2':
-                // Title
-                if (!empty($row['title'])) {
-                    $connector->setMetaTag('title', $row['title']);
-                }
+		switch ($theCode) {
+			case 'SINGLE':
+			case 'SINGLE2':
+				// Title
+				if (!empty($row['title'])) {
+					$connector->setMetaTag('title', $row['title']);
+				}
 
-                // Description
-                if (!empty($row['short'])) {
-                    $connector->setMetaTag('description', $row['short']);
-                }
+				// Description
+				if (!empty($row['short'])) {
+					$connector->setMetaTag('description', $row['short']);
+				}
 
-                // Keywords
-                if (!empty($row['keywords'])) {
-                    $connector->setMetaTag('keywords', $row['keywords']);
-                }
+				// Keywords
+				if (!empty($row['keywords'])) {
+					$connector->setMetaTag('keywords', $row['keywords']);
+				}
 
-                // Short/Description
-                if (!empty($row['short'])) {
-                    $connector->setMetaTag('description', $row['short']);
-                }
+				// Short/Description
+				if (!empty($row['short'])) {
+					$connector->setMetaTag('description', $row['short']);
+				}
 
-                // Author
-                if (!empty($row['author'])) {
-                    $connector->setMetaTag('author', $row['author']);
-                }
+				// Author
+				if (!empty($row['author'])) {
+					$connector->setMetaTag('author', $row['author']);
+				}
 
-                // E-Mail
-                if (!empty($row['author_email'])) {
-                    $connector->setMetaTag('email', $row['author_email']);
-                }
-                break;
-        }
+				// E-Mail
+				if (!empty($row['author_email'])) {
+					$connector->setMetaTag('email', $row['author_email']);
+				}
+				break;
+		}
 
-        return $markerArray;
-    }
+		return $markerArray;
+	}
 }
 
 ?>

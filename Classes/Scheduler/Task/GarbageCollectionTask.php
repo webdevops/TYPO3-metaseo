@@ -34,19 +34,19 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  */
 class GarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
-    /**
-     * Execute task
-     *
-     * @return  boolean
-     */
-    public function execute() {
-        // Expire sitemap entries
-        \Metaseo\Metaseo\Utility\SitemapUtility::expire();
+	/**
+	 * Execute task
+	 *
+	 * @return  boolean
+	 */
+	public function execute() {
+		// Expire sitemap entries
+		\Metaseo\Metaseo\Utility\SitemapUtility::expire();
 
-        // Expire cache entries
-        \Metaseo\Metaseo\Utility\CacheUtility::expire();
+		// Expire cache entries
+		\Metaseo\Metaseo\Utility\CacheUtility::expire();
 
-        return TRUE;
-    }
+		return TRUE;
+	}
 
 }

@@ -35,217 +35,217 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  */
 class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
 
-    /**
-     * Return sitemap entry list for root tree
-     *
-     * @return    array
-     */
-    protected function executeGetList() {
-        // Init
-        $rootPageList = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
+	/**
+	 * Return sitemap entry list for root tree
+	 *
+	 * @return    array
+	 */
+	protected function executeGetList() {
+		// Init
+		$rootPageList = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
 
-        $rootPid      = (int)$this->postVar['pid'];
-        $offset       = (int)$this->postVar['start'];
-        $limit        = (int)$this->postVar['limit'];
-        $itemsPerPage = (int)$this->postVar['pagingSize'];
+		$rootPid      = (int)$this->postVar['pid'];
+		$offset       = (int)$this->postVar['start'];
+		$limit        = (int)$this->postVar['limit'];
+		$itemsPerPage = (int)$this->postVar['pagingSize'];
 
-        $searchFulltext      = trim((string)$this->postVar['criteriaFulltext']);
-        $searchPageUid       = trim((int)$this->postVar['criteriaPageUid']);
-        $searchPageLanguage  = trim((string)$this->postVar['criteriaPageLanguage']);
-        $searchPageDepth     = trim((string)$this->postVar['criteriaPageDepth']);
-        $searchIsBlacklisted = (bool)trim((string)$this->postVar['criteriaIsBlacklisted']);
+		$searchFulltext      = trim((string)$this->postVar['criteriaFulltext']);
+		$searchPageUid       = trim((int)$this->postVar['criteriaPageUid']);
+		$searchPageLanguage  = trim((string)$this->postVar['criteriaPageLanguage']);
+		$searchPageDepth     = trim((string)$this->postVar['criteriaPageDepth']);
+		$searchIsBlacklisted = (bool)trim((string)$this->postVar['criteriaIsBlacklisted']);
 
-        // ############################
-        // Critera
-        // ############################
-        $where = array();
+		// ############################
+		// Critera
+		// ############################
+		$where = array();
 
-        // Root pid limit
-        $where[] = 's.page_rootpid = ' . (int)$rootPid;
+		// Root pid limit
+		$where[] = 's.page_rootpid = ' . (int)$rootPid;
 
-        // Fulltext
-        if (!empty($searchFulltext)) {
-            $where[] = 's.page_url LIKE ' . DatabaseUtility::quote('%' . $searchFulltext . '%', 'tx_metaseo_sitemap');
-        }
+		// Fulltext
+		if (!empty($searchFulltext)) {
+			$where[] = 's.page_url LIKE ' . DatabaseUtility::quote('%' . $searchFulltext . '%', 'tx_metaseo_sitemap');
+		}
 
-        // Page id
-        if (!empty($searchPageUid)) {
-            $where[] = 's.page_uid = ' . (int)$searchPageUid;
-        }
+		// Page id
+		if (!empty($searchPageUid)) {
+			$where[] = 's.page_uid = ' . (int)$searchPageUid;
+		}
 
-        // Lannguage
-        if ($searchPageLanguage != -1 && strlen($searchPageLanguage) >= 1) {
-            $where[] = 's.page_language = ' . (int)$searchPageLanguage;
-        }
+		// Lannguage
+		if ($searchPageLanguage != -1 && strlen($searchPageLanguage) >= 1) {
+			$where[] = 's.page_language = ' . (int)$searchPageLanguage;
+		}
 
-        // Depth
-        if ($searchPageDepth != -1 && strlen($searchPageDepth) >= 1) {
-            $where[] = 's.page_depth = ' . (int)$searchPageDepth;
-        }
+		// Depth
+		if ($searchPageDepth != -1 && strlen($searchPageDepth) >= 1) {
+			$where[] = 's.page_depth = ' . (int)$searchPageDepth;
+		}
 
-        if ($searchIsBlacklisted) {
-            $where[] = 's.is_blacklisted = 1';
-        }
+		if ($searchIsBlacklisted) {
+			$where[] = 's.is_blacklisted = 1';
+		}
 
-        // Build where
-        $where = DatabaseUtility::buildCondition($where);
+		// Build where
+		$where = DatabaseUtility::buildCondition($where);
 
-        // ############################
-        // Pager
-        // ############################
+		// ############################
+		// Pager
+		// ############################
 
-        // Fetch total count of items with this filter settings
-        $query = 'SELECT COUNT(*) as count
-                    FROM tx_metaseo_sitemap s
-                   WHERE ' . $where;
-        $itemCount = DatabaseUtility::getOne($query);
+		// Fetch total count of items with this filter settings
+		$query = 'SELECT COUNT(*) as count
+					FROM tx_metaseo_sitemap s
+				   WHERE ' . $where;
+		$itemCount = DatabaseUtility::getOne($query);
 
-        // ############################
-        // Sort
-        // ############################
-        // default sort
-        $sort = 's.page_depth ASC, s.page_uid ASC';
+		// ############################
+		// Sort
+		// ############################
+		// default sort
+		$sort = 's.page_depth ASC, s.page_uid ASC';
 
-        if (!empty($this->sortField) && !empty($this->sortDir)) {
-            // already filered
-            $sort = $this->sortField . ' ' . $this->sortDir;
-        }
+		if (!empty($this->sortField) && !empty($this->sortDir)) {
+			// already filered
+			$sort = $this->sortField . ' ' . $this->sortDir;
+		}
 
-        // ############################
-        // Fetch sitemap
-        // ############################
-        $query = 'SELECT s.uid,
-                         s.page_rootpid,
-                         s.page_uid,
-                         s.page_language,
-                         s.page_url,
-                         s.page_depth,
-                         s.page_type,
-                         s.is_blacklisted,
-                         p.tx_metaseo_is_exclude,
-                         FROM_UNIXTIME(s.tstamp) as tstamp,
-                         FROM_UNIXTIME(s.crdate) as crdate
-                    FROM tx_metaseo_sitemap s
-                         INNER JOIN pages p ON p.uid = s.page_uid
-                   WHERE ' . $where . '
-                ORDER BY ' . $sort . '
-                   LIMIT ' . (int)$offset . ', ' . (int)$itemsPerPage;
-        $list = DatabaseUtility::getAll($query);
+		// ############################
+		// Fetch sitemap
+		// ############################
+		$query = 'SELECT s.uid,
+						 s.page_rootpid,
+						 s.page_uid,
+						 s.page_language,
+						 s.page_url,
+						 s.page_depth,
+						 s.page_type,
+						 s.is_blacklisted,
+						 p.tx_metaseo_is_exclude,
+						 FROM_UNIXTIME(s.tstamp) as tstamp,
+						 FROM_UNIXTIME(s.crdate) as crdate
+					FROM tx_metaseo_sitemap s
+						 INNER JOIN pages p ON p.uid = s.page_uid
+				   WHERE ' . $where . '
+				ORDER BY ' . $sort . '
+				   LIMIT ' . (int)$offset . ', ' . (int)$itemsPerPage;
+		$list = DatabaseUtility::getAll($query);
 
-        $ret = array(
-            'results' => $itemCount,
-            'rows'    => $list,
-        );
+		$ret = array(
+			'results' => $itemCount,
+			'rows'    => $list,
+		);
 
-        return $ret;
-    }
+		return $ret;
+	}
 
-    /*
-     * Blacklist sitemap entries
-     *
-     * @return    boolean
-     */
-    protected function executeBlacklist() {
-        $uidList = $this->postVar['uidList'];
-        $rootPid = (int)$this->postVar['pid'];
+	/*
+	 * Blacklist sitemap entries
+	 *
+	 * @return    boolean
+	 */
+	protected function executeBlacklist() {
+		$uidList = $this->postVar['uidList'];
+		$rootPid = (int)$this->postVar['pid'];
 
-        $uidList = $GLOBALS['TYPO3_DB']->cleanIntArray($uidList);
+		$uidList = $GLOBALS['TYPO3_DB']->cleanIntArray($uidList);
 
-        if (empty($uidList) || empty($rootPid)) {
-            return FALSE;
-        }
+		if (empty($uidList) || empty($rootPid)) {
+			return FALSE;
+		}
 
-        $where   = array();
-        $where[] = 'page_rootpid = ' . (int)$rootPid;
-        $where[] = DatabaseUtility::conditionIn('uid', $uidList);
-        $where   = DatabaseUtility::buildCondition($where);
+		$where   = array();
+		$where[] = 'page_rootpid = ' . (int)$rootPid;
+		$where[] = DatabaseUtility::conditionIn('uid', $uidList);
+		$where   = DatabaseUtility::buildCondition($where);
 
-        $query = 'UPDATE tx_metaseo_sitemap
-                     SET is_blacklisted = 1
-                   WHERE ' . $where;
-        DatabaseUtility::exec($query);
+		$query = 'UPDATE tx_metaseo_sitemap
+					 SET is_blacklisted = 1
+				   WHERE ' . $where;
+		DatabaseUtility::exec($query);
 
-        return TRUE;
-    }
+		return TRUE;
+	}
 
-    /*
-     * Whitelist sitemap entries
-     *
-     * @return    boolean
-     */
-    protected function executeWhitelist() {
-        $uidList = $this->postVar['uidList'];
-        $rootPid = (int)$this->postVar['pid'];
+	/*
+	 * Whitelist sitemap entries
+	 *
+	 * @return    boolean
+	 */
+	protected function executeWhitelist() {
+		$uidList = $this->postVar['uidList'];
+		$rootPid = (int)$this->postVar['pid'];
 
-        $uidList = $GLOBALS['TYPO3_DB']->cleanIntArray($uidList);
+		$uidList = $GLOBALS['TYPO3_DB']->cleanIntArray($uidList);
 
-        if (empty($uidList) || empty($rootPid)) {
-            return FALSE;
-        }
+		if (empty($uidList) || empty($rootPid)) {
+			return FALSE;
+		}
 
-        $where   = array();
-        $where[] = 'page_rootpid = ' . (int)$rootPid;
-        $where[] = DatabaseUtility::conditionIn('uid', $uidList);
-        $where   = DatabaseUtility::buildCondition($where);
+		$where   = array();
+		$where[] = 'page_rootpid = ' . (int)$rootPid;
+		$where[] = DatabaseUtility::conditionIn('uid', $uidList);
+		$where   = DatabaseUtility::buildCondition($where);
 
-        $query = 'UPDATE tx_metaseo_sitemap
-                     SET is_blacklisted = 0
-                   WHERE ' . $where;
-        DatabaseUtility::exec($query);
+		$query = 'UPDATE tx_metaseo_sitemap
+					 SET is_blacklisted = 0
+				   WHERE ' . $where;
+		DatabaseUtility::exec($query);
 
-        return TRUE;
-    }
+		return TRUE;
+	}
 
 
 
-    /**
-     * Delete sitemap entries
-     *
-     * @return    boolean
-     */
-    protected function executeDelete() {
-        $uidList = $this->postVar['uidList'];
-        $rootPid = (int)$this->postVar['pid'];
+	/**
+	 * Delete sitemap entries
+	 *
+	 * @return    boolean
+	 */
+	protected function executeDelete() {
+		$uidList = $this->postVar['uidList'];
+		$rootPid = (int)$this->postVar['pid'];
 
-        $uidList = $GLOBALS['TYPO3_DB']->cleanIntArray($uidList);
+		$uidList = $GLOBALS['TYPO3_DB']->cleanIntArray($uidList);
 
-        if (empty($uidList) || empty($rootPid)) {
-            return FALSE;
-        }
+		if (empty($uidList) || empty($rootPid)) {
+			return FALSE;
+		}
 
-        $where   = array();
-        $where[] = 'page_rootpid = ' . (int)$rootPid;
-        $where[] = DatabaseUtility::conditionIn('uid', $uidList);
-        $where   = DatabaseUtility::buildCondition($where);
+		$where   = array();
+		$where[] = 'page_rootpid = ' . (int)$rootPid;
+		$where[] = DatabaseUtility::conditionIn('uid', $uidList);
+		$where   = DatabaseUtility::buildCondition($where);
 
-        $query = 'DELETE FROM tx_metaseo_sitemap
-                         WHERE ' . $where;
-        DatabaseUtility::exec($query);
+		$query = 'DELETE FROM tx_metaseo_sitemap
+						 WHERE ' . $where;
+		DatabaseUtility::exec($query);
 
-        return TRUE;
-    }
+		return TRUE;
+	}
 
-    /**
-     * Delete all sitemap entries
-     *
-     * @return    boolean
-     */
-    protected function executeDeleteAll() {
-        $rootPid = (int)$this->postVar['pid'];
+	/**
+	 * Delete all sitemap entries
+	 *
+	 * @return    boolean
+	 */
+	protected function executeDeleteAll() {
+		$rootPid = (int)$this->postVar['pid'];
 
-        if (empty($rootPid) ) {
-            return FALSE;
-        }
+		if (empty($rootPid) ) {
+			return FALSE;
+		}
 
-        $where   = array();
-        $where[] = 'page_rootpid = ' . (int)$rootPid;
-        $where   = DatabaseUtility::buildCondition($where);
+		$where   = array();
+		$where[] = 'page_rootpid = ' . (int)$rootPid;
+		$where   = DatabaseUtility::buildCondition($where);
 
-        $query = 'DELETE FROM tx_metaseo_sitemap
-                         WHERE ' . $where;
-        DatabaseUtility::exec($query);
+		$query = 'DELETE FROM tx_metaseo_sitemap
+						 WHERE ' . $where;
+		DatabaseUtility::exec($query);
 
-        return TRUE;
-    }
+		return TRUE;
+	}
 
 }

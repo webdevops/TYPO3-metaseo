@@ -8,8 +8,8 @@ defined('TYPO3_MODE') or exit;
 // ################
 // Settings Root
 // ################
-//\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToInsertRecords('tx_metaseo_setting_root');
-//\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_metaseo_setting_root');
+// \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToInsertRecords('tx_metaseo_setting_root');
+// \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_metaseo_setting_root');
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
 	'tx_metaseo_setting_root',
@@ -23,65 +23,65 @@ defined('TYPO3_MODE') or exit;
 
 if (TYPO3_MODE == 'BE') {
 
-    // ####################################################
-    // Module category "WEB"
-    // ####################################################
+	// ####################################################
+	// Module category "WEB"
+	// ####################################################
 
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'Metaseo.' . $_EXTKEY,
-        'web',
-        'pageseo',
-        '', # Position
-        array('BackendPageSeo' => 'main,metadata,geo,searchengines,url,pagetitle,pagetitlesim'), # Controller array
-        array(
-            'access' => 'user,group',
-            'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Backend/Icons/ModuleSeo.png',
-            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/ModuleSeo/locallang.xlf',
-        )
-    );
+	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+		'Metaseo.' . $_EXTKEY,
+		'web',
+		'pageseo',
+		'', # Position
+		array('BackendPageSeo' => 'main,metadata,geo,searchengines,url,pagetitle,pagetitlesim'), # Controller array
+		array(
+			'access' => 'user,group',
+			'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Backend/Icons/ModuleSeo.png',
+			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/ModuleSeo/locallang.xlf',
+		)
+	);
 
-    // ####################################################
-    // Module category "SEO"
-    // ####################################################
+	// ####################################################
+	// Module category "SEO"
+	// ####################################################
 
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        $_EXTKEY,
-        'metaseo',
-        '',
-        '',
-        array(),
-        array(
-            'access' => 'user,group',
-            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/ModuleMain/locallang.xlf',
-        )
-    );
+	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+		$_EXTKEY,
+		'metaseo',
+		'',
+		'',
+		array(),
+		array(
+			'access' => 'user,group',
+			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/ModuleMain/locallang.xlf',
+		)
+	);
 
 
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'Metaseo.' . $_EXTKEY,
-        'metaseo',
-        'controlcenter',
-        '',
-        array('BackendControlCenter' => 'main'),
-        array(
-            'access' => 'user,group',
-            'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Backend/Icons/ModuleControlCenter.png',
-            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/ModuleControlCenter/locallang.xlf',
-        )
-    );
+	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+		'Metaseo.' . $_EXTKEY,
+		'metaseo',
+		'controlcenter',
+		'',
+		array('BackendControlCenter' => 'main'),
+		array(
+			'access' => 'user,group',
+			'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Backend/Icons/ModuleControlCenter.png',
+			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/ModuleControlCenter/locallang.xlf',
+		)
+	);
 
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'Metaseo.' . $_EXTKEY,
-        'metaseo',
-        'sitemap',
-        'after:controlcenter',
-        array('BackendSitemap' => 'main,sitemap'),
-        array(
-            'access' => 'user,group',
-            'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Backend/Icons/ModuleSitemap.png',
-            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/ModuleSitemap/locallang.xlf',
-        )
-    );
+	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+		'Metaseo.' . $_EXTKEY,
+		'metaseo',
+		'sitemap',
+		'after:controlcenter',
+		array('BackendSitemap' => 'main,sitemap'),
+		array(
+			'access' => 'user,group',
+			'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Backend/Icons/ModuleSitemap.png',
+			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/ModuleSitemap/locallang.xlf',
+		)
+	);
 }
 
 // ############################################################################

@@ -34,174 +34,174 @@ namespace MetaSeo\MetaSeo;
  */
 class Connector implements \TYPO3\CMS\Core\SingletonInterface {
 
-    // ########################################################################
-    // Attributes
-    // ########################################################################
+	// ########################################################################
+	// Attributes
+	// ########################################################################
 
-    /**
-     * Data store
-     *
-     * @var array
-     */
-    protected static $store = array(
-        'flag'      => array(),
-        'meta'      => array(),
-        'meta:og'   => array(),
-        'custom'    => array(),
-        'pagetitle' => array(),
-    );
+	/**
+	 * Data store
+	 *
+	 * @var array
+	 */
+	protected static $store = array(
+		'flag'      => array(),
+		'meta'      => array(),
+		'meta:og'   => array(),
+		'custom'    => array(),
+		'pagetitle' => array(),
+	);
 
-    // ########################################################################
-    // Page title methods
-    // ########################################################################
+	// ########################################################################
+	// Page title methods
+	// ########################################################################
 
-    /**
-     * Set page title
-     *
-     * @param   string $value      Page title
-     * @param   boolean $updateTsfe Update TSFE values
-     */
-    public static function setPageTitle($value, $updateTsfe = TRUE) {
-        $value = (string)$value;
+	/**
+	 * Set page title
+	 *
+	 * @param   string $value      Page title
+	 * @param   boolean $updateTsfe Update TSFE values
+	 */
+	public static function setPageTitle($value, $updateTsfe = TRUE) {
+		$value = (string)$value;
 
-        if ($updateTsfe && !empty($GLOBAL['TSFE'])) {
-            $GLOBAL['TSFE']->page['title']   = $value;
-            $GLOBAL['TSFE']->indexedDocTitle = $value;
-        }
+		if ($updateTsfe && !empty($GLOBAL['TSFE'])) {
+			$GLOBAL['TSFE']->page['title']   = $value;
+			$GLOBAL['TSFE']->indexedDocTitle = $value;
+		}
 
-        self::$store['pagetitle']['pagetitle.title'] = $value;
-    }
+		self::$store['pagetitle']['pagetitle.title'] = $value;
+	}
 
-    /**
-     * Set page title suffix
-     *
-     * @param   string $value  Page title suffix
-     */
-    public static function setPageTitleSuffix($value) {
-        self::$store['pagetitle']['pagetitle.suffix'] = $value;
-    }
+	/**
+	 * Set page title suffix
+	 *
+	 * @param   string $value  Page title suffix
+	 */
+	public static function setPageTitleSuffix($value) {
+		self::$store['pagetitle']['pagetitle.suffix'] = $value;
+	}
 
-    /**
-     * Set page title prefix
-     *
-     * @param   string $value  Page title Prefix
-     */
-    public static function setPageTitlePrefix($value) {
-        self::$store['pagetitle']['pagetitle.prefix'] = $value;
-    }
+	/**
+	 * Set page title prefix
+	 *
+	 * @param   string $value  Page title Prefix
+	 */
+	public static function setPageTitlePrefix($value) {
+		self::$store['pagetitle']['pagetitle.prefix'] = $value;
+	}
 
-    /**
-     * Set page title (absolute)
-     *
-     * @param   string $value        Page title
-     * @param   boolean $updateTsfe   Update TSFE values
-     */
-    public static function setPageTitleAbsolute($value, $updateTsfe = TRUE) {
-        if ($updateTsfe && !empty($GLOBALS['TSFE'])) {
-            $GLOBALS['TSFE']->page['title']   = $value;
-            $GLOBALS['TSFE']->indexedDocTitle = $value;
-        }
+	/**
+	 * Set page title (absolute)
+	 *
+	 * @param   string $value        Page title
+	 * @param   boolean $updateTsfe   Update TSFE values
+	 */
+	public static function setPageTitleAbsolute($value, $updateTsfe = TRUE) {
+		if ($updateTsfe && !empty($GLOBALS['TSFE'])) {
+			$GLOBALS['TSFE']->page['title']   = $value;
+			$GLOBALS['TSFE']->indexedDocTitle = $value;
+		}
 
-        self::$store['pagetitle']['pagetitle.absolute'] = $value;
-    }
+		self::$store['pagetitle']['pagetitle.absolute'] = $value;
+	}
 
-    /**
-     * Set page title sitetitle
-     *
-     * @param   string $value  Page title
-     */
-    public static function setPageTitleSitetitle($value) {
-        self::$store['pagetitle']['pagetitle.sitetitle'] = $value;
-    }
+	/**
+	 * Set page title sitetitle
+	 *
+	 * @param   string $value  Page title
+	 */
+	public static function setPageTitleSitetitle($value) {
+		self::$store['pagetitle']['pagetitle.sitetitle'] = $value;
+	}
 
-    // ########################################################################
-    // MetaTag methods
-    // ########################################################################
+	// ########################################################################
+	// MetaTag methods
+	// ########################################################################
 
-    /**
-     * Set meta tag
-     *
-     * @param   string $key    Metatag name
-     * @param   string $value  Metatag value
-     */
-    public static function setMetaTag($key, $value) {
-        $key   = (string)$key;
-        $value = (string)$value;
+	/**
+	 * Set meta tag
+	 *
+	 * @param   string $key    Metatag name
+	 * @param   string $value  Metatag value
+	 */
+	public static function setMetaTag($key, $value) {
+		$key   = (string)$key;
+		$value = (string)$value;
 
-        if (strpos($key, 'og:') === 0 ) {
-            return self::setOpenGraphTag($key, $value);
-        }
+		if (strpos($key, 'og:') === 0 ) {
+			return self::setOpenGraphTag($key, $value);
+		}
 
-        self::$store['meta'][$key] = $value;
-    }
+		self::$store['meta'][$key] = $value;
+	}
 
-    /**
-     * Set opengraph tag
-     *
-     * @param   string $key    Metatag name
-     * @param   string $value  Metatag value
-     */
-    public static function setOpenGraphTag($key, $value) {
-        $key   = (string)$key;
-        $value = (string)$value;
+	/**
+	 * Set opengraph tag
+	 *
+	 * @param   string $key    Metatag name
+	 * @param   string $value  Metatag value
+	 */
+	public static function setOpenGraphTag($key, $value) {
+		$key   = (string)$key;
+		$value = (string)$value;
 
-        self::$store['flag']['meta:og:external'] = true;
-        self::$store['meta:og'][$key] = $value;
-    }
+		self::$store['flag']['meta:og:external'] = true;
+		self::$store['meta:og'][$key] = $value;
+	}
 
-    /**
-     * Set meta tag
-     *
-     * @param   string $key    Metatag name
-     * @param   string $value  Metatag value
-     */
-    public static function setCustomMetaTag($key, $value) {
-        $key   = (string)$key;
-        $value = (string)$value;
+	/**
+	 * Set meta tag
+	 *
+	 * @param   string $key    Metatag name
+	 * @param   string $value  Metatag value
+	 */
+	public static function setCustomMetaTag($key, $value) {
+		$key   = (string)$key;
+		$value = (string)$value;
 
-        self::$store['custom'][$key] = $value;
-    }
+		self::$store['custom'][$key] = $value;
+	}
 
-    /**
-     * Disable meta tag
-     *
-     * @param   string $key    Metatag name
-     */
-    public static function disableMetaTag($key) {
-        $key = (string)$key;
+	/**
+	 * Disable meta tag
+	 *
+	 * @param   string $key    Metatag name
+	 */
+	public static function disableMetaTag($key) {
+		$key = (string)$key;
 
-        self::$store['meta'][$key] = NULL;
-    }
+		self::$store['meta'][$key] = NULL;
+	}
 
-    // ########################################################################
-    // Control methods
-    // ########################################################################
+	// ########################################################################
+	// Control methods
+	// ########################################################################
 
-    // TODO
+	// TODO
 
 
-    // ########################################################################
-    // General methods
-    // ########################################################################
+	// ########################################################################
+	// General methods
+	// ########################################################################
 
-    /**
-     * Get store
-     *
-     * @param   string $key    Store key (optional, if empty whole store is returned)
-     * @return  array
-     */
-    public static function getStore($key = NULL) {
-        $ret = NULL;
+	/**
+	 * Get store
+	 *
+	 * @param   string $key    Store key (optional, if empty whole store is returned)
+	 * @return  array
+	 */
+	public static function getStore($key = NULL) {
+		$ret = NULL;
 
-        if ($key !== NULL) {
-            if (isset(self::$store[$key])) {
-                $ret = self::$store[$key];
-            }
-        } else {
-            $ret = self::$store;
-        }
+		if ($key !== NULL) {
+			if (isset(self::$store[$key])) {
+				$ret = self::$store[$key];
+			}
+		} else {
+			$ret = self::$store;
+		}
 
-        return $ret;
-    }
+		return $ret;
+	}
 
 }

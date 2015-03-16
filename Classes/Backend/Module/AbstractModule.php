@@ -32,81 +32,81 @@ namespace Metaseo\Metaseo\Backend\Module;
  * @subpackage  metaseo
  */
 abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
-    // ########################################################################
-    // Attributes
-    // ########################################################################
+	// ########################################################################
+	// Attributes
+	// ########################################################################
 
-    /**
-     * Backend Form Protection object
-     *
-     * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection
-     * @inject
-     */
-    protected $formProtection = NULL;
+	/**
+	 * Backend Form Protection object
+	 *
+	 * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection
+	 * @inject
+	 */
+	protected $formProtection = NULL;
 
-    // ########################################################################
-    // Methods
-    // ########################################################################
+	// ########################################################################
+	// Methods
+	// ########################################################################
 
-    /**
-     * Translate key
-     *
-     * @param   string      $key        Translation key
-     * @param   NULL|array  $arguments  Arguments (vsprintf)
-     * @return  NULL|string
-     */
-    protected function translate($key, $arguments = NULL) {
-        $ret = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $this->extensionName, $arguments);
+	/**
+	 * Translate key
+	 *
+	 * @param   string      $key        Translation key
+	 * @param   NULL|array  $arguments  Arguments (vsprintf)
+	 * @return  NULL|string
+	 */
+	protected function translate($key, $arguments = NULL) {
+		$ret = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $this->extensionName, $arguments);
 
-        // Not translated handling
-        if ($ret === NULL ) {
-            $ret = '[-' . $key . '-]';
-        }
+		// Not translated handling
+		if ($ret === NULL ) {
+			$ret = '[-' . $key . '-]';
+		}
 
-        return $ret;
-    }
+		return $ret;
+	}
 
-    /**
-     * Translate list
-     *
-     * @param   array $list   Translation keys
-     * @return  array
-     */
-    protected function translateList($list) {
-        unset($token);
-        foreach ($list as &$token) {
-            if (!empty($token) ) {
-                if (is_array($token) ) {
-                    $token = $this->translateList($token);
-                } else {
-                    $token = $this->translate($token);
-                }
-            }
-        }
-        unset($token);
+	/**
+	 * Translate list
+	 *
+	 * @param   array $list   Translation keys
+	 * @return  array
+	 */
+	protected function translateList($list) {
+		unset($token);
+		foreach ($list as &$token) {
+			if (!empty($token) ) {
+				if (is_array($token) ) {
+					$token = $this->translateList($token);
+				} else {
+					$token = $this->translate($token);
+				}
+			}
+		}
+		unset($token);
 
-        return $list;
-    }
+		return $list;
+	}
 
-    /**
-     * Create session token
-     *
-     * @param    string $formName    Form name/Session token name
-     * @return    string
-     */
-    protected function sessionToken($formName) {
-        $token = $this->formProtection->generateToken($formName);
-        return $token;
-    }
+	/**
+	 * Create session token
+	 *
+	 * @param    string $formName    Form name/Session token name
+	 * @return    string
+	 */
+	protected function sessionToken($formName) {
+		$token = $this->formProtection->generateToken($formName);
+		return $token;
+	}
 
-    /**
-     * Ajax controller url
-     *
-     * @param   string  $ajaxCall Ajax Call
-     * @return  string
-     */
-    protected function ajaxControllerUrl($ajaxCall) {
-        return $this->doc->backPath . 'ajax.php?ajaxID=' . urlencode($ajaxCall);
-    }
+	/**
+	 * Ajax controller url
+	 *
+	 * @param   string  $ajaxCall Ajax Call
+	 * @return  string
+	 */
+	protected function ajaxControllerUrl($ajaxCall) {
+		return $this->doc->backPath . 'ajax.php?ajaxID=' . urlencode($ajaxCall);
+	}
 
 }

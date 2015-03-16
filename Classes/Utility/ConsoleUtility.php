@@ -41,7 +41,7 @@ class ConsoleUtility {
 	 */
 	public static function write($message = NULL, $padding = NULL) {
 		if ($padding > 0) {
-            $message = str_pad($message, $padding, ' ');
+			$message = str_pad($message, $padding, ' ');
 		}
 
 		self::stdOut($message);
@@ -64,7 +64,7 @@ class ConsoleUtility {
 	 */
 	public static function writeError($message = NULL, $padding = NULL) {
 		if ($padding > 0) {
-            $message = str_pad($message, $padding, ' ');
+			$message = str_pad($message, $padding, ' ');
 		}
 
 		self::stdError($message);
@@ -76,7 +76,7 @@ class ConsoleUtility {
 	 * @param string $message	 Message
 	 */
 	public static function writeErrorLine($message = NULL) {
-        $message .= "\n";
+		$message .= "\n";
 
 		self::stdError($message);
 	}
@@ -105,8 +105,8 @@ class ConsoleUtility {
 
 	/**
 	 * Exit cli script with return code
-     *
-     * @param integer $exitCode Exit code (0 = success)
+	 *
+	 * @param integer $exitCode Exit code (0 = success)
 	 */
 	public static function teminate($exitCode) {
 		if (defined('TYPO3_cliMode') ) {

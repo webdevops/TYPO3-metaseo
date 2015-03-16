@@ -38,9 +38,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
-    // ########################################################################
-    // Attributes
-    // ########################################################################
+	// ########################################################################
+	// Attributes
+	// ########################################################################
 
 	/**
 	 * Backend Form Protection object
@@ -50,23 +50,23 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 */
 	protected $objectManager = NULL;
 
-    /**
-     * Language lock
-     *
-     * @var integer
-     */
-    protected $languageLock = FALSE;
+	/**
+	 * Language lock
+	 *
+	 * @var integer
+	 */
+	protected $languageLock = FALSE;
 
-    /**
-     * Language list
-     *
-     * @var array
-     */
-    protected $languageIdList = NULL;
+	/**
+	 * Language list
+	 *
+	 * @var array
+	 */
+	protected $languageIdList = NULL;
 
-    // ########################################################################
-    // Methods
-    // ########################################################################
+	// ########################################################################
+	// Methods
+	// ########################################################################
 
 	/**
 	 * Initialize task
@@ -75,76 +75,76 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 	}
 
-    /**
-     * Get list of root pages in current typo3
-     *
-     * @return  array
-     */
-    protected function getRootPages() {
-        $ret = array();
+	/**
+	 * Get list of root pages in current typo3
+	 *
+	 * @return  array
+	 */
+	protected function getRootPages() {
+		$ret = array();
 
-        $query = 'SELECT uid
-                    FROM pages
-                   WHERE is_siteroot = 1
-                     AND deleted = 0';
-        $ret = DatabaseUtility::getColWithIndex($query);
+		$query = 'SELECT uid
+					FROM pages
+				   WHERE is_siteroot = 1
+					 AND deleted = 0';
+		$ret = DatabaseUtility::getColWithIndex($query);
 
-        return $ret;
-    }
+		return $ret;
+	}
 
 
-    /**
-     * Get list of root pages in current typo3
-     *
-     * @return  array
-     */
-    protected function initLanguages() {
-        $this->languageIdList[0] = 0;
+	/**
+	 * Get list of root pages in current typo3
+	 *
+	 * @return  array
+	 */
+	protected function initLanguages() {
+		$this->languageIdList[0] = 0;
 
-        $query = 'SELECT uid
-                    FROM sys_language
-                   WHERE hidden = 0';
-        $this->languageIdList = DatabaseUtility::getColWithIndex($query);
-    }
+		$query = 'SELECT uid
+					FROM sys_language
+				   WHERE hidden = 0';
+		$this->languageIdList = DatabaseUtility::getColWithIndex($query);
+	}
 
-    /**
-     * Set root page language
-     */
-    protected function setRootPageLanguage($languageId) {
-        $GLOBALS['TSFE']->tmpl->setup['config.']['sys_language_uid'] = $languageId;
-        $this->languageLock = $languageId;
-    }
+	/**
+	 * Set root page language
+	 */
+	protected function setRootPageLanguage($languageId) {
+		$GLOBALS['TSFE']->tmpl->setup['config.']['sys_language_uid'] = $languageId;
+		$this->languageLock = $languageId;
+	}
 
-    /**
-     * Initalize root page (TSFE and stuff)
-     *
-     * @param   integer $rootPageId $rootPageId
-     */
-    protected function initRootPage($rootPageId) {
-        \Metaseo\Metaseo\Utility\FrontendUtility::init($rootPageId);
-    }
+	/**
+	 * Initalize root page (TSFE and stuff)
+	 *
+	 * @param   integer $rootPageId $rootPageId
+	 */
+	protected function initRootPage($rootPageId) {
+		\Metaseo\Metaseo\Utility\FrontendUtility::init($rootPageId);
+	}
 
-    /**
-     * Write content to file
-     *
-     * @param   string $file       Filename/path
-     * @param   string $content    Content
-     * @throws  \Exception
-     */
-    protected function writeToFile($file, $content) {
-        if (!function_exists('gzopen')) {
-            throw new \Exception('metaseo needs zlib support');
-        }
+	/**
+	 * Write content to file
+	 *
+	 * @param   string $file       Filename/path
+	 * @param   string $content    Content
+	 * @throws  \Exception
+	 */
+	protected function writeToFile($file, $content) {
+		if (!function_exists('gzopen')) {
+			throw new \Exception('metaseo needs zlib support');
+		}
 
-        $fp = gzopen($file, 'w');
+		$fp = gzopen($file, 'w');
 
-        if ($fp) {
-            gzwrite($fp, $content);
-            gzclose($fp);
-        } else {
-            throw new \Exception('Could not open ' . $file . ' for writing');
-        }
+		if ($fp) {
+			gzwrite($fp, $content);
+			gzclose($fp);
+		} else {
+			throw new \Exception('Could not open ' . $file . ' for writing');
+		}
 
-    }
+	}
 
 }

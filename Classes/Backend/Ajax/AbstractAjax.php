@@ -33,210 +33,210 @@ namespace Metaseo\Metaseo\Backend\Ajax;
  */
 abstract class AbstractAjax {
 
-    // ########################################################################
-    // Attributes
-    // ########################################################################
+	// ########################################################################
+	// Attributes
+	// ########################################################################
 
-    /**
-     * POST vars (transformed from json)
-     *
-     * @var array
-     */
-    protected $postVar = array();
+	/**
+	 * POST vars (transformed from json)
+	 *
+	 * @var array
+	 */
+	protected $postVar = array();
 
-    /**
-     * Sorting field
-     */
-    protected $sortField = NULL;
+	/**
+	 * Sorting field
+	 */
+	protected $sortField = NULL;
 
-    /**
-     * Sorting dir
-     *
-     * @var string
-     */
-    protected $sortDir = NULL;
+	/**
+	 * Sorting dir
+	 *
+	 * @var string
+	 */
+	protected $sortDir = NULL;
 
-    /**
-     * TCE
-     *
-     * @var \TYPO3\CMS\Core\DataHandling\DataHandler
-     * @inject
-     */
-    protected $tce = NULL;
+	/**
+	 * TCE
+	 *
+	 * @var \TYPO3\CMS\Core\DataHandling\DataHandler
+	 * @inject
+	 */
+	protected $tce = NULL;
 
-    /**
-     * TYPO3 Object manager
-     *
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-     */
-    protected $objectManager = NULL;
+	/**
+	 * TYPO3 Object manager
+	 *
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+	 */
+	protected $objectManager = NULL;
 
-    /**
-     * Backend Form Protection object
-     *
-     * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection
-     * @inject
-     */
-    protected $formProtection = NULL;
+	/**
+	 * Backend Form Protection object
+	 *
+	 * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection
+	 * @inject
+	 */
+	protected $formProtection = NULL;
 
-    // ########################################################################
-    // Methods
-    // ########################################################################
+	// ########################################################################
+	// Methods
+	// ########################################################################
 
-    /**
-     * Execute ajax call
-     */
-    public function main() {
-        $ret = NULL;
+	/**
+	 * Execute ajax call
+	 */
+	public function main() {
+		$ret = NULL;
 
-        // Try to find method
-        $function = '';
-        if (!empty($_GET['cmd'])) {
-            // GET-param
-            $function = (string)$_GET['cmd'];
+		// Try to find method
+		$function = '';
+		if (!empty($_GET['cmd'])) {
+			// GET-param
+			$function = (string)$_GET['cmd'];
 
-            // security
-            $function = strtolower(trim($function));
-            $function = preg_replace('[^a-z]', '', $function);
-        }
+			// security
+			$function = strtolower(trim($function));
+			$function = preg_replace('[^a-z]', '', $function);
+		}
 
-        // Call function
-        if (!empty($function)) {
-            $method = 'execute' . $function;
-            $call   = array($this, $method);
+		// Call function
+		if (!empty($function)) {
+			$method = 'execute' . $function;
+			$call   = array($this, $method);
 
-            if (is_callable($call)) {
-                $this->fetchParams();
+			if (is_callable($call)) {
+				$this->fetchParams();
 
-                $this->init();
-                if ($this->checkSessionToken()) {
-                    $ret = $this->$method();
-                }
+				$this->init();
+				if ($this->checkSessionToken()) {
+					$ret = $this->$method();
+				}
 
-            }
-        }
+			}
+		}
 
-        // Output json data
-        header('Content-type: application/json;charset=UTF-8');
-        echo json_encode($ret);
-        exit;
-    }
-
-
-    /**
-     * Init
-     */
-    protected function init() {
-        // Include ajax local lang
-        $GLOBALS['LANG']->includeLLFile('EXT:metaseo/Resources/Private/Language/locallang.xlf');
-
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-
-        // Init form protection instance
-        $this->formProtection = $this->objectManager->get(
-            'TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection'
-        );
-    }
-
-    /**
-     * Collect and process POST vars and stores them into $this->postVars
-     */
-    protected function fetchParams() {
-        $rawPostVarList = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
-        foreach ($rawPostVarList as $key => $value) {
-            $this->postVar[$key] = json_decode($value);
-        }
-
-        // Sorting data
-        if (!empty($rawPostVarList['sort'])) {
-            $this->sortField = $this->escapeSortField((string)$rawPostVarList['sort']);
-        }
-
-        if (!empty($rawPostVarList['dir'])) {
-            switch (strtoupper($rawPostVarList['dir'])) {
-                case 'ASC':
-                    $this->sortDir = 'ASC';
-                    break;
-
-                case 'DESC':
-                    $this->sortDir = 'DESC';
-                    break;
-            }
-        }
-
-    }
-
-    /**
-     * Escape for sql sort fields
-     *
-     * @param    string $value    Sort value
-     * @return    string
-     */
-    protected function escapeSortField($value) {
-        return preg_replace('[^_a-zA-Z]', '', $value);
-    }
-
-    /**
-     * Create an (cached) instance of t3lib_TCEmain
-     *
-     * @return \TYPO3\CMS\Core\DataHandling\DataHandler
-     */
-    protected function tce() {
-
-        if ($this->tce === NULL) {
-            /** @var \TYPO3\CMS\Core\DataHandling\DataHandler tce */
-            $this->tce = $this->objectManager->get('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
-            $this->tce->start(null, null);
-        }
-
-        return $this->tce;
-    }
+		// Output json data
+		header('Content-type: application/json;charset=UTF-8');
+		echo json_encode($ret);
+		exit;
+	}
 
 
-    /**
-     * Check if field is in table (TCA)
-     *
-     * @param   string $table  Table
-     * @param   string $field  Field
-     * @return  boolean
-     */
-    protected function isFieldInTcaTable($table, $field) {
-        return isset($GLOBALS['TCA'][$table]['columns'][$field]);
-    }
+	/**
+	 * Init
+	 */
+	protected function init() {
+		// Include ajax local lang
+		$GLOBALS['LANG']->includeLLFile('EXT:metaseo/Resources/Private/Language/locallang.xlf');
+
+		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+
+		// Init form protection instance
+		$this->formProtection = $this->objectManager->get(
+			'TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection'
+		);
+	}
+
+	/**
+	 * Collect and process POST vars and stores them into $this->postVars
+	 */
+	protected function fetchParams() {
+		$rawPostVarList = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
+		foreach ($rawPostVarList as $key => $value) {
+			$this->postVar[$key] = json_decode($value);
+		}
+
+		// Sorting data
+		if (!empty($rawPostVarList['sort'])) {
+			$this->sortField = $this->escapeSortField((string)$rawPostVarList['sort']);
+		}
+
+		if (!empty($rawPostVarList['dir'])) {
+			switch (strtoupper($rawPostVarList['dir'])) {
+				case 'ASC':
+					$this->sortDir = 'ASC';
+					break;
+
+				case 'DESC':
+					$this->sortDir = 'DESC';
+					break;
+			}
+		}
+
+	}
+
+	/**
+	 * Escape for sql sort fields
+	 *
+	 * @param    string $value    Sort value
+	 * @return    string
+	 */
+	protected function escapeSortField($value) {
+		return preg_replace('[^_a-zA-Z]', '', $value);
+	}
+
+	/**
+	 * Create an (cached) instance of t3lib_TCEmain
+	 *
+	 * @return \TYPO3\CMS\Core\DataHandling\DataHandler
+	 */
+	protected function tce() {
+
+		if ($this->tce === NULL) {
+			/** @var \TYPO3\CMS\Core\DataHandling\DataHandler tce */
+			$this->tce = $this->objectManager->get('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+			$this->tce->start(null, null);
+		}
+
+		return $this->tce;
+	}
 
 
-    /**
-     * Create session token
-     *
-     * @param   string $formName    Form name/Session token name
-     * @return  string
-     */
-    protected function sessionToken($formName) {
-        $token = $this->formProtection->generateToken($formName);
-        return $token;
-    }
+	/**
+	 * Check if field is in table (TCA)
+	 *
+	 * @param   string $table  Table
+	 * @param   string $field  Field
+	 * @return  boolean
+	 */
+	protected function isFieldInTcaTable($table, $field) {
+		return isset($GLOBALS['TCA'][$table]['columns'][$field]);
+	}
 
-    /**
-     * Check session token
-     *
-     * @return    boolean
-     */
-    protected function checkSessionToken() {
 
-        if (empty($this->postVar['sessionToken'])) {
-            // No session token exists
-            return FALSE;
-        }
+	/**
+	 * Create session token
+	 *
+	 * @param   string $formName    Form name/Session token name
+	 * @return  string
+	 */
+	protected function sessionToken($formName) {
+		$token = $this->formProtection->generateToken($formName);
+		return $token;
+	}
 
-        $className = strtolower(str_replace('\\', '_', get_class($this)));
+	/**
+	 * Check session token
+	 *
+	 * @return    boolean
+	 */
+	protected function checkSessionToken() {
 
-        $sessionToken = $this->sessionToken($className);
+		if (empty($this->postVar['sessionToken'])) {
+			// No session token exists
+			return FALSE;
+		}
 
-        if ($this->postVar['sessionToken'] === $sessionToken) {
-            return TRUE;
-        }
+		$className = strtolower(str_replace('\\', '_', get_class($this)));
 
-        return FALSE;
-    }
+		$sessionToken = $this->sessionToken($className);
+
+		if ($this->postVar['sessionToken'] === $sessionToken) {
+			return TRUE;
+		}
+
+		return FALSE;
+	}
 
 }

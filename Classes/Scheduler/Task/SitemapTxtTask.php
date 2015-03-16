@@ -34,44 +34,44 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  */
 class SitemapTxtTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask {
 
-    // ########################################################################
-    // Attributes
-    // ########################################################################
+	// ########################################################################
+	// Attributes
+	// ########################################################################
 
-    /**
-     * Sitemap base directory
-     *
-     * @var string
-     */
-    protected $sitemapDir = 'uploads/tx_metaseo/sitemap_txt';
+	/**
+	 * Sitemap base directory
+	 *
+	 * @var string
+	 */
+	protected $sitemapDir = 'uploads/tx_metaseo/sitemap_txt';
 
-    // ########################################################################
-    // Methods
-    // ########################################################################
+	// ########################################################################
+	// Methods
+	// ########################################################################
 
-    /**
-     * Build sitemap
-     *
-     * @param   integer $rootPageId Root page id
-     * @param   integer $languageId Language id
-     * @return  boolean
-     */
-    protected function buildSitemap($rootPageId, $languageId) {
+	/**
+	 * Build sitemap
+	 *
+	 * @param   integer $rootPageId Root page id
+	 * @param   integer $languageId Language id
+	 * @return  boolean
+	 */
+	protected function buildSitemap($rootPageId, $languageId) {
 
-        if ($languageId !== NULL) {
-            // Language lock enabled
-            $sitemapFileName = 'sitemap-r%s-l%s.txt.gz';
-        } else {
-            $sitemapFileName = 'sitemap-r%s.txt.gz';
-        }
+		if ($languageId !== NULL) {
+			// Language lock enabled
+			$sitemapFileName = 'sitemap-r%s-l%s.txt.gz';
+		} else {
+			$sitemapFileName = 'sitemap-r%s.txt.gz';
+		}
 
-        $generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\TxtGenerator');
-        $content   = $generator->sitemap();
+		$generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\TxtGenerator');
+		$content   = $generator->sitemap();
 
-        $fileName = sprintf($sitemapFileName, $rootPageId, $languageId);
-        $this->writeToFile(PATH_site . '/' . $this->sitemapDir . '/' . $fileName, $content);
+		$fileName = sprintf($sitemapFileName, $rootPageId, $languageId);
+		$this->writeToFile(PATH_site . '/' . $this->sitemapDir . '/' . $fileName, $content);
 
-        return TRUE;
-    }
+		return TRUE;
+	}
 
 }

@@ -34,48 +34,48 @@ namespace Metaseo\Metaseo\Page;
  */
 class SitemapTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
 
-    // ########################################################################
-    // Attributes
-    // ########################################################################
+	// ########################################################################
+	// Attributes
+	// ########################################################################
 
 
-    // ########################################################################
-    // Methods
-    // ########################################################################
+	// ########################################################################
+	// Methods
+	// ########################################################################
 
-    /**
-     * Build sitemap xml
-     *
-     * @return  string
-     */
-    public function main() {
-        // INIT
-        $this->tsSetup = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.'];
+	/**
+	 * Build sitemap xml
+	 *
+	 * @return  string
+	 */
+	public function main() {
+		// INIT
+		$this->tsSetup = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.'];
 
 		// TODO: prevent output if scheduler tasks is enabled
 
-        // check if sitemap is enabled in root
-        if (!\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap', TRUE)) {
-            $this->showError('Sitemap is not available, please check your configuration [control-center]');
-        }
+		// check if sitemap is enabled in root
+		if (!\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap', TRUE)) {
+			$this->showError('Sitemap is not available, please check your configuration [control-center]');
+		}
 
-        $ret = $this->build();
+		$ret = $this->build();
 
-        return $ret;
-    }
+		return $ret;
+	}
 
-    /**
-     * Build sitemap index or specific page
-     *
-     * @return mixed
-     */
-    protected function build() {
-        /** @var \Metaseo\Metaseo\Sitemap\Generator\TxtGenerator $generator */
-        $generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\TxtGenerator');
+	/**
+	 * Build sitemap index or specific page
+	 *
+	 * @return mixed
+	 */
+	protected function build() {
+		/** @var \Metaseo\Metaseo\Sitemap\Generator\TxtGenerator $generator */
+		$generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\TxtGenerator');
 
-        $ret = $generator->sitemap();
+		$ret = $generator->sitemap();
 
-        return $ret;
-    }
+		return $ret;
+	}
 
 }
