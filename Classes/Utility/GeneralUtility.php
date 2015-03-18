@@ -191,7 +191,7 @@ class GeneralUtility {
      * @param $rootline
      * @return array
      */
-    protected static function filterRootlineBySiteroot($rootline) {
+    protected static function filterRootlineBySiteroot(array $rootline) {
         $ret = array();
 
         // Make sure sorting is right (first root, last page)
