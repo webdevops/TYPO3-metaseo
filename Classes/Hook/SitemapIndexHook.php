@@ -40,9 +40,9 @@ use \TYPO3\CMS\Frontend\Page\PageRepository;
  */
 class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
 
-    CONST DOKTYPE_SITEMAP_TXT    = 841131; // sitemap.txt     (metaseo), apply changes in Configuration/TypoScript/setup.txt
-    CONST DOKTYPE_SITEMAP_XML    = 841132; // sitemap.xml     (metaseo)
-    CONST DOKTYPE_ROBOTS_TXT     = 841133; // robots.txt      (metaseo)
+    CONST DOKTYPE_SITEMAP_TXT    = 841131; // sitemap.txt     (EXT:metaseo), apply changes in Configuration/TypoScript/setup.txt
+    CONST DOKTYPE_SITEMAP_XML    = 841132; // sitemap.xml     (EXT:metaseo)
+    CONST DOKTYPE_ROBOTS_TXT     = 841133; // robots.txt      (EXT:metaseo)
 
     // ########################################################################
     // Attributes
@@ -53,9 +53,9 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
         PageRepository::DOKTYPE_SPACER,               // Menu separator  (TYPO3 CMS)
         PageRepository::DOKTYPE_SYSFOLDER,            // Folder          (TYPO3 CMS)
         PageRepository::DOKTYPE_RECYCLER,             // Recycler        (TYPO3 CMS)
-        self::DOKTYPE_SITEMAP_TXT,                    // sitemap.txt     (metaseo)
-        self::DOKTYPE_SITEMAP_XML,                    // sitemap.xml     (metaseo)
-        self::DOKTYPE_ROBOTS_TXT,                     // robots.txt      (metaseo)
+        self::DOKTYPE_SITEMAP_TXT,                    // sitemap.txt     (EXT:metaseo)
+        self::DOKTYPE_SITEMAP_XML,                    // sitemap.xml     (EXT:metaseo)
+        self::DOKTYPE_ROBOTS_TXT,                     // robots.txt      (EXT:metaseo)
     );
 
     /**
