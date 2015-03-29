@@ -429,6 +429,11 @@ metaSeoSitemapTxt = PAGE
 metaSeoSitemapTxt {
 	typeNum = 841131
 
+	config {
+		linkVars < config.linkVars
+		linkVars := removeFromList(type)
+	}
+
 	10 = USER_INT
 	10 {
 		userFunc = Metaseo\Metaseo\Page\SitemapTxtPage->main
@@ -463,6 +468,11 @@ metaSeoSitemapTxt {
 metaSeoSitemapXml = PAGE
 metaSeoSitemapXml {
 	typeNum = 841132
+
+	config {
+		linkVars < config.linkVars
+		linkVars := removeFromList(type)
+	}
 
 	10 = USER_INT
 	10 {
