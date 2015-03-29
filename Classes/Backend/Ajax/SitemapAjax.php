@@ -87,6 +87,9 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
             $where[] = 's.is_blacklisted = 1';
         }
 
+        // Filter blacklisted page types
+        $where[] = DatabaseUtility::conditionNotIn('p.doktype', \Metaseo\Metaseo\Utility\SitemapUtility::getPageTypeBlacklist());
+
         // Build where
         $where = DatabaseUtility::buildCondition($where);
 
@@ -97,6 +100,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         // Fetch total count of items with this filter settings
         $query = 'SELECT COUNT(*) as count
                     FROM tx_metaseo_sitemap s
+                         INNER JOIN pages p ON p.uid = s.page_uid
                    WHERE ' . $where;
         $itemCount = DatabaseUtility::getOne($query);
 

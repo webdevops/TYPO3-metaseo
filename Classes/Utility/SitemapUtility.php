@@ -26,6 +26,7 @@ namespace Metaseo\Metaseo\Utility;
  ***************************************************************/
 
 use Metaseo\Metaseo\Utility\DatabaseUtility;
+use \TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Sitemap utility
@@ -39,9 +40,37 @@ class SitemapUtility {
     CONST SITEMAP_TYPE_PAGE = 0;
     CONST SITEMAP_TYPE_FILE = 1;
 
+    CONST DOKTYPE_SITEMAP_TXT    = 841131; // sitemap.txt     (EXT:metaseo), apply changes in Configuration/TypoScript/setup.txt
+    CONST DOKTYPE_SITEMAP_XML    = 841132; // sitemap.xml     (EXT:metaseo)
+    CONST DOKTYPE_ROBOTS_TXT     = 841133; // robots.txt      (EXT:metaseo)
+
+    // ########################################################################
+    // Attributes
+    // ########################################################################
+
+    protected static $typeBlacklist = array(
+        PageRepository::DOKTYPE_BE_USER_SECTION,      // Backend Section (TYPO3 CMS)
+        PageRepository::DOKTYPE_SPACER,               // Menu separator  (TYPO3 CMS)
+        PageRepository::DOKTYPE_SYSFOLDER,            // Folder          (TYPO3 CMS)
+        PageRepository::DOKTYPE_RECYCLER,             // Recycler        (TYPO3 CMS)
+        self::DOKTYPE_SITEMAP_TXT,                    // sitemap.txt     (EXT:metaseo)
+        self::DOKTYPE_SITEMAP_XML,                    // sitemap.xml     (EXT:metaseo)
+        self::DOKTYPE_ROBOTS_TXT,                     // robots.txt      (EXT:metaseo)
+    );
+
+
     // ########################################################################
     // Public methods
     // ########################################################################
+
+    /**
+     * Get list of blacklisted page types
+     *
+     * @return array
+     */
+    public static function getPageTypeBlacklist() {
+        return self::$typeBlacklist;
+    }
 
     /**
      * Insert into sitemap
@@ -149,6 +178,7 @@ class SitemapUtility {
                            AND p.deleted = 0
                            AND p.hidden = 0
                            AND p.tx_metaseo_is_exclude = 0
+                           AND ' . DatabaseUtility::conditionNotIn('p.doktype', self::getPageTypeBlacklist()) . '
                    WHERE p.uid IS NULL';
         $deletedSitemapPages = DatabaseUtility::getColWithIndex($query);
 
@@ -181,6 +211,7 @@ class SitemapUtility {
                                 AND	p.deleted = 0
                                 AND	p.hidden = 0
                                 AND	p.tx_metaseo_is_exclude = 0
+                                AND ' . DatabaseUtility::conditionNotIn('p.doktype', self::getPageTypeBlacklist()) . '
                    WHERE ts.page_rootpid = ' . (int)$rootPid . '
                      AND ts.is_blacklisted = 0';
 

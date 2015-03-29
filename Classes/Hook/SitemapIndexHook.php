@@ -40,23 +40,11 @@ use \TYPO3\CMS\Frontend\Page\PageRepository;
  */
 class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
 
-    CONST DOKTYPE_SITEMAP_TXT    = 841131; // sitemap.txt     (EXT:metaseo), apply changes in Configuration/TypoScript/setup.txt
-    CONST DOKTYPE_SITEMAP_XML    = 841132; // sitemap.xml     (EXT:metaseo)
-    CONST DOKTYPE_ROBOTS_TXT     = 841133; // robots.txt      (EXT:metaseo)
-
     // ########################################################################
     // Attributes
     // ########################################################################
 
-    protected $typeBlacklist = array(
-        PageRepository::DOKTYPE_BE_USER_SECTION,      // Backend Section (TYPO3 CMS)
-        PageRepository::DOKTYPE_SPACER,               // Menu separator  (TYPO3 CMS)
-        PageRepository::DOKTYPE_SYSFOLDER,            // Folder          (TYPO3 CMS)
-        PageRepository::DOKTYPE_RECYCLER,             // Recycler        (TYPO3 CMS)
-        self::DOKTYPE_SITEMAP_TXT,                    // sitemap.txt     (EXT:metaseo)
-        self::DOKTYPE_SITEMAP_XML,                    // sitemap.xml     (EXT:metaseo)
-        self::DOKTYPE_ROBOTS_TXT,                     // robots.txt      (EXT:metaseo)
-    );
+    protected $typeBlacklist = array();
 
     /**
      * Page index status
@@ -134,6 +122,9 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
         }
 
         $this->indexExpiration = $_SERVER['REQUEST_TIME'] + ($expirationInDays * 24 * 60 * 60);
+
+        // Init blacklist for page types
+        $this->typeBlacklist = SitemapUtility::getPageTypeBlacklist();
     }
 
     /**

@@ -47,21 +47,24 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
      */
     public function mainAction() {
         // Init
-        $rootPageList		= \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
-        $rootSettingList	= \Metaseo\Metaseo\Utility\BackendUtility::getRootPageSettingList();
+        $rootPageList    = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
+        $rootSettingList = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageSettingList();
 
         // ############################
         // Fetch
         // ############################
-        $statsList['sum_total'] = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-            'page_rootpid, COUNT(*) as count',
-            'tx_metaseo_sitemap',
-            '',
-            'page_rootpid',
-            '',
-            '',
-            'page_rootpid'
-        );
+
+        // Get statistics
+        $query = 'SELECT s.page_rootpid,
+                         COUNT(*) as sum_total,
+                         COUNT(s.page_uid) as sum_pages
+                    FROM tx_metaseo_sitemap s
+                         INNER JOIN pages p
+                            ON p.uid = s.page_uid
+                           AND p.deleted = 0
+                           AND ' . DatabaseUtility::conditionNotIn('p.doktype', \Metaseo\Metaseo\Utility\SitemapUtility::getPageTypeBlacklist()) . '
+                GROUP BY page_rootpid';
+        $statsList = DatabaseUtility::getAllWithIndex($query, 'page_rootpid');
 
         // Fetch domain name
         $query = 'SELECT uid,
@@ -93,9 +96,9 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         unset($page);
         foreach ($rootPageList as $pageId => &$page) {
             $stats = array(
-                'sum_pages'		=> 0,
-                'sum_total' 	=> 0,
-                'sum_xml_pages'	=> 0,
+                'sum_pages'     => 0,
+                'sum_total'     => 0,
+                'sum_xml_pages' => 0,
             );
 
             // Get domain
@@ -112,16 +115,19 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
 
             // Calc stats
-            foreach ($statsList as $statsKey => $statsTmpList) {
-                if (!empty($statsTmpList[$pageId]) ) {
-                    $stats[$statsKey] = $statsTmpList[$pageId]['count'];
+            if (!empty($statsList[$pageId])) {
+                foreach ($statsList[$pageId] as $statsKey => $statsValue) {
+                    $stats[$statsKey] = $statsValue;
                 }
             }
 
             // Root statistics
-            $query = 'SELECT COUNT(page_uid)
-                        FROM tx_metaseo_sitemap
-                       WHERE page_rootpid = ' . (int)$pageId;
+            $query = 'SELECT COUNT(s.page_uid)
+                        FROM tx_metaseo_sitemap s
+                             INNER JOIN pages p
+                                ON p.uid = s.page_uid
+                               AND ' . DatabaseUtility::conditionNotIn('p.doktype', \Metaseo\Metaseo\Utility\SitemapUtility::getPageTypeBlacklist()) . '
+                       WHERE s.page_rootpid = ' . (int)$pageId;
             $stats['sum_pages'] = DatabaseUtility::getOne($query);
 
             $pagesPerXmlSitemap = 1000;
