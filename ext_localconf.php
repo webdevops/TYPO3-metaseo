@@ -42,6 +42,10 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndex
 // HOOKS
 // ##############################################
 
+// Add tables for clear cache
+$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearAllCache_additionalTables']['tx_metaseo_cache'] = 'tx_metaseo_cache';
+
+
 // EXT:tt_news
 if (!empty($confArr['enableIntegrationTTNews'])) {
     // Metatag fetch hook
