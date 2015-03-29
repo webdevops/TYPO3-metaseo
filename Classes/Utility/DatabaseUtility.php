@@ -33,17 +33,17 @@ namespace Metaseo\Metaseo\Utility;
  */
 class DatabaseUtility {
 
-	###########################################################################
-	# Query functions
-	###########################################################################
+    ###########################################################################
+    # Query functions
+    ###########################################################################
 
-	/**
+    /**
      * Get one
      *
      * @param  string $query SQL query
      * @return mixed
      */
-	public static function getOne($query) {
+    public static function getOne($query) {
         $ret = NULL;
 
         $res = self::query($query);
@@ -57,13 +57,13 @@ class DatabaseUtility {
         return $ret;
     }
 
-	/**
+    /**
      * Get row
      *
      * @param   string $query SQL query
      * @return array
      */
-	public static function getRow($query) {
+    public static function getRow($query) {
         $ret = NULL;
 
         $res = self::query($query);
@@ -77,13 +77,13 @@ class DatabaseUtility {
         return $ret;
     }
 
-	/**
+    /**
      * Get All
      *
      * @param  string  $query SQL query
      * @return array
      */
-	public static function getAll($query) {
+    public static function getAll($query) {
         $ret = array();
 
         $res = self::query($query);
@@ -97,14 +97,14 @@ class DatabaseUtility {
         return $ret;
     }
 
-	/**
+    /**
      * Get All with index (first value)
      *
      * @param  string $query    SQL query
      * @param  string $indexCol Index column name
      * @return array
      */
-	public static function getAllWithIndex($query, $indexCol = NULL) {
+    public static function getAllWithIndex($query, $indexCol = NULL) {
         $ret = array();
 
         $res = self::query($query);
@@ -125,13 +125,13 @@ class DatabaseUtility {
         return $ret;
     }
 
-	/**
+    /**
      * Get List
      *
      * @param  string $query SQL query
      * @return array
      */
-	public static function getList($query) {
+    public static function getList($query) {
         $ret = array();
 
         $res = self::query($query);
@@ -145,13 +145,13 @@ class DatabaseUtility {
         return $ret;
     }
 
-	/**
+    /**
      * Get column
      *
      * @param  string $query SQL query
      * @return array
      */
-	public static function getCol($query) {
+    public static function getCol($query) {
         $ret = array();
 
         $res = self::query($query);
@@ -165,13 +165,13 @@ class DatabaseUtility {
         return $ret;
     }
 
-	/**
+    /**
      * Get column
      *
      * @param  string $query SQL query
      * @return array
      */
-	public static function getColWithIndex($query) {
+    public static function getColWithIndex($query) {
         $ret = array();
 
         $res = self::query($query);
@@ -185,24 +185,24 @@ class DatabaseUtility {
         return $ret;
     }
 
-	/**
+    /**
      * Get count (from query)
      *
      * @param  string $query SQL query
      * @return integer
      */
-	public static function getCount($query) {
+    public static function getCount($query) {
         $query = 'SELECT COUNT(*) FROM (' . $query . ') tmp';
         return self::getOne($query);
     }
 
-	/**
+    /**
      * Exec query (INSERT)
      *
      * @param  string  $query SQL query
      * @return integer        Last insert id
      */
-	public static function execInsert($query) {
+    public static function execInsert($query) {
         $ret = FALSE;
 
         $res = self::query($query);
@@ -215,13 +215,13 @@ class DatabaseUtility {
         return $ret;
     }
 
-	/**
+    /**
      * Exec query (DELETE, UPDATE etc)
      *
      * @param  string  $query SQL query
      * @return integer        Affected rows
      */
-	public static function exec($query) {
+    public static function exec($query) {
         $ret = FALSE;
 
         $res = self::query($query);
@@ -295,17 +295,17 @@ class DatabaseUtility {
         return preg_replace('/[^_a-zA-Z0-9]/', '', $table);
     }
 
-	###########################################################################
-	# Helper functions
-	###########################################################################
+    ###########################################################################
+    # Helper functions
+    ###########################################################################
 
-	/**
+    /**
      * Add condition to query
      *
      * @param  array|string $condition Condition
      * @return string
      */
-	public static function addCondition($condition) {
+    public static function addCondition($condition) {
         $ret = ' ';
 
         if (!empty($condition) ) {
@@ -319,7 +319,7 @@ class DatabaseUtility {
         return $ret;
     }
 
-	/**
+    /**
      * Create condition WHERE field IN (1,2,3,4)
      *
      * @param  string  $field    SQL field
@@ -327,7 +327,7 @@ class DatabaseUtility {
      * @param  boolean $required Required
      * @return string
      */
-	public static function conditionIn($field, $values, $required = TRUE) {
+    public static function conditionIn($field, $values, $required = TRUE) {
         if (!empty($values) ) {
             $quotedValues = self::quoteArray($values, 'pages');
 
@@ -343,7 +343,7 @@ class DatabaseUtility {
         return $ret;
     }
 
-	/**
+    /**
      * Create condition WHERE field NOT IN (1,2,3,4)
      *
      * @param  string  $field    SQL field
@@ -351,7 +351,7 @@ class DatabaseUtility {
      * @param  boolean $required Required
      * @return string
      */
-	public static function conditionNotIn($field, $values, $required = TRUE) {
+    public static function conditionNotIn($field, $values, $required = TRUE) {
         if (!empty($values) ) {
             $quotedValues = self::quoteArray($values, 'pages');
 
@@ -367,34 +367,34 @@ class DatabaseUtility {
         return $ret;
     }
 
-	/**
-	 * Build condition
-	 *
-	 * @param  array $where Where condition
-	 * @return string
-	 */
-	public static function buildCondition($where) {
-		$ret = ' ';
+    /**
+     * Build condition
+     *
+     * @param  array $where Where condition
+     * @return string
+     */
+    public static function buildCondition($where) {
+        $ret = ' ';
 
-		if (!empty($where)) {
-			$ret = ' ( ' . implode(' ) AND ( ', $where) . ' ) ';
-		}
+        if (!empty($where)) {
+            $ret = ' ( ' . implode(' ) AND ( ', $where) . ' ) ';
+        }
 
-		return $ret;
-	}
+        return $ret;
+    }
 
-	###########################################################################
-	# SQL warpper functions
-	###########################################################################
+    ###########################################################################
+    # SQL warpper functions
+    ###########################################################################
 
-	/**
+    /**
      * Execute sql query
      *
      * @param   string $query SQL query
      * @return  resource
      * @throws  \Exception
      */
-	public static function query($query) {
+    public static function query($query) {
         $res = $GLOBALS['TYPO3_DB']->sql_query($query);
 
         if (!$res || $GLOBALS['TYPO3_DB']->sql_errno() ) {
@@ -413,12 +413,12 @@ class DatabaseUtility {
         return $res;
     }
 
-	/**
+    /**
      * Free sql result
      *
      * @param resource $res SQL resource
      */
-	public static function free($res) {
+    public static function free($res) {
         if ($res && $res !== TRUE ) {
             $GLOBALS['TYPO3_DB']->sql_free_result($res);
         }
