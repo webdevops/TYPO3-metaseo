@@ -1,5 +1,4 @@
-MetaSEO - Search Engine Optimization for TYPO3
-==============================================
+# MetaSEO - Search Engine Optimization for TYPO3
 
 This extension provides an indexed google/xml-sitemap, enhanced metatag-support and pagetitel-manipulations for TYPO3.
 It's an replacement of the "metatag"-extension and the successor of "tq_seo".
@@ -9,25 +8,21 @@ It's an replacement of the "metatag"-extension and the successor of "tq_seo".
 * Support:    http://forge.typo3.org/projects/extension-metaseo/
 * Bugtracker: http://forge.typo3.org/projects/extension-metaseo/issues
 
-Version status
---------------
+## Version status
 
 * Version **1.x**:
 
   + Branch **master**
-
   + Composer: dev-master
 
 * Version **2.x**:
 
   + Branch **develop**
-
   + Composer: dev-develop
 
 
 
-Composer Support
-----------------
+## Composer Support
 
 MetaSEO (stable) is available **from TYPO3 TER** and also available with composer ::
 
@@ -56,3 +51,9 @@ Or (unstable, don't blame me for bugs - but feel free to report bugs) directly *
         }
     }
 
+## Contribution
+
+If you want to contribute make sure you have an Editorconfig-Plugin installed in your IDE.
+See [.editorconfig](.editorconfig) for indentation.
+
+This TYPO3 Extension is using [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) as coding style.
