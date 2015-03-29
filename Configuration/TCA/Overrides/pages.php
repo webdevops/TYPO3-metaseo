@@ -48,16 +48,16 @@ $tempColumns = array(
 	),
 	'tx_metaseo_inheritance'      => array(
 		'exclude' => 1,
-		'label'   => 'LLL:EXT:metaseo/locallang_db.php:pages.tx_metaseo_inheritance',
+		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_inheritance',
 		'config'  => array(
 			'type'     => 'select',
 			'items'    => array(
 				array(
-					'LLL:EXT:metaseo/locallang_db.php:pages.tx_metaseo_inheritance.I.0',
+					'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_inheritance.I.0',
 					0
 				),
 				array(
-					'LLL:EXT:metaseo/locallang_db.php:pages.tx_metaseo_inheritance.I.1',
+					'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_inheritance.I.1',
 					1
 				),
 			),
@@ -109,40 +109,40 @@ $tempColumns = array(
 	),
 	'tx_metaseo_change_frequency' => array(
 		'exclude' => 1,
-		'label'   => 'LLL:EXT:metaseo/locallang_db.php:pages.tx_metaseo_change_frequency',
+		'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_change_frequency',
 		'config'  => array(
 			'type'     => 'select',
 			'items'    => array(
 				array(
-					'LLL:EXT:metaseo/locallang_db.php:pages.tx_metaseo_change_frequency.I.0',
+					'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_change_frequency.I.0',
 					0
 				),
 				array(
-					'LLL:EXT:metaseo/locallang_db.php:pages.tx_metaseo_change_frequency.I.1',
+					'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_change_frequency.I.1',
 					1
 				),
 				array(
-					'LLL:EXT:metaseo/locallang_db.php:pages.tx_metaseo_change_frequency.I.2',
+					'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_change_frequency.I.2',
 					2
 				),
 				array(
-					'LLL:EXT:metaseo/locallang_db.php:pages.tx_metaseo_change_frequency.I.3',
+					'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_change_frequency.I.3',
 					3
 				),
 				array(
-					'LLL:EXT:metaseo/locallang_db.php:pages.tx_metaseo_change_frequency.I.4',
+					'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_change_frequency.I.4',
 					4
 				),
 				array(
-					'LLL:EXT:metaseo/locallang_db.php:pages.tx_metaseo_change_frequency.I.5',
+					'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_change_frequency.I.5',
 					5
 				),
 				array(
-					'LLL:EXT:metaseo/locallang_db.php:pages.tx_metaseo_change_frequency.I.6',
+					'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_change_frequency.I.6',
 					6
 				),
 				array(
-					'LLL:EXT:metaseo/locallang_db.php:pages.tx_metaseo_change_frequency.I.7',
+					'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_change_frequency.I.7',
 					7
 				),
 			),
