@@ -26,9 +26,26 @@ Ext.ux.plugin.FitToParent = Ext.extend(Object, {
         // Uses the dimension of the current viewport, but removes the document header
         // and an additional margin of 40 pixels (e.g. Safari needs this addition)
 
-        this.fitToElement.setHeight(Ext.getBody().getHeight() - this.fitToElement.getTop() - 40);
+        var bodyHeight = Ext.getBody().getHeight();
+
+        if (Ext.get('typo3-docbody') && Ext.get('typo3-docbody').getHeight() >= bodyHeight) {
+            bodyHeight = Ext.get('typo3-docbody').getHeight();
+        }
+
+        this.fitToElement.setHeight(bodyHeight - this.fitToElement.getTop() - 40);
         var pos = this.getPosition(true), size = this.fitToElement.getViewSize();
-        this.setSize(size.width - pos[0], size.height - pos[1]);
+        var width = size.width - pos[0];
+        var height  = size.height - pos[1];
+
+        if (width <= 400) {
+            width = 400;
+        }
+
+        if (height <= 400) {
+            height = 400;
+        }
+
+        this.setSize(width, height);
 
     }
 });
