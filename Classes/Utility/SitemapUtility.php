@@ -130,21 +130,12 @@ class SitemapUtility {
      */
     public static function expire() {
         // #####################
-        // Expired pages
+        // Delete expired entries
         // #####################
-        $expireDays = (int)\Metaseo\Metaseo\Utility\GeneralUtility::getExpireDaysInSeconds();
-
-        // tstamp for too old indexed sitemap url
-        $tstamp = time() - $expireDays;
-
-        // special expire time
-        $expire = time();
 
         $query = 'DELETE FROM tx_metaseo_sitemap
                         WHERE is_blacklisted = 0
-                          AND ( tstamp <= ' . (int)$tstamp . '
-                             OR expire <= ' . (int)$expire . '
-                          ) ';
+                          AND expire <= ' . (int)time();
         DatabaseUtility::exec($query);
 
         // #####################

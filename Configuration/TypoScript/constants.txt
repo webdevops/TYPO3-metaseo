@@ -162,4 +162,7 @@ plugin.metaseo {
 
     # cat=plugin.metaseo.sitemap/page/03; type=options[,Always=1,Hourly=2,Daily=3,Weekly=4,Monthly=5,Yearly=6,Never (archive)=7]; label= Default change frequency: Default change frequency for sitemap cache (will be cached!)
   sitemap.changeFrequency =
+
+    # cat=plugin.metaseo.sitemap/page/04; type=int+; label= Default expiration: Sitemap entry expiration in days
+  sitemap.expiration = 60
 }

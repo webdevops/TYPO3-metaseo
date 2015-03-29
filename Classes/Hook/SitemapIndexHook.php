@@ -86,6 +86,12 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
      */
     protected $fileExtList = array();
 
+    /**
+     * Sitemap entry expiration
+     *
+     * @var integer
+     */
+    protected $indexExpiration;
 
     // ########################################################################
     // Methods
@@ -120,6 +126,14 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
                 $this->fileExtList = array_merge($this->fileExtList, $fileExtList);
             };
         }
+
+        // Get expiration
+        $expirationInDays = 60;
+        if (!empty($this->conf['sitemap.']['expiration'])) {
+            $expirationInDays = abs($this->conf['sitemap.']['expiration']);
+        }
+
+        $this->indexExpiration = $_SERVER['REQUEST_TIME'] + ($expirationInDays * 24 * 60 * 60);
     }
 
     /**
@@ -188,8 +202,8 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
             'page_depth'            => count($GLOBALS['TSFE']->rootLine),
             'page_change_frequency' => $pageChangeFrequency,
             'page_type'             => SitemapUtility::SITEMAP_TYPE_PAGE,
-			'expire'				=> $tstamp + GeneralUtility::getExpireDaysInSeconds()
-		);
+            'expire'                => $this->indexExpiration,
+        );
 
         // Call hook
         GeneralUtility::callHook('sitemap-index-page', NULL, $pageData);
@@ -395,7 +409,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
             'page_depth'            => count($rootline),
             'page_change_frequency' => $pageChangeFrequency,
             'page_type'             => $linkType,
-			'expire'				=> $tstamp + GeneralUtility::getExpireDaysInSeconds()
+            'expire'                => $this->indexExpiration,
         );
 
         // Call hook
