@@ -13,13 +13,14 @@ It's an replacement of the "metatag"-extension and the successor of "tq_seo".
 * Version **1.x**:
 
   + Branch **master**
+  + TYPO3 Version: 6.2.x
   + Composer: dev-master
 
 * Version **2.x**:
 
   + Branch **develop**
+  + TYPO3 Version: 6.2.x - 7.1.x
   + Composer: dev-develop
-
 
 
 ## Composer Support
