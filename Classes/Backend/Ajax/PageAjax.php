@@ -108,7 +108,6 @@ class PageAjax extends AbstractAjax
                     }
                     unset($row);
                     break;
-
                 case 'geo':
                     $fieldList = array_merge(
                         $fieldList,
@@ -122,7 +121,6 @@ class PageAjax extends AbstractAjax
 
                     $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
                     break;
-
                 case 'searchengines':
                     $fieldList = array_merge(
                         $fieldList,
@@ -135,7 +133,6 @@ class PageAjax extends AbstractAjax
 
                     $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
                     break;
-
                 case 'url':
                     $fieldList = array_merge(
                         $fieldList,
@@ -151,8 +148,6 @@ class PageAjax extends AbstractAjax
 
                     $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
                     break;
-
-
                 case 'advanced':
                     $fieldList = array_merge(
                         $fieldList,
@@ -163,7 +158,6 @@ class PageAjax extends AbstractAjax
 
                     $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList, true);
                     break;
-
                 case 'pagetitle':
                     $fieldList = array_merge(
                         $fieldList,
@@ -177,12 +171,10 @@ class PageAjax extends AbstractAjax
 
                     $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
                     break;
-
                 case 'pagetitlesim':
                     $buildTree = false;
                     $list      = $this->listPageTitleSim($page, $depth, $sysLanguage);
                     break;
-
                 default:
                     // Not defined
                     return;
@@ -718,7 +710,13 @@ class PageAjax extends AbstractAjax
                 }
             } elseif (is_array($metaTagValue)) {
                 foreach ($metaTagValue as $subTagName => $subTagValue) {
-                    $this->updateMetaTag($pid, $sysLanguage, array($metaTagName, $subTagName), $subTagValue, $metaTagGroup++);
+                    $this->updateMetaTag(
+                        $pid,
+                        $sysLanguage,
+                        array($metaTagName, $subTagName),
+                        $subTagValue,
+                        $metaTagGroup++
+                    );
                 }
             }
         }
@@ -832,7 +830,6 @@ class PageAjax extends AbstractAjax
                     );
                 }
                 break;
-
             case 'pages':
                 // Update field in page (also logs update event and clear cache for this page)
                 $this->tce()->updateDB(

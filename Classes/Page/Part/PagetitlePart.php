@@ -126,7 +126,6 @@ class PagetitlePart extends AbstractPart
                             break 2;
                         }
                         break;
-
                     case 1:
                         // ###################################
                         // Skip

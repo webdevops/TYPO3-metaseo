@@ -419,7 +419,8 @@ class DatabaseUtility
 
         if (!$res || $GLOBALS['TYPO3_DB']->sql_errno()) {
             // SQL statement failed
-            $errorMsg = 'SQL Error: ' . $GLOBALS['TYPO3_DB']->sql_error() . ' [errno: ' . $GLOBALS['TYPO3_DB']->sql_errno() . ']';
+            $errorMsg = 'SQL Error: ' . $GLOBALS['TYPO3_DB']->sql_error()
+                . ' [errno: ' . $GLOBALS['TYPO3_DB']->sql_errno() . ']';
 
             if (defined('TYPO3_cliMode')) {
                 throw new \Exception($errorMsg);

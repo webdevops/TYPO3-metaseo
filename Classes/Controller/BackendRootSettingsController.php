@@ -139,7 +139,8 @@ class BackendRootSettingsController extends AbstractStandardModule
 
         // check if there is any root page
         if (empty($rootPageList)) {
-            $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+            $message = $this->objectManager->get(
+                'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
                 $this->translate('message.warning.noRootPage.message'),
                 $this->translate('message.warning.noRootPage.title'),
                 FlashMessage::WARNING

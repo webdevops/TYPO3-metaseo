@@ -161,7 +161,6 @@ abstract class AbstractAjax
                 case 'ASC':
                     $this->sortDir = 'ASC';
                     break;
-
                 case 'DESC':
                     $this->sortDir = 'DESC';
                     break;

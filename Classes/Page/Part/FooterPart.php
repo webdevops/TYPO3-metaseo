@@ -98,8 +98,7 @@ class FooterPart extends AbstractPart
         // #########################################
         // PIWIK
         // #########################################
-        if (
-            !empty($tsServices['piwik.'])
+        if (!empty($tsServices['piwik.'])
             && !empty($tsServices['piwik.']['url'])
             && !empty($tsServices['piwik.']['id'])
         ) {

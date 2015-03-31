@@ -103,7 +103,8 @@ class BackendPageSeoController extends AbstractStandardModule
         $pageId        = (int) GeneralUtility::_GP('id');
 
         if (empty($pageId)) {
-            $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+            $message = $this->objectManager->get(
+                'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
                 $this->translate('message.warning.no_valid_page.message'),
                 $this->translate('message.warning.no_valid_page.title'),
                 FlashMessage::WARNING
@@ -305,10 +306,10 @@ class BackendPageSeoController extends AbstractStandardModule
         // Include Ext JS inline code
         $pageRenderer->addJsInlineCode(
             'MetaSeo.overview',
-
             'Ext.namespace("MetaSeo.overview");
             MetaSeo.overview.conf      = ' . json_encode($metaSeoConf) . ';
             MetaSeo.overview.conf.lang = ' . json_encode($metaSeoLang) . ';
-        ');
+        '
+        );
     }
 }

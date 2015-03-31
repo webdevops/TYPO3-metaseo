@@ -67,17 +67,17 @@ class BackendSitemapController extends AbstractStandardModule
 
         // Get statistics
         $query = 'SELECT s.page_rootpid,
-                         COUNT(*) as sum_total,
-                         COUNT(s.page_uid) as sum_pages
-                    FROM tx_metaseo_sitemap s
-                         INNER JOIN pages p
-                            ON p.uid = s.page_uid
-                           AND p.deleted = 0
-                           AND ' . DatabaseUtility::conditionNotIn(
-                'p.doktype',
-                SitemapUtility::getPageTypeBlacklist()
-            ) . '
-                GROUP BY page_rootpid';
+                 COUNT(*) as sum_total,
+                 COUNT(s.page_uid) as sum_pages
+            FROM tx_metaseo_sitemap s
+                 INNER JOIN pages p
+                    ON p.uid = s.page_uid
+                   AND p.deleted = 0
+                   AND '
+        . DatabaseUtility::conditionNotIn(
+            'p.doktype',
+            SitemapUtility::getPageTypeBlacklist()
+        ) . ' GROUP BY page_rootpid';
         $statsList = DatabaseUtility::getAllWithIndex($query, 'page_rootpid');
 
         // Fetch domain name
@@ -140,18 +140,19 @@ class BackendSitemapController extends AbstractStandardModule
                         FROM tx_metaseo_sitemap s
                              INNER JOIN pages p
                                 ON p.uid = s.page_uid
-                               AND ' . DatabaseUtility::conditionNotIn(
+                               AND '
+                . DatabaseUtility::conditionNotIn(
                     'p.doktype',
                     SitemapUtility::getPageTypeBlacklist()
-                ) . '
-                       WHERE s.page_rootpid = ' . (int)$pageId;
+                )
+                . ' WHERE s.page_rootpid = ' . (int)$pageId;
             $stats['sum_pages'] = DatabaseUtility::getOne($query);
 
             $pagesPerXmlSitemap = 1000;
             if (!empty($settingRow['sitemap_page_limit'])) {
                 $pagesPerXmlSitemap = $settingRow['sitemap_page_limit'];
             }
-            $sumXmlPages = ceil($stats['sum_total'] / $pagesPerXmlSitemap) ;
+            $sumXmlPages = ceil($stats['sum_total'] / $pagesPerXmlSitemap);
             $stats['sum_xml_pages'] = sprintf($this->translate('sitemap.xml.pages.total'), $sumXmlPages);
 
 
@@ -162,7 +163,8 @@ class BackendSitemapController extends AbstractStandardModule
 
         // check if there is any root page
         if (empty($rootPageList)) {
-            $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+            $message = $this->objectManager->get(
+                'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
                 $this->translate('message.warning.noRootPage.message'),
                 $this->translate('message.warning.noRootPage.title'),
                 FlashMessage::WARNING
@@ -392,6 +394,7 @@ class BackendSitemapController extends AbstractStandardModule
             'Ext.namespace("MetaSeo.sitemap");
             MetaSeo.sitemap.conf      = ' . json_encode($metaSeoConf) . ';
             MetaSeo.sitemap.conf.lang = ' . json_encode($metaSeoLang) . ';
-        ');
+        '
+        );
     }
 }
