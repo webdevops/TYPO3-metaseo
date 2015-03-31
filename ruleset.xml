@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<ruleset name="metaseo">
+    <description>Ruleset for the metaseo project.</description>
+
+    <rule ref="PSR2"/>
+</ruleset>
