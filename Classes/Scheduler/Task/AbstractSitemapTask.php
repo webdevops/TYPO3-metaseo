@@ -32,7 +32,8 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  * @subpackage  Sitemap
  * @version     $Id: class.sitemap_base.php 78237 2013-07-23 14:50:31Z mblaschke $
  */
-abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractTask {
+abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractTask
+{
 
     // ########################################################################
     // Attributes
@@ -43,7 +44,7 @@ abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\Abstr
      *
      * @var string
      */
-    protected $sitemapDir = NULL;
+    protected $sitemapDir = null;
 
     // ########################################################################
     // Methods
@@ -52,10 +53,11 @@ abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\Abstr
     /**
      * Execute task
      */
-    public function execute() {
+    public function execute()
+    {
         // Build sitemap
 
-		$this->initialize();
+        $this->initialize();
         $rootPageList = $this->getRootPages();
         $this->cleanupDirectory();
         $this->initLanguages();
@@ -63,23 +65,24 @@ abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\Abstr
         foreach ($rootPageList as $uid => $page) {
             $this->initRootPage($uid);
 
-            if (\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', FALSE, $uid)) {
+            if (\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', false, $uid)) {
                 foreach ($this->languageIdList as $languageId) {
                     $this->setRootPageLanguage($languageId);
                     $this->buildSitemap($uid, $languageId);
                 }
             } else {
-                $this->buildSitemap($uid, NULL);
+                $this->buildSitemap($uid, null);
             }
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
      * Cleanup sitemap directory
      */
-    protected function cleanupDirectory() {
+    protected function cleanupDirectory()
+    {
         if (empty($this->sitemapDir)) {
             throw new \Exception('Basedir not set');
         }
@@ -104,8 +107,9 @@ abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\Abstr
      * @param    string $template    File link template
      * @return    string
      */
-    protected function generateSitemapLinkTemplate($template) {
-        $ret = NULL;
+    protected function generateSitemapLinkTemplate($template)
+    {
+        $ret = null;
 
         // Set link template for index file
         $linkConf = array(
@@ -135,5 +139,4 @@ abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\Abstr
      * @param    integer $languageId    Language id
      */
     abstract protected function buildSitemap($rootPageId, $languageId);
-
 }

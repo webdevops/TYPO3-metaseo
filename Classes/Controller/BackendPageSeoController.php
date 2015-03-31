@@ -33,7 +33,8 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  * @package     TYPO3
  * @subpackage  metaseo
  */
-class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule {
+class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule
+{
     // ########################################################################
     // Attributes
     // ########################################################################
@@ -45,49 +46,56 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
     /**
      * Main action
      */
-    public function mainAction() {
+    public function mainAction()
+    {
         return $this->handleSubAction('metadata');
     }
 
     /**
      * Geo action
      */
-    public function geoAction() {
+    public function geoAction()
+    {
         return $this->handleSubAction('geo');
     }
 
     /**
      * searchengines action
      */
-    public function searchenginesAction() {
+    public function searchenginesAction()
+    {
         return $this->handleSubAction('searchengines');
     }
 
     /**
      * url action
      */
-    public function urlAction() {
+    public function urlAction()
+    {
         return $this->handleSubAction('url');
     }
 
     /**
      * pagetitle action
      */
-    public function pagetitleAction() {
+    public function pagetitleAction()
+    {
         return $this->handleSubAction('pagetitle');
     }
 
     /**
      * pagetitle action
      */
-    public function pagetitlesimAction() {
+    public function pagetitlesimAction()
+    {
         return $this->handleSubAction('pagetitlesim');
     }
 
-    protected function handleSubAction($type) {
-        $pageId		= (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
+    protected function handleSubAction($type)
+    {
+        $pageId        = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 
-        if (empty($pageId) ) {
+        if (empty($pageId)) {
             $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
                 $this->translate('message.warning.no_valid_page.message'),
                 $this->translate('message.warning.no_valid_page.title'),
@@ -106,16 +114,16 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
         $languageFullList = array(
             0 => array(
-                'label'	=> $this->translate('default.language'),
-                'flag'	=> '',
+                'label'    => $this->translate('default.language'),
+                'flag'    => '',
             ),
         );
 
-        if (!empty($pageTsConf['mod.']['SHARED.']['defaultLanguageFlag']) ) {
+        if (!empty($pageTsConf['mod.']['SHARED.']['defaultLanguageFlag'])) {
             $languageFullList[0]['flag'] = $pageTsConf['mod.']['SHARED.']['defaultLanguageFlag'];
         }
 
-        if (!empty($pageTsConf['mod.']['SHARED.']['defaultLanguageLabel']) ) {
+        if (!empty($pageTsConf['mod.']['SHARED.']['defaultLanguageLabel'])) {
             $label = $pageTsConf['mod.']['SHARED.']['defaultLanguageLabel'];
 
             $languageFullList[0]['label'] = $this->translate('default.language.named', array($label));
@@ -132,8 +140,8 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         $rowList = DatabaseUtility::getAll($query);
         foreach ($rowList as $row) {
             $languageFullList[$row['uid']] = array(
-                'label'	=> htmlspecialchars($row['title']),
-                'flag'	=> htmlspecialchars($row['flag']),
+                'label'    => htmlspecialchars($row['title']),
+                'flag'    => htmlspecialchars($row['flag']),
             );
         }
 
@@ -144,7 +152,7 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
             $flag = '';
 
             // Flag (if available)
-            if (!empty($langRow['flag']) ) {
+            if (!empty($langRow['flag'])) {
                 $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-' . $langRow['flag'] . ' t3-icon-' . $langRow['flag'] . '"></span>';
                 $flag .= '&nbsp;';
             }
@@ -161,7 +169,7 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
         $sysLangaugeDefault = (int)$GLOBALS['BE_USER']->getSessionData('MetaSEO.sysLanguage');
 
-        if (empty($sysLangaugeDefault) ) {
+        if (empty($sysLangaugeDefault)) {
             $sysLangaugeDefault = 0;
         }
 
@@ -294,5 +302,4 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
             MetaSeo.overview.conf.lang = ' . json_encode($metaSeoLang) . ';
         ');
     }
-
 }

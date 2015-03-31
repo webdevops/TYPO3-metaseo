@@ -34,7 +34,8 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  * @subpackage  lib
  * @version     $Id: SitemapUtility.php 81677 2013-11-21 12:32:33Z mblaschke $
  */
-class RootPageUtility {
+class RootPageUtility
+{
 
     /**
      * Domain cache
@@ -53,7 +54,8 @@ class RootPageUtility {
      * @param   integer $rootPid    Root PID
      * @return  null|string
      */
-    public static function getDomain($rootPid) {
+    public static function getDomain($rootPid)
+    {
         // Use cached one if exists
         if (isset(self::$domainCache[$rootPid])) {
             return self::$domainCache[$rootPid];
@@ -85,9 +87,10 @@ class RootPageUtility {
      * @param integer $typeNum Type num
      * @return string
      */
-    public static function getFrontendUrl($rootPid, $typeNum) {
+    public static function getFrontendUrl($rootPid, $typeNum)
+    {
         $domain = self::getDomain($rootPid);
-        if (!empty($domain) ) {
+        if (!empty($domain)) {
             $domain = 'http://' . $domain . '/';
         } else {
             $domain = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
@@ -103,7 +106,8 @@ class RootPageUtility {
      * @param  integer   $rootPid    Root PID
      * @return string
      */
-    public static function getSitemapIndexUrl($rootPid) {
+    public static function getSitemapIndexUrl($rootPid)
+    {
         return self::getFrontendUrl($rootPid, 841132);
     }
 
@@ -113,8 +117,8 @@ class RootPageUtility {
      * @param  integer   $rootPid    Root PID
      * @return string
      */
-    public static function getRobotsTxtUrl($rootPid) {
+    public static function getRobotsTxtUrl($rootPid)
+    {
         return self::getFrontendUrl($rootPid, 841133);
     }
-
 }

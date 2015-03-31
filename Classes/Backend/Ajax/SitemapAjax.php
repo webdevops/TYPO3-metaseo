@@ -33,14 +33,16 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  * @package     TYPO3
  * @subpackage  metaseo
  */
-class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
+class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
+{
 
     /**
      * Return sitemap entry list for root tree
      *
      * @return    array
      */
-    protected function executeGetList() {
+    protected function executeGetList()
+    {
         // Init
         $rootPageList = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
 
@@ -149,14 +151,15 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
      *
      * @return    boolean
      */
-    protected function executeBlacklist() {
+    protected function executeBlacklist()
+    {
         $uidList = $this->postVar['uidList'];
         $rootPid = (int)$this->postVar['pid'];
 
         $uidList = $GLOBALS['TYPO3_DB']->cleanIntArray($uidList);
 
         if (empty($uidList) || empty($rootPid)) {
-            return FALSE;
+            return false;
         }
 
         $where   = array();
@@ -169,7 +172,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
                    WHERE ' . $where;
         DatabaseUtility::exec($query);
 
-        return TRUE;
+        return true;
     }
 
     /*
@@ -177,14 +180,15 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
      *
      * @return    boolean
      */
-    protected function executeWhitelist() {
+    protected function executeWhitelist()
+    {
         $uidList = $this->postVar['uidList'];
         $rootPid = (int)$this->postVar['pid'];
 
         $uidList = $GLOBALS['TYPO3_DB']->cleanIntArray($uidList);
 
         if (empty($uidList) || empty($rootPid)) {
-            return FALSE;
+            return false;
         }
 
         $where   = array();
@@ -197,7 +201,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
                    WHERE ' . $where;
         DatabaseUtility::exec($query);
 
-        return TRUE;
+        return true;
     }
 
 
@@ -207,14 +211,15 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
      *
      * @return    boolean
      */
-    protected function executeDelete() {
+    protected function executeDelete()
+    {
         $uidList = $this->postVar['uidList'];
         $rootPid = (int)$this->postVar['pid'];
 
         $uidList = $GLOBALS['TYPO3_DB']->cleanIntArray($uidList);
 
         if (empty($uidList) || empty($rootPid)) {
-            return FALSE;
+            return false;
         }
 
         $where   = array();
@@ -226,7 +231,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
                          WHERE ' . $where;
         DatabaseUtility::exec($query);
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -234,11 +239,12 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
      *
      * @return    boolean
      */
-    protected function executeDeleteAll() {
+    protected function executeDeleteAll()
+    {
         $rootPid = (int)$this->postVar['pid'];
 
-        if (empty($rootPid) ) {
-            return FALSE;
+        if (empty($rootPid)) {
+            return false;
         }
 
         $where   = array();
@@ -249,7 +255,6 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
                          WHERE ' . $where;
         DatabaseUtility::exec($query);
 
-        return TRUE;
+        return true;
     }
-
 }

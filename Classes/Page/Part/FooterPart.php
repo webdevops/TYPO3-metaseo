@@ -33,7 +33,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @subpackage  lib
  * @version     $Id: FooterPart.php 84520 2014-03-28 10:33:24Z mblaschke $
  */
-class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
+class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
+{
 
     /**
      * Add Page Footer
@@ -41,7 +42,8 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      * @param    string $title    Default page title (rendered by TYPO3)
      * @return    string            Modified page title
      */
-    public function main($title) {
+    public function main($title)
+    {
         // INIT
         $ret        = array();
         $tsSetup    = $GLOBALS['TSFE']->tmpl->setup;
@@ -49,9 +51,9 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
         $beLoggedIn = isset($GLOBALS['BE_USER']->user['username']);
 
-        $disabledHeaderCode = FALSE;
+        $disabledHeaderCode = false;
         if (!empty($tsSetup['config.']['disableAllHeaderCode'])) {
-            $disabledHeaderCode = TRUE;
+            $disabledHeaderCode = true;
         }
 
         if (!empty($tsSetup['plugin.']['metaseo.']['services.'])) {
@@ -68,10 +70,10 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         if (!empty($tsServices['googleAnalytics'])) {
             $gaConf = $tsServices['googleAnalytics.'];
 
-            $gaEnabled = TRUE;
+            $gaEnabled = true;
 
             if ($disabledHeaderCode && empty($gaConf['enableIfHeaderIsDisabled'])) {
-                $gaEnabled = FALSE;
+                $gaEnabled = false;
             }
 
             if ($gaEnabled && !(empty($gaConf['showIfBeLogin']) && $beLoggedIn)) {
@@ -82,10 +84,10 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                     $ret['ga.trackdownload'] = $this->serviceGoogleAnalyticsTrackDownloads($tsServices, $gaConf);
                 }
             } elseif ($gaEnabled && $beLoggedIn) {
-				// Disable caching
-				$GLOBALS['TSFE']->set_no_cache('MetaSEO: Google Analytics code disabled, backend login detected');
+                // Disable caching
+                $GLOBALS['TSFE']->set_no_cache('MetaSEO: Google Analytics code disabled, backend login detected');
 
-				// Backend login detected, disable cache because this page is viewed by BE-users
+                // Backend login detected, disable cache because this page is viewed by BE-users
                 $ret['ga.disabled'] = '<!-- Google Analytics disabled, Page cache disabled - Backend-Login detected -->';
             }
         }
@@ -97,18 +99,18 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         if (!empty($tsServices['piwik.']) && !empty($tsServices['piwik.']['url']) && !empty($tsServices['piwik.']['id'])) {
             $piwikConf = $tsServices['piwik.'];
 
-            $piwikEnabled = TRUE;
+            $piwikEnabled = true;
 
             if ($disabledHeaderCode && empty($piwikConf['enableIfHeaderIsDisabled'])) {
-                $piwikEnabled = FALSE;
+                $piwikEnabled = false;
             }
 
             if ($piwikEnabled && !(empty($piwikConf['showIfBeLogin']) && $beLoggedIn)) {
                 // Build Piwik service
                 $ret['piwik'] = $this->buildPiwikCode($tsServices, $piwikConf);
             } elseif ($piwikEnabled && $beLoggedIn) {
-				// Disable caching
-				$GLOBALS['TSFE']->set_no_cache('MetaSEO: Piwik code disabled, backend login detected');
+                // Disable caching
+                $GLOBALS['TSFE']->set_no_cache('MetaSEO: Piwik code disabled, backend login detected');
 
                 // Backend login detected, disable cache because this page is viewed by BE-users
                 $ret['piwik.disabled'] = '<!-- Piwik disabled, Page cache disabled - Backend-Login detected -->';
@@ -128,7 +130,8 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      * @param  array $gaConf      Google Analytics configuration
      * @return string
      */
-    public function buildGoogleAnalyticsCode($tsServices, $gaConf) {
+    public function buildGoogleAnalyticsCode($tsServices, $gaConf)
+    {
         $ret = array();
         $gaCodeList = GeneralUtility::trimExplode(',', $tsServices['googleAnalytics']);
 
@@ -164,7 +167,8 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      * @param  array $gaConf      Google Analytics configuration
      * @return string
      */
-    public function serviceGoogleAnalyticsTrackDownloads($tsServices, $gaConf) {
+    public function serviceGoogleAnalyticsTrackDownloads($tsServices, $gaConf)
+    {
         $jsFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
             $gaConf['trackDownloadsScript']
         );
@@ -181,7 +185,8 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      * @param  array $piwikConf   Piwik configuration
      * @return string
      */
-    public function buildPiwikCode($tsServices, $piwikConf) {
+    public function buildPiwikCode($tsServices, $piwikConf)
+    {
         $ret = array();
         $piwikCodeList = GeneralUtility::trimExplode(',', $piwikConf['id']);
 
@@ -213,5 +218,4 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
         return $ret;
     }
-
 }

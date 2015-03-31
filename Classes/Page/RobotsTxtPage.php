@@ -32,7 +32,8 @@ namespace Metaseo\Metaseo\Page;
  * @subpackage  Page
  * @version     $Id: RobotsTxtPage.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
+class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage
+{
 
     // ########################################################################
     // Attributes
@@ -46,7 +47,8 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
     /**
      * Fetch and build robots.txt
      */
-    public function main() {
+    public function main()
+    {
         $settings = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSetting();
 
         // INIT
@@ -56,7 +58,7 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
         $rootPid  = \Metaseo\Metaseo\Utility\GeneralUtility::getRootPid();
         $ret      = '';
 
-        $tsSetupSeo = NULL;
+        $tsSetupSeo = null;
         if (!empty($tsSetup['plugin.']['metaseo.']['robotsTxt.'])) {
             $tsSetupSeo = $tsSetup['plugin.']['metaseo.']['robotsTxt.'];
         }
@@ -66,17 +68,17 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
         }
 
         // check if sitemap is enabled in root
-        if (!\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_robotstxt', TRUE)) {
-            return TRUE;
+        if (!\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_robotstxt', true)) {
+            return true;
         }
 
         $linkToStaticSitemap = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue(
             'is_robotstxt_sitemap_static',
-            FALSE
+            false
         );
 
         // Language lock
-        $sitemapLanguageLock = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', FALSE);
+        $sitemapLanguageLock = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', false);
         $languageId          = \Metaseo\Metaseo\Utility\GeneralUtility::getLanguageId();
 
         // ###############################
@@ -87,7 +89,6 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
         if (!empty($settings['robotstxt'])) {
             // Custom Robots.txt
             $ret .= $settings['robotstxt'];
-
         } elseif ($tsSetupSeo) {
             // Default robots.txt
             $ret .= $cObj->cObjGetSingle($tsSetupSeo['default'], $tsSetupSeo['default.']);
@@ -120,8 +121,8 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
             $markerConfList = array();
 
             foreach ($tsSetupSeo['marker.'] as $name => $data) {
-                if (strpos($name, '.') === FALSE) {
-                    $markerConfList[$name] = NULL;
+                if (strpos($name, '.') === false) {
+                    $markerConfList[$name] = null;
                 }
             }
 
@@ -170,5 +171,4 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
 
         return $ret;
     }
-
 }

@@ -31,14 +31,16 @@ namespace Metaseo\Metaseo\Backend\Validator;
  * @package     TYPO3
  * @subpackage  metaseo
  */
-class FloatValidator {
+class FloatValidator
+{
 
     /**
      * Returns Javscript validation function body
      *
      * @return string
      */
-    public function returnFieldJS() {
+    public function returnFieldJS()
+    {
         return '
 value = value.replace(/[^-0-9,.]/g,\'\');
 
@@ -67,7 +69,8 @@ return ret;
      * @param    mixed $set    Set
      * @return    float
      */
-    function evaluateFieldValue($value, $is_in, &$set) {
+    public function evaluateFieldValue($value, $is_in, &$set)
+    {
         return (float)$value;
     }
 }

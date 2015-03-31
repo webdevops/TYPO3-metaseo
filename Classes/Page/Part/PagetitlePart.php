@@ -32,7 +32,8 @@ namespace Metaseo\Metaseo\Page\Part;
  * @subpackage  lib
  * @version     $Id: PagetitlePart.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
+class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart
+{
 
     /**
      * Add SEO-Page Title
@@ -40,7 +41,8 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      * @param    string $title    Default page title (rendered by TYPO3)
      * @return    string            Modified page title
      */
-    public function main($title) {
+    public function main($title)
+    {
         // INIT
         $ret              = $title;
         $rawTitel         = !empty($GLOBALS['TSFE']->altPageTitle) ? $GLOBALS['TSFE']->altPageTitle : $GLOBALS['TSFE']->page['title'];
@@ -48,11 +50,11 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         $tsSeoSetup       = array();
         $rootLine         = $GLOBALS['TSFE']->rootLine;
         $currentPid       = $GLOBALS['TSFE']->id;
-        $skipPrefixSuffix = FALSE;
-        $applySitetitle   = TRUE;
+        $skipPrefixSuffix = false;
+        $applySitetitle   = true;
 
-        $pageTitelPrefix = FALSE;
-        $pageTitelSuffix = FALSE;
+        $pageTitelPrefix = false;
+        $pageTitelSuffix = false;
 
         $stdWrapList = array();
 
@@ -89,10 +91,10 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
             // Add template prefix/suffix
             if (empty($tsSeoSetup['pageTitle.']['applySitetitleToPagetitle'])) {
-                $applySitetitle = FALSE;
+                $applySitetitle = false;
             }
 
-            $skipPrefixSuffix = TRUE;
+            $skipPrefixSuffix = true;
         }
 
 
@@ -114,7 +116,7 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                             $pageTitelSuffix = $page['tx_metaseo_pagetitle_suffix'];
                         }
 
-                        if ($pageTitelPrefix !== FALSE || $pageTitelSuffix !== FALSE) {
+                        if ($pageTitelPrefix !== false || $pageTitelSuffix !== false) {
                             // pagetitle found - break foreach
                             break 2;
                         }
@@ -165,11 +167,11 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                     $ret      = $store['pagetitle.absolute'];
                     $rawTitel = $store['pagetitle.absolute'];
 
-                    $pageTitelPrefix = FALSE;
-                    $pageTitelSuffix = FALSE;
+                    $pageTitelPrefix = false;
+                    $pageTitelSuffix = false;
 
                     if (empty($tsSeoSetup['pageTitle.']['applySitetitleToPagetitle'])) {
-                        $applySitetitle = FALSE;
+                        $applySitetitle = false;
                     }
                 }
 
@@ -179,19 +181,19 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             }
 
             // Apply prefix and suffix
-            if ($pageTitelPrefix !== FALSE || $pageTitelSuffix !== FALSE) {
+            if ($pageTitelPrefix !== false || $pageTitelSuffix !== false) {
                 $ret = $rawTitel;
 
-                if ($pageTitelPrefix !== FALSE) {
+                if ($pageTitelPrefix !== false) {
                     $ret = $pageTitelPrefix . ' ' . $ret;
                 }
 
-                if ($pageTitelSuffix !== FALSE) {
+                if ($pageTitelSuffix !== false) {
                     $ret .= ' ' . $pageTitelSuffix;
                 }
 
                 if (!empty($tsSeoSetup['pageTitle.']['applySitetitleToPrefixSuffix'])) {
-                    $applySitetitle = TRUE;
+                    $applySitetitle = true;
                 }
             } else {
                 $ret = $rawTitel;

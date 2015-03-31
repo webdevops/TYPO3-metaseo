@@ -31,7 +31,8 @@ namespace Metaseo\Metaseo\Backend\Ajax;
  * @package     TYPO3
  * @subpackage  metaseo
  */
-abstract class AbstractAjax {
+abstract class AbstractAjax
+{
 
     // ########################################################################
     // Attributes
@@ -47,14 +48,14 @@ abstract class AbstractAjax {
     /**
      * Sorting field
      */
-    protected $sortField = NULL;
+    protected $sortField = null;
 
     /**
      * Sorting dir
      *
      * @var string
      */
-    protected $sortDir = NULL;
+    protected $sortDir = null;
 
     /**
      * TCE
@@ -62,14 +63,14 @@ abstract class AbstractAjax {
      * @var \TYPO3\CMS\Core\DataHandling\DataHandler
      * @inject
      */
-    protected $tce = NULL;
+    protected $tce = null;
 
     /**
      * TYPO3 Object manager
      *
      * @var \TYPO3\CMS\Extbase\Object\ObjectManager
      */
-    protected $objectManager = NULL;
+    protected $objectManager = null;
 
     /**
      * Backend Form Protection object
@@ -77,7 +78,7 @@ abstract class AbstractAjax {
      * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection
      * @inject
      */
-    protected $formProtection = NULL;
+    protected $formProtection = null;
 
     // ########################################################################
     // Methods
@@ -86,8 +87,9 @@ abstract class AbstractAjax {
     /**
      * Execute ajax call
      */
-    public function main() {
-        $ret = NULL;
+    public function main()
+    {
+        $ret = null;
 
         // Try to find method
         $function = '';
@@ -112,7 +114,6 @@ abstract class AbstractAjax {
                 if ($this->checkSessionToken()) {
                     $ret = $this->$method();
                 }
-
             }
         }
 
@@ -126,7 +127,8 @@ abstract class AbstractAjax {
     /**
      * Init
      */
-    protected function init() {
+    protected function init()
+    {
         // Include ajax local lang
         $GLOBALS['LANG']->includeLLFile('EXT:metaseo/Resources/Private/Language/locallang.xlf');
 
@@ -141,7 +143,8 @@ abstract class AbstractAjax {
     /**
      * Collect and process POST vars and stores them into $this->postVars
      */
-    protected function fetchParams() {
+    protected function fetchParams()
+    {
         $rawPostVarList = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
         foreach ($rawPostVarList as $key => $value) {
             $this->postVar[$key] = json_decode($value);
@@ -163,7 +166,6 @@ abstract class AbstractAjax {
                     break;
             }
         }
-
     }
 
     /**
@@ -172,7 +174,8 @@ abstract class AbstractAjax {
      * @param    string $value    Sort value
      * @return    string
      */
-    protected function escapeSortField($value) {
+    protected function escapeSortField($value)
+    {
         return preg_replace('[^_a-zA-Z]', '', $value);
     }
 
@@ -181,9 +184,9 @@ abstract class AbstractAjax {
      *
      * @return \TYPO3\CMS\Core\DataHandling\DataHandler
      */
-    protected function tce() {
-
-        if ($this->tce === NULL) {
+    protected function tce()
+    {
+        if ($this->tce === null) {
             /** @var \TYPO3\CMS\Core\DataHandling\DataHandler tce */
             $this->tce = $this->objectManager->get('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
             $this->tce->start(null, null);
@@ -200,7 +203,8 @@ abstract class AbstractAjax {
      * @param   string $field  Field
      * @return  boolean
      */
-    protected function isFieldInTcaTable($table, $field) {
+    protected function isFieldInTcaTable($table, $field)
+    {
         return isset($GLOBALS['TCA'][$table]['columns'][$field]);
     }
 
@@ -211,7 +215,8 @@ abstract class AbstractAjax {
      * @param   string $formName    Form name/Session token name
      * @return  string
      */
-    protected function sessionToken($formName) {
+    protected function sessionToken($formName)
+    {
         $token = $this->formProtection->generateToken($formName);
         return $token;
     }
@@ -221,11 +226,11 @@ abstract class AbstractAjax {
      *
      * @return    boolean
      */
-    protected function checkSessionToken() {
-
+    protected function checkSessionToken()
+    {
         if (empty($this->postVar['sessionToken'])) {
             // No session token exists
-            return FALSE;
+            return false;
         }
 
         $className = strtolower(str_replace('\\', '_', get_class($this)));
@@ -233,10 +238,9 @@ abstract class AbstractAjax {
         $sessionToken = $this->sessionToken($className);
 
         if ($this->postVar['sessionToken'] === $sessionToken) {
-            return TRUE;
+            return true;
         }
 
-        return FALSE;
+        return false;
     }
-
 }

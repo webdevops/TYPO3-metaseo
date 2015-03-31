@@ -32,21 +32,22 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  * @subpackage  lib
  * @version     $Id: GarbageCollectionTask.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class GarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
+class GarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+{
 
     /**
      * Execute task
      *
      * @return  boolean
      */
-    public function execute() {
+    public function execute()
+    {
         // Expire sitemap entries
         \Metaseo\Metaseo\Utility\SitemapUtility::expire();
 
         // Expire cache entries
         \Metaseo\Metaseo\Utility\CacheUtility::expire();
 
-        return TRUE;
+        return true;
     }
-
 }

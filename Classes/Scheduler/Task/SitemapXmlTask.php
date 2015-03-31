@@ -32,7 +32,8 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  * @subpackage  lib
  * @version     $Id: SitemapXmlTask.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class SitemapXmlTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask {
+class SitemapXmlTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
+{
 
     // ########################################################################
     // Attributes
@@ -56,8 +57,9 @@ class SitemapXmlTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
      * @param   integer $languageId Language id
      * @return  boolean
      */
-    protected function buildSitemap($rootPageId, $languageId) {
-        if ($languageId !== NULL) {
+    protected function buildSitemap($rootPageId, $languageId)
+    {
+        if ($languageId !== null) {
             // Language lock enabled
             $rootPageLinkTempalte = 'sitemap-r%s-l%s-p###PAGE###.xml.gz';
             $sitemapIndexFileName = 'index-r%s-l%s.xml.gz';
@@ -88,7 +90,6 @@ class SitemapXmlTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
             $this->writeToFile(PATH_site . '/' . $this->sitemapDir . '/' . $fileName, $content);
         }
 
-        return TRUE;
+        return true;
     }
-
 }

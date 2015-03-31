@@ -32,7 +32,8 @@ namespace Metaseo\Metaseo\Sitemap\Generator;
  * @subpackage  lib
  * @version     $Id: TxtGenerator.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class TxtGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator {
+class TxtGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator
+{
 
     // ########################################################################
     // Methods
@@ -43,7 +44,8 @@ class TxtGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
      *
      * @return  string
      */
-    public function sitemapIndex() {
+    public function sitemapIndex()
+    {
         return '';
     }
 
@@ -53,7 +55,8 @@ class TxtGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
      * @param   integer $page   Page
      * @return  string
      */
-    public function sitemap($page = NULL) {
+    public function sitemap($page = null)
+    {
         $ret = array();
 
         foreach ($this->sitemapPages as $sitemapPage) {

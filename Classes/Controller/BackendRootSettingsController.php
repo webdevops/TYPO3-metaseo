@@ -33,7 +33,8 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  * @package     TYPO3
  * @subpackage  metaseo
  */
-class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule {
+class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule
+{
     // ########################################################################
     // Attributes
     // ########################################################################
@@ -45,7 +46,8 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
     /**
      * Main action
      */
-    public function mainAction() {
+    public function mainAction()
+    {
         // #################
         // Root page list
         // #################
@@ -53,8 +55,8 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
         $rootPageList   = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
         $rootIdList     = array_keys($rootPageList);
 
-        $rootPidCondition = NULL;
-        if (!empty($rootIdList) ) {
+        $rootPidCondition = null;
+        if (!empty($rootIdList)) {
             $rootPidCondition = 'p.uid IN (' . implode(',', $rootIdList) . ')';
         } else {
             $rootPidCondition = '1=0';
@@ -111,23 +113,23 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
         foreach ($rootPageList as $pageId => &$page) {
             // Domain list
             $page['domainList'] = '';
-            if (!empty($domainList[$pageId]) ) {
+            if (!empty($domainList[$pageId])) {
                 $page['domainList'] = $domainList[$pageId];
             }
 
             // Settings
             $page['rootSettings'] = array();
-            if (!empty($rootSettingList[$pageId]) ) {
+            if (!empty($rootSettingList[$pageId])) {
                 $page['rootSettings'] = $rootSettingList[$pageId];
             }
 
             // Settings available
-            $page['settingsLink'] = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_metaseo_setting_root][' . $rootSettingList[$pageId]['uid'] . ']=edit',$this->doc->backPath);
+            $page['settingsLink'] = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_metaseo_setting_root][' . $rootSettingList[$pageId]['uid'] . ']=edit', $this->doc->backPath);
         }
         unset($page);
 
         // check if there is any root page
-        if (empty($rootPageList) ) {
+        if (empty($rootPageList)) {
             $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
                 $this->translate('message.warning.noRootPage.message'),
                 $this->translate('message.warning.noRootPage.title'),
@@ -150,5 +152,4 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
 
         $this->view->assign('RootPageList', $rootPageList);
     }
-
 }

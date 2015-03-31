@@ -32,7 +32,8 @@ namespace Metaseo\Metaseo\Sitemap\Generator;
  * @subpackage  lib
  * @version     $Id: AbstractGenerator.php 81677 2013-11-21 12:32:33Z mblaschke $
  */
-abstract class AbstractGenerator {
+abstract class AbstractGenerator
+{
     // ########################################################################
     // Attributes
     // ########################################################################
@@ -42,7 +43,7 @@ abstract class AbstractGenerator {
      *
      * @var integer
      */
-    public $rootPid = NULL;
+    public $rootPid = null;
 
     /**
      * Sitemap pages
@@ -94,7 +95,7 @@ abstract class AbstractGenerator {
      *
      * @var string|boolean
      */
-    public $indexPathTemplate = FALSE;
+    public $indexPathTemplate = false;
 
     // ########################################################################
     // Methods
@@ -103,15 +104,16 @@ abstract class AbstractGenerator {
     /**
      * Fetch sitemap information and generate sitemap
      */
-    public function __construct() {
+    public function __construct()
+    {
         // INIT
         $this->rootPid = \Metaseo\Metaseo\Utility\GeneralUtility::getRootPid();
-        $sysLanguageId = NULL;
+        $sysLanguageId = null;
 
         $this->tsSetup = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.'];
 
         // Language limit via setupTS
-        if (\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', FALSE)) {
+        if (\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', false)) {
             $sysLanguageId = \Metaseo\Metaseo\Utility\GeneralUtility::getLanguageId();
         }
 
@@ -130,8 +132,9 @@ abstract class AbstractGenerator {
      *
      * @return integer
      */
-    public function pageCount() {
-        $pageLimit = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('sitemap_page_limit', NULL);
+    public function pageCount()
+    {
+        $pageLimit = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('sitemap_page_limit', null);
 
         if (empty($pageLimit)) {
             $pageLimit = 1000;
@@ -160,6 +163,5 @@ abstract class AbstractGenerator {
      * @param   integer $page   Page
      * @return  string
      */
-    abstract public function sitemap($page = NULL);
-
+    abstract public function sitemap($page = null);
 }
