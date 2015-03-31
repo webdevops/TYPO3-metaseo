@@ -134,6 +134,7 @@ Thanks to...
 - Manfred Egger
 - Carsten Hager
 - Thomas Deuling
+- Thomas Mayer
 - Florian Duffner
 - Georg Tiefenbrunn
 - and for all other contributors and bug reporters
