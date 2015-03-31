@@ -80,8 +80,10 @@ class XmlGenerator extends AbstractGenerator
         }
 
         $ret = '<?xml version="1.0" encoding="UTF-8"?>';
-        $ret .= '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"';
-        $ret .= ' xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
+        $ret .= '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" ';
+        $ret .= 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ';
+        $ret .= 'xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 ';
+        $ret .= 'http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
 
         // Call hook
         GeneralUtility::callHook('sitemap-xml-index-sitemap-list', $this, $sitemaps);

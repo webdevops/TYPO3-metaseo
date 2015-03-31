@@ -160,7 +160,8 @@ class BackendPageSeoController extends AbstractStandardModule
 
             // Flag (if available)
             if (!empty($langRow['flag'])) {
-                $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-' . $langRow['flag'] . ' t3-icon-' . $langRow['flag'] . '"></span>';
+                $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-';
+                $flag .= $langRow['flag'] . ' t3-icon-' . $langRow['flag'] . '"></span>';
                 $flag .= '&nbsp;';
             }
 
@@ -187,12 +188,13 @@ class BackendPageSeoController extends AbstractStandardModule
         $this->template = $this->objectManager->get('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
         $pageRenderer = $this->template->getPageRenderer();
 
-        $pageRenderer->addJsFile(ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript/Ext.ux.plugin.FitToParent.js');
-        $pageRenderer->addJsFile(ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript/MetaSeo.js');
-        $pageRenderer->addJsFile(ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript/MetaSeo.overview.js');
-        $pageRenderer->addJsFile(ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript/MetaSeo.metaeditor.js');
-        $pageRenderer->addJsFile(ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript/MetaSeo.metaeditor.fields.js');
-        $pageRenderer->addCssFile(ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/Css/Default.css');
+        $metaSeoPath = ExtensionManagementUtility::extRelPath('metaseo');
+        $pageRenderer->addJsFile($metaSeoPath . 'Resources/Public/Backend/JavaScript/Ext.ux.plugin.FitToParent.js');
+        $pageRenderer->addJsFile($metaSeoPath . 'Resources/Public/Backend/JavaScript/MetaSeo.js');
+        $pageRenderer->addJsFile($metaSeoPath . 'Resources/Public/Backend/JavaScript/MetaSeo.overview.js');
+        $pageRenderer->addJsFile($metaSeoPath . 'Resources/Public/Backend/JavaScript/MetaSeo.metaeditor.js');
+        $pageRenderer->addJsFile($metaSeoPath . 'Resources/Public/Backend/JavaScript/MetaSeo.metaeditor.fields.js');
+        $pageRenderer->addCssFile($metaSeoPath . 'Resources/Public/Backend/Css/Default.css');
 
         $realUrlAvailable = ExtensionManagementUtility::isLoaded('realurl');
 

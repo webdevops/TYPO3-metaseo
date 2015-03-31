@@ -40,9 +40,21 @@ class SitemapUtility
     const SITEMAP_TYPE_PAGE = 0;
     const SITEMAP_TYPE_FILE = 1;
 
-    const DOKTYPE_SITEMAP_TXT    = 841131; // sitemap.txt     (EXT:metaseo), apply changes in Configuration/TypoScript/setup.txt
-    const DOKTYPE_SITEMAP_XML    = 841132; // sitemap.xml     (EXT:metaseo)
-    const DOKTYPE_ROBOTS_TXT     = 841133; // robots.txt      (EXT:metaseo)
+    /**
+     * Doktype for the sitemap.txt (EXT:metaseo)
+     * apply changes in Configuration/TypoScript/setup.txt
+     */
+    const DOKTYPE_SITEMAP_TXT    = 841131;
+
+    /**
+     * Doktype for the sitemap.xml (EXT:metaseo)
+     */
+    const DOKTYPE_SITEMAP_XML    = 841132;
+
+    /**
+     * Doktype for the robots.txt (EXT:metaseo)
+     */
+    const DOKTYPE_ROBOTS_TXT     = 841133;
 
     // ########################################################################
     // Attributes

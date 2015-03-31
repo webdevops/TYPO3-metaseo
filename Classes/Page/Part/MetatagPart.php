@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  * @package     metaseo
  * @subpackage  lib
  * @version     $Id: MetatagPart.php 84520 2014-03-28 10:33:24Z mblaschke $
+ * @todo add function getMeta($name, $content)
  */
 class MetatagPart extends AbstractPart
 {
@@ -137,7 +138,10 @@ class MetatagPart extends AbstractPart
             // #################
 
             // tx_metaseo_geo_lat
-            $tmp = $cObj->stdWrap($tsSetupSeo['conf.']['tx_metaseo_geo_lat'], $tsSetupSeo['conf.']['tx_metaseo_geo_lat.']);
+            $tmp = $cObj->stdWrap(
+                $tsSetupSeo['conf.']['tx_metaseo_geo_lat'],
+                $tsSetupSeo['conf.']['tx_metaseo_geo_lat.']
+            );
             if (!empty($tmp)) {
                 $pageMeta['geoPositionLatitude'] = $tmp;
             }
@@ -255,78 +259,95 @@ class MetatagPart extends AbstractPart
 
             // title
             if (!empty($tsSetupSeo['title']) && $enableMetaDc) {
-                $ret['meta.title'] = '<meta name="DCTERMS.title" content="' . htmlspecialchars($tsSetupSeo['title']) . '">';
+                $ret['meta.title'] = '<meta name="DCTERMS.title" content="'
+                    . htmlspecialchars($tsSetupSeo['title']) . '">';
             }
 
             // description
             if (!empty($tsSetupSeo['description'])) {
-                $ret['meta.description'] = '<meta name="description" content="' . htmlspecialchars($tsSetupSeo['description']) . '">';
+                $ret['meta.description'] = '<meta name="description" content="'
+                    . htmlspecialchars($tsSetupSeo['description']) . '">';
 
                 if ($enableMetaDc) {
-                    $ret['meta.description.dc'] = '<meta name="DCTERMS.description" content="' . htmlspecialchars($tsSetupSeo['description']) . '">';
+                    $ret['meta.description.dc'] = '<meta name="DCTERMS.description" content="'
+                        . htmlspecialchars($tsSetupSeo['description']) . '">';
                 }
             }
 
             // keywords
             if (!empty($tsSetupSeo['keywords'])) {
-                $ret['meta.keywords'] = '<meta name="keywords" content="' . htmlspecialchars($tsSetupSeo['keywords']) . '">';
+                $ret['meta.keywords'] = '<meta name="keywords" content="'
+                    . htmlspecialchars($tsSetupSeo['keywords']) . '">';
 
                 if ($enableMetaDc) {
-                    $ret['meta.keywords.dc'] = '<meta name="DCTERMS.subject" content="' . htmlspecialchars($tsSetupSeo['keywords']) . '">';
+                    $ret['meta.keywords.dc'] = '<meta name="DCTERMS.subject" content="'
+                        . htmlspecialchars($tsSetupSeo['keywords']) . '">';
                 }
             }
 
             // copyright
             if (!empty($tsSetupSeo['copyright'])) {
-                $ret['meta.copyright'] = '<meta name="copyright" content="' . htmlspecialchars($tsSetupSeo['copyright']) . '">';
+                $ret['meta.copyright'] = '<meta name="copyright" content="'
+                    . htmlspecialchars($tsSetupSeo['copyright']) . '">';
 
                 if ($enableMetaDc) {
-                    $ret['meta.copyright.dc'] = '<meta name="DCTERMS.rights" content="' . htmlspecialchars($tsSetupSeo['copyright']) . '">';
+                    $ret['meta.copyright.dc'] = '<meta name="DCTERMS.rights" content="'
+                        . htmlspecialchars($tsSetupSeo['copyright']) . '">';
                 }
             }
 
             // email
             if (!empty($tsSetupSeo['email'])) {
-                $ret['meta.email.link'] = '<link rev="made" href="mailto:' . htmlspecialchars($tsSetupSeo['email']) . '">';
-                $ret['meta.email.http'] = '<meta http-equiv="reply-to" content="' . htmlspecialchars($tsSetupSeo['email']) . '">';
+                $ret['meta.email.link'] = '<link rev="made" href="mailto:'
+                    . htmlspecialchars($tsSetupSeo['email']) . '">';
+                $ret['meta.email.http'] = '<meta http-equiv="reply-to" content="'
+                    . htmlspecialchars($tsSetupSeo['email']) . '">';
             }
 
             // author
             if (!empty($tsSetupSeo['author'])) {
-                $ret['meta.author'] = '<meta name="author" content="' . htmlspecialchars($tsSetupSeo['author']) . '">';
+                $ret['meta.author'] = '<meta name="author" content="'
+                    . htmlspecialchars($tsSetupSeo['author']) . '">';
 
                 if ($enableMetaDc) {
-                    $ret['meta.author.dc'] = '<meta name="DCTERMS.creator" content="' . htmlspecialchars($tsSetupSeo['author']) . '">';
+                    $ret['meta.author.dc'] = '<meta name="DCTERMS.creator" content="'
+                        . htmlspecialchars($tsSetupSeo['author']) . '">';
                 }
             }
 
             // author
             if (!empty($tsSetupSeo['publisher']) && $enableMetaDc) {
-                $ret['meta.publisher.dc'] = '<meta name="DCTERMS.publisher" content="' . htmlspecialchars($tsSetupSeo['publisher']) . '">';
+                $ret['meta.publisher.dc'] = '<meta name="DCTERMS.publisher" content="'
+                    . htmlspecialchars($tsSetupSeo['publisher']) . '">';
             }
 
             // distribution
             if (!empty($tsSetupSeo['distribution'])) {
-                $ret['meta.distribution'] = '<meta name="distribution" content="' . htmlspecialchars($tsSetupSeo['distribution']) . '">';
+                $ret['meta.distribution'] = '<meta name="distribution" content="'
+                    . htmlspecialchars($tsSetupSeo['distribution']) . '">';
             }
 
             // rating
             if (!empty($tsSetupSeo['rating'])) {
-                $ret['meta.rating'] = '<meta name="rating" content="' . htmlspecialchars($tsSetupSeo['rating']) . '">';
+                $ret['meta.rating'] = '<meta name="rating" content="'
+                    . htmlspecialchars($tsSetupSeo['rating']) . '">';
             }
 
             // last-update
             if (!empty($tsSetupSeo['useLastUpdate']) && !empty($tsSetupSeo['lastUpdate'])) {
-                $ret['meta.date'] = '<meta name="date" content="' . htmlspecialchars($tsSetupSeo['lastUpdate']) . '">';
+                $ret['meta.date'] = '<meta name="date" content="'
+                    . htmlspecialchars($tsSetupSeo['lastUpdate']) . '">';
 
                 if ($enableMetaDc) {
-                    $ret['meta.date.dc'] = '<meta name="DCTERMS.date" content="' . htmlspecialchars($tsSetupSeo['lastUpdate']) . '">';
+                    $ret['meta.date.dc'] = '<meta name="DCTERMS.date" content="'
+                        . htmlspecialchars($tsSetupSeo['lastUpdate']) . '">';
                 }
             }
 
             // expire
             if (!empty($tsSetupSeo['useExpire']) && !empty($tsfePage['endtime'])) {
-                $ret['meta.expire'] = '<meta name="googlebot" content="unavailable_after: ' . date('d-M-Y H:i:s T', $tsfePage['endtime']) . '" > ';
+                $ret['meta.expire'] = '<meta name="googlebot" content="unavailable_after: '
+                    . date('d-M-Y H:i:s T', $tsfePage['endtime']) . '" > ';
             }
 
             // #################
@@ -378,7 +399,8 @@ class MetatagPart extends AbstractPart
 
             // revisit
             if (!empty($tsSetupSeo['revisit'])) {
-                $ret['crawler.revisit'] = '<meta name="revisit-after" content="' . htmlspecialchars($tsSetupSeo['revisit']) . '">';
+                $ret['crawler.revisit'] = '<meta name="revisit-after" content="'
+                    . htmlspecialchars($tsSetupSeo['revisit']) . '">';
             }
 
             // #################
@@ -387,18 +409,24 @@ class MetatagPart extends AbstractPart
 
             // Geo-Position
             if (!empty($tsSetupSeo['geoPositionLatitude']) && !empty($tsSetupSeo['geoPositionLongitude'])) {
-                $ret['geo.icmb']     = '<meta name="ICBM" content="' . htmlspecialchars($tsSetupSeo['geoPositionLatitude']) . ', ' . htmlspecialchars($tsSetupSeo['geoPositionLongitude']) . '">';
-                $ret['geo.position'] = '<meta name="geo.position" content="' . htmlspecialchars($tsSetupSeo['geoPositionLatitude']) . ';' . htmlspecialchars($tsSetupSeo['geoPositionLongitude']) . '">';
+                $ret['geo.icmb']     = '<meta name="ICBM" content="'
+                    . htmlspecialchars($tsSetupSeo['geoPositionLatitude']) . ', '
+                    . htmlspecialchars($tsSetupSeo['geoPositionLongitude']) . '">';
+                $ret['geo.position'] = '<meta name="geo.position" content="'
+                    . htmlspecialchars($tsSetupSeo['geoPositionLatitude']) . ';'
+                    . htmlspecialchars($tsSetupSeo['geoPositionLongitude']) . '">';
             }
 
             // Geo-Region
             if (!empty($tsSetupSeo['geoRegion'])) {
-                $ret['geo.region'] = '<meta name="geo.region" content="' . htmlspecialchars($tsSetupSeo['geoRegion']) . '">';
+                $ret['geo.region'] = '<meta name="geo.region" content="'
+                    . htmlspecialchars($tsSetupSeo['geoRegion']) . '">';
             }
 
             // Geo Placename
             if (!empty($tsSetupSeo['geoPlacename'])) {
-                $ret['geo.placename'] = '<meta name="geo.placename" content="' . htmlspecialchars($tsSetupSeo['geoPlacename']) . '">';
+                $ret['geo.placename'] = '<meta name="geo.placename" content="'
+                    . htmlspecialchars($tsSetupSeo['geoPlacename']) . '">';
             }
 
             // #################
@@ -407,28 +435,33 @@ class MetatagPart extends AbstractPart
 
             // Google Verification
             if (!empty($tsSetupSeo['googleVerification'])) {
-                $ret['service.verification.google'] = '<meta name="google-site-verification" content="' . htmlspecialchars($tsSetupSeo['googleVerification']) . '">';
+                $ret['service.verification.google'] = '<meta name="google-site-verification" content="'
+                    . htmlspecialchars($tsSetupSeo['googleVerification']) . '">';
             }
 
             // MSN Verification
             if (!empty($tsSetupSeo['msnVerification'])) {
-                $ret['service.verification.msn'] = '<meta name="msvalidate.01" content="' . htmlspecialchars($tsSetupSeo['msnVerification']) . '">';
+                $ret['service.verification.msn'] = '<meta name="msvalidate.01" content="'
+                    . htmlspecialchars($tsSetupSeo['msnVerification']) . '">';
             }
 
             // Yahoo Verification
             if (!empty($tsSetupSeo['yahooVerification'])) {
-                $ret['service.verification.yahoo'] = '<meta name="y_key" content="' . htmlspecialchars($tsSetupSeo['yahooVerification']) . '">';
+                $ret['service.verification.yahoo'] = '<meta name="y_key" content="'
+                    . htmlspecialchars($tsSetupSeo['yahooVerification']) . '">';
             }
 
             // WebOfTrust Verification
             if (!empty($tsSetupSeo['wotVerification'])) {
-                $ret['service.verification.wot'] = '<meta name="wot-verification" content="' . htmlspecialchars($tsSetupSeo['wotVerification']) . '">';
+                $ret['service.verification.wot'] = '<meta name="wot-verification" content="'
+                    . htmlspecialchars($tsSetupSeo['wotVerification']) . '">';
             }
 
 
             // PICS label
             if (!empty($tsSetupSeo['picsLabel'])) {
-                $ret['service.pics'] = '<meta http-equiv="PICS-Label" content="' . htmlspecialchars($tsSetupSeo['picsLabel']) . '">';
+                $ret['service.pics'] = '<meta http-equiv="PICS-Label" content="'
+                    . htmlspecialchars($tsSetupSeo['picsLabel']) . '">';
             }
 
             // #################
@@ -438,9 +471,11 @@ class MetatagPart extends AbstractPart
             // IE compatibility mode
             if (!empty($tsSetupSeo['ieCompatibilityMode'])) {
                 if (is_numeric($tsSetupSeo['ieCompatibilityMode'])) {
-                    $ret['ua.msie.compat'] = '<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE' . (int)$tsSetupSeo['ieCompatibilityMode'] . '">';
+                    $ret['ua.msie.compat'] = '<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE'
+                        . (int)$tsSetupSeo['ieCompatibilityMode'] . '">';
                 } else {
-                    $ret['ua.msie.compat'] = '<meta http-equiv="X-UA-Compatible" content="' . htmlspecialchars($tsSetupSeo['ieCompatibilityMode']) . '">';
+                    $ret['ua.msie.compat'] = '<meta http-equiv="X-UA-Compatible" content="'
+                        . htmlspecialchars($tsSetupSeo['ieCompatibilityMode']) . '">';
                 }
             }
 
@@ -519,7 +554,8 @@ class MetatagPart extends AbstractPart
                 $canonicalUrl = $this->generateLink($clUrl, $clLinkConf, $clDisableMpMode);
 
                 if (!empty($canonicalUrl)) {
-                    $ret['link.rel.canonical'] = '<link rel="canonical" href="' . htmlspecialchars($canonicalUrl) . '">';
+                    $ret['link.rel.canonical'] = '<link rel="canonical" href="'
+                        . htmlspecialchars($canonicalUrl) . '">';
                 }
             }
 
@@ -536,7 +572,8 @@ class MetatagPart extends AbstractPart
             $tsSetupSeo = $tsSetup['plugin.']['metaseo.']['social.'];
 
             if (!empty($tsSetupSeo['googlePlus.']['profilePageId'])) {
-                $ret['social.googleplus.direct-connect'] = '<link href="https://plus.google.com/' . htmlspecialchars($tsSetupSeo['googlePlus.']['profilePageId']) . '" rel="publisher">';
+                $ret['social.googleplus.direct-connect'] = '<link href="https://plus.google.com/'
+                    . htmlspecialchars($tsSetupSeo['googlePlus.']['profilePageId']) . '" rel="publisher">';
             }
         }
 
@@ -594,14 +631,16 @@ class MetatagPart extends AbstractPart
 
         // Add metadata to tag list
         foreach ($advMetaTagList as $tagName => $tagValue) {
-            $metaTags['adv.' . $tagName] = '<meta name="' . htmlspecialchars($tagName) . '" content="' . htmlspecialchars($tagValue) . '">';
+            $metaTags['adv.' . $tagName] = '<meta name="' . htmlspecialchars($tagName)
+                . '" content="' . htmlspecialchars($tagValue) . '">';
         }
 
         // #################
         // Custom meta tags (from connector)
         // #################
         foreach ($customMetaTagList as $tagName => $tagValue) {
-            $ret['adv.' . $tagName] = '<meta name="' . htmlspecialchars($tagName) . '" content="' . htmlspecialchars($tagValue) . '">';
+            $ret['adv.' . $tagName] = '<meta name="' . htmlspecialchars($tagName)
+                . '" content="' . htmlspecialchars($tagValue) . '">';
         }
     }
 

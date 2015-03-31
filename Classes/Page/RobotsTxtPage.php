@@ -143,7 +143,8 @@ class RobotsTxtPage extends AbstractPage
             // generate sitemap-static marker
             if ($linkToStaticSitemap) {
                 if ($sitemapLanguageLock) {
-                    $path = 'uploads/tx_metaseo/sitemap_xml/index-r' . (int)$rootPid . '-l' . (int)$languageId . '.xml.gz';
+                    $path = 'uploads/tx_metaseo/sitemap_xml/index-r'
+                        . (int)$rootPid . '-l' . (int)$languageId . '.xml.gz';
                 } else {
                     $path = 'uploads/tx_metaseo/sitemap_xml/index-r' . (int)$rootPid . '.xml.gz';
                 }

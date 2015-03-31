@@ -73,7 +73,10 @@ class BackendSitemapController extends AbstractStandardModule
                          INNER JOIN pages p
                             ON p.uid = s.page_uid
                            AND p.deleted = 0
-                           AND ' . DatabaseUtility::conditionNotIn('p.doktype', SitemapUtility::getPageTypeBlacklist()) . '
+                           AND ' . DatabaseUtility::conditionNotIn(
+                'p.doktype',
+                SitemapUtility::getPageTypeBlacklist()
+            ) . '
                 GROUP BY page_rootpid';
         $statsList = DatabaseUtility::getAllWithIndex($query, 'page_rootpid');
 
@@ -137,7 +140,10 @@ class BackendSitemapController extends AbstractStandardModule
                         FROM tx_metaseo_sitemap s
                              INNER JOIN pages p
                                 ON p.uid = s.page_uid
-                               AND ' . DatabaseUtility::conditionNotIn('p.doktype', SitemapUtility::getPageTypeBlacklist()) . '
+                               AND ' . DatabaseUtility::conditionNotIn(
+                    'p.doktype',
+                    SitemapUtility::getPageTypeBlacklist()
+                ) . '
                        WHERE s.page_rootpid = ' . (int)$pageId;
             $stats['sum_pages'] = DatabaseUtility::getOne($query);
 
@@ -229,7 +235,8 @@ class BackendSitemapController extends AbstractStandardModule
 
             // Flag (if available)
             if (!empty($langRow['flag'])) {
-                $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-' . $langRow['flag'] . ' t3-icon-' . $langRow['flag'] . '"></span>';
+                $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-';
+                $flag .= $langRow['flag'] . ' t3-icon-' . $langRow['flag'] . '"></span>';
                 $flag .= '&nbsp;';
             }
 

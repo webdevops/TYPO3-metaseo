@@ -132,7 +132,10 @@ class BackendControlCenterController extends AbstractStandardModule
             }
 
             // Settings available
-            $page['settingsLink'] = BackendUtilityTypo3::editOnClick('&edit[tx_metaseo_setting_root][' . $rootSettingList[$pageId]['uid'] . ']=edit', $this->doc->backPath);
+            $page['settingsLink'] = BackendUtilityTypo3::editOnClick(
+                '&edit[tx_metaseo_setting_root][' . $rootSettingList[$pageId]['uid'] . ']=edit',
+                $this->doc->backPath
+            );
 
 
             $page['sitemapLink']   = RootPageUtility::getSitemapIndexUrl($pageId);

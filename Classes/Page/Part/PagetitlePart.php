@@ -46,7 +46,11 @@ class PagetitlePart extends AbstractPart
     {
         // INIT
         $ret              = $title;
-        $rawTitel         = !empty($GLOBALS['TSFE']->altPageTitle) ? $GLOBALS['TSFE']->altPageTitle : $GLOBALS['TSFE']->page['title'];
+        if (!empty($GLOBALS['TSFE']->altPageTitle)) {
+            $rawTitel = $GLOBALS['TSFE']->altPageTitle;
+        } else {
+            $rawTitel = $GLOBALS['TSFE']->page['title'];
+        }
         $tsSetup          = $GLOBALS['TSFE']->tmpl->setup;
         $tsSeoSetup       = array();
         $rootLine         = $GLOBALS['TSFE']->rootLine;
