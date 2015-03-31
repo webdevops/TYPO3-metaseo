@@ -61,30 +61,30 @@ MetaSeo.sitemap.grid = {
                 ]
             ),
             sortInfo: {
-                field	 : 'uid',
+                field    : 'uid',
                 direction: 'DESC'
             },
             baseParams: {
-                pid						: Ext.encode( MetaSeo.sitemap.conf.pid ),
-                pagerStart				: 0,
-                pagingSize				: Ext.encode( MetaSeo.sitemap.conf.pagingSize ),
-                sort					: MetaSeo.sitemap.conf.sortField,
-                dir						: MetaSeo.sitemap.conf.sortDir,
-                criteriaFulltext		: Ext.encode( MetaSeo.sitemap.conf.criteriaFulltext ),
-                criteriaPageUid			: Ext.encode( MetaSeo.sitemap.conf.criteriaPageUid ),
-                criteriaPageLanguage	: Ext.encode( MetaSeo.sitemap.conf.criteriaPageLanguage ),
-                criteriaPageDepth		: Ext.encode( MetaSeo.sitemap.conf.criteriaPageDepth ),
-                criteriaIsBlacklisted	: Ext.encode( MetaSeo.sitemap.conf.criteriaIsBlacklisted ),
-                sessionToken			: Ext.encode( MetaSeo.sitemap.conf.sessionToken )
+                pid                     : Ext.encode( MetaSeo.sitemap.conf.pid ),
+                pagerStart              : 0,
+                pagingSize              : Ext.encode( MetaSeo.sitemap.conf.pagingSize ),
+                sort                    : MetaSeo.sitemap.conf.sortField,
+                dir                     : MetaSeo.sitemap.conf.sortDir,
+                criteriaFulltext        : Ext.encode( MetaSeo.sitemap.conf.criteriaFulltext ),
+                criteriaPageUid         : Ext.encode( MetaSeo.sitemap.conf.criteriaPageUid ),
+                criteriaPageLanguage    : Ext.encode( MetaSeo.sitemap.conf.criteriaPageLanguage ),
+                criteriaPageDepth       : Ext.encode( MetaSeo.sitemap.conf.criteriaPageDepth ),
+                criteriaIsBlacklisted   : Ext.encode( MetaSeo.sitemap.conf.criteriaIsBlacklisted ),
+                sessionToken            : Ext.encode( MetaSeo.sitemap.conf.sessionToken )
             },
             listeners: {
                 beforeload: function() {
-                    this.baseParams.pagingSize				= Ext.encode( MetaSeo.sitemap.conf.pagingSize );
-                    this.baseParams.criteriaFulltext		= Ext.encode( MetaSeo.sitemap.conf.criteriaFulltext );
-                    this.baseParams.criteriaPageUid			= Ext.encode( MetaSeo.sitemap.conf.criteriaPageUid );
-                    this.baseParams.criteriaPageLanguage	= Ext.encode( MetaSeo.sitemap.conf.criteriaPageLanguage );
-                    this.baseParams.criteriaPageDepth		= Ext.encode( MetaSeo.sitemap.conf.criteriaPageDepth );
-                    this.baseParams.criteriaIsBlacklisted	= Ext.encode( MetaSeo.sitemap.conf.criteriaIsBlacklisted );
+                    this.baseParams.pagingSize              = Ext.encode( MetaSeo.sitemap.conf.pagingSize );
+                    this.baseParams.criteriaFulltext        = Ext.encode( MetaSeo.sitemap.conf.criteriaFulltext );
+                    this.baseParams.criteriaPageUid         = Ext.encode( MetaSeo.sitemap.conf.criteriaPageUid );
+                    this.baseParams.criteriaPageLanguage    = Ext.encode( MetaSeo.sitemap.conf.criteriaPageLanguage );
+                    this.baseParams.criteriaPageDepth       = Ext.encode( MetaSeo.sitemap.conf.criteriaPageDepth );
+                    this.baseParams.criteriaIsBlacklisted   = Ext.encode( MetaSeo.sitemap.conf.criteriaIsBlacklisted );
                     this.removeAll();
                 }
             }
@@ -95,11 +95,11 @@ MetaSeo.sitemap.grid = {
         };
 
         var filterAction = function(ob, cmd) {
-            MetaSeo.sitemap.conf.criteriaFulltext			= Ext.getCmp('searchFulltext').getValue();
-            MetaSeo.sitemap.conf.criteriaPageUid			= Ext.getCmp('searchPageUid').getValue();
-            MetaSeo.sitemap.conf.criteriaPageLanguage		= Ext.getCmp('searchPageLanguage').getValue();
-            MetaSeo.sitemap.conf.criteriaPageDepth		= Ext.getCmp('searchPageDepth').getValue();
-            if( Ext.getCmp('searchIsBlacklisted').checked == true ) {
+            MetaSeo.sitemap.conf.criteriaFulltext           = Ext.getCmp('searchFulltext').getValue();
+            MetaSeo.sitemap.conf.criteriaPageUid            = Ext.getCmp('searchPageUid').getValue();
+            MetaSeo.sitemap.conf.criteriaPageLanguage       = Ext.getCmp('searchPageLanguage').getValue();
+            MetaSeo.sitemap.conf.criteriaPageDepth          = Ext.getCmp('searchPageDepth').getValue();
+            if ( Ext.getCmp('searchIsBlacklisted').checked == true ) {
                 MetaSeo.sitemap.conf.criteriaIsBlacklisted = 1;
             } else {
                 MetaSeo.sitemap.conf.criteriaIsBlacklisted = 0;
@@ -110,15 +110,15 @@ MetaSeo.sitemap.grid = {
 
         var function_blacklist = function(ob) {
             rowAction(ob, "blacklist", MetaSeo.sitemap.conf.lang.messageBlacklistTitle, MetaSeo.sitemap.conf.lang.messageBlacklistQuestion )
-        }
+        };
 
         var function_whitelist = function(ob) {
             rowAction(ob, "whitelist", MetaSeo.sitemap.conf.lang.messageWhitelistTitle, MetaSeo.sitemap.conf.lang.messageWhitelistQuestion )
-        }
+        };
 
         var function_delete = function(ob) {
             rowAction(ob, "delete", MetaSeo.sitemap.conf.lang.messageDeleteTitle, MetaSeo.sitemap.conf.lang.messageDeleteQuestion )
-        }
+        };
 
         var function_delete_all = function(ob) {
             var cmd = "deleteAll";
@@ -150,8 +150,8 @@ MetaSeo.sitemap.grid = {
                                     }
                                 },
                                 params: {
-                                    'pid'			: MetaSeo.sitemap.conf.pid,
-                                    sessionToken	: Ext.encode( MetaSeo.sitemap.conf.sessionToken )
+                                    'pid'           : MetaSeo.sitemap.conf.pid,
+                                    sessionToken    : Ext.encode( MetaSeo.sitemap.conf.sessionToken )
                                 }
                             });
 
@@ -166,13 +166,13 @@ MetaSeo.sitemap.grid = {
                 ]
             });
             frmConfirm.show();
-        }
+        };
 
 
         var rowAction = function(ob, cmd, confirmTitle, confirmText) {
             var recList = grid.getSelectionModel().getSelections();
 
-            if( recList.length >= 1 ) {
+            if ( recList.length >= 1 ) {
                 var uidList = [];
                 for (i = 0; i < recList.length; i++) {
                     uidList.push( recList[i].json.uid );
@@ -204,9 +204,9 @@ MetaSeo.sitemap.grid = {
                                         }
                                     },
                                     params: {
-                                        'uidList'		: Ext.encode(uidList),
-                                        'pid'			: MetaSeo.sitemap.conf.pid,
-                                        sessionToken	: Ext.encode( MetaSeo.sitemap.conf.sessionToken )
+                                        'uidList'       : Ext.encode(uidList),
+                                        'pid'           : MetaSeo.sitemap.conf.pid,
+                                        sessionToken    : Ext.encode( MetaSeo.sitemap.conf.sessionToken )
                                     }
                                 });
 
@@ -233,7 +233,7 @@ MetaSeo.sitemap.grid = {
                     icon: Ext.MessageBox.INFO
                 });
             }
-        }
+        };
 
         /****************************************************
          * row checkbox
@@ -246,8 +246,8 @@ MetaSeo.sitemap.grid = {
         /****************************************************
          * Renderer
          ****************************************************/
-        var dateToday		= new Date().format("Y-m-d");
-        var dateYesterday	= new Date().add(Date.DAY, -1).format("Y-m-d");
+        var dateToday       = new Date().format("Y-m-d");
+        var dateYesterday   = new Date().add(Date.DAY, -1).format("Y-m-d");
 
         var rendererDatetime = function(value, metaData, record, rowIndex, colIndex, store) {
             var ret = Ext.util.Format.htmlEncode(value);
@@ -257,18 +257,18 @@ MetaSeo.sitemap.grid = {
             ret = ret.split(dateYesterday).join('<strong>'+MetaSeo.sitemap.conf.lang.yesterday+'</strong>');
 
             return '<div ext:qtip="' + qtip +'">' + ret + '</div>';
-        }
+        };
 
 
         var rendererLanguage = function(value, metaData, record, rowIndex, colIndex, store) {
             var ret = '';
             var qtip = '';
 
-            if( MetaSeo.sitemap.conf.languageFullList[value] ) {
+            if ( MetaSeo.sitemap.conf.languageFullList[value] ) {
                 var lang = MetaSeo.sitemap.conf.languageFullList[value];
 
                 // Flag (if available)
-                if( lang.flag ) {
+                if ( lang.flag ) {
                     ret += '<span class="t3-icon t3-icon-flags t3-icon-flags-'+Ext.util.Format.htmlEncode(lang.flag)+' t3-icon-'+Ext.util.Format.htmlEncode(lang.flag)+'"></span>';
                     ret += '&nbsp;';
                 }
@@ -282,19 +282,19 @@ MetaSeo.sitemap.grid = {
             }
 
             return '<div ext:qtip="' + qtip +'">' + ret + '</div>';
-        }
+        };
 
         var rendererType = function(value, metaData, record, rowIndex, colIndex, store) {
             var ret = '';
 
-            if( MetaSeo.sitemap.conf.lang.sitemapPageType && MetaSeo.sitemap.conf.lang.sitemapPageType[value] ) {
+            if ( MetaSeo.sitemap.conf.lang.sitemapPageType && MetaSeo.sitemap.conf.lang.sitemapPageType[value] ) {
                 ret = Ext.util.Format.htmlEncode( MetaSeo.sitemap.conf.lang.sitemapPageType[value] );
             } else {
                 ret = '<i>[' + Ext.util.Format.htmlEncode(value) + ']</i>';
             }
 
             return ret;
-        }
+        };
 
         var rendererUrl = function(value, metaData, record, rowIndex, colIndex, store) {
             value = Ext.util.Format.htmlEncode(value);
@@ -302,19 +302,19 @@ MetaSeo.sitemap.grid = {
             var qtip = Ext.util.Format.htmlEncode(value);
 
             return '<div ext:qtip="' + qtip +'">' + value + '</div>';
-        }
+        };
 
         var rendererBoolean = function(value, metaData, record, rowIndex, colIndex, store) {
             var ret;
 
-            if( value ) {
+            if ( value ) {
                 ret = "<b>"+MetaSeo.sitemap.conf.lang.labelYes+"</b>";
             } else {
                 ret = MetaSeo.sitemap.conf.lang.labelNo;
             }
 
             return ret;
-        }
+        };
 
         /****************************************************
          * grid panel

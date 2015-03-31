@@ -226,7 +226,7 @@ MetaSeo.overview.grid = {
 
         var editWindow = false;
 
-        if( this._cellEditMode ) {
+        if ( this._cellEditMode ) {
             grid.addClass('metaseo-grid-editable');
 
             grid.on('cellclick', function(grid, rowIndex, colIndex, e) {
@@ -244,30 +244,30 @@ MetaSeo.overview.grid = {
                 var title = record.get('title');
 
                 // Fire custom MetaSEO onClick event
-                if( col.metaSeoOnClick ) {
+                if ( col.metaSeoOnClick ) {
                     col.metaSeoOnClick(record, fieldName, fieldId, col, data);
                 }
 
                 // Auto. MetaSEO Click Edit field
-                if( col.metaSeoClickEdit ) {
+                if ( col.metaSeoClickEdit ) {
                     // Init editor field
                     var field = col.metaSeoClickEdit;
                     field.itemId = 'form-field';
 
-                    if( !field.width)	field.width = 375;
+                    if ( !field.width ) {
+                        field.width = 375;
+                    }
 
                     switch( field.xtype ) {
                         case 'textarea':
-                            if( !field.height)	field.height = 150;
+                            if ( !field.height) {
+                                field.height = 150;
+                            }
                             field.value = data;
                             break;
 
                         case 'checkbox':
-                            if( data == '0' || data == '' ) {
-                                field.checked = false;
-                            } else {
-                                field.checked = true;
-                            }
+                            field.checked = !(data == '0' || data == '');
                             break;
 
                         default:
@@ -297,7 +297,7 @@ MetaSeo.overview.grid = {
                                     var callbackFinish = function(response) {
                                         var response = Ext.decode(response.responseText);
 
-                                        if( response && response.error ) {
+                                        if ( response && response.error ) {
                                             TYPO3.Flashmessage.display(TYPO3.Severity.error, '', Ext.util.Format.htmlEncode(response.error) );
                                         }
 
@@ -330,8 +330,8 @@ MetaSeo.overview.grid = {
                     });
                     editWindow.show();
 
-                    var formField		= editWindow.getComponent('form-field');
-                    var formButtonSave	= editWindow.getFooterToolbar().getComponent('form-button-save');
+                    var formField       = editWindow.getComponent('form-field');
+                    var formButtonSave  = editWindow.getFooterToolbar().getComponent('form-button-save');
 
                     // add listeners
                     formField.on('valid', function() {
@@ -395,7 +395,7 @@ MetaSeo.overview.grid = {
                     {name: 'url_scheme', type: 'string'}
                 );
 
-                if( MetaSeo.overview.conf.realurlAvailable ) {
+                if ( MetaSeo.overview.conf.realurlAvailable ) {
                     gridDsColumns.push(
                         {name: 'tx_realurl_pathsegment', type: 'string'},
                         {name: 'tx_realurl_pathoverride', type: 'string'},
@@ -438,17 +438,17 @@ MetaSeo.overview.grid = {
                 gridDsColumns
             ),
             sortInfo: {
-                field	 : 'uid',
+                field    : 'uid',
                 direction: 'DESC'
             },
             baseParams: {
-                pid						: Ext.encode( MetaSeo.overview.conf.pid ),
-                pagerStart				: Ext.encode( 0 ),
-                pagingSize				: Ext.encode( MetaSeo.overview.conf.pagingSize ),
-                sortField				: Ext.encode( MetaSeo.overview.conf.sortField ),
-                depth					: Ext.encode( MetaSeo.overview.conf.depth ),
-                listType				: Ext.encode( MetaSeo.overview.conf.listType ),
-                sessionToken			: Ext.encode( MetaSeo.overview.conf.sessionToken ),
+                pid                     : Ext.encode( MetaSeo.overview.conf.pid ),
+                pagerStart              : Ext.encode( 0 ),
+                pagingSize              : Ext.encode( MetaSeo.overview.conf.pagingSize ),
+                sortField               : Ext.encode( MetaSeo.overview.conf.sortField ),
+                depth                   : Ext.encode( MetaSeo.overview.conf.depth ),
+                listType                : Ext.encode( MetaSeo.overview.conf.listType ),
+                sessionToken            : Ext.encode( MetaSeo.overview.conf.sessionToken ),
                 sysLanguage             : Ext.encode( MetaSeo.overview.conf.sysLanguage )
             },
             listeners: {
@@ -476,9 +476,9 @@ MetaSeo.overview.grid = {
 
             var currentLanguage = Ext.getCmp('sysLanguage').getRawValue();
 
-            if( overlayStatus == 2 ) {
+            if ( overlayStatus == 2 ) {
                 qtip = '<b>' + String.format(MetaSeo.overview.conf.lang.value_base_only, currentLanguage) + '</b>:<br>' + qtip;
-            } else if( overlayStatus == 1 ) {
+            } else if ( overlayStatus == 1 ) {
                 qtip = '<b>' + String.format(MetaSeo.overview.conf.lang.value_from_overlay, currentLanguage) + '</b>:<br>' + qtip;
             } else {
                 qtip = '<b>' + String.format(MetaSeo.overview.conf.lang.value_from_base, currentLanguage) + '</b>:<br>' + qtip;
@@ -487,9 +487,9 @@ MetaSeo.overview.grid = {
             var html = me._fieldRendererCallback(value, qtip, 23, true);
 
             // check for overlay
-            if( overlayStatus == 2 ) {
+            if ( overlayStatus == 2 ) {
                 html = '<div class="metaseo-info-only-in-base">'+html+'</div>';
-            } else if( overlayStatus == 1 ) {
+            } else if ( overlayStatus == 1 ) {
                 html = '<div class="metaseo-info-from-overlay">'+html+'</div>';
             } else {
                 html = '<div class="metaseo-info-from-base">'+html+'</div>';
@@ -503,14 +503,14 @@ MetaSeo.overview.grid = {
         };
 
         var fieldRendererBoolean = function(value, metaData, record, rowIndex, colIndex, store) {
-            if( value == 0 || value == '' ) {
+            if ( value == 0 || value == '' ) {
                 value = '<div class="metaseo-boolean">'+Ext.util.Format.htmlEncode(MetaSeo.overview.conf.lang.boolean_no)+'</div>';
             } else {
                 value = '<div class="metaseo-boolean"><strong>'+Ext.util.Format.htmlEncode(MetaSeo.overview.conf.lang.boolean_yes)+'</strong></div>';
             }
 
             return me._fieldRendererCallback(value, '', false, false);
-        }
+        };
 
         var columnModel = [{
             id       : 'uid',
@@ -518,7 +518,7 @@ MetaSeo.overview.grid = {
             width    : 'auto',
             sortable : false,
             dataIndex: 'uid',
-            hidden	 : true
+            hidden   : true
         }, {
             id       : 'title',
             header   : MetaSeo.overview.conf.lang.page_title,
@@ -528,13 +528,13 @@ MetaSeo.overview.grid = {
             renderer: function(value, metaData, record, rowIndex, colIndex, store) {
                 var qtip = value;
 
-                if( record.data._depth ) {
+                if ( record.data._depth ) {
                     value = new Array(record.data._depth).join('    ') + value;
                 }
 
                 return me._fieldRendererCallback(value, qtip, false, true);
             },
-            metaSeoClickEdit	: {
+            metaSeoClickEdit: {
                 xtype: 'textfield',
                 minLength: 3
             }
@@ -546,67 +546,67 @@ MetaSeo.overview.grid = {
                 var fieldRendererAdvEditor = function(value, metaData, record, rowIndex, colIndex, store) {
                     var qtip = Ext.util.Format.htmlEncode( MetaSeo.overview.conf.lang.metaeditor_button_hin );
                     return '<div class="metaseo-cell-editable metaseo-toolbar" ext:qtip="' + qtip +'">'+MetaSeo.overview.conf.sprite.editor+'</div>';
-                }
+                };
 
                 columnModel.push({
-                    id			: 'keywords',
-                    header		: MetaSeo.overview.conf.lang.page_keywords,
-                    width		: 'auto',
-                    sortable	: false,
-                    dataIndex	: 'keywords',
-                    renderer	: fieldRenderer,
-                    metaSeoClickEdit	: {
+                    id          : 'keywords',
+                    header      : MetaSeo.overview.conf.lang.page_keywords,
+                    width       : 'auto',
+                    sortable    : false,
+                    dataIndex   : 'keywords',
+                    renderer    : fieldRenderer,
+                    metaSeoClickEdit: {
                         xtype: 'textarea'
                     }
                 },{
-                    id			: 'description',
-                    header		: MetaSeo.overview.conf.lang.page_description,
-                    width		: 'auto',
-                    sortable	: false,
-                    dataIndex	: 'description',
-                    renderer	: fieldRenderer,
-                    metaSeoClickEdit	: {
+                    id          : 'description',
+                    header      : MetaSeo.overview.conf.lang.page_description,
+                    width       : 'auto',
+                    sortable    : false,
+                    dataIndex   : 'description',
+                    renderer    : fieldRenderer,
+                    metaSeoClickEdit: {
                         xtype: 'textarea'
                     }
                 },{
-                    id			: 'abstract',
-                    header		: MetaSeo.overview.conf.lang.page_abstract,
-                    width		: 'auto',
-                    sortable	: false,
-                    dataIndex	: 'abstract',
-                    renderer	: fieldRenderer,
-                    metaSeoClickEdit	: {
+                    id          : 'abstract',
+                    header      : MetaSeo.overview.conf.lang.page_abstract,
+                    width       : 'auto',
+                    sortable    : false,
+                    dataIndex   : 'abstract',
+                    renderer    : fieldRenderer,
+                    metaSeoClickEdit: {
                         xtype: 'textarea'
                     }
                 },{
-                    id			: 'author',
-                    header		: MetaSeo.overview.conf.lang.page_author,
-                    width		: 'auto',
-                    sortable	: false,
-                    dataIndex	: 'author',
-                    renderer	: fieldRenderer,
-                    metaSeoClickEdit	: {
+                    id          : 'author',
+                    header      : MetaSeo.overview.conf.lang.page_author,
+                    width       : 'auto',
+                    sortable    : false,
+                    dataIndex   : 'author',
+                    renderer    : fieldRenderer,
+                    metaSeoClickEdit: {
                         xtype: 'textfield'
                     }
                 },{
-                    id			: 'author_email',
-                    header		: MetaSeo.overview.conf.lang.page_author_email,
-                    width		: 'auto',
-                    sortable	: false,
-                    dataIndex	: 'author_email',
-                    renderer	: fieldRenderer,
-                    metaSeoClickEdit	: {
+                    id          : 'author_email',
+                    header      : MetaSeo.overview.conf.lang.page_author_email,
+                    width       : 'auto',
+                    sortable    : false,
+                    dataIndex   : 'author_email',
+                    renderer    : fieldRenderer,
+                    metaSeoClickEdit: {
                         xtype: 'textfield',
                         vtype: 'email'
                     }
                 },{
-                    id			: 'lastupdated',
-                    header		: MetaSeo.overview.conf.lang.page_lastupdated,
-                    width		: 'auto',
-                    sortable	: false,
-                    dataIndex	: 'lastupdated',
-                    renderer	: fieldRendererRaw,
-                    metaSeoClickEdit	: {
+                    id          : 'lastupdated',
+                    header      : MetaSeo.overview.conf.lang.page_lastupdated,
+                    width       : 'auto',
+                    sortable    : false,
+                    dataIndex   : 'lastupdated',
+                    renderer    : fieldRendererRaw,
+                    metaSeoClickEdit: {
                         xtype: 'datefield',
                         format: 'Y-m-d'
                     }
@@ -617,7 +617,7 @@ MetaSeo.overview.grid = {
 //                    width    : 30,
 //                    sortable : false,
 //                    dataIndex: 'metatag',
-//                    renderer	: fieldRendererAdvEditor,
+//                    renderer: fieldRendererAdvEditor,
 //                    metaSeoOnClick: function(record, fieldName, fieldId, col, data) {
 //
 //                        // Init editor window
@@ -626,7 +626,7 @@ MetaSeo.overview.grid = {
 //                            pid: record.get('uid'),
 //                            onClose: function(reload) {
 //                                // TODO: Move to listener/event
-//                                if(reload) {
+//                                if (reload) {
 //                                    me.storeReload();
 //                                }
 //                            }
@@ -638,43 +638,43 @@ MetaSeo.overview.grid = {
 
             case 'geo':
                 columnModel.push({
-                    id			: 'tx_metaseo_geo_lat',
-                    header		: MetaSeo.overview.conf.lang.page_geo_lat,
-                    width		: 'auto',
-                    sortable	: false,
-                    dataIndex	: 'tx_metaseo_geo_lat',
-                    renderer	: fieldRenderer,
-                    metaSeoClickEdit	: {
+                    id          : 'tx_metaseo_geo_lat',
+                    header      : MetaSeo.overview.conf.lang.page_geo_lat,
+                    width       : 'auto',
+                    sortable    : false,
+                    dataIndex   : 'tx_metaseo_geo_lat',
+                    renderer    : fieldRenderer,
+                    metaSeoClickEdit: {
                         xtype: 'textfield'
                     }
                 },{
-                    id			: 'tx_metaseo_geo_long',
-                    header		: MetaSeo.overview.conf.lang.page_geo_long,
-                    width		: 'auto',
-                    sortable	: false,
-                    dataIndex	: 'tx_metaseo_geo_long',
-                    renderer	: fieldRenderer,
-                    metaSeoClickEdit	: {
+                    id          : 'tx_metaseo_geo_long',
+                    header      : MetaSeo.overview.conf.lang.page_geo_long,
+                    width       : 'auto',
+                    sortable    : false,
+                    dataIndex   : 'tx_metaseo_geo_long',
+                    renderer    : fieldRenderer,
+                    metaSeoClickEdit: {
                         xtype: 'textfield'
                     }
                 },{
-                    id			: 'tx_metaseo_geo_place',
-                    header		: MetaSeo.overview.conf.lang.page_geo_place,
-                    width		: 'auto',
-                    sortable	: false,
-                    dataIndex	: 'tx_metaseo_geo_place',
-                    renderer	: fieldRenderer,
-                    metaSeoClickEdit	: {
+                    id          : 'tx_metaseo_geo_place',
+                    header      : MetaSeo.overview.conf.lang.page_geo_place,
+                    width       : 'auto',
+                    sortable    : false,
+                    dataIndex   : 'tx_metaseo_geo_place',
+                    renderer    : fieldRenderer,
+                    metaSeoClickEdit: {
                         xtype: 'textfield'
                     }
                 },{
-                    id			: 'tx_metaseo_geo_region',
-                    header		: MetaSeo.overview.conf.lang.page_geo_region,
-                    width		: 'auto',
-                    sortable	: false,
-                    dataIndex	: 'tx_metaseo_geo_region',
-                    renderer	: fieldRenderer,
-                    metaSeoClickEdit	: {
+                    id          : 'tx_metaseo_geo_region',
+                    header      : MetaSeo.overview.conf.lang.page_geo_region,
+                    width       : 'auto',
+                    sortable    : false,
+                    dataIndex   : 'tx_metaseo_geo_region',
+                    renderer    : fieldRenderer,
+                    metaSeoClickEdit: {
                         xtype: 'textfield'
                     }
                 });
@@ -685,14 +685,14 @@ MetaSeo.overview.grid = {
                 var fieldRendererSitemapPriority = function(value, metaData, record, rowIndex, colIndex, store) {
                     var qtip = value;
 
-                    if( value == '0' ) {
+                    if ( value == '0' ) {
                         value = '<span class="metaseo-default">'+Ext.util.Format.htmlEncode(MetaSeo.overview.conf.lang.value_default)+'</span>';
                     } else {
                         value = Ext.util.Format.htmlEncode(value);
                     }
 
                     return me._fieldRendererCallback(value, qtip, false, false);
-                }
+                };
 
                 columnModel.push({
                     id       : 'tx_metaseo_canonicalurl',
@@ -701,7 +701,7 @@ MetaSeo.overview.grid = {
                     sortable : false,
                     dataIndex: 'tx_metaseo_canonicalurl',
                     renderer : fieldRendererRaw,
-                    metaSeoClickEdit	: {
+                    metaSeoClickEdit: {
                         xtype: 'textfield'
                     }
                 },{
@@ -711,7 +711,7 @@ MetaSeo.overview.grid = {
                     sortable : false,
                     dataIndex: 'tx_metaseo_priority',
                     renderer : fieldRendererSitemapPriority,
-                    metaSeoClickEdit	: {
+                    metaSeoClickEdit: {
                         xtype: 'numberfield'
                     }
                 },{
@@ -721,7 +721,7 @@ MetaSeo.overview.grid = {
                     sortable : false,
                     dataIndex: 'tx_metaseo_is_exclude',
                     renderer : fieldRendererBoolean,
-                    metaSeoClickEdit	: {
+                    metaSeoClickEdit: {
                         xtype: 'combo',
                         forceSelection: true,
                         editable: false,
@@ -765,13 +765,13 @@ MetaSeo.overview.grid = {
                     }
 
                     return ret;
-                }
+                };
 
                 var fieldRendererUrlSimulate = function(value, metaData, record, rowIndex, colIndex, store) {
                     var qtip = Ext.util.Format.htmlEncode(MetaSeo.overview.conf.lang.qtip_url_simulate);
 
                     return '<div class="metaseo-toolbar" ext:qtip="' + qtip +'">'+MetaSeo.overview.conf.sprite.info+'</div>';
-                }
+                };
 
 
                 columnModel.push({
@@ -781,7 +781,7 @@ MetaSeo.overview.grid = {
                     sortable : false,
                     dataIndex: 'url_scheme',
                     renderer : fieldRendererUrlScheme,
-                    metaSeoClickEdit	: {
+                    metaSeoClickEdit: {
                         xtype: 'combo',
                         forceSelection: true,
                         editable: false,
@@ -809,12 +809,12 @@ MetaSeo.overview.grid = {
                     sortable : false,
                     dataIndex: 'alias',
                     renderer : fieldRendererRaw,
-                    metaSeoClickEdit	: {
+                    metaSeoClickEdit: {
                         xtype: 'textfield'
                     }
                 });
 
-                if( MetaSeo.overview.conf.realurlAvailable ) {
+                if ( MetaSeo.overview.conf.realurlAvailable ) {
                     columnModel.push({
                         id       : 'tx_realurl_pathsegment',
                         header   : MetaSeo.overview.conf.lang.page_url_realurl_pathsegment,
@@ -822,7 +822,7 @@ MetaSeo.overview.grid = {
                         sortable : false,
                         dataIndex: 'tx_realurl_pathsegment',
                         renderer : fieldRendererRaw,
-                        metaSeoClickEdit	: {
+                        metaSeoClickEdit: {
                             xtype: 'textfield'
                         }
                     },{
@@ -832,7 +832,7 @@ MetaSeo.overview.grid = {
                         sortable : false,
                         dataIndex: 'tx_realurl_pathoverride',
                         renderer : fieldRendererBoolean,
-                        metaSeoClickEdit	: {
+                        metaSeoClickEdit: {
                             xtype: 'combo',
                             forceSelection: true,
                             editable: false,
@@ -859,7 +859,7 @@ MetaSeo.overview.grid = {
                         sortable : false,
                         dataIndex: 'tx_realurl_exclude',
                         renderer : fieldRendererBoolean,
-                        metaSeoClickEdit	: {
+                        metaSeoClickEdit: {
                             xtype: 'combo',
                             forceSelection: true,
                             editable: false,
@@ -893,11 +893,11 @@ MetaSeo.overview.grid = {
 
                                 me.grid.loadMask.hide();
 
-                                if( response && response.error ) {
+                                if ( response && response.error ) {
                                     TYPO3.Flashmessage.display(TYPO3.Severity.error, '', Ext.util.Format.htmlEncode(response.error) );
                                 }
 
-                                if( response && response.url ) {
+                                if ( response && response.url ) {
                                     TYPO3.Flashmessage.display(TYPO3.Severity.information, '', Ext.util.Format.htmlEncode(response.url) );
                                 }
                             };
@@ -905,8 +905,8 @@ MetaSeo.overview.grid = {
                             Ext.Ajax.request({
                                 url: MetaSeo.overview.conf.ajaxController + '&cmd=generateSimulatedUrl',
                                 params: {
-                                    pid				: Ext.encode(record.get('uid')),
-                                    sessionToken	: Ext.encode( MetaSeo.overview.conf.sessionToken )
+                                    pid             : Ext.encode(record.get('uid')),
+                                    sessionToken    : Ext.encode( MetaSeo.overview.conf.sessionToken )
                                 },
                                 success: callbackFinish,
                                 failure: callbackFinish
@@ -925,7 +925,7 @@ MetaSeo.overview.grid = {
                     // TODO
 
                     return '<div class="metaseo-toolbar" ext:qtip="' + qtip +'">'+MetaSeo.overview.conf.sprite.info+'</div>TODO';
-                }
+                };
 
                 columnModel.push({
                     id       : 'metatag',
@@ -933,7 +933,7 @@ MetaSeo.overview.grid = {
                     width    : 'auto',
                     sortable : false,
                     dataIndex: 'metatag',
-                    renderer	: fieldRendererAdvEditor,
+                    renderer : fieldRendererAdvEditor,
                     metaSeoOnClick: function(record, fieldName, fieldId, col, data) {
 
                         // Init editor window
@@ -941,7 +941,7 @@ MetaSeo.overview.grid = {
                             pid: record.get('uid'),
                             onClose: function(reload) {
                                 // TODO: Move to listener/event
-                                if(reload) {
+                                if (reload) {
                                     me.storeReload();
                                 }
                             }
@@ -957,7 +957,7 @@ MetaSeo.overview.grid = {
                     var qtip = Ext.util.Format.htmlEncode(MetaSeo.overview.conf.lang.qtip_pagetitle_simulate);
 
                     return '<div class="metaseo-toolbar" ext:qtip="' + qtip +'">'+MetaSeo.overview.conf.sprite.info+'</div>';
-                }
+                };
 
                 columnModel.push({
                     id       : 'tx_metaseo_pagetitle_rel',
@@ -965,8 +965,8 @@ MetaSeo.overview.grid = {
                     width    : 'auto',
                     sortable : false,
                     dataIndex: 'tx_metaseo_pagetitle_rel',
-                    renderer	: fieldRenderer,
-                    metaSeoClickEdit	: {
+                    renderer : fieldRenderer,
+                    metaSeoClickEdit: {
                         xtype: 'textfield'
                     }
                 },{
@@ -975,8 +975,8 @@ MetaSeo.overview.grid = {
                     width    : 'auto',
                     sortable : false,
                     dataIndex: 'tx_metaseo_pagetitle_prefix',
-                    renderer	: fieldRenderer,
-                    metaSeoClickEdit	: {
+                    renderer : fieldRenderer,
+                    metaSeoClickEdit: {
                         xtype: 'textfield'
                     }
                 },{
@@ -985,8 +985,8 @@ MetaSeo.overview.grid = {
                     width    : 'auto',
                     sortable : false,
                     dataIndex: 'tx_metaseo_pagetitle_suffix',
-                    renderer	: fieldRenderer,
-                    metaSeoClickEdit	: {
+                    renderer : fieldRenderer,
+                    metaSeoClickEdit: {
                         xtype: 'textfield'
                     }
                 },{
@@ -995,8 +995,8 @@ MetaSeo.overview.grid = {
                     width    : 'auto',
                     sortable : false,
                     dataIndex: 'tx_metaseo_pagetitle',
-                    renderer	: fieldRenderer,
-                    metaSeoClickEdit	: {
+                    renderer : fieldRenderer,
+                    metaSeoClickEdit: {
                         xtype: 'textfield'
                     }
                 },{
@@ -1013,11 +1013,11 @@ MetaSeo.overview.grid = {
 
                             me.grid.loadMask.hide();
 
-                            if( response && response.error ) {
+                            if ( response && response.error ) {
                                 TYPO3.Flashmessage.display(TYPO3.Severity.error, '', Ext.util.Format.htmlEncode(response.error) );
                             }
 
-                            if( response && response.title ) {
+                            if ( response && response.title ) {
                                 TYPO3.Flashmessage.display(TYPO3.Severity.information, '', Ext.util.Format.htmlEncode(response.title) );
                             }
                         };
@@ -1025,8 +1025,8 @@ MetaSeo.overview.grid = {
                         Ext.Ajax.request({
                             url: MetaSeo.overview.conf.ajaxController + '&cmd=generateSimulatedTitle',
                             params: {
-                                pid				: Ext.encode(record.get('uid')),
-                                sessionToken	: Ext.encode( MetaSeo.overview.conf.sessionToken )
+                                pid             : Ext.encode(record.get('uid')),
+                                sessionToken    : Ext.encode( MetaSeo.overview.conf.sessionToken )
                             },
                             success: callbackFinish,
                             failure: callbackFinish
@@ -1052,7 +1052,7 @@ MetaSeo.overview.grid = {
 
         // Add tooltip
         Ext.each(columnModel, function(item, index) {
-            if( !item.tooltip ) {
+            if ( !item.tooltip ) {
                 item.tooltip = item.header;
             }
         });
@@ -1073,22 +1073,22 @@ MetaSeo.overview.grid = {
         var classes = '';
         var icon = '';
 
-        if( this._cellEditMode ) {
+        if ( this._cellEditMode ) {
             classes += 'metaseo-cell-editable ';
             icon = MetaSeo.overview.conf.sprite.edit;
         }
 
-        if(this._fullCellHighlight && !Ext.isEmpty(MetaSeo.overview.conf.criteriaFulltext)) {
-            if( MetaSeo.highlightTextExists(value, MetaSeo.overview.conf.criteriaFulltext) ) {
+        if (this._fullCellHighlight && !Ext.isEmpty(MetaSeo.overview.conf.criteriaFulltext)) {
+            if ( MetaSeo.highlightTextExists(value, MetaSeo.overview.conf.criteriaFulltext) ) {
                 classes += 'metaseo-cell-highlight ';
             }
         }
 
-        if( maxLength && value != '' && value.length >= maxLength ) {
+        if ( maxLength && value != '' && value.length >= maxLength ) {
             value = value.substring(0, (maxLength-3) )+'...';
         }
 
-        if(escape) {
+        if (escape) {
             value = Ext.util.Format.htmlEncode(value);
             value = value.replace(/ /g, "&nbsp;");
             value += '&nbsp;';
@@ -1096,7 +1096,7 @@ MetaSeo.overview.grid = {
 
 
 
-        if(escape) {
+        if (escape) {
             qtip = Ext.util.Format.htmlEncode(qtip);
         }
         qtip = qtip.replace(/\n/g, "<br />");
