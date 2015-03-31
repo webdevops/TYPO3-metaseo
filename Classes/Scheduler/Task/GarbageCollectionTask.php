@@ -26,7 +26,7 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  ***************************************************************/
 use Metaseo\Metaseo\Utility\CacheUtility;
 use Metaseo\Metaseo\Utility\SitemapUtility;
-use TYPO3\CMS\Scheduler\Task\AbstractTask;
+use TYPO3\CMS\Scheduler\Task\AbstractTask as AbstractTaskTypo3;
 
 /**
  * Scheduler Task Garbage Collection
@@ -35,7 +35,7 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
  * @subpackage  lib
  * @version     $Id: GarbageCollectionTask.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class GarbageCollectionTask extends AbstractTask
+class GarbageCollectionTask extends AbstractTaskTypo3
 {
 
     /**
