@@ -25,7 +25,9 @@ namespace Metaseo\Metaseo\Backend\Ajax;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Metaseo\Metaseo\Utility\BackendUtility;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
+use Metaseo\Metaseo\Utility\SitemapUtility;
 
 /**
  * TYPO3 Backend ajax module sitemap
@@ -33,7 +35,7 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  * @package     TYPO3
  * @subpackage  metaseo
  */
-class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
+class SitemapAjax extends AbstractAjax
 {
 
     /**
@@ -44,7 +46,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
     protected function executeGetList()
     {
         // Init
-        $rootPageList = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
+        $rootPageList = BackendUtility::getRootPageList();
 
         $rootPid      = (int)$this->postVar['pid'];
         $offset       = (int)$this->postVar['start'];
@@ -90,7 +92,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
         }
 
         // Filter blacklisted page types
-        $where[] = DatabaseUtility::conditionNotIn('p.doktype', \Metaseo\Metaseo\Utility\SitemapUtility::getPageTypeBlacklist());
+        $where[] = DatabaseUtility::conditionNotIn('p.doktype', SitemapUtility::getPageTypeBlacklist());
 
         // Build where
         $where = DatabaseUtility::buildCondition($where);

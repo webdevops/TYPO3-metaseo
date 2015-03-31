@@ -1,4 +1,6 @@
 <?php
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 defined('TYPO3_MODE') or exit();
 
 $tempColumns = array(
@@ -72,7 +74,7 @@ $tempColumns = array(
     ),
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages_language_overlay', $tempColumns, 1);
+ExtensionManagementUtility::addTCAcolumns('pages_language_overlay', $tempColumns, 1);
 
 // TCA Palettes
 $GLOBALS['TCA']['pages_language_overlay']['palettes']['tx_metaseo_pagetitle'] = array(
@@ -85,7 +87,7 @@ $GLOBALS['TCA']['pages_language_overlay']['palettes']['tx_metaseo_crawler'] = ar
     'canNotCollapse' => 1
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+ExtensionManagementUtility::addToAllTCAtypes(
     'pages_language_overlay',
     'tx_metaseo_pagetitle_rel',
     '',
@@ -93,7 +95,7 @@ $GLOBALS['TCA']['pages_language_overlay']['palettes']['tx_metaseo_crawler'] = ar
 );
 
 // Put it for standard page overlay
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+ExtensionManagementUtility::addToAllTCAtypes(
     'pages_language_overlay',
     '--div--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tab.seo;,--palette--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.palette.pagetitle;tx_metaseo_pagetitle,--palette--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.palette.crawler;tx_metaseo_crawler',
     '',

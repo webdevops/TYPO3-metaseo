@@ -24,6 +24,7 @@ namespace Metaseo\Metaseo\Backend\Ajax;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * TYPO3 Backend ajax module base
@@ -132,7 +133,7 @@ abstract class AbstractAjax
         // Include ajax local lang
         $GLOBALS['LANG']->includeLLFile('EXT:metaseo/Resources/Private/Language/locallang.xlf');
 
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 
         // Init form protection instance
         $this->formProtection = $this->objectManager->get(
@@ -145,7 +146,7 @@ abstract class AbstractAjax
      */
     protected function fetchParams()
     {
-        $rawPostVarList = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
+        $rawPostVarList = GeneralUtility::_POST();
         foreach ($rawPostVarList as $key => $value) {
             $this->postVar[$key] = json_decode($value);
         }

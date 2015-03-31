@@ -26,7 +26,9 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  ***************************************************************/
 
 use Metaseo\Metaseo\Utility\DatabaseUtility;
+use Metaseo\Metaseo\Utility\FrontendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Scheduler\Task\AbstractTask as AbstractTaskTypo3;
 
 /**
  * Scheduler Task Sitemap Base
@@ -35,9 +37,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @subpackage  Sitemap
  * @version     $Id: AbstractTask.php 84520 2014-03-28 10:33:24Z mblaschke $
  */
-abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+abstract class AbstractTask extends AbstractTaskTypo3
 {
-
     // ########################################################################
     // Attributes
     // ########################################################################
@@ -126,7 +127,7 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      */
     protected function initRootPage($rootPageId)
     {
-        \Metaseo\Metaseo\Utility\FrontendUtility::init($rootPageId);
+        FrontendUtility::init($rootPageId);
     }
 
     /**

@@ -28,6 +28,8 @@ namespace Metaseo\Metaseo\Hook;
 use Metaseo\Metaseo\Utility\FrontendUtility;
 use Metaseo\Metaseo\Utility\GeneralUtility;
 use Metaseo\Metaseo\Utility\SitemapUtility;
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility as GeneralUtilityTypo3;
 
 /**
  * Sitemap Indexer
@@ -36,7 +38,7 @@ use Metaseo\Metaseo\Utility\SitemapUtility;
  * @subpackage  lib
  * @version     $Id: SitemapIndexHook.php 84520 2014-03-28 10:33:24Z mblaschke $
  */
-class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface
+class SitemapIndexHook implements SingletonInterface
 {
 
     // ########################################################################
@@ -111,7 +113,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface
         if (!empty($this->conf['sitemap.']['index.']['fileExtension.'])) {
             # File extensions can be a comma separated list
             foreach ($this->conf['sitemap.']['index.']['fileExtension.'] as $fileExtListRaw) {
-                $fileExtList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fileExtListRaw);
+                $fileExtList = GeneralUtilityTypo3::trimExplode(',', $fileExtListRaw);
                 $this->fileExtList = array_merge($this->fileExtList, $fileExtList);
             };
         }
@@ -202,7 +204,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface
         GeneralUtility::callHook('sitemap-index-page', null, $pageData);
 
         if (!empty($pageData)) {
-            \Metaseo\Metaseo\Utility\SitemapUtility::index($pageData, 'page');
+            SitemapUtility::index($pageData, 'page');
         }
 
         return true;
@@ -256,7 +258,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface
         if ($possibility > 0) {
             $clearCacheChance = ceil(mt_rand(0, $possibility));
             if ($clearCacheChance == 1) {
-                \Metaseo\Metaseo\Utility\SitemapUtility::expire();
+                SitemapUtility::expire();
             }
         }
     }
@@ -411,7 +413,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface
         GeneralUtility::callHook('sitemap-index-link', null, $pageData);
 
         if (!empty($pageData)) {
-            \Metaseo\Metaseo\Utility\SitemapUtility::index($pageData);
+            SitemapUtility::index($pageData);
         }
 
         return true;

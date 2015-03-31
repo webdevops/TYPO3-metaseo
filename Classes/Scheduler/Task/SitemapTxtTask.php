@@ -24,6 +24,7 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask;
 
 /**
  * Scheduler Task Sitemap TXT
@@ -32,7 +33,7 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  * @subpackage  lib
  * @version     $Id: SitemapTxtTask.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class SitemapTxtTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
+class SitemapTxtTask extends AbstractSitemapTask
 {
 
     // ########################################################################

@@ -24,6 +24,7 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Scheduler Task Sitemap Base
@@ -32,7 +33,7 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  * @subpackage  Sitemap
  * @version     $Id: class.sitemap_base.php 78237 2013-07-23 14:50:31Z mblaschke $
  */
-abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractTask
+abstract class AbstractSitemapTask extends AbstractTask
 {
 
     // ########################################################################
@@ -90,7 +91,7 @@ abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\Abstr
         $fullPath = PATH_site . '/' . $this->sitemapDir;
 
         if (!is_dir($fullPath)) {
-            \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($fullPath);
+            GeneralUtility::mkdir($fullPath);
         }
 
         foreach (new \DirectoryIterator($fullPath) as $file) {

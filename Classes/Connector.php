@@ -24,6 +24,7 @@ namespace MetaSeo\MetaSeo;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * Connector
@@ -32,7 +33,7 @@ namespace MetaSeo\MetaSeo;
  * @subpackage  lib
  * @version     $Id: Connector.php 84267 2014-03-14 13:39:05Z mblaschke $
  */
-class Connector implements \TYPO3\CMS\Core\SingletonInterface
+class Connector implements SingletonInterface
 {
 
     // ########################################################################

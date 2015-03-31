@@ -32,7 +32,7 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  * @subpackage  lib
  * @version     $Id: SitemapXmlTask.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class SitemapXmlTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
+class SitemapXmlTask extends AbstractSitemapTask
 {
 
     // ########################################################################

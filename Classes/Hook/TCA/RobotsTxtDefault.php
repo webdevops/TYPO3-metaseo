@@ -24,6 +24,8 @@ namespace Metaseo\Metaseo\Hook\TCA;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 
 /**
  * TCA Hook: Robots.txt default content
@@ -45,7 +47,7 @@ class RobotsTxtDefault
     /**
      * TYPO3 configuration manager
      *
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager
+     * @var ConfigurationManager
      */
     protected $configurationManager;
 
@@ -69,9 +71,9 @@ class RobotsTxtDefault
         // ############################
 
         /** @var \TYPO3\CMS\Extbase\Object\ObjectManager objectManager */
-        $this->objectManager        = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $this->objectManager        = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 
-        /** @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager configurationManager */
+        /** @var ConfigurationManager configurationManager */
         $this->configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
 
         /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer cObj */
@@ -103,7 +105,7 @@ class RobotsTxtDefault
         // ############################
 
         // Fetch TypoScript setup
-        $tsSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::CONFIGURATION_TYPE_FULL_TYPOSCRIPT, 'metaseo', 'plugin');
+        $tsSetup = $this->configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_FULL_TYPOSCRIPT, 'metaseo', 'plugin');
 
         $content = '';
         if (!empty($tsSetup['plugin.']['metaseo.']['robotsTxt.'])) {

@@ -25,6 +25,7 @@
  ***************************************************************/
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Update class for the extension manager.
@@ -103,7 +104,7 @@ class ext_update
         if ($this->clearCache) {
 
             // Init TCE
-            $TCE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+            $TCE = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
             $TCE->admin = 1;
             $TCE->clear_cacheCmd('all');
 
@@ -165,7 +166,7 @@ class ext_update
         $output = '';
 
         foreach ($this->messageList as $message) {
-            $flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            $flashMessage = GeneralUtility::makeInstance(
                 'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
                 $message[2],
                 $message[1],

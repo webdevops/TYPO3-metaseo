@@ -24,6 +24,8 @@ namespace Metaseo\Metaseo\Hook;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Metaseo\Metaseo\Utility\CacheUtility;
+use Metaseo\Metaseo\Utility\GeneralUtility;
 
 /**
  * Http Header generator
@@ -87,7 +89,7 @@ class HttpHook
                     // cache informations
                     $curentTemplate     = end($GLOBALS['TSFE']->tmpl->hierarchyInfo);
                     $currentTemplatePid = $curentTemplate['pid'];
-                    \Metaseo\Metaseo\Utility\CacheUtility::set($currentTemplatePid, 'http', 'p3p', $headers['P3P']);
+                    CacheUtility::set($currentTemplatePid, 'http', 'p3p', $headers['P3P']);
                 }
             }
         } else {
@@ -101,7 +103,7 @@ class HttpHook
             }
 
             // fetch from cache
-            $cacheList = \Metaseo\Metaseo\Utility\CacheUtility::getList('http', 'p3p');
+            $cacheList = CacheUtility::getList('http', 'p3p');
             foreach ($rootPidList as $pageId) {
                 if (!empty($cacheList[$pageId])) {
                     $headers['P3P'] = $cacheList[$pageId];
@@ -111,7 +113,7 @@ class HttpHook
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('httpheader-output', $this, $headers);
+        GeneralUtility::callHook('httpheader-output', $this, $headers);
 
         // #####################################
         // Sender headers

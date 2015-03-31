@@ -25,6 +25,8 @@ namespace Metaseo\Metaseo\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility as GeneralUtilityTypo3;
+
 /**
  * General utility
  *
@@ -176,7 +178,7 @@ class GeneralUtility
         $ret = false;
 
         // Performance check, there must be an MP-GET value
-        if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('MP')) {
+        if (GeneralUtilityTypo3::_GET('MP')) {
             // Possible mount point detected, let's check the rootline
             foreach (self::getRootLine($uid) as $page) {
                 if (!empty($page['_MOUNT_OL'])) {
@@ -228,7 +230,7 @@ class GeneralUtility
             return $ret;
         }
 
-        $host = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST');
+        $host = GeneralUtilityTypo3::getIndpEnv('HTTP_HOST');
         $rootPid = self::getRootPid();
 
         $query = 'SELECT *
@@ -344,7 +346,7 @@ class GeneralUtility
         if (!empty($hookConf[$name]) && is_array($hookConf[$name])) {
             foreach ($hookConf[$name] as $_funcRef) {
                 if ($_funcRef) {
-                    \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $args, $obj);
+                    GeneralUtilityTypo3::callUserFunction($_funcRef, $args, $obj);
                 }
             }
         }
@@ -378,7 +380,7 @@ class GeneralUtility
                 $url = 'http://' . $domain . '/' . $url;
             } else {
                 // domain from env
-                $url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $url;
+                $url = GeneralUtilityTypo3::getIndpEnv('TYPO3_SITE_URL') . $url;
             }
         }
 
@@ -435,7 +437,7 @@ class GeneralUtility
     {
         if (self::$sysPageObj === null) {
             /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+            $objectManager = GeneralUtilityTypo3::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 
             /** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPageObj */
             $sysPageObj = $objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');

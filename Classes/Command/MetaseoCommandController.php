@@ -23,9 +23,13 @@ namespace Metaseo\Metaseo\Command;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Metaseo\Metaseo\Utility\CacheUtility;
 use Metaseo\Metaseo\Utility\ConsoleUtility;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
+use Metaseo\Metaseo\Utility\GeneralUtility;
 use Metaseo\Metaseo\Utility\RootPageUtility;
+use Metaseo\Metaseo\Utility\SitemapUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 
 /**
  * TYPO3 Command controller
@@ -33,7 +37,7 @@ use Metaseo\Metaseo\Utility\RootPageUtility;
  * @package     TYPO3
  * @subpackage  metaseo_tqseo_migration
  */
-class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController
+class MetaseoCommandController extends CommandController
 {
 
     /**
@@ -44,10 +48,10 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
     public function garbageCollectorCommand()
     {
         // Expire sitemap entries
-        \Metaseo\Metaseo\Utility\SitemapUtility::expire();
+        SitemapUtility::expire();
 
         // Expire cache entries
-        \Metaseo\Metaseo\Utility\CacheUtility::expire();
+        CacheUtility::expire();
     }
 
     /**
@@ -96,7 +100,7 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
 
             foreach ($urlList as $url) {
                 if ($domain) {
-                    $url = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($url, $domain);
+                    $url = GeneralUtility::fullUrl($url, $domain);
                 }
 
                 ConsoleUtility::writeLine($url);

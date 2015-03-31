@@ -24,7 +24,8 @@ namespace Metaseo\Metaseo\Page\Part;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Metaseo\Metaseo\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility as GeneralUtilityTypo3;
 
 /**
  * Page Footer
@@ -33,7 +34,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @subpackage  lib
  * @version     $Id: FooterPart.php 84520 2014-03-28 10:33:24Z mblaschke $
  */
-class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
+class FooterPart extends AbstractPart
 {
 
     /**
@@ -61,7 +62,7 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('pagefooter-setup', $this, $tsServices);
+        GeneralUtility::callHook('pagefooter-setup', $this, $tsServices);
 
         // #########################################
         // GOOGLE ANALYTICS
@@ -118,7 +119,7 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('pagefooter-output', $this, $ret);
+        GeneralUtility::callHook('pagefooter-output', $this, $ret);
 
         return implode("\n", $ret);
     }
@@ -133,7 +134,7 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
     public function buildGoogleAnalyticsCode($tsServices, $gaConf)
     {
         $ret = array();
-        $gaCodeList = GeneralUtility::trimExplode(',', $tsServices['googleAnalytics']);
+        $gaCodeList = GeneralUtilityTypo3::trimExplode(',', $tsServices['googleAnalytics']);
 
         foreach ($gaCodeList as $gaCode) {
             $customCode = '';
@@ -169,7 +170,7 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
      */
     public function serviceGoogleAnalyticsTrackDownloads($tsServices, $gaConf)
     {
-        $jsFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
+        $jsFile = GeneralUtilityTypo3::getFileAbsFileName(
             $gaConf['trackDownloadsScript']
         );
         $jsfile = preg_replace('/^' . preg_quote(PATH_site, '/') . '/i', '', $jsFile);
@@ -188,7 +189,7 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
     public function buildPiwikCode($tsServices, $piwikConf)
     {
         $ret = array();
-        $piwikCodeList = GeneralUtility::trimExplode(',', $piwikConf['id']);
+        $piwikCodeList = GeneralUtilityTypo3::trimExplode(',', $piwikConf['id']);
 
         foreach ($piwikCodeList as $piwikCode) {
             $customCode = '';

@@ -24,6 +24,7 @@ namespace Metaseo\Metaseo\Page\Part;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Metaseo\Metaseo\Utility\GeneralUtility;
 
 /**
  * Page Title Changer
@@ -32,7 +33,7 @@ namespace Metaseo\Metaseo\Page\Part;
  * @subpackage  lib
  * @version     $Id: PagetitlePart.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart
+class PagetitlePart extends AbstractPart
 {
 
     /**
@@ -71,7 +72,7 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('pagetitle-setup', $this, $tsSeoSetup);
+        GeneralUtility::callHook('pagetitle-setup', $this, $tsSeoSetup);
 
         // get stdwrap list
         if (!empty($tsSeoSetup['pageTitle.']['stdWrap.'])) {
@@ -254,7 +255,7 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('pagetitle-output', $this, $ret);
+        GeneralUtility::callHook('pagetitle-output', $this, $ret);
 
         return $ret;
     }

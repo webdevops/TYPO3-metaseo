@@ -24,6 +24,7 @@ namespace Metaseo\Metaseo\Page;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Sitemap xml page
@@ -32,7 +33,7 @@ namespace Metaseo\Metaseo\Page;
  * @subpackage  Page
  * @version     $Id: class.robots_txt.php 62700 2012-05-22 15:53:22Z mblaschke $
  */
-class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage
+class SitemapXmlPage extends AbstractPage
 {
 
     // ########################################################################
@@ -73,7 +74,7 @@ class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage
      */
     protected function build()
     {
-        $page = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('page');
+        $page = GeneralUtility::_GP('page');
 
         /** @var \Metaseo\Metaseo\Sitemap\Generator\XmlGenerator $generator */
         $generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\XmlGenerator');

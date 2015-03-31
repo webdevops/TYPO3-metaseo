@@ -24,6 +24,7 @@ namespace Metaseo\Metaseo\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility as GeneralUtilityTypo3;
 
 /**
  * General utility
@@ -50,7 +51,7 @@ class FrontendUtility
         static $lastTsSetupPid = null;
 
         /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $objectManager = GeneralUtilityTypo3::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 
         // FIXME: add sys langauge or check if sys langauge is needed
 
@@ -158,7 +159,7 @@ class FrontendUtility
      */
     public static function checkPageForBlacklist($blacklist)
     {
-        return \Metaseo\Metaseo\Utility\GeneralUtility::checkUrlForBlacklisting(
+        return GeneralUtility::checkUrlForBlacklisting(
             self::getCurrentUrl(),
             $blacklist
         );

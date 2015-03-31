@@ -25,7 +25,13 @@ namespace Metaseo\Metaseo\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Metaseo\Metaseo\Backend\Module\AbstractStandardModule;
+use Metaseo\Metaseo\Utility\BackendUtility;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility as BackendUtilityTypo3;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * TYPO3 Backend module root settings
@@ -33,7 +39,7 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  * @package     TYPO3
  * @subpackage  metaseo
  */
-class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule
+class BackendRootSettingsController extends AbstractStandardModule
 {
     // ########################################################################
     // Attributes
@@ -52,7 +58,7 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
         // Root page list
         // #################
 
-        $rootPageList   = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
+        $rootPageList   = BackendUtility::getRootPageList();
         $rootIdList     = array_keys($rootPageList);
 
         $rootPidCondition = null;
@@ -84,7 +90,7 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
             DatabaseUtility::execInsert($query);
         }
 
-        $rootSettingList  = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageSettingList();
+        $rootSettingList  = BackendUtility::getRootPageSettingList();
 
         // #################
         // Domain list
@@ -124,7 +130,7 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
             }
 
             // Settings available
-            $page['settingsLink'] = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_metaseo_setting_root][' . $rootSettingList[$pageId]['uid'] . ']=edit', $this->doc->backPath);
+            $page['settingsLink'] = BackendUtilityTypo3::editOnClick('&edit[tx_metaseo_setting_root][' . $rootSettingList[$pageId]['uid'] . ']=edit', $this->doc->backPath);
         }
         unset($page);
 
@@ -133,9 +139,9 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
             $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
                 $this->translate('message.warning.noRootPage.message'),
                 $this->translate('message.warning.noRootPage.title'),
-                \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+                FlashMessage::WARNING
             );
-            \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($message);
+            FlashMessageQueue::addMessage($message);
         }
 
         // ############################
@@ -146,8 +152,8 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
         $this->template = $this->objectManager->get('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
         $pageRenderer = $this->template->getPageRenderer();
 
-        $basePathJs  = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript';
-        $basePathCss = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/Css';
+        $basePathJs  = ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript';
+        $basePathCss = ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/Css';
         $pageRenderer->addCssFile($basePathCss.'/Default.css');
 
         $this->view->assign('RootPageList', $rootPageList);

@@ -24,6 +24,7 @@ namespace Metaseo\Metaseo\Hook\Extension;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * EXT:tt_news hook for metatags
@@ -48,7 +49,7 @@ class TtnewsExtension
     {
         $theCode = (string)strtoupper(trim($ttnewsObj->theCode));
 
-        $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Metaseo\\Metaseo\\Connector');
+        $connector = GeneralUtility::makeInstance('Metaseo\\Metaseo\\Connector');
 
         switch ($theCode) {
             case 'SINGLE':

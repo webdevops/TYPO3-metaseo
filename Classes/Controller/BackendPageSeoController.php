@@ -25,7 +25,14 @@ namespace Metaseo\Metaseo\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Metaseo\Metaseo\Backend\Module\AbstractStandardModule;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * TYPO3 Backend module page seo
@@ -33,7 +40,7 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  * @package     TYPO3
  * @subpackage  metaseo
  */
-class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule
+class BackendPageSeoController extends AbstractStandardModule
 {
     // ########################################################################
     // Attributes
@@ -93,20 +100,20 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
     protected function handleSubAction($type)
     {
-        $pageId        = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
+        $pageId        = (int) GeneralUtility::_GP('id');
 
         if (empty($pageId)) {
             $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
                 $this->translate('message.warning.no_valid_page.message'),
                 $this->translate('message.warning.no_valid_page.title'),
-                \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+                FlashMessage::WARNING
             );
-            \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($message);
+            FlashMessageQueue::addMessage($message);
             return;
         }
 
         // Load PageTS
-        $pageTsConf = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($pageId);
+        $pageTsConf = BackendUtility::getPagesTSconfig($pageId);
 
 
         // Build langauge list
@@ -180,14 +187,14 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         $this->template = $this->objectManager->get('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
         $pageRenderer = $this->template->getPageRenderer();
 
-        $pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript/Ext.ux.plugin.FitToParent.js');
-        $pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript/MetaSeo.js');
-        $pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript/MetaSeo.overview.js');
-        $pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript/MetaSeo.metaeditor.js');
-        $pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript/MetaSeo.metaeditor.fields.js');
-        $pageRenderer->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/Css/Default.css');
+        $pageRenderer->addJsFile(ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript/Ext.ux.plugin.FitToParent.js');
+        $pageRenderer->addJsFile(ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript/MetaSeo.js');
+        $pageRenderer->addJsFile(ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript/MetaSeo.overview.js');
+        $pageRenderer->addJsFile(ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript/MetaSeo.metaeditor.js');
+        $pageRenderer->addJsFile(ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript/MetaSeo.metaeditor.fields.js');
+        $pageRenderer->addCssFile(ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/Css/Default.css');
 
-        $realUrlAvailable = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('realurl');
+        $realUrlAvailable = ExtensionManagementUtility::isLoaded('realurl');
 
 
         $metaSeoConf = array(
@@ -202,7 +209,7 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
             'sortField'      => 'crdate',
             'sortDir'        => 'DESC',
 
-            'filterIcon'     => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-tree-search-open'),
+            'filterIcon'     => IconUtility::getSpriteIcon('actions-system-tree-search-open'),
 
             'dataLanguage'   => $languageList,
             'sysLanguage'    => $sysLangaugeDefault,
@@ -213,9 +220,9 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
             'realurlAvailable' => $realUrlAvailable,
 
             'sprite' => array(
-                'edit'   => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open'),
-                'info'   => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-info'),
-                'editor' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-options-view'),
+                'edit'   => IconUtility::getSpriteIcon('actions-document-open'),
+                'info'   => IconUtility::getSpriteIcon('actions-document-info'),
+                'editor' => IconUtility::getSpriteIcon('actions-system-options-view'),
             ),
         );
 

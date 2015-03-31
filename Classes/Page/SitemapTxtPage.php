@@ -32,7 +32,7 @@ namespace Metaseo\Metaseo\Page;
  * @subpackage  Page
  * @version     $Id: class.robots_txt.php 62700 2012-05-22 15:53:22Z mblaschke $
  */
-class SitemapTxtPage extends \Metaseo\Metaseo\Page\AbstractPage
+class SitemapTxtPage extends AbstractPage
 {
 
     // ########################################################################

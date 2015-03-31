@@ -25,6 +25,8 @@ namespace Metaseo\Metaseo\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Root page utility
  *
@@ -91,7 +93,7 @@ class RootPageUtility
         if (!empty($domain)) {
             $domain = 'http://' . $domain . '/';
         } else {
-            $domain = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+            $domain = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
         }
         // "build", TODO: use typolink to use TYPO3 internals
         $url = $domain . 'index.php?id=' . (int)$rootPid . '&type=' . (int)$typeNum;

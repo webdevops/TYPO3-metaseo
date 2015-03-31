@@ -24,6 +24,8 @@ namespace Metaseo\Metaseo\Sitemap\Generator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Metaseo\Metaseo\Utility\GeneralUtility;
+use Metaseo\Metaseo\Utility\SitemapUtility;
 
 /**
  * Sitemap abstract generator
@@ -107,24 +109,24 @@ abstract class AbstractGenerator
     public function __construct()
     {
         // INIT
-        $this->rootPid = \Metaseo\Metaseo\Utility\GeneralUtility::getRootPid();
+        $this->rootPid = GeneralUtility::getRootPid();
         $sysLanguageId = null;
 
         $this->tsSetup = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.'];
 
         // Language limit via setupTS
-        if (\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', false)) {
-            $sysLanguageId = \Metaseo\Metaseo\Utility\GeneralUtility::getLanguageId();
+        if (GeneralUtility::getRootSettingValue('is_sitemap_language_lock', false)) {
+            $sysLanguageId = GeneralUtility::getLanguageId();
         }
 
         // Fetch sitemap list/pages
-        $list = \Metaseo\Metaseo\Utility\SitemapUtility::getList($this->rootPid, $sysLanguageId);
+        $list = SitemapUtility::getList($this->rootPid, $sysLanguageId);
 
         $this->sitemapPages = $list['tx_metaseo_sitemap'];
         $this->pages        = $list['pages'];
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('sitemap-setup', $this);
+        GeneralUtility::callHook('sitemap-setup', $this);
     }
 
     /**
@@ -134,7 +136,7 @@ abstract class AbstractGenerator
      */
     public function pageCount()
     {
-        $pageLimit = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('sitemap_page_limit', null);
+        $pageLimit = GeneralUtility::getRootSettingValue('sitemap_page_limit', null);
 
         if (empty($pageLimit)) {
             $pageLimit = 1000;

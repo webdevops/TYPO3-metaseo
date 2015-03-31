@@ -1,4 +1,7 @@
 <?php
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+
 defined('TYPO3_MODE') or exit;
 
 // ############################################################################
@@ -11,7 +14,7 @@ defined('TYPO3_MODE') or exit;
 //\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToInsertRecords('tx_metaseo_setting_root');
 //\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_metaseo_setting_root');
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+ExtensionManagementUtility::addLLrefForTCAdescr(
     'tx_metaseo_setting_root',
     'EXT:metaseo/Resources/Private/Language/locallang.tca.xml'
 );
@@ -27,7 +30,7 @@ if (TYPO3_MODE == 'BE') {
     // Module category "WEB"
     // ####################################################
 
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+    ExtensionUtility::registerModule(
         'Metaseo.' . $_EXTKEY,
         'web',
         'pageseo',
@@ -44,7 +47,7 @@ if (TYPO3_MODE == 'BE') {
     // Module category "SEO"
     // ####################################################
 
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+    ExtensionUtility::registerModule(
         $_EXTKEY,
         'metaseo',
         '',
@@ -57,7 +60,7 @@ if (TYPO3_MODE == 'BE') {
     );
 
 
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+    ExtensionUtility::registerModule(
         'Metaseo.' . $_EXTKEY,
         'metaseo',
         'controlcenter',
@@ -70,7 +73,7 @@ if (TYPO3_MODE == 'BE') {
         )
     );
 
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+    ExtensionUtility::registerModule(
         'Metaseo.' . $_EXTKEY,
         'metaseo',
         'sitemap',
@@ -88,4 +91,4 @@ if (TYPO3_MODE == 'BE') {
 // CONFIGURATION
 // ############################################################################
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'MetaSEO');
+ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'MetaSEO');

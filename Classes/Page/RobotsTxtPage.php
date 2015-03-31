@@ -24,6 +24,7 @@ namespace Metaseo\Metaseo\Page;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Metaseo\Metaseo\Utility\GeneralUtility;
 
 /**
  * Robots txt Page
@@ -32,7 +33,7 @@ namespace Metaseo\Metaseo\Page;
  * @subpackage  Page
  * @version     $Id: RobotsTxtPage.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage
+class RobotsTxtPage extends AbstractPage
 {
 
     // ########################################################################
@@ -49,13 +50,13 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage
      */
     public function main()
     {
-        $settings = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSetting();
+        $settings = GeneralUtility::getRootSetting();
 
         // INIT
         $tsSetup  = $GLOBALS['TSFE']->tmpl->setup;
         $cObj     = $GLOBALS['TSFE']->cObj;
         $tsfePage = $GLOBALS['TSFE']->page;
-        $rootPid  = \Metaseo\Metaseo\Utility\GeneralUtility::getRootPid();
+        $rootPid  = GeneralUtility::getRootPid();
         $ret      = '';
 
         $tsSetupSeo = null;
@@ -68,18 +69,18 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage
         }
 
         // check if sitemap is enabled in root
-        if (!\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_robotstxt', true)) {
+        if (!GeneralUtility::getRootSettingValue('is_robotstxt', true)) {
             return true;
         }
 
-        $linkToStaticSitemap = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue(
+        $linkToStaticSitemap = GeneralUtility::getRootSettingValue(
             'is_robotstxt_sitemap_static',
             false
         );
 
         // Language lock
-        $sitemapLanguageLock = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', false);
-        $languageId          = \Metaseo\Metaseo\Utility\GeneralUtility::getLanguageId();
+        $sitemapLanguageLock = GeneralUtility::getRootSettingValue('is_sitemap_language_lock', false);
+        $languageId          = GeneralUtility::getLanguageId();
 
         // ###############################
         // Fetch robots.txt content
@@ -155,10 +156,10 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage
             }
 
             // Fix sitemap-marker url (add prefix if needed)
-            $markerList['%sitemap%'] = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($markerList['%sitemap%']);
+            $markerList['%sitemap%'] = GeneralUtility::fullUrl($markerList['%sitemap%']);
 
             // Call hook
-            \Metaseo\Metaseo\Utility\GeneralUtility::callHook('robotstxt-marker', $this, $markerList);
+            GeneralUtility::callHook('robotstxt-marker', $this, $markerList);
 
             // Apply marker list
             if (!empty($markerList)) {
@@ -167,7 +168,7 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('robotstxt-output', $this, $ret);
+        GeneralUtility::callHook('robotstxt-output', $this, $ret);
 
         return $ret;
     }
