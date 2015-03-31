@@ -77,7 +77,7 @@ class ConsoleUtility
     /**
      * Write error (forcing newline)
      *
-     * @param string $message	 Message
+     * @param string $message Message
      */
     public static function writeErrorLine($message = null)
     {

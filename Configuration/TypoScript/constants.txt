@@ -154,10 +154,10 @@ plugin.metaseo {
     # cat=plugin.metaseo.pageTitle/enable/06; type=options[Sitetitle-Pagetitle=0, Pagetitle-Sitetitle=1]; label= Sitetitle position: Position of template-sitetitle in title
   pageTitle.sitetitlePosition = 0
 
-	# cat=plugin.metaseo.pageTitle/enable/07; type=string; label= Sitetitle : Overwrite the template sitetitle with a custom one
+    # cat=plugin.metaseo.pageTitle/enable/07; type=string; label= Sitetitle : Overwrite the template sitetitle with a custom one
   pageTitle.sitetitle =
 
-	# cat=plugin.metaseo.sitemap/page/02; type=int+; label= Default page priority (0-100)
+    # cat=plugin.metaseo.sitemap/page/02; type=int+; label= Default page priority (0-100)
   sitemap.pagePriority =
 
     # cat=plugin.metaseo.sitemap/page/03; type=options[,Always=1,Hourly=2,Daily=3,Weekly=4,Monthly=5,Yearly=6,Never (archive)=7]; label= Default change frequency: Default change frequency for sitemap cache (will be cached!)

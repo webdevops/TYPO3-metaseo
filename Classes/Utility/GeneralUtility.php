@@ -394,7 +394,7 @@ class GeneralUtility
 
         // Fallback
         //if (!empty($GLOBALS['TSFE']) && !preg_match('/^https?:\/\//i', $url ) ) {
-        //	$url = $GLOBALS['TSFE']->baseUrlWrap($url);
+        //    $url = $GLOBALS['TSFE']->baseUrlWrap($url);
         //}
 
         return $url;

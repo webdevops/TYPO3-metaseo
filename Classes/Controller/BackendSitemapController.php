@@ -260,8 +260,8 @@ class BackendSitemapController extends AbstractStandardModule
         );
 
         $query = 'SELECT DISTINCT page_depth
-					FROM tx_metaseo_sitemap
-				   WHERE page_rootpid = ' . (int)$rootPid;
+                    FROM tx_metaseo_sitemap
+                   WHERE page_rootpid = ' . (int)$rootPid;
         foreach (DatabaseUtility::getCol($query) as $depth) {
             $depthList[] = array(
                 $depth,
