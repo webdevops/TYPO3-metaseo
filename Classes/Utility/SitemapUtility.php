@@ -25,8 +25,7 @@ namespace Metaseo\Metaseo\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Metaseo\Metaseo\Utility\DatabaseUtility;
-use \TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Sitemap utility

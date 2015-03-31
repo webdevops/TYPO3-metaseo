@@ -26,10 +26,8 @@ namespace Metaseo\Metaseo\Hook;
  ***************************************************************/
 
 use Metaseo\Metaseo\Utility\FrontendUtility;
-use Metaseo\Metaseo\Utility\RootPageUtility;
-use Metaseo\Metaseo\Utility\SitemapUtility;
 use Metaseo\Metaseo\Utility\GeneralUtility;
-use \TYPO3\CMS\Frontend\Page\PageRepository;
+use Metaseo\Metaseo\Utility\SitemapUtility;
 
 /**
  * Sitemap Indexer
