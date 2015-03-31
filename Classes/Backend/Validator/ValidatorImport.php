@@ -29,5 +29,6 @@
  *
  * @deprecated
  */
-class tx_metaseo_backend_validation_float extends \Metaseo\Metaseo\Backend\Validator\FloatValidator {
+class tx_metaseo_backend_validation_float extends \Metaseo\Metaseo\Backend\Validator\FloatValidator
+{
 }

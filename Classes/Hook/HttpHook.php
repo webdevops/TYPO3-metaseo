@@ -32,12 +32,14 @@ namespace Metaseo\Metaseo\Hook;
  * @subpackage  lib
  * @version     $Id: HttpHook.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class HttpHook {
+class HttpHook
+{
 
     /**
      * Add HTTP Headers
      */
-    public function main() {
+    public function main()
+    {
         // INIT
         $tsSetup  = $GLOBALS['TSFE']->tmpl->setup;
         $headers  = array();
@@ -58,8 +60,8 @@ class HttpHook {
                 // ##################################
                 // W3C P3P Tags
                 // ##################################
-                $p3pCP        = NULL;
-                $p3pPolicyUrl = NULL;
+                $p3pCP        = null;
+                $p3pPolicyUrl = null;
 
                 if (!empty($tsSetupSeo['p3pCP'])) {
                     $p3pCP = $tsSetupSeo['p3pCP'];
@@ -88,7 +90,6 @@ class HttpHook {
                     \Metaseo\Metaseo\Utility\CacheUtility::set($currentTemplatePid, 'http', 'p3p', $headers['P3P']);
                 }
             }
-
         } else {
             // #####################################
             // Cached page
@@ -118,6 +119,5 @@ class HttpHook {
         if (!empty($headers['P3P'])) {
             header('P3P: ' . $headers['P3P']);
         }
-
     }
 }

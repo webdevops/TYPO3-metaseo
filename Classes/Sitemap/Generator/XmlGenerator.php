@@ -32,7 +32,8 @@ namespace Metaseo\Metaseo\Sitemap\Generator;
  * @subpackage  lib
  * @version     $Id: XmlGenerator.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator {
+class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator
+{
 
     // ########################################################################
     // Methods
@@ -43,7 +44,8 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
      *
      * @return  string
      */
-    public function sitemapIndex() {
+    public function sitemapIndex()
+    {
         $pageLimit = 10000;
 
         if (isset($this->tsSetup['pageLimit']) && $this->tsSetup['pageLimit'] != '') {
@@ -101,7 +103,8 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
      * @param   integer $page   Page
      * @return  string
      */
-    public function sitemap($page = NULL) {
+    public function sitemap($page = null)
+    {
         $ret = '';
 
         $pageLimit = 10000;
@@ -128,7 +131,8 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
      *
      * @return string
      */
-    protected function createSitemapPage() {
+    protected function createSitemapPage()
+    {
         $ret = '<?xml version="1.0" encoding="UTF-8"?>';
         $ret .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"';
         $ret .= ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"';
@@ -215,7 +219,7 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
             $pageModifictionDate = date('c', $sitemapPage['tstamp']);
 
             // Page change frequency
-            $pageChangeFrequency = NULL;
+            $pageChangeFrequency = null;
             if (!empty($page['tx_metaseo_change_frequency'])) {
                 // from page
                 $pageChangeFdrequency = (int)$page['tx_metaseo_change_frequency'];
@@ -231,7 +235,7 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
             if (!empty($pageChangeFrequency) && !empty($this->pageChangeFrequency[$pageChangeFrequency])) {
                 $pageChangeFrequency = $this->pageChangeFrequency[$pageChangeFrequency];
             } else {
-                $pageChangeFrequency = NULL;
+                $pageChangeFrequency = null;
             }
 
             // #####################################
@@ -258,5 +262,4 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
 
         return $ret;
     }
-
 }

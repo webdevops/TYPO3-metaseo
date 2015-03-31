@@ -35,14 +35,15 @@ use \TYPO3\CMS\Frontend\Page\PageRepository;
  * @subpackage  lib
  * @version     $Id: SitemapUtility.php 81677 2013-11-21 12:32:33Z mblaschke $
  */
-class SitemapUtility {
+class SitemapUtility
+{
 
-    CONST SITEMAP_TYPE_PAGE = 0;
-    CONST SITEMAP_TYPE_FILE = 1;
+    const SITEMAP_TYPE_PAGE = 0;
+    const SITEMAP_TYPE_FILE = 1;
 
-    CONST DOKTYPE_SITEMAP_TXT    = 841131; // sitemap.txt     (EXT:metaseo), apply changes in Configuration/TypoScript/setup.txt
-    CONST DOKTYPE_SITEMAP_XML    = 841132; // sitemap.xml     (EXT:metaseo)
-    CONST DOKTYPE_ROBOTS_TXT     = 841133; // robots.txt      (EXT:metaseo)
+    const DOKTYPE_SITEMAP_TXT    = 841131; // sitemap.txt     (EXT:metaseo), apply changes in Configuration/TypoScript/setup.txt
+    const DOKTYPE_SITEMAP_XML    = 841132; // sitemap.xml     (EXT:metaseo)
+    const DOKTYPE_ROBOTS_TXT     = 841133; // robots.txt      (EXT:metaseo)
 
     // ########################################################################
     // Attributes
@@ -68,7 +69,8 @@ class SitemapUtility {
      *
      * @return array
      */
-    public static function getPageTypeBlacklist() {
+    public static function getPageTypeBlacklist()
+    {
         return self::$typeBlacklist;
     }
 
@@ -77,11 +79,12 @@ class SitemapUtility {
      *
      * @param   array $pageData   Page informations
      */
-    public static function index($pageData) {
+    public static function index($pageData)
+    {
         static $cache = array();
 
         // do not index empty urls
-        if (empty($pageData['page_url']) ) {
+        if (empty($pageData['page_url'])) {
             return;
         }
 
@@ -100,7 +103,7 @@ class SitemapUtility {
         // Escape/Quote data
         unset($pageDataValue);
         foreach ($pageData as &$pageDataValue) {
-            if ($pageDataValue === NULL) {
+            if ($pageDataValue === null) {
                 $pageDataValue = 'NULL';
             } elseif (is_int($pageDataValue) || is_numeric($pageDataValue)) {
                 // Don't quote numeric/integers
@@ -127,7 +130,7 @@ class SitemapUtility {
                          AND page_type     = ' . $pageData['page_type'];
             $sitemapUid = DatabaseUtility::getOne($query);
 
-            if ( !empty($sitemapUid) ) {
+            if (!empty($sitemapUid)) {
                 $query = 'UPDATE tx_metaseo_sitemap
                              SET tstamp                = ' . $pageData['tstamp'] . ',
                                  page_rootpid          = ' . $pageData['page_rootpid'] . ',
@@ -157,7 +160,8 @@ class SitemapUtility {
     /**
      * Clear outdated and invalid pages from sitemap table
      */
-    public static function expire() {
+    public static function expire()
+    {
         // #####################
         // Delete expired entries
         // #####################
@@ -198,7 +202,8 @@ class SitemapUtility {
      * @param   integer $languageId     Limit to language id
      * @return  boolean|array
      */
-    public static function getList($rootPid, $languageId = NULL) {
+    public static function getList($rootPid, $languageId = null)
+    {
         $sitemapList = array();
         $pageList    = array();
 
@@ -215,7 +220,7 @@ class SitemapUtility {
                    WHERE ts.page_rootpid = ' . (int)$rootPid . '
                      AND ts.is_blacklisted = 0';
 
-        if ($languageId !== NULL) {
+        if ($languageId !== null) {
             $query .= ' AND ts.page_language = ' . (int)$languageId;
         }
         $query .= ' ORDER BY
@@ -225,7 +230,7 @@ class SitemapUtility {
         $resultRows = DatabaseUtility::getAll($query);
 
         if (!$resultRows) {
-            return FALSE;
+            return false;
         }
 
         foreach ($resultRows as $row) {
@@ -241,8 +246,8 @@ class SitemapUtility {
                        WHERE ' . DatabaseUtility::conditionIn('uid', $typo3Pids);
             $pageList = DatabaseUtility::getAllWithIndex($query, 'uid');
 
-            if ( empty($pageList) ) {
-                return FALSE;
+            if (empty($pageList)) {
+                return false;
             }
         }
 

@@ -32,7 +32,8 @@ namespace MetaSeo\MetaSeo;
  * @subpackage  lib
  * @version     $Id: Connector.php 84267 2014-03-14 13:39:05Z mblaschke $
  */
-class Connector implements \TYPO3\CMS\Core\SingletonInterface {
+class Connector implements \TYPO3\CMS\Core\SingletonInterface
+{
 
     // ########################################################################
     // Attributes
@@ -61,7 +62,8 @@ class Connector implements \TYPO3\CMS\Core\SingletonInterface {
      * @param   string $value      Page title
      * @param   boolean $updateTsfe Update TSFE values
      */
-    public static function setPageTitle($value, $updateTsfe = TRUE) {
+    public static function setPageTitle($value, $updateTsfe = true)
+    {
         $value = (string)$value;
 
         if ($updateTsfe && !empty($GLOBAL['TSFE'])) {
@@ -77,7 +79,8 @@ class Connector implements \TYPO3\CMS\Core\SingletonInterface {
      *
      * @param   string $value  Page title suffix
      */
-    public static function setPageTitleSuffix($value) {
+    public static function setPageTitleSuffix($value)
+    {
         self::$store['pagetitle']['pagetitle.suffix'] = $value;
     }
 
@@ -86,7 +89,8 @@ class Connector implements \TYPO3\CMS\Core\SingletonInterface {
      *
      * @param   string $value  Page title Prefix
      */
-    public static function setPageTitlePrefix($value) {
+    public static function setPageTitlePrefix($value)
+    {
         self::$store['pagetitle']['pagetitle.prefix'] = $value;
     }
 
@@ -96,7 +100,8 @@ class Connector implements \TYPO3\CMS\Core\SingletonInterface {
      * @param   string $value        Page title
      * @param   boolean $updateTsfe   Update TSFE values
      */
-    public static function setPageTitleAbsolute($value, $updateTsfe = TRUE) {
+    public static function setPageTitleAbsolute($value, $updateTsfe = true)
+    {
         if ($updateTsfe && !empty($GLOBALS['TSFE'])) {
             $GLOBALS['TSFE']->page['title']   = $value;
             $GLOBALS['TSFE']->indexedDocTitle = $value;
@@ -110,7 +115,8 @@ class Connector implements \TYPO3\CMS\Core\SingletonInterface {
      *
      * @param   string $value  Page title
      */
-    public static function setPageTitleSitetitle($value) {
+    public static function setPageTitleSitetitle($value)
+    {
         self::$store['pagetitle']['pagetitle.sitetitle'] = $value;
     }
 
@@ -124,11 +130,12 @@ class Connector implements \TYPO3\CMS\Core\SingletonInterface {
      * @param   string $key    Metatag name
      * @param   string $value  Metatag value
      */
-    public static function setMetaTag($key, $value) {
+    public static function setMetaTag($key, $value)
+    {
         $key   = (string)$key;
         $value = (string)$value;
 
-        if (strpos($key, 'og:') === 0 ) {
+        if (strpos($key, 'og:') === 0) {
             return self::setOpenGraphTag($key, $value);
         }
 
@@ -141,7 +148,8 @@ class Connector implements \TYPO3\CMS\Core\SingletonInterface {
      * @param   string $key    Metatag name
      * @param   string $value  Metatag value
      */
-    public static function setOpenGraphTag($key, $value) {
+    public static function setOpenGraphTag($key, $value)
+    {
         $key   = (string)$key;
         $value = (string)$value;
 
@@ -155,7 +163,8 @@ class Connector implements \TYPO3\CMS\Core\SingletonInterface {
      * @param   string $key    Metatag name
      * @param   string $value  Metatag value
      */
-    public static function setCustomMetaTag($key, $value) {
+    public static function setCustomMetaTag($key, $value)
+    {
         $key   = (string)$key;
         $value = (string)$value;
 
@@ -167,10 +176,11 @@ class Connector implements \TYPO3\CMS\Core\SingletonInterface {
      *
      * @param   string $key    Metatag name
      */
-    public static function disableMetaTag($key) {
+    public static function disableMetaTag($key)
+    {
         $key = (string)$key;
 
-        self::$store['meta'][$key] = NULL;
+        self::$store['meta'][$key] = null;
     }
 
     // ########################################################################
@@ -190,10 +200,11 @@ class Connector implements \TYPO3\CMS\Core\SingletonInterface {
      * @param   string $key    Store key (optional, if empty whole store is returned)
      * @return  array
      */
-    public static function getStore($key = NULL) {
-        $ret = NULL;
+    public static function getStore($key = null)
+    {
+        $ret = null;
 
-        if ($key !== NULL) {
+        if ($key !== null) {
             if (isset(self::$store[$key])) {
                 $ret = self::$store[$key];
             }
@@ -203,5 +214,4 @@ class Connector implements \TYPO3\CMS\Core\SingletonInterface {
 
         return $ret;
     }
-
 }

@@ -32,7 +32,8 @@ namespace Metaseo\Metaseo\Hook\TCA;
  * @subpackage  lib
  * @version     $Id: HttpHook.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class RobotsTxtDefault {
+class RobotsTxtDefault
+{
 
     /**
      * TYPO3 Object manager
@@ -61,7 +62,8 @@ class RobotsTxtDefault {
      * @param  array $data TCE Information array
      * @return string
      */
-    public function main($data) {
+    public function main($data)
+    {
         // ############################
         // Init
         // ############################
@@ -113,5 +115,4 @@ class RobotsTxtDefault {
 
         return $content;
     }
-
 }

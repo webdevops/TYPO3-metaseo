@@ -32,7 +32,8 @@ namespace Metaseo\Metaseo\Page;
  * @subpackage  Page
  * @version     $Id: class.robots_txt.php 62700 2012-05-22 15:53:22Z mblaschke $
  */
-class SitemapTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
+class SitemapTxtPage extends \Metaseo\Metaseo\Page\AbstractPage
+{
 
     // ########################################################################
     // Attributes
@@ -48,14 +49,15 @@ class SitemapTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
      *
      * @return  string
      */
-    public function main() {
+    public function main()
+    {
         // INIT
         $this->tsSetup = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.'];
 
-		// TODO: prevent output if scheduler tasks is enabled
+        // TODO: prevent output if scheduler tasks is enabled
 
         // check if sitemap is enabled in root
-        if (!\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap', TRUE)) {
+        if (!\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap', true)) {
             $this->showError('Sitemap is not available, please check your configuration [control-center]');
         }
 
@@ -69,7 +71,8 @@ class SitemapTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
      *
      * @return mixed
      */
-    protected function build() {
+    protected function build()
+    {
         /** @var \Metaseo\Metaseo\Sitemap\Generator\TxtGenerator $generator */
         $generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\TxtGenerator');
 
@@ -77,5 +80,4 @@ class SitemapTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
 
         return $ret;
     }
-
 }

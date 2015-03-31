@@ -38,7 +38,8 @@ use \TYPO3\CMS\Frontend\Page\PageRepository;
  * @subpackage  lib
  * @version     $Id: SitemapIndexHook.php 84520 2014-03-28 10:33:24Z mblaschke $
  */
-class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
+class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface
+{
 
     // ########################################################################
     // Attributes
@@ -51,7 +52,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
      *
      * @var null|boolean
      */
-    protected $pageIndexFlag = NULL;
+    protected $pageIndexFlag = null;
 
     /**
      * MetaSEO configuration
@@ -88,14 +89,16 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
     /**
      * Constructor
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->initConfiguration();
     }
 
     /**
      * Init configuration
      */
-    protected function initConfiguration() {
+    protected function initConfiguration()
+    {
         // Get configuration
         if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.'])) {
             $this->conf = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.'];
@@ -130,21 +133,22 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
     /**
      * Add Page to sitemap table
      */
-    public function addPageToSitemapIndex() {
+    public function addPageToSitemapIndex()
+    {
         // check if sitemap is enabled in root
-        if (!GeneralUtility::getRootSettingValue('is_sitemap', TRUE)
-            || !GeneralUtility::getRootSettingValue('is_sitemap_page_indexer', TRUE)
+        if (!GeneralUtility::getRootSettingValue('is_sitemap', true)
+            || !GeneralUtility::getRootSettingValue('is_sitemap_page_indexer', true)
         ) {
-            return TRUE;
+            return true;
         }
 
         // check current page
-        if (!$this->checkIfCurrentPageIsIndexable() ) {
+        if (!$this->checkIfCurrentPageIsIndexable()) {
             return;
         }
 
         // Fetch chash
-        $pageHash = NULL;
+        $pageHash = null;
         if (!empty($GLOBALS['TSFE']->cHash)) {
             $pageHash = $GLOBALS['TSFE']->cHash;
         }
@@ -165,7 +169,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
         }
 
         // Fetch pageUrl
-        if ($pageHash !== NULL) {
+        if ($pageHash !== null) {
             $pageUrl = FrontendUtility::getCurrentUrl();
         } else {
             $linkConf = array(
@@ -197,13 +201,13 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
         );
 
         // Call hook
-        GeneralUtility::callHook('sitemap-index-page', NULL, $pageData);
+        GeneralUtility::callHook('sitemap-index-page', null, $pageData);
 
         if (!empty($pageData)) {
             \Metaseo\Metaseo\Utility\SitemapUtility::index($pageData, 'page');
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -212,23 +216,24 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
      * @param   string  $linkUrl    Link url
      * @return  string
      */
-    protected static function processLinkUrl($linkUrl) {
-        static $absRefPrefix = NULL;
+    protected static function processLinkUrl($linkUrl)
+    {
+        static $absRefPrefix = null;
         static $absRefPrefixLength = 0;
         $ret = $linkUrl;
 
         // Fetch abs ref prefix if available/set
-        if ($absRefPrefix === NULL) {
+        if ($absRefPrefix === null) {
             if (!empty($GLOBALS['TSFE']->tmpl->setup['config.']['absRefPrefix'])) {
                 $absRefPrefix       = $GLOBALS['TSFE']->tmpl->setup['config.']['absRefPrefix'];
                 $absRefPrefixLength = strlen($absRefPrefix);
             } else {
-                $absRefPrefix = FALSE;
+                $absRefPrefix = false;
             }
         }
 
         // remove abs ref prefix
-        if ($absRefPrefix !== FALSE && strpos($ret, $absRefPrefix) === 0) {
+        if ($absRefPrefix !== false && strpos($ret, $absRefPrefix) === 0) {
             $ret = substr($ret, $absRefPrefixLength);
         }
 
@@ -244,13 +249,13 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
      *
      * @param    object $pObj    Object
      */
-    public function hook_indexContent(&$pObj) {
+    public function hook_indexContent(&$pObj)
+    {
         $this->addPageToSitemapIndex();
 
         $possibility = (int)GeneralUtility::getExtConf('sitemap_clearCachePossibility', 0);
 
         if ($possibility > 0) {
-
             $clearCacheChance = ceil(mt_rand(0, $possibility));
             if ($clearCacheChance == 1) {
                 \Metaseo\Metaseo\Utility\SitemapUtility::expire();
@@ -265,16 +270,17 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
      * @param   object          $pObj    Object
      * @return  boolean|null
      */
-    public function hook_linkParse(&$pObj) {
+    public function hook_linkParse(&$pObj)
+    {
         // check if sitemap is enabled in root
-        if (!GeneralUtility::getRootSettingValue('is_sitemap', TRUE)
-            || !GeneralUtility::getRootSettingValue('is_sitemap_typolink_indexer', TRUE)
+        if (!GeneralUtility::getRootSettingValue('is_sitemap', true)
+            || !GeneralUtility::getRootSettingValue('is_sitemap_typolink_indexer', true)
         ) {
-            return TRUE;
+            return true;
         }
 
         // check current page
-        if (!$this->checkIfCurrentPageIsIndexable() ) {
+        if (!$this->checkIfCurrentPageIsIndexable()) {
             return;
         }
 
@@ -293,7 +299,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
         list($linkPageUid, $linkType) = $this->parseLinkConf($pObj);
         $linkUrl  = $this->processLinkUrl($linkUrl);
 
-        if ($linkType === NULL || empty($linkPageUid)) {
+        if ($linkType === null || empty($linkPageUid)) {
             // no valid link
             return;
         }
@@ -315,11 +321,11 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
         // #####################################
         // Check if link is cacheable
         // #####################################
-        $isValid = FALSE;
+        $isValid = false;
 
         // check if conf is valid
         if (!empty($linkConf['useCacheHash'])) {
-            $isValid = TRUE;
+            $isValid = true;
         }
 
         // check for typical typo3 params
@@ -328,7 +334,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
         unset($addParamsCache['type']);
 
         if (empty($addParamsCache)) {
-            $isValid = TRUE;
+            $isValid = true;
         }
 
         if (!$isValid) {
@@ -404,13 +410,13 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
         );
 
         // Call hook
-        GeneralUtility::callHook('sitemap-index-link', NULL, $pageData);
+        GeneralUtility::callHook('sitemap-index-link', null, $pageData);
 
         if (!empty($pageData)) {
             \Metaseo\Metaseo\Utility\SitemapUtility::index($pageData);
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -419,9 +425,10 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
      * @param  array $conf Generated Link config array
      * @return array
      */
-    protected function parseLinkConf($conf) {
-        $uid  = NULL;
-        $type = NULL;
+    protected function parseLinkConf($conf)
+    {
+        $uid  = null;
+        $type = null;
 
         // Check link type
         switch ($conf['finalTagParts']['TYPE']) {
@@ -466,12 +473,13 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
      * @param   string  $url    Url to file
      * @return  boolean
      */
-    protected function checkIfFileIsWhitelisted($url) {
-        $ret = FALSE;
+    protected function checkIfFileIsWhitelisted($url)
+    {
+        $ret = false;
 
         // check for valid url
         if (empty($url)) {
-            return FALSE;
+            return false;
         }
 
         // parse url to extract only path
@@ -486,7 +494,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
             foreach ($this->fileExtList as $allowedFileExt) {
                 if ($allowedFileExt === $fileExt) {
                     // File is whitelisted, not blacklisted
-                    $ret = TRUE;
+                    $ret = true;
                     break;
                 }
             }
@@ -509,14 +517,15 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
      *
      * @return bool
      */
-    protected function checkIfCurrentPageIsIndexable() {
+    protected function checkIfCurrentPageIsIndexable()
+    {
         // check caching status
-        if ($this->pageIndexFlag !== NULL) {
+        if ($this->pageIndexFlag !== null) {
             return $this->pageIndexFlag;
         }
 
         // by default page is not cacheable
-        $this->pageIndexFlag = FALSE;
+        $this->pageIndexFlag = false;
 
         // ############################
         // Basic checks
@@ -526,12 +535,12 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
         if ($_SERVER['REQUEST_METHOD'] !== 'GET'
             || !empty($GLOBALS['TSFE']->fe_user->user['uid'])
         ) {
-            return FALSE;
+            return false;
         }
 
         // Check for type blacklisting
-        if (in_array($GLOBALS['TSFE']->type, $this->typeBlacklist) ) {
-            return FALSE;
+        if (in_array($GLOBALS['TSFE']->type, $this->typeBlacklist)) {
+            return false;
         }
 
         // ############################
@@ -540,17 +549,17 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
 
         // dont parse if page is not cacheable
         if (!$GLOBALS['TSFE']->isStaticCacheble()) {
-            return FALSE;
+            return false;
         }
 
         // Skip no_cache-pages
         if (!empty($GLOBALS['TSFE']->no_cache)) {
-            return FALSE;
+            return false;
         }
 
         // all checks successfull, page is cacheable
-        $this->pageIndexFlag = TRUE;
+        $this->pageIndexFlag = true;
 
-        return TRUE;
+        return true;
     }
 }
