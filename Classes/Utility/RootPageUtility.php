@@ -108,7 +108,7 @@ class RootPageUtility
      */
     public static function getSitemapIndexUrl($rootPid)
     {
-        return self::getFrontendUrl($rootPid, 841132);
+        return self::getFrontendUrl($rootPid, SitemapUtility::DOKTYPE_SITEMAP_XML);
     }
 
     /**
@@ -119,6 +119,6 @@ class RootPageUtility
      */
     public static function getRobotsTxtUrl($rootPid)
     {
-        return self::getFrontendUrl($rootPid, 841133);
+        return self::getFrontendUrl($rootPid, SitemapUtility::DOKTYPE_ROBOTS_TXT);
     }
 }
