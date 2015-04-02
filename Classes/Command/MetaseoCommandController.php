@@ -23,9 +23,13 @@ namespace Metaseo\Metaseo\Command;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Metaseo\Metaseo\Utility\CacheUtility;
 use Metaseo\Metaseo\Utility\ConsoleUtility;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
+use Metaseo\Metaseo\Utility\GeneralUtility;
 use Metaseo\Metaseo\Utility\RootPageUtility;
+use Metaseo\Metaseo\Utility\SitemapUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 
 /**
  * TYPO3 Command controller
@@ -33,19 +37,21 @@ use Metaseo\Metaseo\Utility\RootPageUtility;
  * @package     TYPO3
  * @subpackage  metaseo_tqseo_migration
  */
-class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController {
+class MetaseoCommandController extends CommandController
+{
 
     /**
      * Get whole list of sitemap entries
      *
      * @return  string
      */
-    public function garbageCollectorCommand() {
+    public function garbageCollectorCommand()
+    {
         // Expire sitemap entries
-        \Metaseo\Metaseo\Utility\SitemapUtility::expire();
+        SitemapUtility::expire();
 
         // Expire cache entries
-        \Metaseo\Metaseo\Utility\CacheUtility::expire();
+        CacheUtility::expire();
     }
 
     /**
@@ -54,10 +60,11 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
      * @param   string $rootPageId Site root page id or domain
      * @return  string
      */
-    public function clearSitemapCommand($rootPageId) {
+    public function clearSitemapCommand($rootPageId)
+    {
         $rootPageId = $this->getRootPageIdFromId($rootPageId);
 
-        if ($rootPageId !== NULL ) {
+        if ($rootPageId !== null) {
             $domain = RootPageUtility::getDomain($rootPageId);
 
             $query = 'DELETE FROM tx_metaseo_sitemap
@@ -78,10 +85,11 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
      * @param   string $rootPageId Site root page id or domain
      * @return  string
      */
-    public function sitemapCommand($rootPageId) {
+    public function sitemapCommand($rootPageId)
+    {
         $rootPageId = $this->getRootPageIdFromId($rootPageId);
 
-        if ($rootPageId !== NULL ) {
+        if ($rootPageId !== null) {
             $domain = RootPageUtility::getDomain($rootPageId);
 
             $query = 'SELECT page_url
@@ -91,8 +99,8 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
             $urlList = DatabaseUtility::getCol($query);
 
             foreach ($urlList as $url) {
-                if ($domain ) {
-                    $url = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($url, $domain);
+                if ($domain) {
+                    $url = GeneralUtility::fullUrl($url, $domain);
                 }
 
                 ConsoleUtility::writeLine($url);
@@ -110,10 +118,11 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
      * @param  $var
      * @return int|mixed|null
      */
-    protected function getRootPageIdFromId($var) {
-        $ret = NULL;
+    protected function getRootPageIdFromId($var)
+    {
+        $ret = null;
 
-        if (is_numeric($var) ) {
+        if (is_numeric($var)) {
             // TODO: check if var is a valid root page
             $ret = (int)$var;
         } else {
@@ -123,12 +132,11 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
                          AND hidden = 0';
             $pid = DatabaseUtility::getOne($query);
 
-            if (!empty($pid ) ) {
+            if (!empty($pid)) {
                 $ret = $pid;
             }
         }
 
         return $ret;
     }
-
 }

@@ -37,11 +37,11 @@ MetaSeo.metaeditor = Ext.extend(Ext.Window, {
 
         this.title = MetaSeo.overview.conf.lang.metaeditor_title;
 
-        if( this.t3PageTitle ) {
+        if ( this.t3PageTitle ) {
             this.title += ' "'+this.t3PageTitle+'"';
         }
 
-        if( this.pid ) {
+        if ( this.pid ) {
             this.title += ' [PID:'+this.pid+']';
         }
 
@@ -102,12 +102,12 @@ MetaSeo.metaeditor = Ext.extend(Ext.Window, {
         var callbackSuccess = function(response) {
             var responseJson =  Ext.util.JSON.decode(response.responseText);
 
-            for( var index in responseJson ) {
+            for (var index in responseJson) {
                 var value = responseJson[index];
 
                 // Inject data into form
                 var formField = me.find("name", index);
-                if( formField.length == 1 ) {
+                if ( formField.length == 1 ) {
                     formField = formField[0];
                     formField.setValue(value);
                 }
@@ -142,11 +142,11 @@ MetaSeo.metaeditor = Ext.extend(Ext.Window, {
         var metaTagList = {};
 
         var formOpenGraph = this.find("name", "form-opengraph");
-        if( formOpenGraph.length = 1 ) {
+        if ( formOpenGraph.length = 1 ) {
             formOpenGraph = formOpenGraph[0];
 
             formOpenGraph.items.each(function(formField) {
-                    if( formField.isVisible() ) {
+                    if ( formField.isVisible() ) {
                     var formFieldName  = formField.getName();
                     var formFieldValue = formField.getValue();
 
@@ -187,18 +187,18 @@ MetaSeo.metaeditor = Ext.extend(Ext.Window, {
 
         // Lookup current selected type
         var ogTypeMatch = ogType.match(/^([^:]+):?([^:]+)?/);
-        if( ogTypeMatch ) {
+        if ( ogTypeMatch ) {
             ogTypeMain = 'og:'+ogTypeMatch[1];
 
-            if( ogTypeMatch[2] ) {
+            if ( ogTypeMatch[2] ) {
                 ogTypeMainAndSub  = 'og:'+ogTypeMatch[1]+'-'+ogTypeMatch[2];
             }
         }
 
         // dynamic dis- and enable form elements
         formOpenGraph.items.each(function(formField) {
-            if( formField.metaSeoFieldCat ) {
-                if( MetaSeo.inList(formField.metaSeoFieldCat, ogTypeDefault)
+            if ( formField.metaSeoFieldCat ) {
+                if ( MetaSeo.inList(formField.metaSeoFieldCat, ogTypeDefault)
                     || MetaSeo.inList(formField.metaSeoFieldCat, ogTypeMain)
                     || MetaSeo.inList(formField.metaSeoFieldCat, ogTypeMainAndSub) ) {
                     formField.show();

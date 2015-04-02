@@ -25,7 +25,7 @@ namespace Metaseo\Metaseo\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Metaseo\Metaseo\Utility\DatabaseUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Root page utility
@@ -34,7 +34,8 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  * @subpackage  lib
  * @version     $Id: SitemapUtility.php 81677 2013-11-21 12:32:33Z mblaschke $
  */
-class RootPageUtility {
+class RootPageUtility
+{
 
     /**
      * Domain cache
@@ -53,7 +54,8 @@ class RootPageUtility {
      * @param   integer $rootPid    Root PID
      * @return  null|string
      */
-    public static function getDomain($rootPid) {
+    public static function getDomain($rootPid)
+    {
         // Use cached one if exists
         if (isset(self::$domainCache[$rootPid])) {
             return self::$domainCache[$rootPid];
@@ -85,12 +87,13 @@ class RootPageUtility {
      * @param integer $typeNum Type num
      * @return string
      */
-    public static function getFrontendUrl($rootPid, $typeNum) {
+    public static function getFrontendUrl($rootPid, $typeNum)
+    {
         $domain = self::getDomain($rootPid);
-        if (!empty($domain) ) {
+        if (!empty($domain)) {
             $domain = 'http://' . $domain . '/';
         } else {
-            $domain = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+            $domain = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
         }
         // "build", TODO: use typolink to use TYPO3 internals
         $url = $domain . 'index.php?id=' . (int)$rootPid . '&type=' . (int)$typeNum;
@@ -118,5 +121,4 @@ class RootPageUtility {
     {
         return self::getFrontendUrl($rootPid, SitemapUtility::DOKTYPE_ROBOTS_TXT);
     }
-
 }

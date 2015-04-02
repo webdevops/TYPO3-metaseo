@@ -24,6 +24,7 @@ namespace Metaseo\Metaseo\Hook\Extension;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * EXT:tt_news hook for metatags
@@ -32,7 +33,8 @@ namespace Metaseo\Metaseo\Hook\Extension;
  * @subpackage  lib
  * @version     $Id: TtnewsExtension.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class TtnewsExtension {
+class TtnewsExtension
+{
 
     /**
      * Extra item marker hook for metatag fetching
@@ -43,10 +45,11 @@ class TtnewsExtension {
      * @param   object $ttnewsObj    Pi-object from tt_news
      * @return  array                Marker array (not changed)
      */
-    public function extraItemMarkerProcessor($markerArray, $row, $lConf, $ttnewsObj) {
+    public function extraItemMarkerProcessor($markerArray, $row, $lConf, $ttnewsObj)
+    {
         $theCode = (string)strtoupper(trim($ttnewsObj->theCode));
 
-        $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Metaseo\\Metaseo\\Connector');
+        $connector = GeneralUtility::makeInstance('Metaseo\\Metaseo\\Connector');
 
         switch ($theCode) {
             case 'SINGLE':
@@ -86,5 +89,3 @@ class TtnewsExtension {
         return $markerArray;
     }
 }
-
-?>

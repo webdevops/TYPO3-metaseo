@@ -25,6 +25,7 @@
  ***************************************************************/
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Update class for the extension manager.
@@ -32,7 +33,8 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
  * @package    TYPO3
  * @subpackage metaseo
  */
-class ext_update {
+class ext_update
+{
 
     // ########################################################################
     // Attributs
@@ -50,7 +52,7 @@ class ext_update {
      *
      * @var boolean
      */
-    protected $clearCache = FALSE;
+    protected $clearCache = false;
 
     // ########################################################################
     // Methods
@@ -61,7 +63,8 @@ class ext_update {
      *
      * @return string
      */
-    public function main() {
+    public function main()
+    {
         $this->processUpdates();
 
         $ret = $this->generateOutput();
@@ -76,15 +79,17 @@ class ext_update {
      * @return bool
      * @todo find a better way to determine if update is needed or not.
      */
-    public function access() {
-        return TRUE;
+    public function access()
+    {
+        return true;
     }
 
 
     /**
      * The actual update function. Add your update task in here.
      */
-    protected function processUpdates() {
+    protected function processUpdates()
+    {
         //$this->processUpdateTypoScriptIncludes();
         //$this->processUpdateScheduler();
 
@@ -94,12 +99,12 @@ class ext_update {
     /**
      * Clear cache
      */
-    protected function processClearCache() {
-
-        if( $this->clearCache ) {
+    protected function processClearCache()
+    {
+        if ($this->clearCache) {
 
             // Init TCE
-            $TCE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+            $TCE = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
             $TCE->admin = 1;
             $TCE->clear_cacheCmd('all');
 
@@ -119,8 +124,9 @@ class ext_update {
      * @param string  $title    Title
      * @param string  $message  Message
      */
-    protected function addMessage($status, $title, $message) {
-        if( !empty($message) && is_array($message) ) {
+    protected function addMessage($status, $title, $message)
+    {
+        if (!empty($message) && is_array($message)) {
             $liStyle = 'style="margin-bottom: 0;"';
 
             $message = '<ul><li '.$liStyle.'>'.implode('</li><li '.$liStyle.'>', $message).'</li></ul>';
@@ -135,14 +141,15 @@ class ext_update {
      * @param   array   $row    Database row
      * @return  string
      */
-    protected function messageTitleFromRow($row) {
+    protected function messageTitleFromRow($row)
+    {
         $ret = array();
 
-        if( !empty($row['title']) ) {
+        if (!empty($row['title'])) {
             $ret[] = '"'.htmlspecialchars($row['title']).'"';
         }
 
-        if( !empty($row['uid']) ) {
+        if (!empty($row['uid'])) {
             $ret[] = '[UID #'.htmlspecialchars($row['uid']).']';
         }
 
@@ -154,19 +161,20 @@ class ext_update {
      *
      * @return string
      */
-    protected function generateOutput() {
+    protected function generateOutput()
+    {
         $output = '';
 
         foreach ($this->messageList as $message) {
-            $flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            $flashMessage = GeneralUtility::makeInstance(
                 'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
                 $message[2],
                 $message[1],
-                $message[0]);
+                $message[0]
+            );
             $output .= $flashMessage->render();
         }
 
         return $output;
     }
-
 }

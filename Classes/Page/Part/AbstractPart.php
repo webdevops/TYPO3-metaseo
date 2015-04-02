@@ -33,7 +33,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @subpackage  Page
  * @version     $Id: class.robots_txt.php 62700 2012-05-22 15:53:22Z mblaschke $
  */
-abstract class AbstractPart {
+abstract class AbstractPart
+{
     // ########################################################################
     // Attributes
     // ########################################################################
@@ -52,9 +53,9 @@ abstract class AbstractPart {
     /**
      * Constuctor
      */
-    public function __construct() {
+    public function __construct()
+    {
         // Init object manager
         $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
     }
-
 }

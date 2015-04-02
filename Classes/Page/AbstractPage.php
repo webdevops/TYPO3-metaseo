@@ -24,6 +24,7 @@ namespace Metaseo\Metaseo\Page;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Abstract page
@@ -32,7 +33,8 @@ namespace Metaseo\Metaseo\Page;
  * @subpackage  Page
  * @version     $Id: class.robots_txt.php 62700 2012-05-22 15:53:22Z mblaschke $
  */
-abstract class AbstractPage {
+abstract class AbstractPage
+{
     // ########################################################################
     // Attributes
     // ########################################################################
@@ -51,9 +53,10 @@ abstract class AbstractPage {
     /**
      * Constuctor
      */
-    public function __construct() {
+    public function __construct()
+    {
         // Init object manager
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
     }
 
     /**
@@ -68,14 +71,14 @@ abstract class AbstractPage {
      *
      * @param    string $msg            Message
      */
-    protected function showError($msg = NULL) {
-        if ($msg === NULL) {
+    protected function showError($msg = null)
+    {
+        if ($msg === null) {
             $msg = 'Sitemap is not available, please check your configuration';
         }
 
         header('HTTP/1.0 503 Service Unavailable');
-        $GLOBALS['TSFE']->pageErrorHandler(TRUE, NULL, $msg);
+        $GLOBALS['TSFE']->pageErrorHandler(true, null, $msg);
         exit;
     }
-
 }

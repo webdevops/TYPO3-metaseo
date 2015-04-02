@@ -24,6 +24,9 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Metaseo\Metaseo\Utility\CacheUtility;
+use Metaseo\Metaseo\Utility\SitemapUtility;
+use TYPO3\CMS\Scheduler\Task\AbstractTask as AbstractTaskTypo3;
 
 /**
  * Scheduler Task Garbage Collection
@@ -32,21 +35,22 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  * @subpackage  lib
  * @version     $Id: GarbageCollectionTask.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class GarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
+class GarbageCollectionTask extends AbstractTaskTypo3
+{
 
     /**
      * Execute task
      *
      * @return  boolean
      */
-    public function execute() {
+    public function execute()
+    {
         // Expire sitemap entries
-        \Metaseo\Metaseo\Utility\SitemapUtility::expire();
+        SitemapUtility::expire();
 
         // Expire cache entries
-        \Metaseo\Metaseo\Utility\CacheUtility::expire();
+        CacheUtility::expire();
 
-        return TRUE;
+        return true;
     }
-
 }

@@ -31,7 +31,6 @@ namespace Metaseo\Metaseo\Backend\Module;
  * @package     TYPO3
  * @subpackage  metaseo
  */
-abstract class AbstractTreeModule extends \Metaseo\Metaseo\Backend\Module\AbstractModule {
-
-
+abstract class AbstractTreeModule extends AbstractModule
+{
 }

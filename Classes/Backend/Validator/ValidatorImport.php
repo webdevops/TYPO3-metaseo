@@ -23,11 +23,15 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Metaseo\Metaseo\Backend\Validator\FloatValidator;
 
 /**
  * Class tx_metaseo_backend_validation_float
  *
  * @deprecated
+ * @todo: namespace is missing
+ * @todo: class is not in use. Can it be deleted?
  */
-class tx_metaseo_backend_validation_float extends \Metaseo\Metaseo\Backend\Validator\FloatValidator {
+class tx_metaseo_backend_validation_float extends FloatValidator
+{
 }

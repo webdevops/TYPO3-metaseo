@@ -24,6 +24,8 @@ namespace Metaseo\Metaseo\Backend\Module;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * TYPO3 Backend module base
@@ -31,7 +33,8 @@ namespace Metaseo\Metaseo\Backend\Module;
  * @package     TYPO3
  * @subpackage  metaseo
  */
-abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+abstract class AbstractModule extends ActionController
+{
     // ########################################################################
     // Attributes
     // ########################################################################
@@ -42,7 +45,7 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
      * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection
      * @inject
      */
-    protected $formProtection = NULL;
+    protected $formProtection = null;
 
     // ########################################################################
     // Methods
@@ -55,11 +58,12 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
      * @param   NULL|array  $arguments  Arguments (vsprintf)
      * @return  NULL|string
      */
-    protected function translate($key, $arguments = NULL) {
-        $ret = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $this->extensionName, $arguments);
+    protected function translate($key, $arguments = null)
+    {
+        $ret = LocalizationUtility::translate($key, $this->extensionName, $arguments);
 
         // Not translated handling
-        if ($ret === NULL ) {
+        if ($ret === null) {
             $ret = '[-' . $key . '-]';
         }
 
@@ -72,11 +76,12 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
      * @param   array $list   Translation keys
      * @return  array
      */
-    protected function translateList($list) {
+    protected function translateList($list)
+    {
         unset($token);
         foreach ($list as &$token) {
-            if (!empty($token) ) {
-                if (is_array($token) ) {
+            if (!empty($token)) {
+                if (is_array($token)) {
                     $token = $this->translateList($token);
                 } else {
                     $token = $this->translate($token);
@@ -94,7 +99,8 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
      * @param    string $formName    Form name/Session token name
      * @return    string
      */
-    protected function sessionToken($formName) {
+    protected function sessionToken($formName)
+    {
         $token = $this->formProtection->generateToken($formName);
         return $token;
     }
@@ -105,8 +111,8 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
      * @param   string  $ajaxCall Ajax Call
      * @return  string
      */
-    protected function ajaxControllerUrl($ajaxCall) {
+    protected function ajaxControllerUrl($ajaxCall)
+    {
         return $this->doc->backPath . 'ajax.php?ajaxID=' . urlencode($ajaxCall);
     }
-
 }

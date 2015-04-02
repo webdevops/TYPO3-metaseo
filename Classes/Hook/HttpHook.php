@@ -24,6 +24,8 @@ namespace Metaseo\Metaseo\Hook;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Metaseo\Metaseo\Utility\CacheUtility;
+use Metaseo\Metaseo\Utility\GeneralUtility;
 
 /**
  * Http Header generator
@@ -32,12 +34,14 @@ namespace Metaseo\Metaseo\Hook;
  * @subpackage  lib
  * @version     $Id: HttpHook.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class HttpHook {
+class HttpHook
+{
 
     /**
      * Add HTTP Headers
      */
-    public function main() {
+    public function main()
+    {
         // INIT
         $tsSetup  = $GLOBALS['TSFE']->tmpl->setup;
         $headers  = array();
@@ -58,8 +62,8 @@ class HttpHook {
                 // ##################################
                 // W3C P3P Tags
                 // ##################################
-                $p3pCP        = NULL;
-                $p3pPolicyUrl = NULL;
+                $p3pCP        = null;
+                $p3pPolicyUrl = null;
 
                 if (!empty($tsSetupSeo['p3pCP'])) {
                     $p3pCP = $tsSetupSeo['p3pCP'];
@@ -85,10 +89,9 @@ class HttpHook {
                     // cache informations
                     $curentTemplate     = end($GLOBALS['TSFE']->tmpl->hierarchyInfo);
                     $currentTemplatePid = $curentTemplate['pid'];
-                    \Metaseo\Metaseo\Utility\CacheUtility::set($currentTemplatePid, 'http', 'p3p', $headers['P3P']);
+                    CacheUtility::set($currentTemplatePid, 'http', 'p3p', $headers['P3P']);
                 }
             }
-
         } else {
             // #####################################
             // Cached page
@@ -100,7 +103,7 @@ class HttpHook {
             }
 
             // fetch from cache
-            $cacheList = \Metaseo\Metaseo\Utility\CacheUtility::getList('http', 'p3p');
+            $cacheList = CacheUtility::getList('http', 'p3p');
             foreach ($rootPidList as $pageId) {
                 if (!empty($cacheList[$pageId])) {
                     $headers['P3P'] = $cacheList[$pageId];
@@ -110,7 +113,7 @@ class HttpHook {
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('httpheader-output', $this, $headers);
+        GeneralUtility::callHook('httpheader-output', $this, $headers);
 
         // #####################################
         // Sender headers
@@ -118,6 +121,5 @@ class HttpHook {
         if (!empty($headers['P3P'])) {
             header('P3P: ' . $headers['P3P']);
         }
-
     }
 }

@@ -5,7 +5,7 @@ TODO MetaSEO 2.0
 
 * Dependency injection
 * Backend module for page-seo
-	-> settings
+    -> settings
 * Piwik auto keywords
 * Sitemap url type (page, news etc)
 * add signals

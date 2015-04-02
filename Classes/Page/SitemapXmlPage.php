@@ -24,6 +24,7 @@ namespace Metaseo\Metaseo\Page;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Sitemap xml page
@@ -32,7 +33,8 @@ namespace Metaseo\Metaseo\Page;
  * @subpackage  Page
  * @version     $Id: class.robots_txt.php 62700 2012-05-22 15:53:22Z mblaschke $
  */
-class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage {
+class SitemapXmlPage extends AbstractPage
+{
 
     // ########################################################################
     // Attributes
@@ -48,14 +50,15 @@ class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage {
      *
      * @return  string
      */
-    public function main() {
+    public function main()
+    {
         // INIT
         $this->tsSetup = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.'];
 
-		// TODO: prevent output if scheduler tasks is enabled
+        // TODO: prevent output if scheduler tasks is enabled
 
         // check if sitemap is enabled in root
-        if (!\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap', TRUE)) {
+        if (!\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap', true)) {
             $this->showError('Sitemap is not available, please check your configuration [control-center]');
         }
 
@@ -69,8 +72,9 @@ class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage {
      *
      * @return mixed
      */
-    protected function build() {
-        $page = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('page');
+    protected function build()
+    {
+        $page = GeneralUtility::_GP('page');
 
         /** @var \Metaseo\Metaseo\Sitemap\Generator\XmlGenerator $generator */
         $generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\XmlGenerator');
@@ -83,5 +87,4 @@ class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage {
 
         return $ret;
     }
-
 }

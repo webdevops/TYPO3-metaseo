@@ -25,7 +25,7 @@ namespace Metaseo\Metaseo\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Metaseo\Metaseo\Utility\DatabaseUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility as GeneralUtilityTypo3;
 
 /**
  * General utility
@@ -34,7 +34,8 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  * @subpackage  Utility
  * @version     $Id: GeneralUtility.php 81677 2013-11-21 12:32:33Z mblaschke $
  */
-class GeneralUtility {
+class GeneralUtility
+{
 
     // ########################################################################
     // Attributes
@@ -45,7 +46,7 @@ class GeneralUtility {
      *
      * @var \TYPO3\CMS\Frontend\Page\PageRepository
      */
-    protected static $sysPageObj = NULL;
+    protected static $sysPageObj = null;
 
     /**
      * Rootline cache
@@ -64,7 +65,8 @@ class GeneralUtility {
      *
      * @return  integer
      */
-    public static function getLanguageId() {
+    public static function getLanguageId()
+    {
         $ret = 0;
 
         if (!empty($GLOBALS['TSFE']->tmpl->setup['config.']['sys_language_uid'])) {
@@ -80,11 +82,12 @@ class GeneralUtility {
      * @param   integer|null $uid    Page UID
      * @return  integer
      */
-    public static function getRootPid($uid = NULL) {
+    public static function getRootPid($uid = null)
+    {
         static $cache = array();
-        $ret = NULL;
+        $ret = null;
 
-        if ($uid === NULL) {
+        if ($uid === null) {
             #################
             # Current root PID
             #################
@@ -97,7 +100,7 @@ class GeneralUtility {
             # Other root PID
             #################
             if (!isset($cache[$uid])) {
-                $cache[$uid] = NULL;
+                $cache[$uid] = null;
                 $rootline    = self::getRootLine($uid);
 
                 if (!empty($rootline[0])) {
@@ -116,7 +119,8 @@ class GeneralUtility {
      *
      * @return  integer
      */
-    public static function getCurrentPid() {
+    public static function getCurrentPid()
+    {
         return $GLOBALS['TSFE']->id;
     }
 
@@ -126,8 +130,9 @@ class GeneralUtility {
      * @param   integer|null $uid    Page UID
      * @return  array
      */
-    public static function getRootLine($uid = NULL) {
-        if ($uid === NULL) {
+    public static function getRootLine($uid = null)
+    {
+        if ($uid === null) {
             #################
             # Current rootline
             #################
@@ -168,16 +173,17 @@ class GeneralUtility {
      * @param   integer|null $uid    Page UID
      * @return  boolean
      */
-    public static function isMountpointInRootLine($uid = NULL) {
-        $ret = FALSE;
+    public static function isMountpointInRootLine($uid = null)
+    {
+        $ret = false;
 
         // Performance check, there must be an MP-GET value
-        if(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('MP')) {
+        if (GeneralUtilityTypo3::_GET('MP')) {
             // Possible mount point detected, let's check the rootline
             foreach (self::getRootLine($uid) as $page) {
                 if (!empty($page['_MOUNT_OL'])) {
                     // Mountpoint detected in rootline
-                    $ret = TRUE;
+                    $ret = true;
                 }
             }
         }
@@ -191,7 +197,8 @@ class GeneralUtility {
      * @param $rootline
      * @return array
      */
-    protected static function filterRootlineBySiteroot(array $rootline) {
+    protected static function filterRootlineBySiteroot(array $rootline)
+    {
         $ret = array();
 
         // Make sure sorting is right (first root, last page)
@@ -215,20 +222,21 @@ class GeneralUtility {
      *
      * @return  array
      */
-    public static function getSysDomain() {
-        static $ret = NULL;
+    public static function getSysDomain()
+    {
+        static $ret = null;
 
-        if ($ret !== NULL) {
+        if ($ret !== null) {
             return $ret;
         }
 
-        $host = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST');
+        $host = GeneralUtilityTypo3::getIndpEnv('HTTP_HOST');
         $rootPid = self::getRootPid();
 
         $query = 'SELECT *
                     FROM sys_domain
                    WHERE pid = ' . (int)$rootPid . '
-                     AND domainName = ' . DatabaseUtility::quote( $host, 'sys_domain' ) . '
+                     AND domainName = ' . DatabaseUtility::quote($host, 'sys_domain') . '
                      AND hidden = 0';
         $ret = DatabaseUtility::getRow($query);
 
@@ -241,14 +249,15 @@ class GeneralUtility {
      * @param   integer $rootPid    Root Page Id
      * @return  array
      */
-    public static function getRootSetting($rootPid = NULL) {
-        static $ret = NULL;
+    public static function getRootSetting($rootPid = null)
+    {
+        static $ret = null;
 
-        if ($ret !== NULL) {
+        if ($ret !== null) {
             return $ret;
         }
 
-        if ($rootPid === NULL) {
+        if ($rootPid === null) {
             $rootPid = self::getRootPid();
         }
 
@@ -270,7 +279,8 @@ class GeneralUtility {
      * @param   integer|NULL $rootPid        Root Page Id
      * @return  array
      */
-    public static function getRootSettingValue($name, $defaultValue = NULL, $rootPid = NULL) {
+    public static function getRootSettingValue($name, $defaultValue = null, $rootPid = null)
+    {
         $setting = self::getRootSetting($rootPid);
 
         if (isset($setting[$name])) {
@@ -289,11 +299,12 @@ class GeneralUtility {
      * @param   boolean $default    Default value
      * @return  mixed
      */
-    public static function getExtConf($name, $default = NULL) {
-        static $conf = NULL;
+    public static function getExtConf($name, $default = null)
+    {
+        static $conf = null;
         $ret = $default;
 
-        if ($conf === NULL) {
+        if ($conf === null) {
             // Load ext conf
             $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['metaseo']);
             if (!is_array($conf)) {
@@ -317,11 +328,12 @@ class GeneralUtility {
      * @param   mixed|NULL $args   Args
      * @return  mixed
      */
-    public static function callHook($name, $obj, &$args = NULL) {
-        static $hookConf = NULL;
+    public static function callHook($name, $obj, &$args = null)
+    {
+        static $hookConf = null;
 
         // Fetch hooks config for metaseo, minimize array lookups
-        if ($hookConf === NULL) {
+        if ($hookConf === null) {
             $hookConf = array();
             if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks'])
                 && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks'])
@@ -334,7 +346,7 @@ class GeneralUtility {
         if (!empty($hookConf[$name]) && is_array($hookConf[$name])) {
             foreach ($hookConf[$name] as $_funcRef) {
                 if ($_funcRef) {
-                    \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $args, $obj);
+                    GeneralUtilityTypo3::callUserFunction($_funcRef, $args, $obj);
                 }
             }
         }
@@ -349,7 +361,8 @@ class GeneralUtility {
      * @param   string $domain Domain
      * @return  string
      */
-    public static function fullUrl($url, $domain = NULL) {
+    public static function fullUrl($url, $domain = null)
+    {
         if (!preg_match('/^https?:\/\//i', $url)) {
 
             // Fix for root page link
@@ -362,12 +375,12 @@ class GeneralUtility {
                 $url = substr($url, 1);
             }
 
-            if( $domain !== NULL ) {
+            if ($domain !== null) {
                 // specified domain
                 $url = 'http://' . $domain . '/' . $url;
             } else {
                 // domain from env
-                $url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $url;
+                $url = GeneralUtilityTypo3::getIndpEnv('TYPO3_SITE_URL') . $url;
             }
         }
 
@@ -381,7 +394,7 @@ class GeneralUtility {
 
         // Fallback
         //if (!empty($GLOBALS['TSFE']) && !preg_match('/^https?:\/\//i', $url ) ) {
-        //	$url = $GLOBALS['TSFE']->baseUrlWrap($url);
+        //    $url = $GLOBALS['TSFE']->baseUrlWrap($url);
         //}
 
         return $url;
@@ -394,20 +407,21 @@ class GeneralUtility {
      * @param  array   $blacklistConf  Blacklist configuration (list of regexp)
      * @return bool
      */
-    public static function checkUrlForBlacklisting($url, array $blacklistConf) {
+    public static function checkUrlForBlacklisting($url, array $blacklistConf)
+    {
         // check for valid url
         if (empty($url)) {
-            return TRUE;
+            return true;
         }
 
-		$blacklistConf = (array)$blacklistConf;
+        $blacklistConf = (array)$blacklistConf;
         foreach ($blacklistConf as $blacklistRegExp) {
             if (preg_match($blacklistRegExp, $url)) {
-                return TRUE;
+                return true;
             }
         }
 
-        return FALSE;
+        return false;
     }
 
     // ########################################################################
@@ -419,10 +433,11 @@ class GeneralUtility {
      *
      * @return  \TYPO3\CMS\Frontend\Page\PageRepository
      */
-    protected static function getSysPageObj() {
-        if (self::$sysPageObj === NULL) {
+    protected static function getSysPageObj()
+    {
+        if (self::$sysPageObj === null) {
             /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+            $objectManager = GeneralUtilityTypo3::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 
             /** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPageObj */
             $sysPageObj = $objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
@@ -431,5 +446,4 @@ class GeneralUtility {
         }
         return self::$sysPageObj;
     }
-
 }

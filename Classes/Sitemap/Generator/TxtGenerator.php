@@ -24,6 +24,7 @@ namespace Metaseo\Metaseo\Sitemap\Generator;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Metaseo\Metaseo\Utility\GeneralUtility;
 
 /**
  * Sitemap TXT generator
@@ -32,7 +33,8 @@ namespace Metaseo\Metaseo\Sitemap\Generator;
  * @subpackage  lib
  * @version     $Id: TxtGenerator.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class TxtGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator {
+class TxtGenerator extends AbstractGenerator
+{
 
     // ########################################################################
     // Methods
@@ -43,7 +45,8 @@ class TxtGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
      *
      * @return  string
      */
-    public function sitemapIndex() {
+    public function sitemapIndex()
+    {
         return '';
     }
 
@@ -53,7 +56,8 @@ class TxtGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
      * @param   integer $page   Page
      * @return  string
      */
-    public function sitemap($page = NULL) {
+    public function sitemap($page = null)
+    {
         $ret = array();
 
         foreach ($this->sitemapPages as $sitemapPage) {
@@ -64,11 +68,11 @@ class TxtGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
 
             //$page = $this->pages[ $sitemapPage['page_uid'] ];
 
-            $ret[] = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($sitemapPage['page_url']);
+            $ret[] = GeneralUtility::fullUrl($sitemapPage['page_url']);
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('sitemap-text-output', $this, $ret);
+        GeneralUtility::callHook('sitemap-text-output', $this, $ret);
 
         return implode("\n", $ret);
     }

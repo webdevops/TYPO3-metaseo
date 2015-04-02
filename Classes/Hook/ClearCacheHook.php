@@ -32,13 +32,14 @@ namespace Metaseo\Metaseo\Hook;
  * @subpackage  lib
  * @version     $Id: HttpHook.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class ClearCacheHook {
+class ClearCacheHook
+{
 
     /**
      * Clear cache hook
      */
-    public function main() {
+    public function main()
+    {
         // TODO: clear cache
     }
-
 }
