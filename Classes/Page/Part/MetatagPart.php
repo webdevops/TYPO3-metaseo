@@ -244,7 +244,8 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             // Generate MetaTags
             // #####################################
 
-            if ($enableMetaDc) {
+            if ($enableMetaDc && !$this->isHtml5()) {
+                //schema.DCTERMS not allowed in HTML5 according to W3C validator #18
                 $ret['meta.schema.dc'] = '<link rel="schema.DCTERMS" href="http://purl.org/dc/terms/" >';
             }
 
@@ -881,5 +882,12 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         }
 
         return $this->cObj->stdWrap($value, $this->stdWrapList[$key]);
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isHtml5() {
+        return ($GLOBALS['TSFE']->config['config']['doctype'] !== 'html5');
     }
 }
