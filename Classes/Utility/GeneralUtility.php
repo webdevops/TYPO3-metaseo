@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Utility;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,7 +22,9 @@ namespace Metaseo\Metaseo\Utility;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Utility;
 
 /**
  * General utility
@@ -69,50 +70,36 @@ class GeneralUtility {
     }
 
     /**
-     * Get current root pid
-     *
-     * @param   integer|null $uid Page UID
-     *
-     * @return  integer
-     */
-    public static function getRootPid($uid = null) {
-        static $cache = array();
-        $ret = null;
-
-        if ($uid === null) {
-            #################
-            # Current root PID
-            #################
-            $rootline = self::getRootLine();
-            if (!empty($rootline[0])) {
-                $ret = $rootline[0]['uid'];
-            }
-        } else {
-            #################
-            # Other root PID
-            #################
-            if (!isset($cache[$uid])) {
-                $cache[$uid] = null;
-                $rootline = self::getRootLine($uid);
-
-                if (!empty($rootline[0])) {
-                    $cache[$uid] = $rootline[0]['uid'];
-                }
-            }
-
-            $ret = $cache[$uid];
-        }
-
-        return $ret;
-    }
-
-    /**
      * Get current pid
      *
      * @return  integer
      */
     public static function getCurrentPid() {
         return $GLOBALS['TSFE']->id;
+    }
+
+    /**
+     * Check if there is any mountpoint in rootline
+     *
+     * @param   integer|null $uid Page UID
+     *
+     * @return  boolean
+     */
+    public static function isMountpointInRootLine($uid = null) {
+        $ret = false;
+
+        // Performance check, there must be an MP-GET value
+        if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('MP')) {
+            // Possible mount point detected, let's check the rootline
+            foreach (self::getRootLine($uid) as $page) {
+                if (!empty($page['_MOUNT_OL'])) {
+                    // Mountpoint detected in rootline
+                    $ret = true;
+                }
+            }
+        }
+
+        return $ret;
     }
 
     /**
@@ -159,30 +146,6 @@ class GeneralUtility {
     }
 
     /**
-     * Check if there is any mountpoint in rootline
-     *
-     * @param   integer|null $uid Page UID
-     *
-     * @return  boolean
-     */
-    public static function isMountpointInRootLine($uid = null) {
-        $ret = false;
-
-        // Performance check, there must be an MP-GET value
-        if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('MP')) {
-            // Possible mount point detected, let's check the rootline
-            foreach (self::getRootLine($uid) as $page) {
-                if (!empty($page['_MOUNT_OL'])) {
-                    // Mountpoint detected in rootline
-                    $ret = true;
-                }
-            }
-        }
-
-        return $ret;
-    }
-
-    /**
      * Filter rootline to get the real one up to siteroot page
      *
      * @param $rootline
@@ -207,6 +170,25 @@ class GeneralUtility {
         $ret = array_reverse($ret);
 
         return $ret;
+    }
+
+    /**
+     * Get sys page object
+     *
+     * @return  \TYPO3\CMS\Frontend\Page\PageRepository
+     */
+    protected static function getSysPageObj() {
+        if (self::$sysPageObj === null) {
+            /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+
+            /** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPageObj */
+            $sysPageObj = $objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+
+            self::$sysPageObj = $sysPageObj;
+        }
+
+        return self::$sysPageObj;
     }
 
     /**
@@ -236,6 +218,65 @@ class GeneralUtility {
     }
 
     /**
+     * Get current root pid
+     *
+     * @param   integer|null $uid Page UID
+     *
+     * @return  integer
+     */
+    public static function getRootPid($uid = null) {
+        static $cache = array();
+        $ret = null;
+
+        if ($uid === null) {
+            #################
+            # Current root PID
+            #################
+            $rootline = self::getRootLine();
+            if (!empty($rootline[0])) {
+                $ret = $rootline[0]['uid'];
+            }
+        } else {
+            #################
+            # Other root PID
+            #################
+            if (!isset($cache[$uid])) {
+                $cache[$uid] = null;
+                $rootline = self::getRootLine($uid);
+
+                if (!empty($rootline[0])) {
+                    $cache[$uid] = $rootline[0]['uid'];
+                }
+            }
+
+            $ret = $cache[$uid];
+        }
+
+        return $ret;
+    }
+
+    /**
+     * Get root setting value
+     *
+     * @param   string       $name         Name of configuration
+     * @param   mixed|NULL   $defaultValue Default value
+     * @param   integer|NULL $rootPid      Root Page Id
+     *
+     * @return  array
+     */
+    public static function getRootSettingValue($name, $defaultValue = null, $rootPid = null) {
+        $setting = self::getRootSetting($rootPid);
+
+        if (isset($setting[$name])) {
+            $ret = $setting[$name];
+        } else {
+            $ret = $defaultValue;
+        }
+
+        return $ret;
+    }
+
+    /**
      * Get root setting row
      *
      * @param   integer $rootPid Root Page Id
@@ -260,27 +301,6 @@ class GeneralUtility {
                      AND deleted = 0
                    LIMIT 1';
         $ret = DatabaseUtility::getRow($query);
-
-        return $ret;
-    }
-
-    /**
-     * Get root setting value
-     *
-     * @param   string       $name         Name of configuration
-     * @param   mixed|NULL   $defaultValue Default value
-     * @param   integer|NULL $rootPid      Root Page Id
-     *
-     * @return  array
-     */
-    public static function getRootSettingValue($name, $defaultValue = null, $rootPid = null) {
-        $setting = self::getRootSetting($rootPid);
-
-        if (isset($setting[$name])) {
-            $ret = $setting[$name];
-        } else {
-            $ret = $defaultValue;
-        }
 
         return $ret;
     }
@@ -393,6 +413,10 @@ class GeneralUtility {
         return $url;
     }
 
+    // ########################################################################
+    // Protected methods
+    // ########################################################################
+
     /**
      * Check if url is blacklisted
      *
@@ -415,28 +439,5 @@ class GeneralUtility {
         }
 
         return false;
-    }
-
-    // ########################################################################
-    // Protected methods
-    // ########################################################################
-
-    /**
-     * Get sys page object
-     *
-     * @return  \TYPO3\CMS\Frontend\Page\PageRepository
-     */
-    protected static function getSysPageObj() {
-        if (self::$sysPageObj === null) {
-            /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-
-            /** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPageObj */
-            $sysPageObj = $objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
-
-            self::$sysPageObj = $sysPageObj;
-        }
-
-        return self::$sysPageObj;
     }
 }

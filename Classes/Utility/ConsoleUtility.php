@@ -1,11 +1,11 @@
 <?php
-namespace Metaseo\Metaseo\Utility;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
- *  (c) 2005-2014 Markus Blaschke <typo3@markus-blaschke.de> (based on sxFramework)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
+ *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
  *  free software; you can redistribute it and/or modify
@@ -22,7 +22,9 @@ namespace Metaseo\Metaseo\Utility;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Utility;
 
 /**
  * Console utility
@@ -41,6 +43,17 @@ class ConsoleUtility {
         }
 
         self::stdOut($message);
+    }
+
+    /**
+     * Send output to STD_OUT
+     *
+     * @param string $message Message text
+     */
+    public static function stdOut($message = null) {
+        if (defined('TYPO3_cliMode')) {
+            file_put_contents('php://stdout', $message);
+        }
     }
 
     /**
@@ -67,28 +80,6 @@ class ConsoleUtility {
     }
 
     /**
-     * Write error (forcing newline)
-     *
-     * @param string $message Message
-     */
-    public static function writeErrorLine($message = null) {
-        $message .= "\n";
-
-        self::stdError($message);
-    }
-
-    /**
-     * Send output to STD_OUT
-     *
-     * @param string $message Message text
-     */
-    public static function stdOut($message = null) {
-        if (defined('TYPO3_cliMode')) {
-            file_put_contents('php://stdout', $message);
-        }
-    }
-
-    /**
      * Send output to STD_ERR
      *
      * @param string $message Message text
@@ -97,6 +88,17 @@ class ConsoleUtility {
         if (defined('TYPO3_cliMode')) {
             file_put_contents('php://stderr', $message);
         }
+    }
+
+    /**
+     * Write error (forcing newline)
+     *
+     * @param string $message Message
+     */
+    public static function writeErrorLine($message = null) {
+        $message .= "\n";
+
+        self::stdError($message);
     }
 
     /**

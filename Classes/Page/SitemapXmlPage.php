@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Page;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,13 +22,14 @@ namespace Metaseo\Metaseo\Page;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Page;
 
 /**
  * Sitemap xml page
  */
-class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage
-{
+class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage {
 
     // ########################################################################
     // Attributes
@@ -45,8 +45,7 @@ class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage
      *
      * @return  string
      */
-    public function main()
-    {
+    public function main() {
         // INIT
         $this->tsSetup = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.'];
 
@@ -67,8 +66,7 @@ class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage
      *
      * @return mixed
      */
-    protected function build()
-    {
+    protected function build() {
         $page = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('page');
 
         /** @var \Metaseo\Metaseo\Sitemap\Generator\XmlGenerator $generator */

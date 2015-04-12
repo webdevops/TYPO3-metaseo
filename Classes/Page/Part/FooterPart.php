@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Page\Part;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,14 +22,16 @@ namespace Metaseo\Metaseo\Page\Part;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Page\Part;
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Page Footer
  */
-class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
-{
+class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
     /**
      * Add Page Footer
@@ -39,8 +40,7 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
      *
      * @return    string            Modified page title
      */
-    public function main($title)
-    {
+    public function main($title) {
         // INIT
         $ret = array();
         $tsSetup = $GLOBALS['TSFE']->tmpl->setup;
@@ -128,8 +128,7 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
      *
      * @return string
      */
-    public function buildGoogleAnalyticsCode($tsServices, $gaConf)
-    {
+    public function buildGoogleAnalyticsCode($tsServices, $gaConf) {
         $ret = array();
         $gaCodeList = GeneralUtility::trimExplode(',', $tsServices['googleAnalytics']);
 
@@ -166,8 +165,7 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
      *
      * @return string
      */
-    public function serviceGoogleAnalyticsTrackDownloads($tsServices, $gaConf)
-    {
+    public function serviceGoogleAnalyticsTrackDownloads($tsServices, $gaConf) {
         $jsFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
             $gaConf['trackDownloadsScript']
         );
@@ -186,8 +184,7 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
      *
      * @return string
      */
-    public function buildPiwikCode($tsServices, $piwikConf)
-    {
+    public function buildPiwikCode($tsServices, $piwikConf) {
         $ret = array();
         $piwikCodeList = GeneralUtility::trimExplode(',', $piwikConf['id']);
 

@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Utility;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,7 +22,9 @@ namespace Metaseo\Metaseo\Utility;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Utility;
 
 /**
  * General utility
@@ -134,6 +135,20 @@ class FrontendUtility {
     }
 
     /**
+     * Check current page for blacklisting
+     *
+     * @param  array $blacklist Blacklist configuration
+     *
+     * @return bool
+     */
+    public static function checkPageForBlacklist($blacklist) {
+        return \Metaseo\Metaseo\Utility\GeneralUtility::checkUrlForBlacklisting(
+            self::getCurrentUrl(),
+            $blacklist
+        );
+    }
+
+    /**
      * Return current URL
      *
      * @return null|string
@@ -147,19 +162,5 @@ class FrontendUtility {
         }
 
         return $ret;
-    }
-
-    /**
-     * Check current page for blacklisting
-     *
-     * @param  array $blacklist Blacklist configuration
-     *
-     * @return bool
-     */
-    public static function checkPageForBlacklist($blacklist) {
-        return \Metaseo\Metaseo\Utility\GeneralUtility::checkUrlForBlacklisting(
-            self::getCurrentUrl(),
-            $blacklist
-        );
     }
 }

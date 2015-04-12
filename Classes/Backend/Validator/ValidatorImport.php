@@ -1,9 +1,9 @@
 <?php
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -22,7 +22,8 @@
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
 
 /**
  * Class tx_metaseo_backend_validation_float
@@ -30,6 +31,5 @@
  *
  * @deprecated
  */
-class tx_metaseo_backend_validation_float extends \Metaseo\Metaseo\Backend\Validator\FloatValidator
-{
+class tx_metaseo_backend_validation_float extends \Metaseo\Metaseo\Backend\Validator\FloatValidator {
 }

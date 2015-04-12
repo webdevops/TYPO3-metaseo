@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Utility;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,7 +22,9 @@ namespace Metaseo\Metaseo\Utility;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Utility;
 
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
@@ -58,15 +59,6 @@ class SitemapUtility {
     // ########################################################################
     // Public methods
     // ########################################################################
-
-    /**
-     * Get list of blacklisted page types
-     *
-     * @return array
-     */
-    public static function getPageTypeBlacklist() {
-        return self::$typeBlacklist;
-    }
 
     /**
      * Insert into sitemap
@@ -190,6 +182,15 @@ class SitemapUtility {
                               AND is_blacklisted = 0';
             DatabaseUtility::exec($query);
         }
+    }
+
+    /**
+     * Get list of blacklisted page types
+     *
+     * @return array
+     */
+    public static function getPageTypeBlacklist() {
+        return self::$typeBlacklist;
     }
 
     /**

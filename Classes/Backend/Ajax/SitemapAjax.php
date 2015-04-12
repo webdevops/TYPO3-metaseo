@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Backend\Ajax;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,23 +22,23 @@ namespace Metaseo\Metaseo\Backend\Ajax;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Backend\Ajax;
 
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 
 /**
  * TYPO3 Backend ajax module sitemap
  */
-class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
-{
+class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
 
     /**
      * Return sitemap entry list for root tree
      *
      * @return    array
      */
-    protected function executeGetList()
-    {
+    protected function executeGetList() {
         // Init
         $rootPageList = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
 
@@ -151,8 +150,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
      *
      * @return    boolean
      */
-    protected function executeBlacklist()
-    {
+    protected function executeBlacklist() {
         $uidList = $this->postVar['uidList'];
         $rootPid = (int)$this->postVar['pid'];
 
@@ -181,8 +179,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
      *
      * @return    boolean
      */
-    protected function executeWhitelist()
-    {
+    protected function executeWhitelist() {
         $uidList = $this->postVar['uidList'];
         $rootPid = (int)$this->postVar['pid'];
 
@@ -212,8 +209,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
      *
      * @return    boolean
      */
-    protected function executeDelete()
-    {
+    protected function executeDelete() {
         $uidList = $this->postVar['uidList'];
         $rootPid = (int)$this->postVar['pid'];
 
@@ -241,8 +237,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
      *
      * @return    boolean
      */
-    protected function executeDeleteAll()
-    {
+    protected function executeDeleteAll() {
         $rootPid = (int)$this->postVar['pid'];
 
         if (empty($rootPid)) {

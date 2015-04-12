@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Controller;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,7 +22,9 @@ namespace Metaseo\Metaseo\Controller;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Controller;
 
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 
@@ -44,41 +45,6 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
      */
     public function mainAction() {
         return $this->handleSubAction('metadata');
-    }
-
-    /**
-     * Geo action
-     */
-    public function geoAction() {
-        return $this->handleSubAction('geo');
-    }
-
-    /**
-     * searchengines action
-     */
-    public function searchenginesAction() {
-        return $this->handleSubAction('searchengines');
-    }
-
-    /**
-     * url action
-     */
-    public function urlAction() {
-        return $this->handleSubAction('url');
-    }
-
-    /**
-     * pagetitle action
-     */
-    public function pagetitleAction() {
-        return $this->handleSubAction('pagetitle');
-    }
-
-    /**
-     * pagetitle action
-     */
-    public function pagetitlesimAction() {
-        return $this->handleSubAction('pagetitlesim');
     }
 
     protected function handleSubAction($type) {
@@ -269,5 +235,40 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
             MetaSeo.overview.conf      = ' . json_encode($metaSeoConf) . ';
             MetaSeo.overview.conf.lang = ' . json_encode($metaSeoLang) . ';
         ');
+    }
+
+    /**
+     * Geo action
+     */
+    public function geoAction() {
+        return $this->handleSubAction('geo');
+    }
+
+    /**
+     * searchengines action
+     */
+    public function searchenginesAction() {
+        return $this->handleSubAction('searchengines');
+    }
+
+    /**
+     * url action
+     */
+    public function urlAction() {
+        return $this->handleSubAction('url');
+    }
+
+    /**
+     * pagetitle action
+     */
+    public function pagetitleAction() {
+        return $this->handleSubAction('pagetitle');
+    }
+
+    /**
+     * pagetitle action
+     */
+    public function pagetitlesimAction() {
+        return $this->handleSubAction('pagetitlesim');
     }
 }

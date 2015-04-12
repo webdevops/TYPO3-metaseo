@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Backend\Module;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,7 +22,9 @@ namespace Metaseo\Metaseo\Backend\Module;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Backend\Module;
 
 /**
  * TYPO3 Backend module base
@@ -46,25 +47,6 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
     // ########################################################################
 
     /**
-     * Translate key
-     *
-     * @param   string     $key       Translation key
-     * @param   NULL|array $arguments Arguments (vsprintf)
-     *
-     * @return  NULL|string
-     */
-    protected function translate($key, $arguments = null) {
-        $ret = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $this->extensionName, $arguments);
-
-        // Not translated handling
-        if ($ret === null) {
-            $ret = '[-' . $key . '-]';
-        }
-
-        return $ret;
-    }
-
-    /**
      * Translate list
      *
      * @param   array $list Translation keys
@@ -85,6 +67,25 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
         unset($token);
 
         return $list;
+    }
+
+    /**
+     * Translate key
+     *
+     * @param   string     $key       Translation key
+     * @param   NULL|array $arguments Arguments (vsprintf)
+     *
+     * @return  NULL|string
+     */
+    protected function translate($key, $arguments = null) {
+        $ret = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $this->extensionName, $arguments);
+
+        // Not translated handling
+        if ($ret === null) {
+            $ret = '[-' . $key . '-]';
+        }
+
+        return $ret;
     }
 
     /**

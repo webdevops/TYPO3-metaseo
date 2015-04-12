@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Page\Part;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,7 +22,9 @@ namespace Metaseo\Metaseo\Page\Part;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Page\Part;
 
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 
@@ -530,66 +531,6 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         return $separator . implode($separator, $ret) . $separator;
     }
 
-
-    /**
-     * Advanced meta tags
-     *
-     * @param array   $metaTags          MetaTags
-     * @param array   $tsfePage          TSFE Page
-     * @param integer $sysLanguageId     Sys Language ID
-     * @param array   $customMetaTagList Custom Meta Tag list
-     */
-    protected function advMetaTags(&$metaTags, $tsfePage, $sysLanguageId, $customMetaTagList) {
-        $tsfePageId = $tsfePage['uid'];
-
-        $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
-        $storeMeta = $connector->getStore();
-
-        // #################
-        // Adv meta tags (from editor)
-        // #################
-        $advMetaTagList = array();
-        $advMetaTagCondition = array();
-
-        if (!empty($storeMeta['flag']['meta:og:external'])) {
-            // External OpenGraph support
-            $advMetaTagCondition[] = 'tag_name NOT LIKE \'og:%\'';
-
-            // Add external og-tags to adv meta tag list
-            if (!empty($storeMeta['meta:og'])) {
-                $advMetaTagList = array_merge($advMetaTagList, $storeMeta['meta:og']);
-            }
-        }
-
-        if (!empty($advMetaTagCondition)) {
-            $advMetaTagCondition = '( ' . implode(') AND (', $advMetaTagCondition) . ' )';
-        } else {
-            $advMetaTagCondition = '1=1';
-        }
-
-        // Fetch list of meta tags from database
-        $query
-            = 'SELECT tag_name, tag_value
-                    FROM tx_metaseo_metatag
-                   WHERE pid = ' . (int)$tsfePageId . '
-                     AND sys_language_uid = ' . (int)$sysLanguageId . '
-                     AND ' . $advMetaTagCondition;
-        $advMetaTagList = DatabaseUtility::getList($query);
-
-        // Add metadata to tag list
-        foreach ($advMetaTagList as $tagName => $tagValue) {
-            $metaTags['adv.' . $tagName] = '<meta name="' . htmlspecialchars($tagName) . '" content="' . htmlspecialchars($tagValue) . '">';
-        }
-
-        // #################
-        // Custom meta tags (from connector)
-        // #################
-        foreach ($customMetaTagList as $tagName => $tagValue) {
-            $ret['adv.' . $tagName] = '<meta name="' . htmlspecialchars($tagName) . '" content="' . htmlspecialchars($tagValue) . '">';
-        }
-    }
-
-
     /**
      * Init extension support
      */
@@ -600,7 +541,6 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             $this->initExtensionSupportNews();
         }
     }
-
 
     /**
      * Init extension support for "news" extension
@@ -638,6 +578,32 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         }
     }
 
+    /**
+     * Process stdWrap from stdWrap list
+     *
+     * @param    string $key   StdWrap-List key
+     * @param    string $value Value
+     *
+     * @return   string
+     */
+    protected function applyStdWrap($key, $value) {
+        $key .= '.';
+
+        if (empty($this->stdWrapList[$key])) {
+            return $value;
+        }
+
+        return $this->cObj->stdWrap($value, $this->stdWrapList[$key]);
+    }
+
+    /**
+     * Check if page is configured as HTML5
+     *
+     * @return bool
+     */
+    protected function isHtml5() {
+        return ($GLOBALS['TSFE']->config['config']['doctype'] !== 'html5');
+    }
 
     /**
      * Generate a link via TYPO3-Api
@@ -797,6 +763,64 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     }
 
     /**
+     * Advanced meta tags
+     *
+     * @param array   $metaTags          MetaTags
+     * @param array   $tsfePage          TSFE Page
+     * @param integer $sysLanguageId     Sys Language ID
+     * @param array   $customMetaTagList Custom Meta Tag list
+     */
+    protected function advMetaTags(&$metaTags, $tsfePage, $sysLanguageId, $customMetaTagList) {
+        $tsfePageId = $tsfePage['uid'];
+
+        $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
+        $storeMeta = $connector->getStore();
+
+        // #################
+        // Adv meta tags (from editor)
+        // #################
+        $advMetaTagList = array();
+        $advMetaTagCondition = array();
+
+        if (!empty($storeMeta['flag']['meta:og:external'])) {
+            // External OpenGraph support
+            $advMetaTagCondition[] = 'tag_name NOT LIKE \'og:%\'';
+
+            // Add external og-tags to adv meta tag list
+            if (!empty($storeMeta['meta:og'])) {
+                $advMetaTagList = array_merge($advMetaTagList, $storeMeta['meta:og']);
+            }
+        }
+
+        if (!empty($advMetaTagCondition)) {
+            $advMetaTagCondition = '( ' . implode(') AND (', $advMetaTagCondition) . ' )';
+        } else {
+            $advMetaTagCondition = '1=1';
+        }
+
+        // Fetch list of meta tags from database
+        $query
+            = 'SELECT tag_name, tag_value
+                    FROM tx_metaseo_metatag
+                   WHERE pid = ' . (int)$tsfePageId . '
+                     AND sys_language_uid = ' . (int)$sysLanguageId . '
+                     AND ' . $advMetaTagCondition;
+        $advMetaTagList = DatabaseUtility::getList($query);
+
+        // Add metadata to tag list
+        foreach ($advMetaTagList as $tagName => $tagValue) {
+            $metaTags['adv.' . $tagName] = '<meta name="' . htmlspecialchars($tagName) . '" content="' . htmlspecialchars($tagValue) . '">';
+        }
+
+        // #################
+        // Custom meta tags (from connector)
+        // #################
+        foreach ($customMetaTagList as $tagName => $tagValue) {
+            $ret['adv.' . $tagName] = '<meta name="' . htmlspecialchars($tagName) . '" content="' . htmlspecialchars($tagValue) . '">';
+        }
+    }
+
+    /**
      * Process meta tags
      */
     protected function processMetaTags(&$tags) {
@@ -828,32 +852,5 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                 }
             }
         }
-    }
-
-    /**
-     * Process stdWrap from stdWrap list
-     *
-     * @param    string $key   StdWrap-List key
-     * @param    string $value Value
-     *
-     * @return   string
-     */
-    protected function applyStdWrap($key, $value) {
-        $key .= '.';
-
-        if (empty($this->stdWrapList[$key])) {
-            return $value;
-        }
-
-        return $this->cObj->stdWrap($value, $this->stdWrapList[$key]);
-    }
-
-    /**
-     * Check if page is configured as HTML5
-     *
-     * @return bool
-     */
-    protected function isHtml5() {
-        return ($GLOBALS['TSFE']->config['config']['doctype'] !== 'html5');
     }
 }

@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Utility;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,7 +22,9 @@ namespace Metaseo\Metaseo\Utility;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Utility;
 
 /**
  * Root page utility
@@ -40,6 +41,38 @@ class RootPageUtility {
      * @var array
      */
     protected static $domainCache = array();
+
+    /**
+     * Get sitemap index url
+     *
+     * @param  integer $rootPid Root PID
+     *
+     * @return string
+     */
+    public static function getSitemapIndexUrl($rootPid) {
+        return self::getFrontendUrl($rootPid, SitemapUtility::DOKTYPE_SITEMAP_XML);
+    }
+
+    /**
+     * Build a frontend url
+     *
+     * @param integer $rootPid Root Page ID
+     * @param integer $typeNum Type num
+     *
+     * @return string
+     */
+    public static function getFrontendUrl($rootPid, $typeNum) {
+        $domain = self::getDomain($rootPid);
+        if (!empty($domain)) {
+            $domain = 'http://' . $domain . '/';
+        } else {
+            $domain = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+        }
+        // "build", TODO: use typolink to use TYPO3 internals
+        $url = $domain . 'index.php?id=' . (int)$rootPid . '&type=' . (int)$typeNum;
+
+        return $url;
+    }
 
     /**
      * Get domain
@@ -72,38 +105,6 @@ class RootPageUtility {
         self::$domainCache[$rootPid] = $ret;
 
         return $ret;
-    }
-
-    /**
-     * Build a frontend url
-     *
-     * @param integer $rootPid Root Page ID
-     * @param integer $typeNum Type num
-     *
-     * @return string
-     */
-    public static function getFrontendUrl($rootPid, $typeNum) {
-        $domain = self::getDomain($rootPid);
-        if (!empty($domain)) {
-            $domain = 'http://' . $domain . '/';
-        } else {
-            $domain = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-        }
-        // "build", TODO: use typolink to use TYPO3 internals
-        $url = $domain . 'index.php?id=' . (int)$rootPid . '&type=' . (int)$typeNum;
-
-        return $url;
-    }
-
-    /**
-     * Get sitemap index url
-     *
-     * @param  integer $rootPid Root PID
-     *
-     * @return string
-     */
-    public static function getSitemapIndexUrl($rootPid) {
-        return self::getFrontendUrl($rootPid, SitemapUtility::DOKTYPE_SITEMAP_XML);
     }
 
     /**

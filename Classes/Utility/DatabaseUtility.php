@@ -1,11 +1,11 @@
 <?php
-namespace Metaseo\Metaseo\Utility;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
- *  (c) 2005-2014 Markus Blaschke <typo3@markus-blaschke.de> (based on sxFramework)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
+ *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
  *  free software; you can redistribute it and/or modify
@@ -22,7 +22,9 @@ namespace Metaseo\Metaseo\Utility;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Utility;
 
 /**
  * Database utility
@@ -32,27 +34,6 @@ class DatabaseUtility {
     ###########################################################################
     # Query functions
     ###########################################################################
-
-    /**
-     * Get one
-     *
-     * @param  string $query SQL query
-     *
-     * @return mixed
-     */
-    public static function getOne($query) {
-        $ret = null;
-
-        $res = self::query($query);
-        if ($res) {
-            if ($row = self::connection()->sql_fetch_assoc($res)) {
-                $ret = reset($row);
-            }
-            self::free($res);
-        }
-
-        return $ret;
-    }
 
     /**
      * Get row
@@ -73,6 +54,53 @@ class DatabaseUtility {
         }
 
         return $ret;
+    }
+
+    /**
+     * Execute sql query
+     *
+     * @param   string $query SQL query
+     *
+     * @return  resource
+     * @throws  \Exception
+     */
+    public static function query($query) {
+        $res = self::connection()->sql_query($query);
+
+        if (!$res || self::connection()->sql_errno()) {
+            // SQL statement failed
+            $errorMsg = 'SQL Error: ' . self::connection()->sql_error() . ' [errno: ' . self::connection()->sql_errno() . ']';
+
+            if (defined('TYPO3_cliMode')) {
+                throw new \Exception($errorMsg);
+            } else {
+                debug('SQL-QUERY: ' . $query, $errorMsg, __LINE__, __FILE__);
+            }
+
+            $res = null;
+        }
+
+        return $res;
+    }
+
+    /**
+     * Get current database connection
+     *
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    public static function connection() {
+        return $GLOBALS['TYPO3_DB'];
+    }
+
+    /**
+     * Free sql result
+     *
+     * @param resource $res SQL resource
+     */
+    public static function free($res) {
+        if ($res && $res !== true) {
+            self::connection()->sql_free_result($res);
+        }
     }
 
     /**
@@ -201,6 +229,31 @@ class DatabaseUtility {
         return self::getOne($query);
     }
 
+    ###########################################################################
+    # Quote functions
+    ###########################################################################
+
+    /**
+     * Get one
+     *
+     * @param  string $query SQL query
+     *
+     * @return mixed
+     */
+    public static function getOne($query) {
+        $ret = null;
+
+        $res = self::query($query);
+        if ($res) {
+            if ($row = self::connection()->sql_fetch_assoc($res)) {
+                $ret = reset($row);
+            }
+            self::free($res);
+        }
+
+        return $ret;
+    }
+
     /**
      * Exec query (INSERT)
      *
@@ -241,48 +294,6 @@ class DatabaseUtility {
         return $ret;
     }
 
-    ###########################################################################
-    # Quote functions
-    ###########################################################################
-
-
-    /**
-     * Quote value
-     *
-     * @param   string $value Value
-     * @param   string $table Table
-     *
-     * @return  string
-     */
-    public static function quote($value, $table = null) {
-        if ($table === null) {
-            $table = 'Pages';
-        }
-
-        if ($value === null) {
-            return 'NULL';
-        }
-
-        return self::connection()->fullQuoteStr($value, $table);
-    }
-
-    /**
-     * Quote array with values
-     *
-     * @param   array  $valueList Values
-     * @param   string $table     Table
-     *
-     * @return  array
-     */
-    public static function quoteArray($valueList, $table = null) {
-        $ret = array();
-        foreach ($valueList as $k => $v) {
-            $ret[$k] = self::quote($v, $table);
-        }
-
-        return $ret;
-    }
-
     /**
      * Sanitize field for sql usage
      *
@@ -294,6 +305,9 @@ class DatabaseUtility {
         return preg_replace('/[^_a-zA-Z0-9\.]/', '', $field);
     }
 
+    ###########################################################################
+    # Helper functions
+    ###########################################################################
 
     /**
      * Sanitize table for sql usage
@@ -305,10 +319,6 @@ class DatabaseUtility {
     public static function sanitizeSqlTable($table) {
         return preg_replace('/[^_a-zA-Z0-9]/', '', $table);
     }
-
-    ###########################################################################
-    # Helper functions
-    ###########################################################################
 
     /**
      * Add condition to query
@@ -357,6 +367,47 @@ class DatabaseUtility {
     }
 
     /**
+     * Quote array with values
+     *
+     * @param   array  $valueList Values
+     * @param   string $table     Table
+     *
+     * @return  array
+     */
+    public static function quoteArray($valueList, $table = null) {
+        $ret = array();
+        foreach ($valueList as $k => $v) {
+            $ret[$k] = self::quote($v, $table);
+        }
+
+        return $ret;
+    }
+
+    ###########################################################################
+    # SQL warpper functions
+    ###########################################################################
+
+    /**
+     * Quote value
+     *
+     * @param   string $value Value
+     * @param   string $table Table
+     *
+     * @return  string
+     */
+    public static function quote($value, $table = null) {
+        if ($table === null) {
+            $table = 'Pages';
+        }
+
+        if ($value === null) {
+            return 'NULL';
+        }
+
+        return self::connection()->fullQuoteStr($value, $table);
+    }
+
+    /**
      * Create condition WHERE field NOT IN (1,2,3,4)
      *
      * @param  string  $field    SQL field
@@ -396,56 +447,5 @@ class DatabaseUtility {
         }
 
         return $ret;
-    }
-
-    ###########################################################################
-    # SQL warpper functions
-    ###########################################################################
-
-    /**
-     * Get current database connection
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    public static function connection() {
-        return $GLOBALS['TYPO3_DB'];
-    }
-
-    /**
-     * Execute sql query
-     *
-     * @param   string $query SQL query
-     *
-     * @return  resource
-     * @throws  \Exception
-     */
-    public static function query($query) {
-        $res = self::connection()->sql_query($query);
-
-        if (!$res || self::connection()->sql_errno()) {
-            // SQL statement failed
-            $errorMsg = 'SQL Error: ' . self::connection()->sql_error() . ' [errno: ' . self::connection()->sql_errno() . ']';
-
-            if (defined('TYPO3_cliMode')) {
-                throw new \Exception($errorMsg);
-            } else {
-                debug('SQL-QUERY: ' . $query, $errorMsg, __LINE__, __FILE__);
-            }
-
-            $res = null;
-        }
-
-        return $res;
-    }
-
-    /**
-     * Free sql result
-     *
-     * @param resource $res SQL resource
-     */
-    public static function free($res) {
-        if ($res && $res !== true) {
-            self::connection()->sql_free_result($res);
-        }
     }
 }

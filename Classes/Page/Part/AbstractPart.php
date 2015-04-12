@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Page\Part;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,14 +22,16 @@ namespace Metaseo\Metaseo\Page\Part;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Page\Part;
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Abstract part
  */
-abstract class AbstractPart
-{
+abstract class AbstractPart {
     // ########################################################################
     // Attributes
     // ########################################################################
@@ -49,8 +50,7 @@ abstract class AbstractPart
     /**
      * Constuctor
      */
-    public function __construct()
-    {
+    public function __construct() {
         // Init object manager
         $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
     }

@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Backend\Ajax;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,7 +22,10 @@ namespace Metaseo\Metaseo\Backend\Ajax;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+
+namespace Metaseo\Metaseo\Backend\Ajax;
 
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 
@@ -186,85 +188,6 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
 
         return $ret;
     }
-
-    /**
-     * Generate simulated title for one page
-     *
-     * @return    string
-     */
-    protected function executeGenerateSimulatedTitle() {
-        // Init
-        $ret = '';
-
-        $pid = (int)$this->postVar['pid'];
-
-        if (!empty($pid)) {
-            $page = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pid);
-
-            if (!empty($page)) {
-                // Load TYPO3 classes
-                $this->initTsfe($page, null, $page, null);
-
-                $pagetitle = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                    'Metaseo\\Metaseo\\Page\\Part\\PagetitlePart'
-                );
-                $ret = $pagetitle->main($page['title']);
-            }
-        }
-
-        $ret = array(
-            'title' => $ret,
-        );
-
-        return $ret;
-    }
-
-    /**
-     * Generate simulated title for one page
-     *
-     * @return    string
-     */
-    protected function executeGenerateSimulatedUrl() {
-        // Init
-        $ret = '';
-
-        $pid = (int)$this->postVar['pid'];
-
-        if (!empty($pid)) {
-            $page = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pid);
-
-            if (!empty($page)) {
-
-                if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('realurl')) {
-                    // Disable caching for url
-                    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['enableUrlDecodeCache'] = 0;
-                    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['enableUrlEncodeCache'] = 0;
-                    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['disablePathCache'] = 1;
-                }
-
-                $this->initTsfe($page, null, $page, null);
-
-                $ret = $GLOBALS['TSFE']->cObj->typolink_URL(array('parameter' => $page['uid']));
-
-                if (!empty($ret)) {
-                    $ret = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($ret);
-                }
-            }
-        }
-
-        if (!empty($ret)) {
-            $ret = array(
-                'url' => $ret,
-            );
-        } else {
-            $ret = array(
-                'error' => $GLOBALS['LANG']->getLL('message.error.url_generation_failed'),
-            );
-        }
-
-        return $ret;
-    }
-
 
     /**
      * Return default tree
@@ -441,7 +364,6 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         return $depth;
     }
 
-
     /**
      * Return simulated page title
      *
@@ -510,7 +432,6 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         return $ret;
     }
 
-
     /**
      * Init TSFE (for simulated pagetitle)
      *
@@ -556,6 +477,84 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         }
 
         \Metaseo\Metaseo\Utility\FrontendUtility::init($page['uid'], $rootLine, $pageData, $rootlineFull, $sysLanguage);
+    }
+
+    /**
+     * Generate simulated title for one page
+     *
+     * @return    string
+     */
+    protected function executeGenerateSimulatedTitle() {
+        // Init
+        $ret = '';
+
+        $pid = (int)$this->postVar['pid'];
+
+        if (!empty($pid)) {
+            $page = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pid);
+
+            if (!empty($page)) {
+                // Load TYPO3 classes
+                $this->initTsfe($page, null, $page, null);
+
+                $pagetitle = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                    'Metaseo\\Metaseo\\Page\\Part\\PagetitlePart'
+                );
+                $ret = $pagetitle->main($page['title']);
+            }
+        }
+
+        $ret = array(
+            'title' => $ret,
+        );
+
+        return $ret;
+    }
+
+    /**
+     * Generate simulated title for one page
+     *
+     * @return    string
+     */
+    protected function executeGenerateSimulatedUrl() {
+        // Init
+        $ret = '';
+
+        $pid = (int)$this->postVar['pid'];
+
+        if (!empty($pid)) {
+            $page = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pid);
+
+            if (!empty($page)) {
+
+                if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('realurl')) {
+                    // Disable caching for url
+                    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['enableUrlDecodeCache'] = 0;
+                    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['enableUrlEncodeCache'] = 0;
+                    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['disablePathCache'] = 1;
+                }
+
+                $this->initTsfe($page, null, $page, null);
+
+                $ret = $GLOBALS['TSFE']->cObj->typolink_URL(array('parameter' => $page['uid']));
+
+                if (!empty($ret)) {
+                    $ret = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($ret);
+                }
+            }
+        }
+
+        if (!empty($ret)) {
+            $ret = array(
+                'url' => $ret,
+            );
+        } else {
+            $ret = array(
+                'error' => $GLOBALS['LANG']->getLL('message.error.url_generation_failed'),
+            );
+        }
+
+        return $ret;
     }
 
     /**
@@ -651,6 +650,71 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         return $ret;
     }
 
+    /**
+     * Update field in page table
+     *
+     * @param integer      $pid         PID
+     * @param integer|NULL $sysLanguage System language id
+     * @param string       $fieldName   Field name
+     * @param string       $fieldValue  Field value
+     *
+     * @return array
+     */
+    protected function updatePageTableField($pid, $sysLanguage, $fieldName, $fieldValue) {
+        $tableName = 'pages';
+
+        if (!empty($sysLanguage)) {
+            // check if field is in overlay
+            if ($this->isFieldInTcaTable('pages_language_overlay', $fieldName)) {
+                // Field is in pages language overlay
+                $tableName = 'pages_language_overlay';
+            }
+        }
+
+        switch ($tableName) {
+            case 'pages_language_overlay':
+                // Update field in pages overlay (also logs update event and clear cache for this page)
+
+                // check uid of pages language overlay
+                $query
+                    = 'SELECT uid
+                            FROM pages_language_overlay
+                           WHERE pid = ' . (int)$pid . '
+                             AND sys_language_uid = ' . (int)$sysLanguage;
+                $overlayId = DatabaseUtility::getOne($query);
+
+                if (!empty($overlayId)) {
+                    // ################
+                    // UPDATE
+                    // ################
+
+                    $this->tce()->updateDB(
+                        'pages_language_overlay',
+                        (int)$overlayId,
+                        array(
+                            $fieldName => $fieldValue
+                        )
+                    );
+                } else {
+                    // No access
+                    return array(
+                        'error' => $GLOBALS['LANG']->getLL('message.error.no_language_overlay_found'),
+                    );
+                }
+                break;
+
+            case 'pages':
+                // Update field in page (also logs update event and clear cache for this page)
+                $this->tce()->updateDB(
+                    'pages',
+                    (int)$pid,
+                    array(
+                        $fieldName => $fieldValue
+                    )
+                );
+                break;
+        }
+    }
 
     /**
      * Load meta data
@@ -770,71 +834,5 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
                                 tstamp    = VALUES(tstamp),
                                 tag_value = VALUES(tag_value)';
         DatabaseUtility::execInsert($query);
-    }
-
-    /**
-     * Update field in page table
-     *
-     * @param integer      $pid         PID
-     * @param integer|NULL $sysLanguage System language id
-     * @param string       $fieldName   Field name
-     * @param string       $fieldValue  Field value
-     *
-     * @return array
-     */
-    protected function updatePageTableField($pid, $sysLanguage, $fieldName, $fieldValue) {
-        $tableName = 'pages';
-
-        if (!empty($sysLanguage)) {
-            // check if field is in overlay
-            if ($this->isFieldInTcaTable('pages_language_overlay', $fieldName)) {
-                // Field is in pages language overlay
-                $tableName = 'pages_language_overlay';
-            }
-        }
-
-        switch ($tableName) {
-            case 'pages_language_overlay':
-                // Update field in pages overlay (also logs update event and clear cache for this page)
-
-                // check uid of pages language overlay
-                $query
-                    = 'SELECT uid
-                            FROM pages_language_overlay
-                           WHERE pid = ' . (int)$pid . '
-                             AND sys_language_uid = ' . (int)$sysLanguage;
-                $overlayId = DatabaseUtility::getOne($query);
-
-                if (!empty($overlayId)) {
-                    // ################
-                    // UPDATE
-                    // ################
-
-                    $this->tce()->updateDB(
-                        'pages_language_overlay',
-                        (int)$overlayId,
-                        array(
-                            $fieldName => $fieldValue
-                        )
-                    );
-                } else {
-                    // No access
-                    return array(
-                        'error' => $GLOBALS['LANG']->getLL('message.error.no_language_overlay_found'),
-                    );
-                }
-                break;
-
-            case 'pages':
-                // Update field in page (also logs update event and clear cache for this page)
-                $this->tce()->updateDB(
-                    'pages',
-                    (int)$pid,
-                    array(
-                        $fieldName => $fieldValue
-                    )
-                );
-                break;
-        }
     }
 }

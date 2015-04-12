@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Scheduler\Task;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,7 +22,9 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Scheduler\Task;
 
 /**
  * Scheduler Task Sitemap Base
@@ -95,6 +96,19 @@ abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\Abstr
     }
 
     /**
+     * Build sitemap
+     *
+     * @param    integer $rootPageId Root page id
+     * @param    integer $languageId Language id
+     */
+    abstract protected function buildSitemap($rootPageId, $languageId);
+
+
+    // ########################################################################
+    // Abstract Methods
+    // ########################################################################
+
+    /**
      * Generate sitemap link template
      *
      * @param    string $template File link template
@@ -119,17 +133,4 @@ abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\Abstr
 
         return $ret;
     }
-
-
-    // ########################################################################
-    // Abstract Methods
-    // ########################################################################
-
-    /**
-     * Build sitemap
-     *
-     * @param    integer $rootPageId Root page id
-     * @param    integer $languageId Language id
-     */
-    abstract protected function buildSitemap($rootPageId, $languageId);
 }
