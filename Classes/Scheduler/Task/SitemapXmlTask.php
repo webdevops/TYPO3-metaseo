@@ -32,8 +32,7 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  * @subpackage  lib
  * @version     $Id: SitemapXmlTask.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class SitemapXmlTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
-{
+class SitemapXmlTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask {
 
     // ########################################################################
     // Attributes
@@ -55,19 +54,19 @@ class SitemapXmlTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
      *
      * @param   integer $rootPageId Root page id
      * @param   integer $languageId Language id
+     *
      * @return  boolean
      */
-    protected function buildSitemap($rootPageId, $languageId)
-    {
+    protected function buildSitemap($rootPageId, $languageId) {
         if ($languageId !== null) {
             // Language lock enabled
             $rootPageLinkTempalte = 'sitemap-r%s-l%s-p###PAGE###.xml.gz';
             $sitemapIndexFileName = 'index-r%s-l%s.xml.gz';
-            $sitemapPageFileName  = 'sitemap-r%s-l%s-p%s.xml.gz';
+            $sitemapPageFileName = 'sitemap-r%s-l%s-p%s.xml.gz';
         } else {
             $rootPageLinkTempalte = 'sitemap-r%s-p###PAGE###.xml.gz';
             $sitemapIndexFileName = 'index-r%s.xml.gz';
-            $sitemapPageFileName  = 'sitemap-r%s-p%3$s.xml.gz';
+            $sitemapPageFileName = 'sitemap-r%s-p%3$s.xml.gz';
         }
 
         // Init builder
@@ -79,13 +78,13 @@ class SitemapXmlTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
         $pageCount = $generator->pageCount();
 
         // Index
-        $content  = $generator->sitemapIndex();
+        $content = $generator->sitemapIndex();
         $fileName = sprintf($sitemapIndexFileName, $rootPageId, $languageId);
         $this->writeToFile(PATH_site . '/' . $this->sitemapDir . '/' . $fileName, $content);
 
         // Page
         for ($i = 0; $i < $pageCount; $i++) {
-            $content  = $generator->sitemap($i);
+            $content = $generator->sitemap($i);
             $fileName = sprintf($sitemapPageFileName, $rootPageId, $languageId, $i);
             $this->writeToFile(PATH_site . '/' . $this->sitemapDir . '/' . $fileName, $content);
         }

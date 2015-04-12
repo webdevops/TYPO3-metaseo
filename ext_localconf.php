@@ -9,7 +9,7 @@ $confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['metaseo'])
 if (TYPO3_MODE == 'BE') {
     // AJAX
     $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['tx_metaseo_backend_ajax::sitemap'] = 'Metaseo\\Metaseo\\Backend\\Ajax\SitemapAjax->main';
-    $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['tx_metaseo_backend_ajax::page']    = 'Metaseo\\Metaseo\\Backend\\Ajax\PageAjax->main';
+    $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['tx_metaseo_backend_ajax::page'] = 'Metaseo\\Metaseo\\Backend\\Ajax\PageAjax->main';
 
     // Field validations
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals']['tx_metaseo_backend_validation_float'] = 'EXT:metaseo/Classes/Backend/Validator/ValidatorImport.php';

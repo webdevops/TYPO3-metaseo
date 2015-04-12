@@ -32,8 +32,7 @@ namespace Metaseo\Metaseo\Utility;
  * @subpackage  Utility
  * @version     $Id: GeneralUtility.php 81677 2013-11-21 12:32:33Z mblaschke $
  */
-class FrontendUtility
-{
+class FrontendUtility {
 
     /**
      * Init TSFE with all needed classes eg. for backend usage ($GLOBALS['TSFE'])
@@ -44,8 +43,13 @@ class FrontendUtility
      * @param null|array   $rootlineFull Full rootline
      * @param null|integer $sysLanguage  Sys language uid
      */
-    public static function init($pageUid, $rootLine = null, $pageData = null, $rootlineFull = null, $sysLanguage = null)
-    {
+    public static function init(
+        $pageUid,
+        $rootLine = null,
+        $pageData = null,
+        $rootlineFull = null,
+        $sysLanguage = null
+    ) {
         static $cacheTSFE = array();
         static $lastTsSetupPid = null;
 
@@ -73,7 +77,7 @@ class FrontendUtility
         if ($rootLine === null) {
             /** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPageObj */
             $sysPageObj = $objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
-            $rootLine   = $sysPageObj->getRootLine($pageUid);
+            $rootLine = $sysPageObj->getRootLine($pageUid);
 
             // save full rootline, we need it in TSFE
             $rootlineFull = $rootLine;
@@ -95,7 +99,7 @@ class FrontendUtility
                 /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObjRenderer */
                 $cObjRenderer = $objectManager->get('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 
-                /** @var \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService  $TSObj */
+                /** @var \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService $TSObj */
                 $TSObj = $objectManager->get('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
                 $TSObj->tt_track = 0;
                 $TSObj->init();
@@ -128,8 +132,8 @@ class FrontendUtility
             $lastTsSetupPid = $pageUid;
         }
 
-        $GLOBALS['TSFE']->page       = $pageData;
-        $GLOBALS['TSFE']->rootLine   = $rootlineFull;
+        $GLOBALS['TSFE']->page = $pageData;
+        $GLOBALS['TSFE']->rootLine = $rootlineFull;
         $GLOBALS['TSFE']->cObj->data = $pageData;
     }
 
@@ -138,8 +142,7 @@ class FrontendUtility
      *
      * @return null|string
      */
-    public static function getCurrentUrl()
-    {
+    public static function getCurrentUrl() {
         $ret = null;
         if (!empty($GLOBALS['TSFE']->anchorPrefix)) {
             $ret = (string)$GLOBALS['TSFE']->anchorPrefix;
@@ -154,10 +157,10 @@ class FrontendUtility
      * Check current page for blacklisting
      *
      * @param  array $blacklist Blacklist configuration
+     *
      * @return bool
      */
-    public static function checkPageForBlacklist($blacklist)
-    {
+    public static function checkPageForBlacklist($blacklist) {
         return \Metaseo\Metaseo\Utility\GeneralUtility::checkUrlForBlacklisting(
             self::getCurrentUrl(),
             $blacklist

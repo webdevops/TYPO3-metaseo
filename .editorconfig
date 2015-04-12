@@ -5,9 +5,18 @@ indent_size = 4
 [*.php]
 indent_style = space
 
-[{setup,constants}.txt]
-indent_style = tab
+[{setup,constants,ext_conf_template}.txt]
+indent_style = space
+
+[*.json]
+indent_style = space
+indent_size = 2
 
 [*.html]
 indent_style = tab
 
+[*.rst]
+indent_style = tab
+
+[Makefile]
+indent_style = tab

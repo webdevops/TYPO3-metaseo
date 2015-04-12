@@ -32,8 +32,7 @@ namespace Metaseo\Metaseo\Page;
  * @subpackage  Page
  * @version     $Id: RobotsTxtPage.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage
-{
+class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
 
     // ########################################################################
     // Attributes
@@ -47,16 +46,15 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage
     /**
      * Fetch and build robots.txt
      */
-    public function main()
-    {
+    public function main() {
         $settings = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSetting();
 
         // INIT
-        $tsSetup  = $GLOBALS['TSFE']->tmpl->setup;
-        $cObj     = $GLOBALS['TSFE']->cObj;
+        $tsSetup = $GLOBALS['TSFE']->tmpl->setup;
+        $cObj = $GLOBALS['TSFE']->cObj;
         $tsfePage = $GLOBALS['TSFE']->page;
-        $rootPid  = \Metaseo\Metaseo\Utility\GeneralUtility::getRootPid();
-        $ret      = '';
+        $rootPid = \Metaseo\Metaseo\Utility\GeneralUtility::getRootPid();
+        $ret = '';
 
         $tsSetupSeo = null;
         if (!empty($tsSetup['plugin.']['metaseo.']['robotsTxt.'])) {
@@ -78,8 +76,9 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage
         );
 
         // Language lock
-        $sitemapLanguageLock = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', false);
-        $languageId          = \Metaseo\Metaseo\Utility\GeneralUtility::getLanguageId();
+        $sitemapLanguageLock = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock',
+            false);
+        $languageId = \Metaseo\Metaseo\Utility\GeneralUtility::getLanguageId();
 
         // ###############################
         // Fetch robots.txt content
@@ -117,7 +116,7 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage
         // ###############################
         if (!empty($tsSetupSeo['marker.'])) {
             // Init marker list
-            $markerList     = array();
+            $markerList = array();
             $markerConfList = array();
 
             foreach ($tsSetupSeo['marker.'] as $name => $data) {

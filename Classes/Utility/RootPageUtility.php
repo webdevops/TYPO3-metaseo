@@ -50,7 +50,8 @@ class RootPageUtility {
     /**
      * Get domain
      *
-     * @param   integer $rootPid    Root PID
+     * @param   integer $rootPid Root PID
+     *
      * @return  null|string
      */
     public static function getDomain($rootPid) {
@@ -60,9 +61,10 @@ class RootPageUtility {
         }
 
         // Fetch domain name
-        $query = 'SELECT domainName
+        $query
+            = 'SELECT domainName
                     FROM sys_domain
-                   WHERE pid = ' . (int)$rootPid.'
+                   WHERE pid = ' . (int)$rootPid . '
                      AND hidden = 0
                 ORDER BY forced DESC,
                          sorting
@@ -83,40 +85,41 @@ class RootPageUtility {
      *
      * @param integer $rootPid Root Page ID
      * @param integer $typeNum Type num
+     *
      * @return string
      */
     public static function getFrontendUrl($rootPid, $typeNum) {
         $domain = self::getDomain($rootPid);
-        if (!empty($domain) ) {
+        if (!empty($domain)) {
             $domain = 'http://' . $domain . '/';
         } else {
             $domain = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
         }
         // "build", TODO: use typolink to use TYPO3 internals
         $url = $domain . 'index.php?id=' . (int)$rootPid . '&type=' . (int)$typeNum;
+
         return $url;
     }
 
     /**
      * Get sitemap index url
      *
-     * @param  integer   $rootPid    Root PID
+     * @param  integer $rootPid Root PID
+     *
      * @return string
      */
-    public static function getSitemapIndexUrl($rootPid)
-    {
+    public static function getSitemapIndexUrl($rootPid) {
         return self::getFrontendUrl($rootPid, SitemapUtility::DOKTYPE_SITEMAP_XML);
     }
 
     /**
      * Get robots.txt url
      *
-     * @param  integer   $rootPid    Root PID
+     * @param  integer $rootPid Root PID
+     *
      * @return string
      */
-    public static function getRobotsTxtUrl($rootPid)
-    {
+    public static function getRobotsTxtUrl($rootPid) {
         return self::getFrontendUrl($rootPid, SitemapUtility::DOKTYPE_ROBOTS_TXT);
     }
-
 }

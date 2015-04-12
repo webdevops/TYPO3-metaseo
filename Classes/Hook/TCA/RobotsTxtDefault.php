@@ -60,6 +60,7 @@ class RobotsTxtDefault
      * Render default Robots.txt from TypoScript Setup
      *
      * @param  array $data TCE Information array
+     *
      * @return string
      */
     public function main($data)
@@ -69,13 +70,13 @@ class RobotsTxtDefault
         // ############################
 
         /** @var \TYPO3\CMS\Extbase\Object\ObjectManager objectManager */
-        $this->objectManager        = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 
         /** @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager configurationManager */
         $this->configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
 
         /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer cObj */
-        $this->cObj                 = $this->objectManager->get('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+        $this->cObj = $this->objectManager->get('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 
         // ############################
         // Init TSFE
@@ -103,11 +104,13 @@ class RobotsTxtDefault
         // ############################
 
         // Fetch TypoScript setup
-        $tsSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::CONFIGURATION_TYPE_FULL_TYPOSCRIPT, 'metaseo', 'plugin');
+        $tsSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::CONFIGURATION_TYPE_FULL_TYPOSCRIPT,
+            'metaseo', 'plugin');
 
         $content = '';
         if (!empty($tsSetup['plugin.']['metaseo.']['robotsTxt.'])) {
-            $content = $this->cObj->cObjGetSingle($tsSetup['plugin.']['metaseo.']['robotsTxt.']['default'], $tsSetup['plugin.']['metaseo.']['robotsTxt.']['default.']);
+            $content = $this->cObj->cObjGetSingle($tsSetup['plugin.']['metaseo.']['robotsTxt.']['default'],
+                $tsSetup['plugin.']['metaseo.']['robotsTxt.']['default.']);
         }
 
         $content = htmlspecialchars($content);

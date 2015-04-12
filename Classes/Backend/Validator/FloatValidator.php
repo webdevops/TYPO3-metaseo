@@ -64,9 +64,10 @@ return ret;
     /**
      * Validate number on serverside
      *
-     * @param    string $value    Value
-     * @param    mixed $is_in    Is in value (config)
-     * @param    mixed $set    Set
+     * @param    string $value Value
+     * @param    mixed  $is_in Is in value (config)
+     * @param    mixed  $set   Set
+     *
      * @return    float
      */
     public function evaluateFieldValue($value, $is_in, &$set)

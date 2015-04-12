@@ -32,20 +32,19 @@ namespace Metaseo\Metaseo\Hook\Extension;
  * @subpackage  lib
  * @version     $Id: TtnewsExtension.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class TtnewsExtension
-{
+class TtnewsExtension {
 
     /**
      * Extra item marker hook for metatag fetching
      *
-     * @param   array  $markerArray  Marker array
-     * @param   array  $row          Current tt_news row
-     * @param   array  $lConf        Local configuration
-     * @param   object $ttnewsObj    Pi-object from tt_news
+     * @param   array  $markerArray Marker array
+     * @param   array  $row         Current tt_news row
+     * @param   array  $lConf       Local configuration
+     * @param   object $ttnewsObj   Pi-object from tt_news
+     *
      * @return  array                Marker array (not changed)
      */
-    public function extraItemMarkerProcessor($markerArray, $row, $lConf, $ttnewsObj)
-    {
+    public function extraItemMarkerProcessor($markerArray, $row, $lConf, $ttnewsObj) {
         $theCode = (string)strtoupper(trim($ttnewsObj->theCode));
 
         $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Metaseo\\Metaseo\\Connector');
@@ -88,3 +87,5 @@ class TtnewsExtension
         return $markerArray;
     }
 }
+
+?>

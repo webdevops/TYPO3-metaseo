@@ -32,8 +32,7 @@ namespace Metaseo\Metaseo\Page;
  * @subpackage  Page
  * @version     $Id: class.robots_txt.php 62700 2012-05-22 15:53:22Z mblaschke $
  */
-abstract class AbstractPage
-{
+abstract class AbstractPage {
     // ########################################################################
     // Attributes
     // ########################################################################
@@ -52,8 +51,7 @@ abstract class AbstractPage
     /**
      * Constuctor
      */
-    public function __construct()
-    {
+    public function __construct() {
         // Init object manager
         $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
     }
@@ -68,10 +66,9 @@ abstract class AbstractPage
     /**
      * Show error
      *
-     * @param    string $msg            Message
+     * @param    string $msg Message
      */
-    protected function showError($msg = null)
-    {
+    protected function showError($msg = null) {
         if ($msg === null) {
             $msg = 'Sitemap is not available, please check your configuration';
         }

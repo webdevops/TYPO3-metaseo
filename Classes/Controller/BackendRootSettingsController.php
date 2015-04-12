@@ -33,8 +33,7 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  * @package     TYPO3
  * @subpackage  metaseo
  */
-class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule
-{
+class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule {
     // ########################################################################
     // Attributes
     // ########################################################################
@@ -46,14 +45,13 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
     /**
      * Main action
      */
-    public function mainAction()
-    {
+    public function mainAction() {
         // #################
         // Root page list
         // #################
 
-        $rootPageList   = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
-        $rootIdList     = array_keys($rootPageList);
+        $rootPageList = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
+        $rootIdList = array_keys($rootPageList);
 
         $rootPidCondition = null;
         if (!empty($rootIdList)) {
@@ -67,7 +65,8 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
         // #################
 
         // check which root lages have no root settings
-        $query = 'SELECT p.uid
+        $query
+            = 'SELECT p.uid
                     FROM pages p
                          LEFT JOIN tx_metaseo_setting_root seosr
                               ON seosr.pid = p.uid
@@ -76,7 +75,8 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
                       AND seosr.uid IS NULL';
         $uidList = DatabaseUtility::getCol($query);
         foreach ($uidList as $tmpUid) {
-            $query = 'INSERT INTO tx_metaseo_setting_root (pid, tstamp, crdate, cruser_id)
+            $query
+                = 'INSERT INTO tx_metaseo_setting_root (pid, tstamp, crdate, cruser_id)
                             VALUES (' . (int)$tmpUid . ',
                                     ' . (int)time() . ',
                                     ' . (int)time() . ',
@@ -84,14 +84,15 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
             DatabaseUtility::execInsert($query);
         }
 
-        $rootSettingList  = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageSettingList();
+        $rootSettingList = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageSettingList();
 
         // #################
         // Domain list
         // ##################
 
         // Fetch domain name
-        $query = 'SELECT uid,
+        $query
+            = 'SELECT uid,
                          pid,
                          domainName,
                          forced
@@ -102,7 +103,7 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
 
         $domainList = array();
         foreach ($rowList as $row) {
-            $domainList[ $row['pid'] ][ $row['uid'] ] = $row;
+            $domainList[$row['pid']][$row['uid']] = $row;
         }
 
         // #################
@@ -124,7 +125,8 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
             }
 
             // Settings available
-            $page['settingsLink'] = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_metaseo_setting_root][' . $rootSettingList[$pageId]['uid'] . ']=edit', $this->doc->backPath);
+            $page['settingsLink'] = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_metaseo_setting_root][' . $rootSettingList[$pageId]['uid'] . ']=edit',
+                $this->doc->backPath);
         }
         unset($page);
 
@@ -146,9 +148,9 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
         $this->template = $this->objectManager->get('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
         $pageRenderer = $this->template->getPageRenderer();
 
-        $basePathJs  = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript';
+        $basePathJs = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript';
         $basePathCss = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/Css';
-        $pageRenderer->addCssFile($basePathCss.'/Default.css');
+        $pageRenderer->addCssFile($basePathCss . '/Default.css');
 
         $this->view->assign('RootPageList', $rootPageList);
     }

@@ -38,8 +38,7 @@ use \TYPO3\CMS\Frontend\Page\PageRepository;
  * @subpackage  lib
  * @version     $Id: SitemapIndexHook.php 84520 2014-03-28 10:33:24Z mblaschke $
  */
-class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface
-{
+class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
 
     // ########################################################################
     // Attributes
@@ -89,16 +88,14 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->initConfiguration();
     }
 
     /**
      * Init configuration
      */
-    protected function initConfiguration()
-    {
+    protected function initConfiguration() {
         // Get configuration
         if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.'])) {
             $this->conf = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.'];
@@ -133,8 +130,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Add Page to sitemap table
      */
-    public function addPageToSitemapIndex()
-    {
+    public function addPageToSitemapIndex() {
         // check if sitemap is enabled in root
         if (!GeneralUtility::getRootSettingValue('is_sitemap', true)
             || !GeneralUtility::getRootSettingValue('is_sitemap_page_indexer', true)
@@ -213,11 +209,11 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Process/Clear link url
      *
-     * @param   string  $linkUrl    Link url
+     * @param   string $linkUrl Link url
+     *
      * @return  string
      */
-    protected static function processLinkUrl($linkUrl)
-    {
+    protected static function processLinkUrl($linkUrl) {
         static $absRefPrefix = null;
         static $absRefPrefixLength = 0;
         $ret = $linkUrl;
@@ -225,7 +221,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface
         // Fetch abs ref prefix if available/set
         if ($absRefPrefix === null) {
             if (!empty($GLOBALS['TSFE']->tmpl->setup['config.']['absRefPrefix'])) {
-                $absRefPrefix       = $GLOBALS['TSFE']->tmpl->setup['config.']['absRefPrefix'];
+                $absRefPrefix = $GLOBALS['TSFE']->tmpl->setup['config.']['absRefPrefix'];
                 $absRefPrefixLength = strlen($absRefPrefix);
             } else {
                 $absRefPrefix = false;
@@ -247,15 +243,15 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Hook: Index Page Content
      *
-     * @param    object $pObj    Object
+     * @param    object $pObj Object
      */
-    public function hook_indexContent(&$pObj)
-    {
+    public function hook_indexContent(&$pObj) {
         $this->addPageToSitemapIndex();
 
         $possibility = (int)GeneralUtility::getExtConf('sitemap_clearCachePossibility', 0);
 
         if ($possibility > 0) {
+
             $clearCacheChance = ceil(mt_rand(0, $possibility));
             if ($clearCacheChance == 1) {
                 \Metaseo\Metaseo\Utility\SitemapUtility::expire();
@@ -267,11 +263,11 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Hook: Link Parser
      *
-     * @param   object          $pObj    Object
+     * @param   object $pObj Object
+     *
      * @return  boolean|null
      */
-    public function hook_linkParse(&$pObj)
-    {
+    public function hook_linkParse(&$pObj) {
         // check if sitemap is enabled in root
         if (!GeneralUtility::getRootSettingValue('is_sitemap', true)
             || !GeneralUtility::getRootSettingValue('is_sitemap_typolink_indexer', true)
@@ -295,9 +291,9 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface
 
         // Init link informations
         $linkConf = $pObj['conf'];
-        $linkUrl  = $pObj['finalTagParts']['url'];
+        $linkUrl = $pObj['finalTagParts']['url'];
         list($linkPageUid, $linkType) = $this->parseLinkConf($pObj);
-        $linkUrl  = $this->processLinkUrl($linkUrl);
+        $linkUrl = $this->processLinkUrl($linkUrl);
 
         if ($linkType === null || empty($linkPageUid)) {
             // no valid link
@@ -423,11 +419,11 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface
      * Parse uid and type from generated link (from config array)
      *
      * @param  array $conf Generated Link config array
+     *
      * @return array
      */
-    protected function parseLinkConf($conf)
-    {
-        $uid  = null;
+    protected function parseLinkConf($conf) {
+        $uid = null;
         $type = null;
 
         // Check link type
@@ -455,7 +451,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface
                 if ($this->checkIfFileIsWhitelisted($fileUrl)) {
                     // File will be registered from the root page
                     // to prevent duplicate urls
-                    $uid  = GeneralUtility::getRootPid();
+                    $uid = GeneralUtility::getRootPid();
                     $type = SitemapUtility::SITEMAP_TYPE_FILE;
                 }
                 break;
@@ -470,11 +466,11 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface
      * Configuration specified in
      * plugin.metaseo.sitemap.index.fileExtension
      *
-     * @param   string  $url    Url to file
+     * @param   string $url Url to file
+     *
      * @return  boolean
      */
-    protected function checkIfFileIsWhitelisted($url)
-    {
+    protected function checkIfFileIsWhitelisted($url) {
         $ret = false;
 
         // check for valid url
@@ -517,8 +513,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @return bool
      */
-    protected function checkIfCurrentPageIsIndexable()
-    {
+    protected function checkIfCurrentPageIsIndexable() {
         // check caching status
         if ($this->pageIndexFlag !== null) {
             return $this->pageIndexFlag;

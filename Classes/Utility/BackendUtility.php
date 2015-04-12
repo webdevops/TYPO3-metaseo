@@ -34,20 +34,19 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  * @subpackage  lib
  * @version     $Id: BackendUtility.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class BackendUtility
-{
+class BackendUtility {
 
     /**
      * Fetch list of root pages (is_siteroot) in TYPO3 (cached)
      *
      * @return  array
      */
-    public static function getRootPageList()
-    {
+    public static function getRootPageList() {
         static $cache = null;
 
         if ($cache === null) {
-            $query = 'SELECT uid,
+            $query
+                = 'SELECT uid,
                              pid,
                              title
                         FROM pages
@@ -64,12 +63,12 @@ class BackendUtility
      *
      * @return  array
      */
-    public static function getRootPageSettingList()
-    {
+    public static function getRootPageSettingList() {
         static $cache = null;
 
         if ($cache === null) {
-            $query = 'SELECT seosr.*
+            $query
+                = 'SELECT seosr.*
                         FROM tx_metaseo_setting_root seosr
                              INNER JOIN pages p
                                  ON p.uid = seosr.pid

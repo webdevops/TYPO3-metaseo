@@ -35,29 +35,29 @@ use \TYPO3\CMS\Frontend\Page\PageRepository;
  * @subpackage  lib
  * @version     $Id: SitemapUtility.php 81677 2013-11-21 12:32:33Z mblaschke $
  */
-class SitemapUtility
-{
+class SitemapUtility {
 
-    const SITEMAP_TYPE_PAGE = 0;
-    const SITEMAP_TYPE_FILE = 1;
+    CONST SITEMAP_TYPE_PAGE = 0;
+    CONST SITEMAP_TYPE_FILE = 1;
 
-    const DOKTYPE_SITEMAP_TXT    = 841131; // sitemap.txt     (EXT:metaseo), apply changes in Configuration/TypoScript/setup.txt
-    const DOKTYPE_SITEMAP_XML    = 841132; // sitemap.xml     (EXT:metaseo)
-    const DOKTYPE_ROBOTS_TXT     = 841133; // robots.txt      (EXT:metaseo)
+    CONST DOKTYPE_SITEMAP_TXT = 841131; // sitemap.txt     (EXT:metaseo), apply changes in Configuration/TypoScript/setup.txt
+    CONST DOKTYPE_SITEMAP_XML = 841132; // sitemap.xml     (EXT:metaseo)
+    CONST DOKTYPE_ROBOTS_TXT  = 841133; // robots.txt      (EXT:metaseo)
 
     // ########################################################################
     // Attributes
     // ########################################################################
 
-    protected static $typeBlacklist = array(
-        PageRepository::DOKTYPE_BE_USER_SECTION,      // Backend Section (TYPO3 CMS)
-        PageRepository::DOKTYPE_SPACER,               // Menu separator  (TYPO3 CMS)
-        PageRepository::DOKTYPE_SYSFOLDER,            // Folder          (TYPO3 CMS)
-        PageRepository::DOKTYPE_RECYCLER,             // Recycler        (TYPO3 CMS)
-        self::DOKTYPE_SITEMAP_TXT,                    // sitemap.txt     (EXT:metaseo)
-        self::DOKTYPE_SITEMAP_XML,                    // sitemap.xml     (EXT:metaseo)
-        self::DOKTYPE_ROBOTS_TXT,                     // robots.txt      (EXT:metaseo)
-    );
+    protected static $typeBlacklist
+        = array(
+            PageRepository::DOKTYPE_BE_USER_SECTION,      // Backend Section (TYPO3 CMS)
+            PageRepository::DOKTYPE_SPACER,               // Menu separator  (TYPO3 CMS)
+            PageRepository::DOKTYPE_SYSFOLDER,            // Folder          (TYPO3 CMS)
+            PageRepository::DOKTYPE_RECYCLER,             // Recycler        (TYPO3 CMS)
+            self::DOKTYPE_SITEMAP_TXT,                    // sitemap.txt     (EXT:metaseo)
+            self::DOKTYPE_SITEMAP_XML,                    // sitemap.xml     (EXT:metaseo)
+            self::DOKTYPE_ROBOTS_TXT,                     // robots.txt      (EXT:metaseo)
+        );
 
 
     // ########################################################################
@@ -69,18 +69,16 @@ class SitemapUtility
      *
      * @return array
      */
-    public static function getPageTypeBlacklist()
-    {
+    public static function getPageTypeBlacklist() {
         return self::$typeBlacklist;
     }
 
     /**
      * Insert into sitemap
      *
-     * @param   array $pageData   Page informations
+     * @param   array $pageData Page informations
      */
-    public static function index($pageData)
-    {
+    public static function index($pageData) {
         static $cache = array();
 
         // do not index empty urls
@@ -122,7 +120,8 @@ class SitemapUtility
 
             // TODO: INSERT INTO ... ON DUPLICATE KEY UPDATE?
 
-            $query = 'SELECT uid
+            $query
+                = 'SELECT uid
                         FROM tx_metaseo_sitemap
                        WHERE page_uid      = ' . $pageData['page_uid'] . '
                          AND page_language = ' . $pageData['page_language'] . '
@@ -131,7 +130,8 @@ class SitemapUtility
             $sitemapUid = DatabaseUtility::getOne($query);
 
             if (!empty($sitemapUid)) {
-                $query = 'UPDATE tx_metaseo_sitemap
+                $query
+                    = 'UPDATE tx_metaseo_sitemap
                              SET tstamp                = ' . $pageData['tstamp'] . ',
                                  page_rootpid          = ' . $pageData['page_rootpid'] . ',
                                  page_language         = ' . $pageData['page_language'] . ',
@@ -160,13 +160,13 @@ class SitemapUtility
     /**
      * Clear outdated and invalid pages from sitemap table
      */
-    public static function expire()
-    {
+    public static function expire() {
         // #####################
         // Delete expired entries
         // #####################
 
-        $query = 'DELETE FROM tx_metaseo_sitemap
+        $query
+            = 'DELETE FROM tx_metaseo_sitemap
                         WHERE is_blacklisted = 0
                           AND expire <= ' . (int)time();
         DatabaseUtility::exec($query);
@@ -175,7 +175,8 @@ class SitemapUtility
         //  Deleted or
         // excluded pages
         // #####################
-        $query = 'SELECT ts.uid
+        $query
+            = 'SELECT ts.uid
                     FROM tx_metaseo_sitemap ts
                          LEFT JOIN pages p
                             ON p.uid = ts.page_uid
@@ -188,7 +189,8 @@ class SitemapUtility
 
         // delete pages
         if (!empty($deletedSitemapPages)) {
-            $query = 'DELETE FROM tx_metaseo_sitemap
+            $query
+                = 'DELETE FROM tx_metaseo_sitemap
                             WHERE uid IN (' . implode(',', $deletedSitemapPages) . ')
                               AND is_blacklisted = 0';
             DatabaseUtility::exec($query);
@@ -198,18 +200,19 @@ class SitemapUtility
     /**
      * Return list of sitemap pages
      *
-     * @param   integer $rootPid        Root page id of tree
-     * @param   integer $languageId     Limit to language id
+     * @param   integer $rootPid    Root page id of tree
+     * @param   integer $languageId Limit to language id
+     *
      * @return  boolean|array
      */
-    public static function getList($rootPid, $languageId = null)
-    {
+    public static function getList($rootPid, $languageId = null) {
         $sitemapList = array();
-        $pageList    = array();
+        $pageList = array();
 
-        $typo3Pids     = array();
+        $typo3Pids = array();
 
-        $query = 'SELECT ts.*
+        $query
+            = 'SELECT ts.*
                     FROM tx_metaseo_sitemap ts
                             INNER JOIN pages p
                               ON	p.uid = ts.page_uid
@@ -223,7 +226,8 @@ class SitemapUtility
         if ($languageId !== null) {
             $query .= ' AND ts.page_language = ' . (int)$languageId;
         }
-        $query .= ' ORDER BY
+        $query
+            .= ' ORDER BY
                         ts.page_depth ASC,
                         p.pid ASC,
                         p.sorting ASC';
@@ -236,12 +240,13 @@ class SitemapUtility
         foreach ($resultRows as $row) {
             $sitemapList[] = $row;
 
-            $sitemapPageId             = $row['page_uid'];
+            $sitemapPageId = $row['page_uid'];
             $typo3Pids[$sitemapPageId] = (int)$sitemapPageId;
         }
 
         if (!empty($typo3Pids)) {
-            $query = 'SELECT *
+            $query
+                = 'SELECT *
                         FROM pages
                        WHERE ' . DatabaseUtility::conditionIn('uid', $typo3Pids);
             $pageList = DatabaseUtility::getAllWithIndex($query, 'uid');

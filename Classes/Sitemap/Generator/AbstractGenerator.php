@@ -32,8 +32,7 @@ namespace Metaseo\Metaseo\Sitemap\Generator;
  * @subpackage  lib
  * @version     $Id: AbstractGenerator.php 81677 2013-11-21 12:32:33Z mblaschke $
  */
-abstract class AbstractGenerator
-{
+abstract class AbstractGenerator {
     // ########################################################################
     // Attributes
     // ########################################################################
@@ -78,15 +77,16 @@ abstract class AbstractGenerator
      *
      * @var array
      */
-    public $pageChangeFrequency = array(
-        1 => 'always',
-        2 => 'hourly',
-        3 => 'daily',
-        4 => 'weekly',
-        5 => 'monthly',
-        6 => 'yearly',
-        7 => 'never',
-    );
+    public $pageChangeFrequency
+        = array(
+            1 => 'always',
+            2 => 'hourly',
+            3 => 'daily',
+            4 => 'weekly',
+            5 => 'monthly',
+            6 => 'yearly',
+            7 => 'never',
+        );
 
     /**
      * Link template for sitemap index
@@ -104,8 +104,7 @@ abstract class AbstractGenerator
     /**
      * Fetch sitemap information and generate sitemap
      */
-    public function __construct()
-    {
+    public function __construct() {
         // INIT
         $this->rootPid = \Metaseo\Metaseo\Utility\GeneralUtility::getRootPid();
         $sysLanguageId = null;
@@ -121,7 +120,7 @@ abstract class AbstractGenerator
         $list = \Metaseo\Metaseo\Utility\SitemapUtility::getList($this->rootPid, $sysLanguageId);
 
         $this->sitemapPages = $list['tx_metaseo_sitemap'];
-        $this->pages        = $list['pages'];
+        $this->pages = $list['pages'];
 
         // Call hook
         \Metaseo\Metaseo\Utility\GeneralUtility::callHook('sitemap-setup', $this);
@@ -132,8 +131,7 @@ abstract class AbstractGenerator
      *
      * @return integer
      */
-    public function pageCount()
-    {
+    public function pageCount() {
         $pageLimit = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('sitemap_page_limit', null);
 
         if (empty($pageLimit)) {
@@ -160,7 +158,8 @@ abstract class AbstractGenerator
     /**
      * Create sitemap (for page)
      *
-     * @param   integer $page   Page
+     * @param   integer $page Page
+     *
      * @return  string
      */
     abstract public function sitemap($page = null);

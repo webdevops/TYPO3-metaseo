@@ -31,8 +31,7 @@ namespace Metaseo\Metaseo\Backend\Module;
  * @package     TYPO3
  * @subpackage  metaseo
  */
-abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
-{
+abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
     // ########################################################################
     // Attributes
     // ########################################################################
@@ -52,12 +51,12 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
     /**
      * Translate key
      *
-     * @param   string      $key        Translation key
-     * @param   NULL|array  $arguments  Arguments (vsprintf)
+     * @param   string     $key       Translation key
+     * @param   NULL|array $arguments Arguments (vsprintf)
+     *
      * @return  NULL|string
      */
-    protected function translate($key, $arguments = null)
-    {
+    protected function translate($key, $arguments = null) {
         $ret = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $this->extensionName, $arguments);
 
         // Not translated handling
@@ -71,11 +70,11 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
     /**
      * Translate list
      *
-     * @param   array $list   Translation keys
+     * @param   array $list Translation keys
+     *
      * @return  array
      */
-    protected function translateList($list)
-    {
+    protected function translateList($list) {
         unset($token);
         foreach ($list as &$token) {
             if (!empty($token)) {
@@ -94,23 +93,24 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
     /**
      * Create session token
      *
-     * @param    string $formName    Form name/Session token name
+     * @param    string $formName Form name/Session token name
+     *
      * @return    string
      */
-    protected function sessionToken($formName)
-    {
+    protected function sessionToken($formName) {
         $token = $this->formProtection->generateToken($formName);
+
         return $token;
     }
 
     /**
      * Ajax controller url
      *
-     * @param   string  $ajaxCall Ajax Call
+     * @param   string $ajaxCall Ajax Call
+     *
      * @return  string
      */
-    protected function ajaxControllerUrl($ajaxCall)
-    {
+    protected function ajaxControllerUrl($ajaxCall) {
         return $this->doc->backPath . 'ajax.php?ajaxID=' . urlencode($ajaxCall);
     }
 }

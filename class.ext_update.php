@@ -32,8 +32,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
  * @package    TYPO3
  * @subpackage metaseo
  */
-class ext_update
-{
+class ext_update {
 
     // ########################################################################
     // Attributs
@@ -62,8 +61,7 @@ class ext_update
      *
      * @return string
      */
-    public function main()
-    {
+    public function main() {
         $this->processUpdates();
 
         $ret = $this->generateOutput();
@@ -78,8 +76,7 @@ class ext_update
      * @return bool
      * @todo find a better way to determine if update is needed or not.
      */
-    public function access()
-    {
+    public function access() {
         return true;
     }
 
@@ -87,8 +84,7 @@ class ext_update
     /**
      * The actual update function. Add your update task in here.
      */
-    protected function processUpdates()
-    {
+    protected function processUpdates() {
         //$this->processUpdateTypoScriptIncludes();
         //$this->processUpdateScheduler();
 
@@ -98,8 +94,8 @@ class ext_update
     /**
      * Clear cache
      */
-    protected function processClearCache()
-    {
+    protected function processClearCache() {
+
         if ($this->clearCache) {
 
             // Init TCE
@@ -108,9 +104,9 @@ class ext_update
             $TCE->clear_cacheCmd('all');
 
             // Add msg
-            $msgTitle  = 'Clearing TYPO3 cache';
+            $msgTitle = 'Clearing TYPO3 cache';
             $msgStatus = FlashMessage::INFO;
-            $msgText   = 'Cleared all caches due migration';
+            $msgText = 'Cleared all caches due migration';
 
             $this->addMessage($msgStatus, $msgTitle, $msgText);
         }
@@ -119,16 +115,15 @@ class ext_update
     /**
      * Add message
      *
-     * @param integer $status   Status code
-     * @param string  $title    Title
-     * @param string  $message  Message
+     * @param integer $status  Status code
+     * @param string  $title   Title
+     * @param string  $message Message
      */
-    protected function addMessage($status, $title, $message)
-    {
+    protected function addMessage($status, $title, $message) {
         if (!empty($message) && is_array($message)) {
             $liStyle = 'style="margin-bottom: 0;"';
 
-            $message = '<ul><li '.$liStyle.'>'.implode('</li><li '.$liStyle.'>', $message).'</li></ul>';
+            $message = '<ul><li ' . $liStyle . '>' . implode('</li><li ' . $liStyle . '>', $message) . '</li></ul>';
         }
 
         $this->messageList[] = array($status, $title, $message);
@@ -137,19 +132,19 @@ class ext_update
     /**
      * Generate message title from database row (using title and uid)
      *
-     * @param   array   $row    Database row
+     * @param   array $row Database row
+     *
      * @return  string
      */
-    protected function messageTitleFromRow($row)
-    {
+    protected function messageTitleFromRow($row) {
         $ret = array();
 
         if (!empty($row['title'])) {
-            $ret[] = '"'.htmlspecialchars($row['title']).'"';
+            $ret[] = '"' . htmlspecialchars($row['title']) . '"';
         }
 
         if (!empty($row['uid'])) {
-            $ret[] = '[UID #'.htmlspecialchars($row['uid']).']';
+            $ret[] = '[UID #' . htmlspecialchars($row['uid']) . ']';
         }
 
         return implode(' ', $ret);
@@ -160,8 +155,7 @@ class ext_update
      *
      * @return string
      */
-    protected function generateOutput()
-    {
+    protected function generateOutput() {
         $output = '';
 
         foreach ($this->messageList as $message) {

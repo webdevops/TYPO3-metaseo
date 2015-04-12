@@ -33,16 +33,14 @@ use Metaseo\Metaseo\Utility\RootPageUtility;
  * @package     TYPO3
  * @subpackage  metaseo_tqseo_migration
  */
-class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController
-{
+class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController {
 
     /**
      * Get whole list of sitemap entries
      *
      * @return  string
      */
-    public function garbageCollectorCommand()
-    {
+    public function garbageCollectorCommand() {
         // Expire sitemap entries
         \Metaseo\Metaseo\Utility\SitemapUtility::expire();
 
@@ -54,16 +52,17 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
      * Clear sitemap for one root page
      *
      * @param   string $rootPageId Site root page id or domain
+     *
      * @return  string
      */
-    public function clearSitemapCommand($rootPageId)
-    {
+    public function clearSitemapCommand($rootPageId) {
         $rootPageId = $this->getRootPageIdFromId($rootPageId);
 
         if ($rootPageId !== null) {
             $domain = RootPageUtility::getDomain($rootPageId);
 
-            $query = 'DELETE FROM tx_metaseo_sitemap
+            $query
+                = 'DELETE FROM tx_metaseo_sitemap
                        WHERE page_rootpid = ' . DatabaseUtility::quote($rootPageId, 'tx_metaseo_sitemap') . '
                          AND is_blacklisted = 0';
             DatabaseUtility::exec($query);
@@ -79,16 +78,17 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
      * Get whole list of sitemap entries
      *
      * @param   string $rootPageId Site root page id or domain
+     *
      * @return  string
      */
-    public function sitemapCommand($rootPageId)
-    {
+    public function sitemapCommand($rootPageId) {
         $rootPageId = $this->getRootPageIdFromId($rootPageId);
 
         if ($rootPageId !== null) {
             $domain = RootPageUtility::getDomain($rootPageId);
 
-            $query = 'SELECT page_url
+            $query
+                = 'SELECT page_url
                         FROM tx_metaseo_sitemap
                        WHERE page_rootpid = ' . DatabaseUtility::quote($rootPageId, 'tx_metaseo_sitemap') . '
                          AND is_blacklisted = 0';
@@ -112,17 +112,18 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
      * Detect root page from id (either PID or sys_domain)
      *
      * @param  $var
+     *
      * @return int|mixed|null
      */
-    protected function getRootPageIdFromId($var)
-    {
+    protected function getRootPageIdFromId($var) {
         $ret = null;
 
         if (is_numeric($var)) {
             // TODO: check if var is a valid root page
             $ret = (int)$var;
         } else {
-            $query = 'SELECT pid
+            $query
+                = 'SELECT pid
                         FROM sys_domain
                        WHERE domainName = ' . DatabaseUtility::quote($var, 'sys_domain') . '
                          AND hidden = 0';

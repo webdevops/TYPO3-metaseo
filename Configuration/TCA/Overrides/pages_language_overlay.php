@@ -55,9 +55,9 @@ $tempColumns = array(
             'max'      => '255',
             'checkbox' => '',
             'eval'     => 'trim',
-            'wizards'  => array(
+            'wizards'  => Array(
                 '_PADDING' => 2,
-                'link'     => array(
+                'link'     => Array(
                     'type'         => 'popup',
                     'title'        => 'Link',
                     'icon'         => 'link_popup.gif',
@@ -99,3 +99,4 @@ $GLOBALS['TCA']['pages_language_overlay']['palettes']['tx_metaseo_crawler'] = ar
     '',
     'after:author_email'
 );
+

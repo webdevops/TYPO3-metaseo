@@ -32,8 +32,7 @@ namespace Metaseo\Metaseo\Utility;
  * @subpackage  Utility
  * @version     $Id: CacheUtility.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class CacheUtility
-{
+class CacheUtility {
 
     /**
      * Get cache entry
@@ -41,11 +40,12 @@ class CacheUtility
      * @param   integer $pageId     Page UID
      * @param   string  $section    Cache section
      * @param   string  $identifier Cache identifier
+     *
      * @return  string
      */
-    public static function get($pageId, $section, $identifier)
-    {
-        $query = 'SELECT cache_content
+    static public function get($pageId, $section, $identifier) {
+        $query
+            = 'SELECT cache_content
                     FROM tx_metaseo_cache
                    WHERE page_uid = ' . (int)$pageId . '
                      AND cache_section = ' . DatabaseUtility::quote($section, 'tx_metaseo_cache') . '
@@ -62,12 +62,14 @@ class CacheUtility
      * @param   string  $section    Cache section
      * @param   string  $identifier Cache identifier
      * @param   string  $value      Cache content
+     *
      * @return  boolean
      */
-    public static function set($pageId, $section, $identifier, $value)
-    {
+    static public function set($pageId, $section, $identifier, $value) {
+
         try {
-            $query = 'INSERT INTO tx_metaseo_cache (page_uid, cache_section, cache_identifier, cache_content)
+            $query
+                = 'INSERT INTO tx_metaseo_cache (page_uid, cache_section, cache_identifier, cache_content)
                         VALUES(
                             ' . (int)$pageId . ',
                             ' . DatabaseUtility::quote($section, 'tx_metaseo_cache') . ',
@@ -88,11 +90,12 @@ class CacheUtility
      *
      * @param   string $section    Cache section
      * @param   string $identifier Cache identifier
+     *
      * @return  array
      */
-    public static function getList($section, $identifier)
-    {
-        $query = 'SELECT page_uid,
+    static public function getList($section, $identifier) {
+        $query
+            = 'SELECT page_uid,
                          cache_content
                     FROM tx_metaseo_cache
                    WHERE cache_section = ' . DatabaseUtility::quote($section, 'tx_metaseo_cache') . '
@@ -108,14 +111,15 @@ class CacheUtility
      * @param   integer $pageId     Page UID
      * @param   string  $section    Cache section
      * @param   string  $identifier Cache identifier
+     *
      * @return  boolean
      */
-    public static function remove($pageId, $section, $identifier)
-    {
-        $pageId     = (int)$pageId;
+    static public function remove($pageId, $section, $identifier) {
+        $pageId = (int)$pageId;
 
         try {
-            $query = 'DELETE FROM tx_metaseo_cache
+            $query
+                = 'DELETE FROM tx_metaseo_cache
                             WHERE page_uid = ' . (int)$pageId . '
                               AND cache_section = ' . DatabaseUtility::quote($section, 'tx_metaseo_cache') . '
                               AND cache_identifier = ' . DatabaseUtility::quote($identifier, 'tx_metaseo_cache');
@@ -131,12 +135,13 @@ class CacheUtility
      * Clear cache by page
      *
      * @param   integer $pageId Page UID
+     *
      * @return  boolean
      */
-    public static function clearByPage($pageId)
-    {
+    static public function clearByPage($pageId) {
         try {
-            $query = 'DELETE FROM tx_metaseo_cache
+            $query
+                = 'DELETE FROM tx_metaseo_cache
                             WHERE page_uid = ' . (int)$pageId;
             DatabaseUtility::exec($query);
         } catch (\Exception $e) {
@@ -149,13 +154,14 @@ class CacheUtility
     /**
      * Clear cache by section
      *
-     * @param   string $section    Cache section
+     * @param   string $section Cache section
+     *
      * @return  boolean
      */
-    public static function clearBySection($section)
-    {
+    static public function clearBySection($section) {
         try {
-            $query = 'DELETE FROM tx_metaseo_cache
+            $query
+                = 'DELETE FROM tx_metaseo_cache
                             WHERE cache_section = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($section, 'tx_metaseo_cache');
             DatabaseUtility::exec($query);
         } catch (\Exception $e) {
@@ -170,8 +176,7 @@ class CacheUtility
      *
      * @return boolean
      */
-    public static function clearAll()
-    {
+    static public function clearAll() {
         try {
             $query = 'TRUNCATE tx_metaseo_cache';
             DatabaseUtility::exec($query);
@@ -188,8 +193,7 @@ class CacheUtility
      *
      * @return boolean
      */
-    public static function expire()
-    {
+    static public function expire() {
 
         // not supported currently
 

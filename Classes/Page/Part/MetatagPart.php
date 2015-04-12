@@ -38,7 +38,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
     /**
      * List of stdWrap manipulations
-	 *
+     *
      * @var array
      */
     protected $stdWrapList = array();
@@ -50,23 +50,23 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      */
     public function main() {
         // INIT
-        $ret      = array();
+        $ret = array();
 
         /** @var array $tsSetup */
-        $tsSetup  = $GLOBALS['TSFE']->tmpl->setup;
-        $cObj     = $GLOBALS['TSFE']->cObj;
+        $tsSetup = $GLOBALS['TSFE']->tmpl->setup;
+        $cObj = $GLOBALS['TSFE']->cObj;
         $pageMeta = array();
 
         /** @var array $tsfePage */
         $tsfePage = $GLOBALS['TSFE']->page;
 
         $sysLanguageId = 0;
-        if (!empty($tsSetup['config.']['sys_language_uid']) ) {
+        if (!empty($tsSetup['config.']['sys_language_uid'])) {
             $sysLanguageId = $tsSetup['config.']['sys_language_uid'];
         }
 
         $customMetaTagList = array();
-        $enableMetaDc      = TRUE;
+        $enableMetaDc = true;
 
         // Init News extension
         $this->initExtensionSupport();
@@ -80,7 +80,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             }
 
             if (empty($tsSetupSeo['enableDC'])) {
-                $enableMetaDc = FALSE;
+                $enableMetaDc = false;
             }
 
             // #####################################
@@ -132,7 +132,8 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             // #################
 
             // tx_metaseo_geo_lat
-            $tmp = $cObj->stdWrap($tsSetupSeo['conf.']['tx_metaseo_geo_lat'], $tsSetupSeo['conf.']['tx_metaseo_geo_lat.']);
+            $tmp = $cObj->stdWrap($tsSetupSeo['conf.']['tx_metaseo_geo_lat'],
+                $tsSetupSeo['conf.']['tx_metaseo_geo_lat.']);
             if (!empty($tmp)) {
                 $pageMeta['geoPositionLatitude'] = $tmp;
             }
@@ -189,7 +190,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             foreach ($storeMeta['meta'] as $metaKey => $metaValue) {
                 $metaValue = trim($metaValue);
 
-                if ($metaValue === NULL) {
+                if ($metaValue === null) {
                     // Remove meta
                     unset($tsSetupSeo[$metaKey]);
                 } elseif (!empty($metaValue)) {
@@ -201,7 +202,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             foreach ($storeMeta['custom'] as $metaKey => $metaValue) {
                 $metaValue = trim($metaValue);
 
-                if ($metaValue === NULL) {
+                if ($metaValue === null) {
                     // Remove meta
                     unset($customMetaTagList[$metaKey]);
                 } elseif (!empty($metaValue)) {
@@ -213,7 +214,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             // #####################################
 
             // Check search engine indexing blacklist
-            if(!empty($tsSetupSeo['robotsIndex.']['blacklist.'])) {
+            if (!empty($tsSetupSeo['robotsIndex.']['blacklist.'])) {
                 // Page is blacklisted, set to noindex
                 $tsSetupSeo['robotsIndex'] = 0;
             }
@@ -322,7 +323,8 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
             // expire
             if (!empty($tsSetupSeo['useExpire']) && !empty($tsfePage['endtime'])) {
-                $ret['meta.expire'] = '<meta name="googlebot" content="unavailable_after: ' . date('d-M-Y H:i:s T',$tsfePage['endtime']) . '" > ';
+                $ret['meta.expire'] = '<meta name="googlebot" content="unavailable_after: ' . date('d-M-Y H:i:s T',
+                        $tsfePage['endtime']) . '" > ';
             }
 
             // #################
@@ -330,7 +332,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             // #################
 
             // robots
-            if (!empty($tsSetupSeo['robotsEnable']) ) {
+            if (!empty($tsSetupSeo['robotsEnable'])) {
                 $crawlerOrder = array();
 
                 if (!empty($tsSetupSeo['robotsIndex']) && empty($tsfePage['tx_metaseo_is_exclude'])) {
@@ -383,7 +385,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
             // Geo-Position
             if (!empty($tsSetupSeo['geoPositionLatitude']) && !empty($tsSetupSeo['geoPositionLongitude'])) {
-                $ret['geo.icmb']     = '<meta name="ICBM" content="' . htmlspecialchars($tsSetupSeo['geoPositionLatitude']) . ', ' . htmlspecialchars($tsSetupSeo['geoPositionLongitude']) . '">';
+                $ret['geo.icmb'] = '<meta name="ICBM" content="' . htmlspecialchars($tsSetupSeo['geoPositionLatitude']) . ', ' . htmlspecialchars($tsSetupSeo['geoPositionLongitude']) . '">';
                 $ret['geo.position'] = '<meta name="geo.position" content="' . htmlspecialchars($tsSetupSeo['geoPositionLatitude']) . ';' . htmlspecialchars($tsSetupSeo['geoPositionLongitude']) . '">';
             }
 
@@ -447,12 +449,12 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                 $rootLine = \Metaseo\Metaseo\Utility\GeneralUtility::getRootLine();
 
                 $currentPage = end($rootLine);
-                $rootPage    = reset($rootLine);
+                $rootPage = reset($rootLine);
 
                 $currentIsRootpage = ($currentPage['uid'] === $rootPage['uid']);
 
                 // Generate rootpage url
-                $rootPageUrl = NULL;
+                $rootPageUrl = null;
                 if (!empty($rootPage)) {
                     $rootPageUrl = $this->generateLink($rootPage['uid']);
                 }
@@ -463,13 +465,13 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                 if (!$currentIsRootpage) {
 
                     $prevPage = $GLOBALS['TSFE']->cObj->HMENU($tsSetupSeo['sectionLinks.']['prev.']);
-                    $prevPageUrl = NULL;
+                    $prevPageUrl = null;
                     if (!empty($prevPage)) {
                         $prevPageUrl = $this->generateLink($prevPage);
                     }
 
                     $nextPage = $GLOBALS['TSFE']->cObj->HMENU($tsSetupSeo['sectionLinks.']['next.']);
-                    $nextPageUrl = NULL;
+                    $nextPageUrl = null;
                     if (!empty($nextPage)) {
                         $nextPageUrl = $this->generateLink($nextPage);
                     }
@@ -492,7 +494,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             }
 
             // Canonical URL
-            $canonicalUrl = NULL;
+            $canonicalUrl = null;
 
             if (!empty($tsfePage['tx_metaseo_canonicalurl'])) {
                 $canonicalUrl = $tsfePage['tx_metaseo_canonicalurl'];
@@ -528,6 +530,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         $this->processMetaTags($ret);
 
         $separator = "\n";
+
         return $separator . implode($separator, $ret) . $separator;
     }
 
@@ -541,7 +544,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      * @param array   $customMetaTagList Custom Meta Tag list
      */
     protected function advMetaTags(&$metaTags, $tsfePage, $sysLanguageId, $customMetaTagList) {
-        $tsfePageId    = $tsfePage['uid'];
+        $tsfePageId = $tsfePage['uid'];
 
         $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
         $storeMeta = $connector->getStore();
@@ -549,28 +552,28 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         // #################
         // Adv meta tags (from editor)
         // #################
-        $advMetaTagList      = array();
+        $advMetaTagList = array();
         $advMetaTagCondition = array();
 
-        if (!empty($storeMeta['flag']['meta:og:external']) ) {
+        if (!empty($storeMeta['flag']['meta:og:external'])) {
             // External OpenGraph support
             $advMetaTagCondition[] = 'tag_name NOT LIKE \'og:%\'';
 
             // Add external og-tags to adv meta tag list
-            if (!empty($storeMeta['meta:og']) ) {
+            if (!empty($storeMeta['meta:og'])) {
                 $advMetaTagList = array_merge($advMetaTagList, $storeMeta['meta:og']);
             }
         }
 
-        if (!empty($advMetaTagCondition) ) {
+        if (!empty($advMetaTagCondition)) {
             $advMetaTagCondition = '( ' . implode(') AND (', $advMetaTagCondition) . ' )';
-
         } else {
             $advMetaTagCondition = '1=1';
         }
 
         // Fetch list of meta tags from database
-        $query = 'SELECT tag_name, tag_value
+        $query
+            = 'SELECT tag_name, tag_value
                     FROM tx_metaseo_metatag
                    WHERE pid = ' . (int)$tsfePageId . '
                      AND sys_language_uid = ' . (int)$sysLanguageId . '
@@ -597,10 +600,9 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     protected function initExtensionSupport() {
 
         // Extension: news
-        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('news') ) {
+        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('news')) {
             $this->initExtensionSupportNews();
         }
-
     }
 
 
@@ -608,34 +610,34 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      * Init extension support for "news" extension
      */
     protected function initExtensionSupportNews() {
-        if (empty($GLOBALS['TSFE']->register) ) {
+        if (empty($GLOBALS['TSFE']->register)) {
             return;
         }
 
         /** @var \Metaseo\Metaseo\Connector $connector */
         $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
 
-        if (isset($GLOBALS['TSFE']->register['newsTitle']) ) {
+        if (isset($GLOBALS['TSFE']->register['newsTitle'])) {
             $connector->setMetaTag('title', $GLOBALS['TSFE']->register['newsTitle']);
         }
 
-        if (isset($GLOBALS['TSFE']->register['newsAuthor']) ) {
+        if (isset($GLOBALS['TSFE']->register['newsAuthor'])) {
             $connector->setMetaTag('author', $GLOBALS['TSFE']->register['newsAuthor']);
         }
 
-        if (isset($GLOBALS['TSFE']->register['newsAuthoremail']) ) {
+        if (isset($GLOBALS['TSFE']->register['newsAuthoremail'])) {
             $connector->setMetaTag('email', $GLOBALS['TSFE']->register['newsAuthoremail']);
         }
 
-        if (isset($GLOBALS['TSFE']->register['newsAuthorEmail']) ) {
+        if (isset($GLOBALS['TSFE']->register['newsAuthorEmail'])) {
             $connector->setMetaTag('email', $GLOBALS['TSFE']->register['newsAuthorEmail']);
         }
 
-        if (isset($GLOBALS['TSFE']->register['newsKeywords']) ) {
+        if (isset($GLOBALS['TSFE']->register['newsKeywords'])) {
             $connector->setMetaTag('keywords', $GLOBALS['TSFE']->register['newsKeywords']);
         }
 
-        if (isset($GLOBALS['TSFE']->register['newsTeaser']) ) {
+        if (isset($GLOBALS['TSFE']->register['newsTeaser'])) {
             $connector->setMetaTag('description', $GLOBALS['TSFE']->register['newsTeaser']);
         }
     }
@@ -644,13 +646,14 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     /**
      * Generate a link via TYPO3-Api
      *
-     * @param    integer|string $url        URL (id or string)
-     * @param    array|NULL     $conf       URL configuration
-     * @param    boolean        $disableMP  Disable mountpoint linking
+     * @param    integer|string $url       URL (id or string)
+     * @param    array|NULL     $conf      URL configuration
+     * @param    boolean        $disableMP Disable mountpoint linking
+     *
      * @return   string                      URL
      */
-    protected function generateLink($url, $conf = NULL, $disableMP = FALSE) {
-        if ($conf === NULL) {
+    protected function generateLink($url, $conf = null, $disableMP = false) {
+        if ($conf === null) {
             $conf = array();
         }
 
@@ -677,7 +680,8 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     /**
      * Detect canonical page
      *
-     * @param    array $tsConfig   TypoScript config setup
+     * @param    array $tsConfig TypoScript config setup
+     *
      * @return   string            Page Id or url
      */
     protected function detectCanonicalPage($tsConfig = array()) {
@@ -685,20 +689,20 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         # Fetch typoscript config
         #####################
         $strictMode = (bool)(int)$tsConfig['strict'];
-        $noMpMode   = (bool)(int)$tsConfig['noMP'];
-        $linkConf   = !empty($tsConfig['typolink.']) ? $tsConfig['typolink.']   : array();
-        $blacklist  = !empty($tsConfig['blacklist.']) ? $tsConfig['blacklist.'] : array();
+        $noMpMode = (bool)(int)$tsConfig['noMP'];
+        $linkConf = !empty($tsConfig['typolink.']) ? $tsConfig['typolink.'] : array();
+        $blacklist = !empty($tsConfig['blacklist.']) ? $tsConfig['blacklist.'] : array();
 
-        $linkParam  = NULL;
-        $linkMpMode = FALSE;
+        $linkParam = null;
+        $linkMpMode = false;
 
         // Init link configuration
-        if($linkConf === NULL) {
+        if ($linkConf === null) {
             $linkConf = array();
         }
 
         // Fetch chash
-        $pageHash = NULL;
+        $pageHash = null;
         if (!empty($GLOBALS['TSFE']->cHash)) {
             $pageHash = $GLOBALS['TSFE']->cHash;
         }
@@ -706,29 +710,29 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         #####################
         # Blacklisting
         #####################
-        if(\Metaseo\Metaseo\Utility\FrontendUtility::checkPageForBlacklist($blacklist)) {
+        if (\Metaseo\Metaseo\Utility\FrontendUtility::checkPageForBlacklist($blacklist)) {
             if ($strictMode) {
-                if($noMpMode && \Metaseo\Metaseo\Utility\GeneralUtility::isMountpointInRootLine()) {
+                if ($noMpMode && \Metaseo\Metaseo\Utility\GeneralUtility::isMountpointInRootLine()) {
                     // Mountpoint detected
                     $linkParam = $GLOBALS['TSFE']->id;
 
                     // Force removing of MP param
                     $linkConf['addQueryString'] = 1;
-                    if(!empty($linkConf['addQueryString.']['exclude'])) {
+                    if (!empty($linkConf['addQueryString.']['exclude'])) {
                         $linkConf['addQueryString.']['exclude'] .= ',id,MP,no_cache';
                     } else {
                         $linkConf['addQueryString.']['exclude'] = ',id,MP,no_cache';
                     }
 
                     // disable mount point linking
-                    $linkMpMode = TRUE;
+                    $linkMpMode = true;
                 } else {
                     // force canonical-url to page url (without any parameters)
                     $linkParam = $GLOBALS['TSFE']->id;
                 }
             } else {
                 // Blacklisted and no strict mode, we don't output canonical tag
-                return NULL;
+                return null;
             }
         }
 
@@ -761,14 +765,14 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
             // Force removing of MP param
             $linkConf['addQueryString'] = 1;
-            if(!empty($linkConf['addQueryString.']['exclude'])) {
+            if (!empty($linkConf['addQueryString.']['exclude'])) {
                 $linkConf['addQueryString.']['exclude'] .= ',id,MP,no_cache';
             } else {
                 $linkConf['addQueryString.']['exclude'] = ',id,MP,no_cache';
             }
 
             // disable mount point linking
-            $linkMpMode = TRUE;
+            $linkMpMode = true;
         }
 
         #####################
@@ -777,7 +781,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
         if (!$linkParam) {
             // Fetch pageUrl
-            if ($pageHash !== NULL) {
+            if ($pageHash !== null) {
                 // Virtual plugin page, we have to use achnor or site script
                 $linkParam = \Metaseo\Metaseo\Utility\FrontendUtility::getCurrentUrl();
             } else {
@@ -828,14 +832,14 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                 }
             }
         }
-
     }
 
     /**
      * Process stdWrap from stdWrap list
      *
-     * @param    string $key    StdWrap-List key
-     * @param    string $value  Value
+     * @param    string $key   StdWrap-List key
+     * @param    string $value Value
+     *
      * @return   string
      */
     protected function applyStdWrap($key, $value) {

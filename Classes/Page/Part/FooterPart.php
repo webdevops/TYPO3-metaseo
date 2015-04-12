@@ -39,14 +39,15 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
     /**
      * Add Page Footer
      *
-     * @param    string $title    Default page title (rendered by TYPO3)
+     * @param    string $title Default page title (rendered by TYPO3)
+     *
      * @return    string            Modified page title
      */
     public function main($title)
     {
         // INIT
-        $ret        = array();
-        $tsSetup    = $GLOBALS['TSFE']->tmpl->setup;
+        $ret = array();
+        $tsSetup = $GLOBALS['TSFE']->tmpl->setup;
         $tsServices = array();
 
         $beLoggedIn = isset($GLOBALS['BE_USER']->user['username']);
@@ -126,8 +127,9 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
     /**
      * Google analytics
      *
-     * @param  array $tsServices  SetupTS of services
-     * @param  array $gaConf      Google Analytics configuration
+     * @param  array $tsServices SetupTS of services
+     * @param  array $gaConf     Google Analytics configuration
+     *
      * @return string
      */
     public function buildGoogleAnalyticsCode($tsServices, $gaConf)
@@ -144,10 +146,10 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
                     );
             }
 
-            $this->cObj->data['gaCode']                  = $gaCode;
-            $this->cObj->data['gaIsAnonymize']           = (int)!empty($gaConf['anonymizeIp']);
-            $this->cObj->data['gaDomainName']            = $gaConf['domainName'];
-            $this->cObj->data['gaCustomizationCode']     = $customCode;
+            $this->cObj->data['gaCode'] = $gaCode;
+            $this->cObj->data['gaIsAnonymize'] = (int)!empty($gaConf['anonymizeIp']);
+            $this->cObj->data['gaDomainName'] = $gaConf['domainName'];
+            $this->cObj->data['gaCustomizationCode'] = $customCode;
             $this->cObj->data['gaUseUniversalAnalytics'] = (int)!empty($gaConf['universalAnalytics']);
 
             // Build code
@@ -163,8 +165,9 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
     /**
      * Google analytics
      *
-     * @param  array $tsServices  SetupTS of services
-     * @param  array $gaConf      Google Analytics configuration
+     * @param  array $tsServices SetupTS of services
+     * @param  array $gaConf     Google Analytics configuration
+     *
      * @return string
      */
     public function serviceGoogleAnalyticsTrackDownloads($tsServices, $gaConf)
@@ -175,14 +178,16 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
         $jsfile = preg_replace('/^' . preg_quote(PATH_site, '/') . '/i', '', $jsFile);
 
         $ret = '<script type="text/javascript" src="' . htmlspecialchars($jsfile) . '"></script>';
+
         return $ret;
     }
 
     /**
      * Piwik
      *
-     * @param  array $tsServices  SetupTS of services
-     * @param  array $piwikConf   Piwik configuration
+     * @param  array $tsServices SetupTS of services
+     * @param  array $piwikConf  Piwik configuration
+     *
      * @return string
      */
     public function buildPiwikCode($tsServices, $piwikConf)
@@ -202,11 +207,11 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
             // remove last slash
             $piwikConf['url'] = rtrim($piwikConf['url'], '/');
 
-            $this->cObj->data['piwikUrl']               = $piwikConf['url'];
-            $this->cObj->data['piwikId']                = $piwikCode;
-            $this->cObj->data['piwikDomainName']        = $piwikConf['domainName'];
-            $this->cObj->data['piwikCookieDomainName']  = $piwikConf['cookieDomainName'];
-            $this->cObj->data['piwikDoNotTrack']        = $piwikConf['doNotTrack'];
+            $this->cObj->data['piwikUrl'] = $piwikConf['url'];
+            $this->cObj->data['piwikId'] = $piwikCode;
+            $this->cObj->data['piwikDomainName'] = $piwikConf['domainName'];
+            $this->cObj->data['piwikCookieDomainName'] = $piwikConf['cookieDomainName'];
+            $this->cObj->data['piwikDoNotTrack'] = $piwikConf['doNotTrack'];
             $this->cObj->data['piwikCustomizationCode'] = $customCode;
 
             // Build code

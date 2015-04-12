@@ -31,8 +31,7 @@ namespace Metaseo\Metaseo\Utility;
  * @subpackage  Utility
  * @version     $Id: CacheUtility.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class DatabaseUtility
-{
+class DatabaseUtility {
 
     ###########################################################################
     # Query functions
@@ -42,10 +41,10 @@ class DatabaseUtility
      * Get one
      *
      * @param  string $query SQL query
+     *
      * @return mixed
      */
-    public static function getOne($query)
-    {
+    public static function getOne($query) {
         $ret = null;
 
         $res = self::query($query);
@@ -63,10 +62,10 @@ class DatabaseUtility
      * Get row
      *
      * @param   string $query SQL query
+     *
      * @return array
      */
-    public static function getRow($query)
-    {
+    public static function getRow($query) {
         $ret = null;
 
         $res = self::query($query);
@@ -83,11 +82,11 @@ class DatabaseUtility
     /**
      * Get All
      *
-     * @param  string  $query SQL query
+     * @param  string $query SQL query
+     *
      * @return array
      */
-    public static function getAll($query)
-    {
+    public static function getAll($query) {
         $ret = array();
 
         $res = self::query($query);
@@ -106,10 +105,10 @@ class DatabaseUtility
      *
      * @param  string $query    SQL query
      * @param  string $indexCol Index column name
+     *
      * @return array
      */
-    public static function getAllWithIndex($query, $indexCol = null)
-    {
+    public static function getAllWithIndex($query, $indexCol = null) {
         $ret = array();
 
         $res = self::query($query);
@@ -134,16 +133,16 @@ class DatabaseUtility
      * Get List
      *
      * @param  string $query SQL query
+     *
      * @return array
      */
-    public static function getList($query)
-    {
+    public static function getList($query) {
         $ret = array();
 
         $res = self::query($query);
         if ($res) {
             while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {
-                $ret[ $row[0] ] = $row[1];
+                $ret[$row[0]] = $row[1];
             }
             self::free($res);
         }
@@ -155,10 +154,10 @@ class DatabaseUtility
      * Get column
      *
      * @param  string $query SQL query
+     *
      * @return array
      */
-    public static function getCol($query)
-    {
+    public static function getCol($query) {
         $ret = array();
 
         $res = self::query($query);
@@ -176,16 +175,16 @@ class DatabaseUtility
      * Get column
      *
      * @param  string $query SQL query
+     *
      * @return array
      */
-    public static function getColWithIndex($query)
-    {
+    public static function getColWithIndex($query) {
         $ret = array();
 
         $res = self::query($query);
         if ($res) {
             while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {
-                $ret[ $row[0] ] = $row[0];
+                $ret[$row[0]] = $row[0];
             }
             self::free($res);
         }
@@ -197,22 +196,23 @@ class DatabaseUtility
      * Get count (from query)
      *
      * @param  string $query SQL query
+     *
      * @return integer
      */
-    public static function getCount($query)
-    {
+    public static function getCount($query) {
         $query = 'SELECT COUNT(*) FROM (' . $query . ') tmp';
+
         return self::getOne($query);
     }
 
     /**
      * Exec query (INSERT)
      *
-     * @param  string  $query SQL query
+     * @param  string $query SQL query
+     *
      * @return integer        Last insert id
      */
-    public static function execInsert($query)
-    {
+    public static function execInsert($query) {
         $ret = false;
 
         $res = self::query($query);
@@ -228,11 +228,11 @@ class DatabaseUtility
     /**
      * Exec query (DELETE, UPDATE etc)
      *
-     * @param  string  $query SQL query
+     * @param  string $query SQL query
+     *
      * @return integer        Affected rows
      */
-    public static function exec($query)
-    {
+    public static function exec($query) {
         $ret = false;
 
         $res = self::query($query);
@@ -253,12 +253,12 @@ class DatabaseUtility
     /**
      * Quote value
      *
-     * @param   string  $value  Value
-     * @param   string  $table  Table
+     * @param   string $value Value
+     * @param   string $table Table
+     *
      * @return  string
      */
-    public static function quote($value, $table = null)
-    {
+    public static function quote($value, $table = null) {
         if ($table === null) {
             $table = 'Pages';
         }
@@ -273,12 +273,12 @@ class DatabaseUtility
     /**
      * Quote array with values
      *
-     * @param   array  $valueList  Values
-     * @param   string $table   Table
+     * @param   array  $valueList Values
+     * @param   string $table     Table
+     *
      * @return  array
      */
-    public static function quoteArray($valueList, $table = null)
-    {
+    public static function quoteArray($valueList, $table = null) {
         $ret = array();
         foreach ($valueList as $k => $v) {
             $ret[$k] = self::quote($v, $table);
@@ -290,11 +290,11 @@ class DatabaseUtility
     /**
      * Sanitize field for sql usage
      *
-     * @param   string  $field  SQL Field/Attribut
+     * @param   string $field SQL Field/Attribut
+     *
      * @return  string
      */
-    public static function sanitizeSqlField($field)
-    {
+    public static function sanitizeSqlField($field) {
         return preg_replace('/[^_a-zA-Z0-9\.]/', '', $field);
     }
 
@@ -302,11 +302,11 @@ class DatabaseUtility
     /**
      * Sanitize table for sql usage
      *
-     * @param  string  $table  SQL Table
+     * @param  string $table SQL Table
+     *
      * @return string
      */
-    public static function sanitizeSqlTable($table)
-    {
+    public static function sanitizeSqlTable($table) {
         return preg_replace('/[^_a-zA-Z0-9]/', '', $table);
     }
 
@@ -318,10 +318,10 @@ class DatabaseUtility
      * Add condition to query
      *
      * @param  array|string $condition Condition
+     *
      * @return string
      */
-    public static function addCondition($condition)
-    {
+    public static function addCondition($condition) {
         $ret = ' ';
 
         if (!empty($condition)) {
@@ -341,14 +341,14 @@ class DatabaseUtility
      * @param  string  $field    SQL field
      * @param  array   $values   Values
      * @param  boolean $required Required
+     *
      * @return string
      */
-    public static function conditionIn($field, $values, $required = true)
-    {
+    public static function conditionIn($field, $values, $required = true) {
         if (!empty($values)) {
             $quotedValues = self::quoteArray($values, 'pages');
 
-            $ret = $field.' IN (' . implode(',', $quotedValues) . ')';
+            $ret = $field . ' IN (' . implode(',', $quotedValues) . ')';
         } else {
             if ($required) {
                 $ret = '1=0';
@@ -366,14 +366,14 @@ class DatabaseUtility
      * @param  string  $field    SQL field
      * @param  array   $values   Values
      * @param  boolean $required Required
+     *
      * @return string
      */
-    public static function conditionNotIn($field, $values, $required = true)
-    {
+    public static function conditionNotIn($field, $values, $required = true) {
         if (!empty($values)) {
             $quotedValues = self::quoteArray($values, 'pages');
 
-            $ret = $field.' NOT IN (' . implode(',', $quotedValues) . ')';
+            $ret = $field . ' NOT IN (' . implode(',', $quotedValues) . ')';
         } else {
             if ($required) {
                 $ret = '1=0';
@@ -389,10 +389,10 @@ class DatabaseUtility
      * Build condition
      *
      * @param  array $where Where condition
+     *
      * @return string
      */
-    public static function buildCondition($where)
-    {
+    public static function buildCondition($where) {
         $ret = ' ';
 
         if (!empty($where)) {
@@ -410,11 +410,11 @@ class DatabaseUtility
      * Execute sql query
      *
      * @param   string $query SQL query
+     *
      * @return  resource
      * @throws  \Exception
      */
-    public static function query($query)
-    {
+    public static function query($query) {
         $res = $GLOBALS['TYPO3_DB']->sql_query($query);
 
         if (!$res || $GLOBALS['TYPO3_DB']->sql_errno()) {
@@ -438,8 +438,7 @@ class DatabaseUtility
      *
      * @param resource $res SQL resource
      */
-    public static function free($res)
-    {
+    public static function free($res) {
         if ($res && $res !== true) {
             $GLOBALS['TYPO3_DB']->sql_free_result($res);
         }

@@ -32,8 +32,7 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  * @subpackage  Sitemap
  * @version     $Id: class.sitemap_base.php 78237 2013-07-23 14:50:31Z mblaschke $
  */
-abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractTask
-{
+abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractTask {
 
     // ########################################################################
     // Attributes
@@ -53,8 +52,7 @@ abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\Abstr
     /**
      * Execute task
      */
-    public function execute()
-    {
+    public function execute() {
         // Build sitemap
 
         $this->initialize();
@@ -81,8 +79,7 @@ abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\Abstr
     /**
      * Cleanup sitemap directory
      */
-    protected function cleanupDirectory()
-    {
+    protected function cleanupDirectory() {
         if (empty($this->sitemapDir)) {
             throw new \Exception('Basedir not set');
         }
@@ -104,11 +101,11 @@ abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\Abstr
     /**
      * Generate sitemap link template
      *
-     * @param    string $template    File link template
+     * @param    string $template File link template
+     *
      * @return    string
      */
-    protected function generateSitemapLinkTemplate($template)
-    {
+    protected function generateSitemapLinkTemplate($template) {
         $ret = null;
 
         // Set link template for index file
@@ -135,8 +132,8 @@ abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\Abstr
     /**
      * Build sitemap
      *
-     * @param    integer $rootPageId    Root page id
-     * @param    integer $languageId    Language id
+     * @param    integer $rootPageId Root page id
+     * @param    integer $languageId Language id
      */
     abstract protected function buildSitemap($rootPageId, $languageId);
 }

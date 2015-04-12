@@ -32,26 +32,25 @@ namespace Metaseo\Metaseo\Page\Part;
  * @subpackage  lib
  * @version     $Id: PagetitlePart.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart
-{
+class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
     /**
      * Add SEO-Page Title
      *
-     * @param    string $title    Default page title (rendered by TYPO3)
+     * @param    string $title Default page title (rendered by TYPO3)
+     *
      * @return    string            Modified page title
      */
-    public function main($title)
-    {
+    public function main($title) {
         // INIT
-        $ret              = $title;
-        $rawTitel         = !empty($GLOBALS['TSFE']->altPageTitle) ? $GLOBALS['TSFE']->altPageTitle : $GLOBALS['TSFE']->page['title'];
-        $tsSetup          = $GLOBALS['TSFE']->tmpl->setup;
-        $tsSeoSetup       = array();
-        $rootLine         = $GLOBALS['TSFE']->rootLine;
-        $currentPid       = $GLOBALS['TSFE']->id;
+        $ret = $title;
+        $rawTitel = !empty($GLOBALS['TSFE']->altPageTitle) ? $GLOBALS['TSFE']->altPageTitle : $GLOBALS['TSFE']->page['title'];
+        $tsSetup = $GLOBALS['TSFE']->tmpl->setup;
+        $tsSeoSetup = array();
+        $rootLine = $GLOBALS['TSFE']->rootLine;
+        $currentPid = $GLOBALS['TSFE']->id;
         $skipPrefixSuffix = false;
-        $applySitetitle   = true;
+        $applySitetitle = true;
 
         $pageTitelPrefix = false;
         $pageTitelSuffix = false;
@@ -148,7 +147,7 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart
             // Process settings from access point
             // #################
             $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
-            $store     = $connector->getStore('pagetitle');
+            $store = $connector->getStore('pagetitle');
 
             if (!empty($store)) {
                 if (isset($store['pagetitle.title'])) {
@@ -164,7 +163,7 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart
                 }
 
                 if (isset($store['pagetitle.absolute'])) {
-                    $ret      = $store['pagetitle.absolute'];
+                    $ret = $store['pagetitle.absolute'];
                     $rawTitel = $store['pagetitle.absolute'];
 
                     $pageTitelPrefix = false;
@@ -204,9 +203,9 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart
         // APPLY SITETITLE (from setup)
         // #######################################################################
         if ($applySitetitle) {
-            $pageTitleGlue    = ':';
+            $pageTitleGlue = ':';
             $glueSpacerBefore = '';
-            $glueSpacerAfter  = '';
+            $glueSpacerAfter = '';
 
             // Overwrite sitetitle with the one from ts-setup (if available)
             if (!empty($tsSeoSetup['pageTitle.']['sitetitle'])) {

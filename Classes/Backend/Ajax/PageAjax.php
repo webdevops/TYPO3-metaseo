@@ -33,8 +33,7 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  * @package      TYPO3
  * @subpackage   metaseo
  */
-class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
-{
+class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
 
     // ########################################################################
     // Attributes
@@ -56,18 +55,17 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
      *
      * @return    array
      */
-    protected function executeGetList()
-    {
+    protected function executeGetList() {
         // Init
         $list = array();
 
-        $pid          = (int)$this->postVar['pid'];
-        $offset       = (int)$this->postVar['start'];
-        $limit        = (int)$this->postVar['limit'];
+        $pid = (int)$this->postVar['pid'];
+        $offset = (int)$this->postVar['start'];
+        $limit = (int)$this->postVar['limit'];
         $itemsPerPage = (int)$this->postVar['pagingSize'];
-        $depth        = (int)$this->postVar['depth'];
-        $sysLanguage  = (int)$this->postVar['sysLanguage'];
-        $listType     = (string)$this->postVar['listType'];
+        $depth = (int)$this->postVar['depth'];
+        $sysLanguage = (int)$this->postVar['sysLanguage'];
+        $listType = (string)$this->postVar['listType'];
 
         // Store last selected language
         $GLOBALS['BE_USER']->setAndSaveSessionData('MetaSEO.sysLanguage', $sysLanguage);
@@ -151,8 +149,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
                 case 'advanced':
                     $fieldList = array_merge(
                         $fieldList,
-                        array(
-                            // Maybe we need more fields later
+                        array(// Maybe we need more fields later
                         )
                     );
 
@@ -175,7 +172,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
 
                 case 'pagetitlesim':
                     $buildTree = false;
-                    $list      = $this->listPageTitleSim($page, $depth, $sysLanguage);
+                    $list = $this->listPageTitleSim($page, $depth, $sysLanguage);
                     break;
 
                 default:
@@ -198,8 +195,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
      *
      * @return    string
      */
-    protected function executeGenerateSimulatedTitle()
-    {
+    protected function executeGenerateSimulatedTitle() {
         // Init
         $ret = '';
 
@@ -231,8 +227,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
      *
      * @return    string
      */
-    protected function executeGenerateSimulatedUrl()
-    {
+    protected function executeGenerateSimulatedUrl() {
         // Init
         $ret = '';
 
@@ -242,11 +237,12 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
             $page = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pid);
 
             if (!empty($page)) {
+
                 if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('realurl')) {
                     // Disable caching for url
                     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['enableUrlDecodeCache'] = 0;
                     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['enableUrlEncodeCache'] = 0;
-                    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['disablePathCache']     = 1;
+                    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['disablePathCache'] = 1;
                 }
 
                 $this->initTsfe($page, null, $page, null);
@@ -276,21 +272,21 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
     /**
      * Return default tree
      *
-     * @param   array        $page               Root page
-     * @param   integer      $depth              Depth
-     * @param   integer      $sysLanguage        System language
-     * @param   array        $fieldList          Field list
-     * @param   boolean      $enableAdvMetaTags  Enable adv. meta tags
+     * @param   array   $page              Root page
+     * @param   integer $depth             Depth
+     * @param   integer $sysLanguage       System language
+     * @param   array   $fieldList         Field list
+     * @param   boolean $enableAdvMetaTags Enable adv. meta tags
+     *
      * @return  array
      */
-    protected function listDefaultTree($page, $depth, $sysLanguage, $fieldList, $enableAdvMetaTags = false)
-    {
+    protected function listDefaultTree($page, $depth, $sysLanguage, $fieldList, $enableAdvMetaTags = false) {
         $rootPid = $page['uid'];
 
         $list = array();
 
         $fieldList[] = 'pid';
-        $pageIdList  = array();
+        $pageIdList = array();
 
         // ###########################
         // Build tree
@@ -314,7 +310,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
 
         // Build tree list
         foreach ($tree->tree as $row) {
-            $tmp               = $row['row'];
+            $tmp = $row['row'];
             $list[$tmp['uid']] = $tmp;
 
             $pageIdList[$tmp['uid']] = $tmp['uid'];
@@ -342,7 +338,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
             // Set field as main fields
             foreach ($fieldList as $fieldName) {
                 $row['_overlay'][$fieldName] = $defaultOverlayStatus;
-                $row['_base'][$fieldName]    = $row[$fieldName];
+                $row['_base'][$fieldName] = $row[$fieldName];
             }
 
             $row['_depth'] = $this->listCalcDepth($row['uid'], $rootLineRaw);
@@ -374,7 +370,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
             $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
                 implode(',', $queryFieldList),
                 'pages_language_overlay',
-                'pid IN('.implode(',', $pageIdList).') AND sys_language_uid = '.(int)$sysLanguage
+                'pid IN(' . implode(',', $pageIdList) . ') AND sys_language_uid = ' . (int)$sysLanguage
             );
 
             // update all overlay status field to "from base"
@@ -387,7 +383,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
             unset($row);
 
             while ($overlayRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-                $pageOverlayId  = $overlayRow['uid'];
+                $pageOverlayId = $overlayRow['uid'];
                 $pageOriginalId = $overlayRow['pid'];
 
                 // Dont use uid and pid
@@ -417,13 +413,14 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
     /**
      * Calculate the depth of a page
      *
-     * @param  integer  $pageUid        Page UID
-     * @param  array    $rootLineRaw    Root line (raw list)
-     * @param  integer  $depth          Current depth
+     * @param  integer $pageUid     Page UID
+     * @param  array   $rootLineRaw Root line (raw list)
+     * @param  integer $depth       Current depth
+     *
      * @return integer
      */
-    protected function listCalcDepth($pageUid, $rootLineRaw, $depth = null)
-    {
+    protected function listCalcDepth($pageUid, $rootLineRaw, $depth = null) {
+
         if ($depth === null) {
             $depth = 1;
         }
@@ -451,13 +448,13 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
     /**
      * Return simulated page title
      *
-     * @param   array   $page         Root page
-     * @param   integer $depth        Depth
-     * @param   integer $sysLanguage  Sys language
+     * @param   array   $page        Root page
+     * @param   integer $depth       Depth
+     * @param   integer $sysLanguage Sys language
+     *
      * @return  array
      */
-    protected function listPageTitleSim($page, $depth, $sysLanguage)
-    {
+    protected function listPageTitleSim($page, $depth, $sysLanguage) {
         // Init
         $list = array();
 
@@ -479,7 +476,8 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
             // Check which pages have templates (for caching and faster building)
             $this->templatePidList = array();
 
-            $query = 'SELECT pid
+            $query
+                = 'SELECT pid
                         FROM sys_template
                        WHERE pid IN (' . implode(',', $uidList) . ')
                          AND deleted = 0
@@ -503,14 +501,14 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
      *
      * @param   array   $page        Page
      * @param   integer $sysLanguage System language
+     *
      * @return  string
      */
-    protected function simulateTitle($page, $sysLanguage)
-    {
+    protected function simulateTitle($page, $sysLanguage) {
         $this->initTsfe($page, null, $page, null, $sysLanguage);
 
         $pagetitle = $this->objectManager->get('Metaseo\\Metaseo\\Page\\Part\\PagetitlePart');
-        $ret       = $pagetitle->main($page['title']);
+        $ret = $pagetitle->main($page['title']);
 
         return $ret;
     }
@@ -524,10 +522,10 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
      * @param   NULL|array   $pageData     Page data (recursive generated)
      * @param   NULL|array   $rootlineFull Rootline full
      * @param   NULL|integer $sysLanguage  System language
+     *
      * @return  void
      */
-    protected function initTsfe($page, $rootLine = null, $pageData = null, $rootlineFull = null, $sysLanguage = null)
-    {
+    protected function initTsfe($page, $rootLine = null, $pageData = null, $rootlineFull = null, $sysLanguage = null) {
         static $cacheTSFE = array();
         static $lastTsSetupPid = null;
 
@@ -556,7 +554,8 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
             $currPageIndex = key($rootLine);
             unset($rootLine[$currPageIndex]);
 
-            \Metaseo\Metaseo\Utility\FrontendUtility::init($prevPage['uid'], $rootLine, $pageData, $rootlineFull, $sysLanguage);
+            \Metaseo\Metaseo\Utility\FrontendUtility::init($prevPage['uid'], $rootLine, $pageData, $rootlineFull,
+                $sysLanguage);
         }
 
         \Metaseo\Metaseo\Utility\FrontendUtility::init($page['uid'], $rootLine, $pageData, $rootlineFull, $sysLanguage);
@@ -565,19 +564,18 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
     /**
      * Update page field
      */
-    protected function executeUpdatePageField()
-    {
+    protected function executeUpdatePageField() {
         if (empty($this->postVar['pid'])
             || empty($this->postVar['field'])
         ) {
             return;
         }
 
-        $pid         = (int)$this->postVar['pid'];
-        $fieldName   = strtolower((string)$this->postVar['field']);
-        $fieldValue  = (string)$this->postVar['value'];
+        $pid = (int)$this->postVar['pid'];
+        $fieldName = strtolower((string)$this->postVar['field']);
+        $fieldValue = (string)$this->postVar['value'];
         $sysLanguage = (int)$this->postVar['sysLanguage'];
-        $mode        = (string)$this->postVar['mode'];
+        $mode = (string)$this->postVar['mode'];
 
         // validate field name
         $fieldName = preg_replace('/[^-_a-zA-Z0-9:]/i', '', $fieldName);
@@ -660,27 +658,27 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
     /**
      * Load meta data
      */
-    protected function executeLoadAdvMetaTags()
-    {
+    protected function executeLoadAdvMetaTags() {
         if (empty($this->postVar['pid'])) {
             return;
         }
 
         $ret = array();
 
-        $pid         = (int)$this->postVar['pid'];
+        $pid = (int)$this->postVar['pid'];
         $sysLanguage = (int)$this->postVar['sysLanguage'];
 
 
         // check uid of pages language overlay
-        $query = 'SELECT tag_name,
+        $query
+            = 'SELECT tag_name,
                          tag_value
                     FROM tx_metaseo_metatag
-                   WHERE pid = '.(int)$pid.'
-                     AND sys_language_uid = '.(int)$sysLanguage;
+                   WHERE pid = ' . (int)$pid . '
+                     AND sys_language_uid = ' . (int)$sysLanguage;
         $rowList = DatabaseUtility::getAll($query);
         foreach ($rowList as $row) {
-            $ret[ $row['tag_name'] ] = $row['tag_value'];
+            $ret[$row['tag_name']] = $row['tag_value'];
         }
 
         return $ret;
@@ -689,15 +687,14 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
     /**
      * Update page field
      */
-    protected function executeUpdateAdvMetaTags()
-    {
+    protected function executeUpdateAdvMetaTags() {
         if (empty($this->postVar['pid'])
             || empty($this->postVar['metaTags'])
         ) {
             return;
         }
 
-        $pid         = (int)$this->postVar['pid'];
+        $pid = (int)$this->postVar['pid'];
         $metaTagList = (array)$this->postVar['metaTags'];
         $sysLanguage = (int)$this->postVar['sysLanguage'];
 
@@ -705,6 +702,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
         $this->clearMetaTags($pid, $sysLanguage);
         $metaTagGroup = 2;
         foreach ($metaTagList as $metaTagName => $metaTagValue) {
+
             if (is_scalar($metaTagValue)) {
                 $metaTagValue = trim($metaTagValue);
 
@@ -713,7 +711,8 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
                 }
             } elseif (is_array($metaTagValue)) {
                 foreach ($metaTagValue as $subTagName => $subTagValue) {
-                    $this->updateMetaTag($pid, $sysLanguage, array($metaTagName, $subTagName), $subTagValue, $metaTagGroup++);
+                    $this->updateMetaTag($pid, $sysLanguage, array($metaTagName, $subTagName), $subTagValue,
+                        $metaTagGroup++);
                 }
             }
         }
@@ -724,28 +723,27 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
     /**
      * Clear all meta tags for one page
      *
-     * @param integer        $pid           PID
-     * @param integer|NULL   $sysLanguage   System language id
+     * @param integer      $pid         PID
+     * @param integer|NULL $sysLanguage System language id
      */
-    protected function clearMetaTags($pid, $sysLanguage)
-    {
-        $query = 'DELETE FROM tx_metaseo_metatag
+    protected function clearMetaTags($pid, $sysLanguage) {
+        $query
+            = 'DELETE FROM tx_metaseo_metatag
                         WHERE pid = ' . (int)$pid . '
                           AND sys_language_uid = ' . (int)$sysLanguage;
         DatabaseUtility::exec($query);
     }
 
     /**
-     * @param integer        $pid               PID
-     * @param integer|NULL   $sysLanguage       System language id
-     * @param string|array   $metaTag           MetaTag name
-     * @param string         $value             MetaTag value
-     * @param integer        $tagGroup          MetaTag group
+     * @param integer      $pid         PID
+     * @param integer|NULL $sysLanguage System language id
+     * @param string|array $metaTag     MetaTag name
+     * @param string       $value       MetaTag value
+     * @param integer      $tagGroup    MetaTag group
      */
-    protected function updateMetaTag($pid, $sysLanguage, $metaTag, $value, $tagGroup = null)
-    {
-        $tstamp   = time();
-        $crdate   = time();
+    protected function updateMetaTag($pid, $sysLanguage, $metaTag, $value, $tagGroup = null) {
+        $tstamp = time();
+        $crdate = time();
         $cruserId = $GLOBALS['BE_USER']->user['uid'];
 
         $subTagName = '';
@@ -758,7 +756,8 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
             $tagGroup = 1;
         }
 
-        $query = 'INSERT INTO tx_metaseo_metatag
+        $query
+            = 'INSERT INTO tx_metaseo_metatag
                               (pid, tstamp, crdate, cruser_id, sys_language_uid, tag_name, tag_subname, tag_value, tag_group)
                         VALUES (
                               ' . (int)$pid . ',
@@ -779,14 +778,14 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
     /**
      * Update field in page table
      *
-     * @param integer        $pid           PID
-     * @param integer|NULL   $sysLanguage   System language id
-     * @param string         $fieldName     Field name
-     * @param string         $fieldValue    Field value
+     * @param integer      $pid         PID
+     * @param integer|NULL $sysLanguage System language id
+     * @param string       $fieldName   Field name
+     * @param string       $fieldValue  Field value
+     *
      * @return array
      */
-    protected function updatePageTableField($pid, $sysLanguage, $fieldName, $fieldValue)
-    {
+    protected function updatePageTableField($pid, $sysLanguage, $fieldName, $fieldValue) {
         $tableName = 'pages';
 
         if (!empty($sysLanguage)) {
@@ -802,7 +801,8 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
                 // Update field in pages overlay (also logs update event and clear cache for this page)
 
                 // check uid of pages language overlay
-                $query = 'SELECT uid
+                $query
+                    = 'SELECT uid
                             FROM pages_language_overlay
                            WHERE pid = ' . (int)$pid . '
                              AND sys_language_uid = ' . (int)$sysLanguage;
