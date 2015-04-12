@@ -141,7 +141,7 @@ class SitemapUtility {
                 // #####################################
                 // INSERT
                 // #####################################
-                $GLOBALS['TYPO3_DB']->exec_INSERTquery(
+                \Metaseo\Metaseo\Utility\DatabaseUtility::connection()->exec_INSERTquery(
                     'tx_metaseo_sitemap',
                     $pageData,
                     array_keys($pageData)

@@ -158,7 +158,7 @@ class CacheUtility {
         try {
             $query
                 = 'DELETE FROM tx_metaseo_cache
-                            WHERE cache_section = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($section, 'tx_metaseo_cache');
+                            WHERE cache_section = ' . \Metaseo\Metaseo\Utility\DatabaseUtility::connection()->fullQuoteStr($section, 'tx_metaseo_cache');
             DatabaseUtility::exec($query);
         } catch (\Exception $e) {
             return false;

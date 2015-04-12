@@ -45,7 +45,7 @@ class DatabaseUtility {
 
         $res = self::query($query);
         if ($res) {
-            if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+            if ($row = self::connection()->sql_fetch_assoc($res)) {
                 $ret = reset($row);
             }
             self::free($res);
@@ -66,7 +66,7 @@ class DatabaseUtility {
 
         $res = self::query($query);
         if ($res) {
-            if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+            if ($row = self::connection()->sql_fetch_assoc($res)) {
                 $ret = $row;
             }
             self::free($res);
@@ -87,7 +87,7 @@ class DatabaseUtility {
 
         $res = self::query($query);
         if ($res) {
-            while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+            while ($row = self::connection()->sql_fetch_assoc($res)) {
                 $ret[] = $row;
             }
             self::free($res);
@@ -109,7 +109,7 @@ class DatabaseUtility {
 
         $res = self::query($query);
         if ($res) {
-            while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+            while ($row = self::connection()->sql_fetch_assoc($res)) {
                 if ($indexCol === null) {
                     // use first key as index
                     $index = reset($row);
@@ -137,7 +137,7 @@ class DatabaseUtility {
 
         $res = self::query($query);
         if ($res) {
-            while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {
+            while ($row = self::connection()->sql_fetch_row($res)) {
                 $ret[$row[0]] = $row[1];
             }
             self::free($res);
@@ -158,7 +158,7 @@ class DatabaseUtility {
 
         $res = self::query($query);
         if ($res) {
-            while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {
+            while ($row = self::connection()->sql_fetch_row($res)) {
                 $ret[] = $row[0];
             }
             self::free($res);
@@ -179,7 +179,7 @@ class DatabaseUtility {
 
         $res = self::query($query);
         if ($res) {
-            while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {
+            while ($row = self::connection()->sql_fetch_row($res)) {
                 $ret[$row[0]] = $row[0];
             }
             self::free($res);
@@ -214,7 +214,7 @@ class DatabaseUtility {
         $res = self::query($query);
 
         if ($res) {
-            $ret = $GLOBALS['TYPO3_DB']->sql_insert_id();
+            $ret = self::connection()->sql_insert_id();
             self::free($res);
         }
 
@@ -234,7 +234,7 @@ class DatabaseUtility {
         $res = self::query($query);
 
         if ($res) {
-            $ret = $GLOBALS['TYPO3_DB']->sql_affected_rows();
+            $ret = self::connection()->sql_affected_rows();
             self::free($res);
         }
 
@@ -263,7 +263,7 @@ class DatabaseUtility {
             return 'NULL';
         }
 
-        return $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $table);
+        return self::connection()->fullQuoteStr($value, $table);
     }
 
     /**
@@ -403,6 +403,15 @@ class DatabaseUtility {
     ###########################################################################
 
     /**
+     * Get current database connection
+     *
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    public static function connection() {
+        return $GLOBALS['TYPO3_DB'];
+    }
+
+    /**
      * Execute sql query
      *
      * @param   string $query SQL query
@@ -411,11 +420,11 @@ class DatabaseUtility {
      * @throws  \Exception
      */
     public static function query($query) {
-        $res = $GLOBALS['TYPO3_DB']->sql_query($query);
+        $res = self::connection()->sql_query($query);
 
-        if (!$res || $GLOBALS['TYPO3_DB']->sql_errno()) {
+        if (!$res || self::connection()->sql_errno()) {
             // SQL statement failed
-            $errorMsg = 'SQL Error: ' . $GLOBALS['TYPO3_DB']->sql_error() . ' [errno: ' . $GLOBALS['TYPO3_DB']->sql_errno() . ']';
+            $errorMsg = 'SQL Error: ' . self::connection()->sql_error() . ' [errno: ' . self::connection()->sql_errno() . ']';
 
             if (defined('TYPO3_cliMode')) {
                 throw new \Exception($errorMsg);
@@ -436,7 +445,7 @@ class DatabaseUtility {
      */
     public static function free($res) {
         if ($res && $res !== true) {
-            $GLOBALS['TYPO3_DB']->sql_free_result($res);
+            self::connection()->sql_free_result($res);
         }
     }
 }
