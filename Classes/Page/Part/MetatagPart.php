@@ -461,12 +461,6 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                 // to prevent linking to other domains
                 // see https://github.com/mblaschke/TYPO3-metaseo/issues/5
                 if (!$currentIsRootpage) {
-                    $upPage = $currentPage['pid'];
-                    $upPageUrl = NULL;
-                    if (!empty($upPage)) {
-                        $upPage = $this->getRelevantUpPagePid($upPage);
-                        $upPageUrl = $this->generateLink($upPage);
-                    }
 
                     $prevPage = $GLOBALS['TSFE']->cObj->HMENU($tsSetupSeo['sectionLinks.']['prev.']);
                     $prevPageUrl = NULL;
@@ -484,11 +478,6 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                 // Root (First page in rootline)
                 if (!empty($rootPageUrl)) {
                     $ret['link.rel.start'] = '<link rel="start" href="' . htmlspecialchars($rootPageUrl) . '">';
-                }
-
-                // Up (One page up in rootline)
-                if (!empty($upPageUrl)) {
-                    $ret['link.rel.up'] = '<link rel="up" href="' . htmlspecialchars($upPageUrl) . '">';
                 }
 
                 // Next (Next page in rootline)
@@ -683,31 +672,6 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         }
 
         return $ret;
-    }
-
-    /**
-     * Get relevant up page pid
-     *
-     * @param   int $uid    Page ID
-     * @return  int
-     */
-    protected function getRelevantUpPagePid($uid){
-        /** @var \TYPO3\CMS\Frontend\Page\PageRepository  $sysPageObj */
-        $sysPageObj = $this->objectManager->get(
-            'TYPO3\\CMS\\Frontend\\Page\\PageRepository'
-        );
-
-        $page = $sysPageObj->getPage_noCheck($uid);
-
-        if ($page['nav_hide'] === '1') {
-          $uid = $page['pid'];
-          $page =  $sysPageObj->getPage_noCheck($uid);
-            if ($page['nav_hide'] === '1') {
-               $uid = $this->getRelevantUpPagePid($uid);
-            }
-        }
-
-        return $uid;
     }
 
     /**
