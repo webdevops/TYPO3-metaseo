@@ -154,7 +154,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         $uidList = $this->postVar['uidList'];
         $rootPid = (int)$this->postVar['pid'];
 
-        $uidList = \Metaseo\Metaseo\Utility\DatabaseUtility::connection()->cleanIntArray($uidList);
+        $uidList = DatabaseUtility::connection()->cleanIntArray($uidList);
 
         if (empty($uidList) || empty($rootPid)) {
             return false;
@@ -183,7 +183,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         $uidList = $this->postVar['uidList'];
         $rootPid = (int)$this->postVar['pid'];
 
-        $uidList = \Metaseo\Metaseo\Utility\DatabaseUtility::connection()->cleanIntArray($uidList);
+        $uidList = DatabaseUtility::connection()->cleanIntArray($uidList);
 
         if (empty($uidList) || empty($rootPid)) {
             return false;
@@ -213,7 +213,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         $uidList = $this->postVar['uidList'];
         $rootPid = (int)$this->postVar['pid'];
 
-        $uidList = \Metaseo\Metaseo\Utility\DatabaseUtility::connection()->cleanIntArray($uidList);
+        $uidList = DatabaseUtility::connection()->cleanIntArray($uidList);
 
         if (empty($uidList) || empty($rootPid)) {
             return false;

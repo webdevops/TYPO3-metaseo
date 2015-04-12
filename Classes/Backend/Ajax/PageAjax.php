@@ -287,7 +287,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
             );
             $queryFieldList = array_merge($queryFieldList, $overlayFieldList);
 
-            $res = \Metaseo\Metaseo\Utility\DatabaseUtility::connection()->exec_SELECTquery(
+            $res = DatabaseUtility::connection()->exec_SELECTquery(
                 implode(',', $queryFieldList),
                 'pages_language_overlay',
                 'pid IN(' . implode(',', $pageIdList) . ') AND sys_language_uid = ' . (int)$sysLanguage
@@ -302,7 +302,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
             }
             unset($row);
 
-            while ($overlayRow = \Metaseo\Metaseo\Utility\DatabaseUtility::connection()->sql_fetch_assoc($res)) {
+            while ($overlayRow = DatabaseUtility::connection()->sql_fetch_assoc($res)) {
                 $pageOverlayId = $overlayRow['uid'];
                 $pageOriginalId = $overlayRow['pid'];
 
