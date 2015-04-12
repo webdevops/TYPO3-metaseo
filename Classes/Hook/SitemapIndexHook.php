@@ -31,10 +31,6 @@ use Metaseo\Metaseo\Utility\SitemapUtility;
 
 /**
  * Sitemap Indexer
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: SitemapIndexHook.php 84520 2014-03-28 10:33:24Z mblaschke $
  */
 class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
 

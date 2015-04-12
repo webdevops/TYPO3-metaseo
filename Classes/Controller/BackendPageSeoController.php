@@ -29,9 +29,6 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
 
 /**
  * TYPO3 Backend module page seo
- *
- * @package     TYPO3
- * @subpackage  metaseo
  */
 class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule {
     // ########################################################################

@@ -26,6 +26,7 @@
 
 /**
  * Class tx_metaseo_backend_validation_float
+ * (Used in TCA because of namespace issues)
  *
  * @deprecated
  */

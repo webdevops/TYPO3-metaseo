@@ -29,9 +29,6 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
 
 /**
  * TYPO3 Backend module sitemap
- *
- * @package     TYPO3
- * @subpackage  metaseo
  */
 class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule {
     // ########################################################################

@@ -27,10 +27,6 @@ namespace Metaseo\Metaseo\Scheduler\Task;
 
 /**
  * Scheduler Task Garbage Collection
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: GarbageCollectionTask.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
 class GarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 {

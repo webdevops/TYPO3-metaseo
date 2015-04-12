@@ -27,10 +27,6 @@ namespace Metaseo\Metaseo\Hook\Extension;
 
 /**
  * EXT:tt_news hook for metatags
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: TtnewsExtension.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
 class TtnewsExtension {
 

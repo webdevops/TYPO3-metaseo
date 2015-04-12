@@ -28,10 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Page Footer
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: FooterPart.php 84520 2014-03-28 10:33:24Z mblaschke $
  */
 class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
 {

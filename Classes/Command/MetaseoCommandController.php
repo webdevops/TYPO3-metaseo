@@ -29,9 +29,6 @@ use Metaseo\Metaseo\Utility\RootPageUtility;
 
 /**
  * TYPO3 Command controller
- *
- * @package     TYPO3
- * @subpackage  metaseo_tqseo_migration
  */
 class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController {
 

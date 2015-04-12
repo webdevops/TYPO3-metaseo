@@ -27,10 +27,6 @@ namespace Metaseo\Metaseo\Sitemap\Generator;
 
 /**
  * Sitemap XML generator
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: XmlGenerator.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
 class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator {
 

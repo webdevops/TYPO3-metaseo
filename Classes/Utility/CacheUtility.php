@@ -27,10 +27,6 @@ namespace Metaseo\Metaseo\Utility;
 
 /**
  * Cache utility
- *
- * @package     metaseo
- * @subpackage  Utility
- * @version     $Id: CacheUtility.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
 class CacheUtility {
 

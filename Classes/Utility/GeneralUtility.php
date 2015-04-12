@@ -27,10 +27,6 @@ namespace Metaseo\Metaseo\Utility;
 
 /**
  * General utility
- *
- * @package     metaseo
- * @subpackage  Utility
- * @version     $Id: GeneralUtility.php 81677 2013-11-21 12:32:33Z mblaschke $
  */
 class GeneralUtility {
 

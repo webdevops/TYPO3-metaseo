@@ -27,10 +27,6 @@ namespace Metaseo\Metaseo\Sitemap\Generator;
 
 /**
  * Sitemap TXT generator
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: TxtGenerator.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
 class TxtGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator {
 

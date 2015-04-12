@@ -29,9 +29,6 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
 
 /**
  * TYPO3 Backend module root settings
- *
- * @package     TYPO3
- * @subpackage  metaseo
  */
 class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule {
     // ########################################################################

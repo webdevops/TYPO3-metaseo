@@ -29,10 +29,6 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
 
 /**
  * Metatags generator
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: MetatagPart.php 84520 2014-03-28 10:33:24Z mblaschke $
  */
 class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 

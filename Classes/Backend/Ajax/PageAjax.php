@@ -29,9 +29,6 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
 
 /**
  * TYPO3 Backend ajax module page
- *
- * @package      TYPO3
- * @subpackage   metaseo
  */
 class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
 

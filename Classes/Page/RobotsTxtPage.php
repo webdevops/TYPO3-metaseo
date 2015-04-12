@@ -27,10 +27,6 @@ namespace Metaseo\Metaseo\Page;
 
 /**
  * Robots txt Page
- *
- * @package     metaseo
- * @subpackage  Page
- * @version     $Id: RobotsTxtPage.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
 class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
 

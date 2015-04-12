@@ -27,9 +27,6 @@ namespace Metaseo\Metaseo\Backend\Module;
 
 /**
  * TYPO3 Backend module base
- *
- * @package     TYPO3
- * @subpackage  metaseo
  */
 abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
     // ########################################################################

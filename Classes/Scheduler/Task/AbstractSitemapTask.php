@@ -27,10 +27,6 @@ namespace Metaseo\Metaseo\Scheduler\Task;
 
 /**
  * Scheduler Task Sitemap Base
- *
- * @package     metaseo
- * @subpackage  Sitemap
- * @version     $Id: class.sitemap_base.php 78237 2013-07-23 14:50:31Z mblaschke $
  */
 abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractTask {
 

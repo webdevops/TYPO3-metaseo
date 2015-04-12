@@ -31,10 +31,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Scheduler Task Sitemap Base
- *
- * @package     metaseo
- * @subpackage  Sitemap
- * @version     $Id: AbstractTask.php 84520 2014-03-28 10:33:24Z mblaschke $
  */
 abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 

@@ -27,9 +27,6 @@ namespace Metaseo\Metaseo\Backend\Validator;
 
 /**
  * TYPO3 Backend field validation: float
- *
- * @package     TYPO3
- * @subpackage  metaseo
  */
 class FloatValidator
 {

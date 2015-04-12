@@ -27,10 +27,6 @@ namespace Metaseo\Metaseo\Sitemap\Generator;
 
 /**
  * Sitemap abstract generator
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: AbstractGenerator.php 81677 2013-11-21 12:32:33Z mblaschke $
  */
 abstract class AbstractGenerator {
     // ########################################################################

@@ -27,10 +27,6 @@ namespace MetaSeo\MetaSeo;
 
 /**
  * Connector
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: Connector.php 84267 2014-03-14 13:39:05Z mblaschke $
  */
 class Connector implements \TYPO3\CMS\Core\SingletonInterface {
 

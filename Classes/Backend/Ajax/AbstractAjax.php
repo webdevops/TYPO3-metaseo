@@ -27,9 +27,6 @@ namespace Metaseo\Metaseo\Backend\Ajax;
 
 /**
  * TYPO3 Backend ajax module base
- *
- * @package     TYPO3
- * @subpackage  metaseo
  */
 abstract class AbstractAjax {
 

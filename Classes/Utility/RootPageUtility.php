@@ -27,10 +27,6 @@ namespace Metaseo\Metaseo\Utility;
 
 /**
  * Root page utility
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: SitemapUtility.php 81677 2013-11-21 12:32:33Z mblaschke $
  */
 class RootPageUtility {
 

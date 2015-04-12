@@ -29,9 +29,6 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
 
 /**
  * TYPO3 Backend ajax module sitemap
- *
- * @package     TYPO3
- * @subpackage  metaseo
  */
 class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
 {

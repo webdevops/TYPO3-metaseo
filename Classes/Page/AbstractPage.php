@@ -27,10 +27,6 @@ namespace Metaseo\Metaseo\Page;
 
 /**
  * Abstract page
- *
- * @package     metaseo
- * @subpackage  Page
- * @version     $Id: class.robots_txt.php 62700 2012-05-22 15:53:22Z mblaschke $
  */
 abstract class AbstractPage {
     // ########################################################################

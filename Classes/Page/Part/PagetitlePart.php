@@ -27,10 +27,6 @@ namespace Metaseo\Metaseo\Page\Part;
 
 /**
  * Page Title Changer
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: PagetitlePart.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
 class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 

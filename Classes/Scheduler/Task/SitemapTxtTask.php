@@ -27,10 +27,6 @@ namespace Metaseo\Metaseo\Scheduler\Task;
 
 /**
  * Scheduler Task Sitemap TXT
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: SitemapTxtTask.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
 class SitemapTxtTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask {
 
