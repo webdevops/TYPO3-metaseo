@@ -885,6 +885,8 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     }
 
     /**
+     * Check if page is configured as HTML5
+     *
      * @return bool
      */
     protected function isHtml5() {
