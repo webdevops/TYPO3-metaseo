@@ -111,10 +111,10 @@ plugin.metaseo {
 
         useLastUpdate = {$plugin.metaseo.metaTags.useLastUpdate}
         # canonical tag generator settings
-        useCanonical = {$plugin.metaseo.metaTags.useCanonical}
-        useCanonical {
-            strict = {$plugin.metaseo.metaTags.useCanonical.strict}
-            noMP = {$plugin.metaseo.metaTags.useCanonical.noMP}
+        canonicalUrl = {$plugin.metaseo.metaTags.canonicalUrl}
+        canonicalUrl {
+            strict = {$plugin.metaseo.metaTags.canonicalUrl.strict}
+            noMP = {$plugin.metaseo.metaTags.canonicalUrl.noMP}
 
             # Default typolink configuration for canonical link
             typolink {

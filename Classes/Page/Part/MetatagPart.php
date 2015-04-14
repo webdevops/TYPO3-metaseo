@@ -489,8 +489,8 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
             if (!empty($tsfePage['tx_metaseo_canonicalurl'])) {
                 $canonicalUrl = $tsfePage['tx_metaseo_canonicalurl'];
-            } elseif (!empty($tsSetupSeo['useCanonical'])) {
-                list($clUrl, $clLinkConf, $clDisableMpMode) = $this->detectCanonicalPage($tsSetupSeo['useCanonical.']);
+            } elseif (!empty($tsSetupSeo['canonicalUrl'])) {
+                list($clUrl, $clLinkConf, $clDisableMpMode) = $this->detectCanonicalPage($tsSetupSeo['canonicalUrl.']);
             }
 
             if (!empty($clUrl)) {
