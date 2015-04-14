@@ -781,19 +781,19 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
 
         $query = 'INSERT INTO tx_metaseo_metatag
                               (pid, tstamp, crdate, cruser_id, sys_language_uid, tag_name, tag_subname, tag_value, tag_group)
-                        VALUES (
-                              ' . (int)$pid . ',
-                              ' . (int)$tstamp . ',
-                              ' . (int)$crdate . ',
-                              ' . (int)$cruserId . ',
-                              ' . (int)$sysLanguage . ',
-                              ' . DatabaseUtility::quote($metaTag) . ',
-                              ' . DatabaseUtility::quote($subTagName) . ',
-                              ' . DatabaseUtility::quote($value) . ',
-                              ' . (int)$tagGroup . '
-                        ) ON DUPLICATE KEY UPDATE
-                                tstamp    = VALUES(tstamp),
-                                tag_value = VALUES(tag_value)';
+                       VALUES (
+                             ' . (int)$pid . ',
+                             ' . (int)$tstamp . ',
+                             ' . (int)$crdate . ',
+                             ' . (int)$cruserId . ',
+                             ' . (int)$sysLanguage . ',
+                             ' . DatabaseUtility::quote($metaTag) . ',
+                             ' . DatabaseUtility::quote($subTagName) . ',
+                             ' . DatabaseUtility::quote($value) . ',
+                             ' . (int)$tagGroup . '
+                       ) ON DUPLICATE KEY UPDATE
+                               tstamp    = VALUES(tstamp),
+                               tag_value = VALUES(tag_value)';
         DatabaseUtility::execInsert($query);
     }
 }

@@ -65,13 +65,14 @@ class CacheUtility {
 
         try {
             $query = 'INSERT INTO tx_metaseo_cache (page_uid, cache_section, cache_identifier, cache_content)
-                        VALUES(
-                            ' . (int)$pageId . ',
-                            ' . DatabaseUtility::quote($section, 'tx_metaseo_cache') . ',
-                            ' . DatabaseUtility::quote($identifier, 'tx_metaseo_cache') . ',
-                            ' . DatabaseUtility::quote($value, 'tx_metaseo_cache') . '
-                        )
-                        ON DUPLICATE KEY UPDATE cache_content = ' . DatabaseUtility::quote($value, 'tx_metaseo_cache');
+                           VALUES(
+                                  ' . (int)$pageId . ',
+                                  ' . DatabaseUtility::quote($section, 'tx_metaseo_cache') . ',
+                                  ' . DatabaseUtility::quote($identifier, 'tx_metaseo_cache') . ',
+                                  ' . DatabaseUtility::quote($value, 'tx_metaseo_cache') . '
+                                 )
+                 ON DUPLICATE KEY
+                           UPDATE cache_content = ' . DatabaseUtility::quote($value, 'tx_metaseo_cache');
             DatabaseUtility::exec($query);
         } catch (\Exception $e) {
             return false;
