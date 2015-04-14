@@ -44,16 +44,15 @@ class SitemapUtility {
     // Attributes
     // ########################################################################
 
-    protected static $typeBlacklist
-        = array(
-            PageRepository::DOKTYPE_BE_USER_SECTION,      // Backend Section (TYPO3 CMS)
-            PageRepository::DOKTYPE_SPACER,               // Menu separator  (TYPO3 CMS)
-            PageRepository::DOKTYPE_SYSFOLDER,            // Folder          (TYPO3 CMS)
-            PageRepository::DOKTYPE_RECYCLER,             // Recycler        (TYPO3 CMS)
-            self::DOKTYPE_SITEMAP_TXT,                    // sitemap.txt     (EXT:metaseo)
-            self::DOKTYPE_SITEMAP_XML,                    // sitemap.xml     (EXT:metaseo)
-            self::DOKTYPE_ROBOTS_TXT,                     // robots.txt      (EXT:metaseo)
-        );
+    protected static $typeBlacklist = array(
+        PageRepository::DOKTYPE_BE_USER_SECTION,      // Backend Section (TYPO3 CMS)
+        PageRepository::DOKTYPE_SPACER,               // Menu separator  (TYPO3 CMS)
+        PageRepository::DOKTYPE_SYSFOLDER,            // Folder          (TYPO3 CMS)
+        PageRepository::DOKTYPE_RECYCLER,             // Recycler        (TYPO3 CMS)
+        self::DOKTYPE_SITEMAP_TXT,                    // sitemap.txt     (EXT:metaseo)
+        self::DOKTYPE_SITEMAP_XML,                    // sitemap.xml     (EXT:metaseo)
+        self::DOKTYPE_ROBOTS_TXT,                     // robots.txt      (EXT:metaseo)
+    );
 
 
     // ########################################################################
@@ -78,7 +77,7 @@ class SitemapUtility {
 
         // calc page hash
         $pageData['page_hash'] = md5($pageData['page_url']);
-        $pageHash = $pageData['page_hash'];
+        $pageHash              = $pageData['page_hash'];
 
         // set default type if not set
         if (!isset($pageData['page_type'])) {
@@ -107,18 +106,16 @@ class SitemapUtility {
 
             // TODO: INSERT INTO ... ON DUPLICATE KEY UPDATE?
 
-            $query
-                = 'SELECT uid
-                        FROM tx_metaseo_sitemap
-                       WHERE page_uid      = ' . $pageData['page_uid'] . '
-                         AND page_language = ' . $pageData['page_language'] . '
-                         AND page_hash     = ' . $pageData['page_hash'] . '
-                         AND page_type     = ' . $pageData['page_type'];
+            $query      = 'SELECT uid
+                             FROM tx_metaseo_sitemap
+                            WHERE page_uid      = ' . $pageData['page_uid'] . '
+                              AND page_language = ' . $pageData['page_language'] . '
+                              AND page_hash     = ' . $pageData['page_hash'] . '
+                              AND page_type     = ' . $pageData['page_type'];
             $sitemapUid = DatabaseUtility::getOne($query);
 
             if (!empty($sitemapUid)) {
-                $query
-                    = 'UPDATE tx_metaseo_sitemap
+                $query = 'UPDATE tx_metaseo_sitemap
                              SET tstamp                = ' . $pageData['tstamp'] . ',
                                  page_rootpid          = ' . $pageData['page_rootpid'] . ',
                                  page_language         = ' . $pageData['page_language'] . ',
@@ -133,11 +130,8 @@ class SitemapUtility {
                 // #####################################
                 // INSERT
                 // #####################################
-                \Metaseo\Metaseo\Utility\DatabaseUtility::connection()->exec_INSERTquery(
-                    'tx_metaseo_sitemap',
-                    $pageData,
-                    array_keys($pageData)
-                );
+                \Metaseo\Metaseo\Utility\DatabaseUtility::connection()->exec_INSERTquery('tx_metaseo_sitemap',
+                    $pageData, array_keys($pageData));
             }
 
             $cache[$pageHash] = 1;
@@ -152,8 +146,7 @@ class SitemapUtility {
         // Delete expired entries
         // #####################
 
-        $query
-            = 'DELETE FROM tx_metaseo_sitemap
+        $query = 'DELETE FROM tx_metaseo_sitemap
                         WHERE is_blacklisted = 0
                           AND expire <= ' . (int)time();
         DatabaseUtility::exec($query);
@@ -162,8 +155,7 @@ class SitemapUtility {
         //  Deleted or
         // excluded pages
         // #####################
-        $query
-            = 'SELECT ts.uid
+        $query = 'SELECT ts.uid
                     FROM tx_metaseo_sitemap ts
                          LEFT JOIN pages p
                             ON p.uid = ts.page_uid
@@ -172,12 +164,12 @@ class SitemapUtility {
                            AND p.tx_metaseo_is_exclude = 0
                            AND ' . DatabaseUtility::conditionNotIn('p.doktype', self::getPageTypeBlacklist()) . '
                    WHERE p.uid IS NULL';
+
         $deletedSitemapPages = DatabaseUtility::getColWithIndex($query);
 
         // delete pages
         if (!empty($deletedSitemapPages)) {
-            $query
-                = 'DELETE FROM tx_metaseo_sitemap
+            $query = 'DELETE FROM tx_metaseo_sitemap
                             WHERE uid IN (' . implode(',', $deletedSitemapPages) . ')
                               AND is_blacklisted = 0';
             DatabaseUtility::exec($query);
@@ -203,12 +195,11 @@ class SitemapUtility {
      */
     public static function getList($rootPid, $languageId = null) {
         $sitemapList = array();
-        $pageList = array();
+        $pageList    = array();
 
         $typo3Pids = array();
 
-        $query
-            = 'SELECT ts.*
+        $query = 'SELECT ts.*
                     FROM tx_metaseo_sitemap ts
                             INNER JOIN pages p
                               ON	p.uid = ts.page_uid
@@ -222,8 +213,7 @@ class SitemapUtility {
         if ($languageId !== null) {
             $query .= ' AND ts.page_language = ' . (int)$languageId;
         }
-        $query
-            .= ' ORDER BY
+        $query .= ' ORDER BY
                         ts.page_depth ASC,
                         p.pid ASC,
                         p.sorting ASC';
@@ -236,15 +226,14 @@ class SitemapUtility {
         foreach ($resultRows as $row) {
             $sitemapList[] = $row;
 
-            $sitemapPageId = $row['page_uid'];
+            $sitemapPageId             = $row['page_uid'];
             $typo3Pids[$sitemapPageId] = (int)$sitemapPageId;
         }
 
         if (!empty($typo3Pids)) {
-            $query
-                = 'SELECT *
-                        FROM pages
-                       WHERE ' . DatabaseUtility::conditionIn('uid', $typo3Pids);
+            $query    = 'SELECT *
+                           FROM pages
+                          WHERE ' . DatabaseUtility::conditionIn('uid', $typo3Pids);
             $pageList = DatabaseUtility::getAllWithIndex($query, 'uid');
 
             if (empty($pageList)) {

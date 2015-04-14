@@ -65,16 +65,15 @@ abstract class AbstractGenerator {
      *
      * @var array
      */
-    public $pageChangeFrequency
-        = array(
-            1 => 'always',
-            2 => 'hourly',
-            3 => 'daily',
-            4 => 'weekly',
-            5 => 'monthly',
-            6 => 'yearly',
-            7 => 'never',
-        );
+    public $pageChangeFrequency = array(
+        1 => 'always',
+        2 => 'hourly',
+        3 => 'daily',
+        4 => 'weekly',
+        5 => 'monthly',
+        6 => 'yearly',
+        7 => 'never',
+    );
     /**
      * Link template for sitemap index
      *
@@ -113,7 +112,7 @@ abstract class AbstractGenerator {
         $list = \Metaseo\Metaseo\Utility\SitemapUtility::getList($this->rootPid, $sysLanguageId);
 
         $this->sitemapPages = $list['tx_metaseo_sitemap'];
-        $this->pages = $list['pages'];
+        $this->pages        = $list['pages'];
 
         // Call hook
         \Metaseo\Metaseo\Utility\GeneralUtility::callHook('sitemap-setup', $this);

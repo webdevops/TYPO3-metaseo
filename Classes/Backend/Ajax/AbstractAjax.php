@@ -102,7 +102,7 @@ abstract class AbstractAjax {
         // Call function
         if (!empty($function)) {
             $method = 'execute' . $function;
-            $call = array($this, $method);
+            $call   = array($this, $method);
 
             if (is_callable($call)) {
                 $this->fetchParams();
@@ -168,9 +168,7 @@ abstract class AbstractAjax {
         $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 
         // Init form protection instance
-        $this->formProtection = $this->objectManager->get(
-            'TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection'
-        );
+        $this->formProtection = $this->objectManager->get('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection');
     }
 
     /**

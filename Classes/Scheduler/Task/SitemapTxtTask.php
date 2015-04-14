@@ -64,7 +64,7 @@ class SitemapTxtTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
         }
 
         $generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\TxtGenerator');
-        $content = $generator->sitemap();
+        $content   = $generator->sitemap();
 
         $fileName = sprintf($sitemapFileName, $rootPageId, $languageId);
         $this->writeToFile(PATH_site . '/' . $this->sitemapDir . '/' . $fileName, $content);

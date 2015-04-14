@@ -55,7 +55,7 @@ class HttpHook {
                 // ##################################
                 // W3C P3P Tags
                 // ##################################
-                $p3pCP = null;
+                $p3pCP        = null;
                 $p3pPolicyUrl = null;
 
                 if (!empty($tsSetupSeo['p3pCP'])) {
@@ -80,7 +80,7 @@ class HttpHook {
                     $headers['P3P'] = implode(' ', $p3pHeader);
 
                     // cache informations
-                    $curentTemplate = end($GLOBALS['TSFE']->tmpl->hierarchyInfo);
+                    $curentTemplate     = end($GLOBALS['TSFE']->tmpl->hierarchyInfo);
                     $currentTemplatePid = $curentTemplate['pid'];
                     \Metaseo\Metaseo\Utility\CacheUtility::set($currentTemplatePid, 'http', 'p3p', $headers['P3P']);
                 }

@@ -105,7 +105,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
         if (!empty($this->conf['sitemap.']['index.']['fileExtension.'])) {
             # File extensions can be a comma separated list
             foreach ($this->conf['sitemap.']['index.']['fileExtension.'] as $fileExtListRaw) {
-                $fileExtList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fileExtListRaw);
+                $fileExtList       = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fileExtListRaw);
                 $this->fileExtList = array_merge($this->fileExtList, $fileExtList);
             };
         }
@@ -127,8 +127,8 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
      */
     public function addPageToSitemapIndex() {
         // check if sitemap is enabled in root
-        if (!GeneralUtility::getRootSettingValue('is_sitemap', true)
-            || !GeneralUtility::getRootSettingValue('is_sitemap_page_indexer', true)
+        if (!GeneralUtility::getRootSettingValue('is_sitemap',
+                true) || !GeneralUtility::getRootSettingValue('is_sitemap_page_indexer', true)
         ) {
             return true;
         }
@@ -216,7 +216,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
         // Fetch abs ref prefix if available/set
         if ($absRefPrefix === null) {
             if (!empty($GLOBALS['TSFE']->tmpl->setup['config.']['absRefPrefix'])) {
-                $absRefPrefix = $GLOBALS['TSFE']->tmpl->setup['config.']['absRefPrefix'];
+                $absRefPrefix       = $GLOBALS['TSFE']->tmpl->setup['config.']['absRefPrefix'];
                 $absRefPrefixLength = strlen($absRefPrefix);
             } else {
                 $absRefPrefix = false;
@@ -264,8 +264,8 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
      */
     public function hook_linkParse(&$pObj) {
         // check if sitemap is enabled in root
-        if (!GeneralUtility::getRootSettingValue('is_sitemap', true)
-            || !GeneralUtility::getRootSettingValue('is_sitemap_typolink_indexer', true)
+        if (!GeneralUtility::getRootSettingValue('is_sitemap',
+                true) || !GeneralUtility::getRootSettingValue('is_sitemap_typolink_indexer', true)
         ) {
             return true;
         }
@@ -276,9 +276,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
         }
 
         // Check
-        if (empty($pObj['finalTagParts'])
-            || empty($pObj['conf'])
-            || empty($pObj['finalTagParts']['url'])
+        if (empty($pObj['finalTagParts']) || empty($pObj['conf']) || empty($pObj['finalTagParts']['url'])
         ) {
             // no valid link
             return;
@@ -286,7 +284,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
 
         // Init link informations
         $linkConf = $pObj['conf'];
-        $linkUrl = $pObj['finalTagParts']['url'];
+        $linkUrl  = $pObj['finalTagParts']['url'];
         list($linkPageUid, $linkType) = $this->parseLinkConf($pObj);
         $linkUrl = $this->processLinkUrl($linkUrl);
 
@@ -418,7 +416,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
      * @return array
      */
     protected function parseLinkConf($conf) {
-        $uid = null;
+        $uid  = null;
         $type = null;
 
         // Check link type
@@ -446,7 +444,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
                 if ($this->checkIfFileIsWhitelisted($fileUrl)) {
                     // File will be registered from the root page
                     // to prevent duplicate urls
-                    $uid = GeneralUtility::getRootPid();
+                    $uid  = GeneralUtility::getRootPid();
                     $type = SitemapUtility::SITEMAP_TYPE_FILE;
                 }
                 break;
@@ -522,8 +520,7 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
         // ############################
 
         // skip POST-calls and feuser login
-        if ($_SERVER['REQUEST_METHOD'] !== 'GET'
-            || !empty($GLOBALS['TSFE']->fe_user->user['uid'])
+        if ($_SERVER['REQUEST_METHOD'] !== 'GET' || !empty($GLOBALS['TSFE']->fe_user->user['uid'])
         ) {
             return false;
         }

@@ -85,12 +85,8 @@ class RobotsTxtDefault {
         $GLOBALS['TT']->start();
 
         /** @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $tsfeController */
-        $tsfeController = $this->objectManager->get(
-            'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
-            $GLOBALS['TYPO3_CONF_VARS'],
-            $rootPageId,
-            0
-        );
+        $tsfeController = $this->objectManager->get('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
+            $GLOBALS['TYPO3_CONF_VARS'], $rootPageId, 0);
 
         $GLOBALS['TSFE'] = $tsfeController;
 

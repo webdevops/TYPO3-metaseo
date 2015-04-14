@@ -47,7 +47,7 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
             $pageLimit = (int)$this->tsSetup['pageLimit'];
         }
 
-        $sitemaps = array();
+        $sitemaps  = array();
         $pageItems = count($this->sitemapPages);
         $pageCount = ceil($pageItems / $pageLimit);
 
@@ -59,17 +59,14 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
 
         for ($i = 0; $i < $pageCount; $i++) {
             if ($this->indexPathTemplate) {
-                $link = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl(
-                    str_replace('###PAGE###', $i, $this->indexPathTemplate)
-                );
+                $link = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl(str_replace('###PAGE###', $i,
+                    $this->indexPathTemplate));
 
                 $sitemaps[] = $link;
             } else {
                 $linkConf['additionalParams'] = '&page=' . ($i + 1);
 
-                $sitemaps[] = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl(
-                    $GLOBALS['TSFE']->cObj->typoLink_URL($linkConf)
-                );
+                $sitemaps[] = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($GLOBALS['TSFE']->cObj->typoLink_URL($linkConf));
             }
         }
 
@@ -108,14 +105,14 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
             $pageLimit = (int)$this->tsSetup['pageLimit'];
         }
 
-        $pageItems = count($this->sitemapPages);
+        $pageItems     = count($this->sitemapPages);
         $pageItemBegin = $pageLimit * ($page - 1);
-        $pageCount = ceil($pageItems / $pageLimit);
+        $pageCount     = ceil($pageItems / $pageLimit);
 
 
         if ($pageItemBegin <= $pageItems) {
             $this->sitemapPages = array_slice($this->sitemapPages, $pageItemBegin, $pageLimit);
-            $ret = $this->createSitemapPage($page);
+            $ret                = $this->createSitemapPage($page);
         }
 
         return $ret;
@@ -133,18 +130,12 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
         $ret .= ' xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9';
         $ret .= ' http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
 
-        $pagePriorityDefaultValue = (float)\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue(
-            'sitemap_priorty',
-            0
-        );
-        $pagePriorityDepthMultiplier = (float)\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue(
-            'sitemap_priorty_depth_multiplier',
-            0
-        );
-        $pagePriorityDepthModificator = (float)\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue(
-            'sitemap_priorty_depth_modificator',
-            0
-        );
+        $pagePriorityDefaultValue     = (float)\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('sitemap_priorty',
+            0);
+        $pagePriorityDepthMultiplier  = (float)\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('sitemap_priorty_depth_multiplier',
+            0);
+        $pagePriorityDepthModificator = (float)\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('sitemap_priorty_depth_modificator',
+            0);
 
         if ($pagePriorityDefaultValue == 0) {
             $pagePriorityDefaultValue = 1;
@@ -174,7 +165,7 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
             // #####################################
             // Page priority
             // #####################################
-            $pageDepth = $sitemapPage['page_depth'];
+            $pageDepth     = $sitemapPage['page_depth'];
             $pageDepthBase = 1;
 
             if (!empty($sitemapPage['page_hash'])) {

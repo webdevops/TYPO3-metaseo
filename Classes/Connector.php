@@ -40,14 +40,13 @@ class Connector implements \TYPO3\CMS\Core\SingletonInterface {
      *
      * @var array
      */
-    protected static $store
-        = array(
-            'flag'      => array(),
-            'meta'      => array(),
-            'meta:og'   => array(),
-            'custom'    => array(),
-            'pagetitle' => array(),
-        );
+    protected static $store = array(
+        'flag'      => array(),
+        'meta'      => array(),
+        'meta:og'   => array(),
+        'custom'    => array(),
+        'pagetitle' => array(),
+    );
 
     // ########################################################################
     // Page title methods
@@ -63,7 +62,7 @@ class Connector implements \TYPO3\CMS\Core\SingletonInterface {
         $value = (string)$value;
 
         if ($updateTsfe && !empty($GLOBAL['TSFE'])) {
-            $GLOBAL['TSFE']->page['title'] = $value;
+            $GLOBAL['TSFE']->page['title']   = $value;
             $GLOBAL['TSFE']->indexedDocTitle = $value;
         }
 
@@ -96,7 +95,7 @@ class Connector implements \TYPO3\CMS\Core\SingletonInterface {
      */
     public static function setPageTitleAbsolute($value, $updateTsfe = true) {
         if ($updateTsfe && !empty($GLOBALS['TSFE'])) {
-            $GLOBALS['TSFE']->page['title'] = $value;
+            $GLOBALS['TSFE']->page['title']   = $value;
             $GLOBALS['TSFE']->indexedDocTitle = $value;
         }
 
@@ -123,7 +122,7 @@ class Connector implements \TYPO3\CMS\Core\SingletonInterface {
      * @param   string $value Metatag value
      */
     public static function setMetaTag($key, $value) {
-        $key = (string)$key;
+        $key   = (string)$key;
         $value = (string)$value;
 
         if (strpos($key, 'og:') === 0) {
@@ -140,11 +139,11 @@ class Connector implements \TYPO3\CMS\Core\SingletonInterface {
      * @param   string $value Metatag value
      */
     public static function setOpenGraphTag($key, $value) {
-        $key = (string)$key;
+        $key   = (string)$key;
         $value = (string)$value;
 
         self::$store['flag']['meta:og:external'] = true;
-        self::$store['meta:og'][$key] = $value;
+        self::$store['meta:og'][$key]            = $value;
     }
 
     /**
@@ -154,7 +153,7 @@ class Connector implements \TYPO3\CMS\Core\SingletonInterface {
      * @param   string $value Metatag value
      */
     public static function setCustomMetaTag($key, $value) {
-        $key = (string)$key;
+        $key   = (string)$key;
         $value = (string)$value;
 
         self::$store['custom'][$key] = $value;

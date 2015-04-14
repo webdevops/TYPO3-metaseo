@@ -61,8 +61,7 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
         if ($rootPageId !== null) {
             $domain = RootPageUtility::getDomain($rootPageId);
 
-            $query
-                = 'DELETE FROM tx_metaseo_sitemap
+            $query = 'DELETE FROM tx_metaseo_sitemap
                        WHERE page_rootpid = ' . DatabaseUtility::quote($rootPageId, 'tx_metaseo_sitemap') . '
                          AND is_blacklisted = 0';
             DatabaseUtility::exec($query);
@@ -87,11 +86,10 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
         if ($rootPageId !== null) {
             $domain = RootPageUtility::getDomain($rootPageId);
 
-            $query
-                = 'SELECT page_url
-                        FROM tx_metaseo_sitemap
-                       WHERE page_rootpid = ' . DatabaseUtility::quote($rootPageId, 'tx_metaseo_sitemap') . '
-                         AND is_blacklisted = 0';
+            $query   = 'SELECT page_url
+                          FROM tx_metaseo_sitemap
+                         WHERE page_rootpid = ' . DatabaseUtility::quote($rootPageId, 'tx_metaseo_sitemap') . '
+                           AND is_blacklisted = 0';
             $urlList = DatabaseUtility::getCol($query);
 
             foreach ($urlList as $url) {
@@ -122,12 +120,11 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
             // TODO: check if var is a valid root page
             $ret = (int)$var;
         } else {
-            $query
-                = 'SELECT pid
+            $query = 'SELECT pid
                         FROM sys_domain
                        WHERE domainName = ' . DatabaseUtility::quote($var, 'sys_domain') . '
                          AND hidden = 0';
-            $pid = DatabaseUtility::getOne($query);
+            $pid   = DatabaseUtility::getOne($query);
 
             if (!empty($pid)) {
                 $ret = $pid;

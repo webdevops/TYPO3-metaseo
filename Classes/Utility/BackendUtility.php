@@ -40,8 +40,7 @@ class BackendUtility {
         static $cache = null;
 
         if ($cache === null) {
-            $query
-                = 'SELECT uid,
+            $query = 'SELECT uid,
                              pid,
                              title
                         FROM pages
@@ -62,8 +61,7 @@ class BackendUtility {
         static $cache = null;
 
         if ($cache === null) {
-            $query
-                = 'SELECT seosr.*
+            $query = 'SELECT seosr.*
                         FROM tx_metaseo_setting_root seosr
                              INNER JOIN pages p
                                  ON p.uid = seosr.pid

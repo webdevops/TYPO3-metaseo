@@ -203,16 +203,15 @@ class GeneralUtility {
             return $ret;
         }
 
-        $host = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST');
+        $host    = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST');
         $rootPid = self::getRootPid();
 
-        $query
-            = 'SELECT *
+        $query = 'SELECT *
                     FROM sys_domain
                    WHERE pid = ' . (int)$rootPid . '
                      AND domainName = ' . DatabaseUtility::quote($host, 'sys_domain') . '
                      AND hidden = 0';
-        $ret = DatabaseUtility::getRow($query);
+        $ret   = DatabaseUtility::getRow($query);
 
         return $ret;
     }
@@ -242,7 +241,7 @@ class GeneralUtility {
             #################
             if (!isset($cache[$uid])) {
                 $cache[$uid] = null;
-                $rootline = self::getRootLine($uid);
+                $rootline    = self::getRootLine($uid);
 
                 if (!empty($rootline[0])) {
                     $cache[$uid] = $rootline[0]['uid'];
@@ -294,13 +293,12 @@ class GeneralUtility {
             $rootPid = self::getRootPid();
         }
 
-        $query
-            = 'SELECT *
+        $query = 'SELECT *
                     FROM tx_metaseo_setting_root
                    WHERE pid = ' . (int)$rootPid . '
                      AND deleted = 0
                    LIMIT 1';
-        $ret = DatabaseUtility::getRow($query);
+        $ret   = DatabaseUtility::getRow($query);
 
         return $ret;
     }
@@ -348,8 +346,7 @@ class GeneralUtility {
         // Fetch hooks config for metaseo, minimize array lookups
         if ($hookConf === null) {
             $hookConf = array();
-            if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks'])
-                && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks'])
+            if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks'])
             ) {
                 $hookConf = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks'];
             }

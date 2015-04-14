@@ -50,8 +50,8 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         $ret = array();
 
         /** @var array $tsSetup */
-        $tsSetup = $GLOBALS['TSFE']->tmpl->setup;
-        $cObj = $GLOBALS['TSFE']->cObj;
+        $tsSetup  = $GLOBALS['TSFE']->tmpl->setup;
+        $cObj     = $GLOBALS['TSFE']->cObj;
         $pageMeta = array();
 
         /** @var array $tsfePage */
@@ -63,7 +63,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         }
 
         $customMetaTagList = array();
-        $enableMetaDc = true;
+        $enableMetaDc      = true;
 
         // Init News extension
         $this->initExtensionSupport();
@@ -136,28 +136,22 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             }
 
             // tx_metaseo_geo_long
-            $tmp = $cObj->stdWrap(
-                $tsSetupSeo['conf.']['tx_metaseo_geo_long'],
-                $tsSetupSeo['conf.']['tx_metaseo_geo_long.']
-            );
+            $tmp = $cObj->stdWrap($tsSetupSeo['conf.']['tx_metaseo_geo_long'],
+                $tsSetupSeo['conf.']['tx_metaseo_geo_long.']);
             if (!empty($tmp)) {
                 $pageMeta['geoPositionLongitude'] = $tmp;
             }
 
             // tx_metaseo_geo_place
-            $tmp = $cObj->stdWrap(
-                $tsSetupSeo['conf.']['tx_metaseo_geo_place'],
-                $tsSetupSeo['conf.']['tx_metaseo_geo_place.']
-            );
+            $tmp = $cObj->stdWrap($tsSetupSeo['conf.']['tx_metaseo_geo_place'],
+                $tsSetupSeo['conf.']['tx_metaseo_geo_place.']);
             if (!empty($tmp)) {
                 $pageMeta['geoPlacename'] = $tmp;
             }
 
             // tx_metaseo_geo_region
-            $tmp = $cObj->stdWrap(
-                $tsSetupSeo['conf.']['tx_metaseo_geo_region'],
-                $tsSetupSeo['conf.']['tx_metaseo_geo_region.']
-            );
+            $tmp = $cObj->stdWrap($tsSetupSeo['conf.']['tx_metaseo_geo_region'],
+                $tsSetupSeo['conf.']['tx_metaseo_geo_region.']);
             if (!empty($tmp)) {
                 $pageMeta['geoRegion'] = $tmp;
             }
@@ -382,7 +376,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
             // Geo-Position
             if (!empty($tsSetupSeo['geoPositionLatitude']) && !empty($tsSetupSeo['geoPositionLongitude'])) {
-                $ret['geo.icmb'] = '<meta name="ICBM" content="' . htmlspecialchars($tsSetupSeo['geoPositionLatitude']) . ', ' . htmlspecialchars($tsSetupSeo['geoPositionLongitude']) . '">';
+                $ret['geo.icmb']     = '<meta name="ICBM" content="' . htmlspecialchars($tsSetupSeo['geoPositionLatitude']) . ', ' . htmlspecialchars($tsSetupSeo['geoPositionLongitude']) . '">';
                 $ret['geo.position'] = '<meta name="geo.position" content="' . htmlspecialchars($tsSetupSeo['geoPositionLatitude']) . ';' . htmlspecialchars($tsSetupSeo['geoPositionLongitude']) . '">';
             }
 
@@ -446,7 +440,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                 $rootLine = \Metaseo\Metaseo\Utility\GeneralUtility::getRootLine();
 
                 $currentPage = end($rootLine);
-                $rootPage = reset($rootLine);
+                $rootPage    = reset($rootLine);
 
                 $currentIsRootpage = ($currentPage['uid'] === $rootPage['uid']);
 
@@ -461,13 +455,13 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                 // see https://github.com/mblaschke/TYPO3-metaseo/issues/5
                 if (!$currentIsRootpage) {
 
-                    $prevPage = $GLOBALS['TSFE']->cObj->HMENU($tsSetupSeo['sectionLinks.']['prev.']);
+                    $prevPage    = $GLOBALS['TSFE']->cObj->HMENU($tsSetupSeo['sectionLinks.']['prev.']);
                     $prevPageUrl = null;
                     if (!empty($prevPage)) {
                         $prevPageUrl = $this->generateLink($prevPage);
                     }
 
-                    $nextPage = $GLOBALS['TSFE']->cObj->HMENU($tsSetupSeo['sectionLinks.']['next.']);
+                    $nextPage    = $GLOBALS['TSFE']->cObj->HMENU($tsSetupSeo['sectionLinks.']['next.']);
                     $nextPageUrl = null;
                     if (!empty($nextPage)) {
                         $nextPageUrl = $this->generateLink($nextPage);
@@ -621,7 +615,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
         if ($disableMP) {
             // Disable MP usage in typolink - link to the real page instead
-            $mpOldConfValue = $GLOBALS['TSFE']->config['config']['MP_disableTypolinkClosestMPvalue'];
+            $mpOldConfValue                                                        = $GLOBALS['TSFE']->config['config']['MP_disableTypolinkClosestMPvalue'];
             $GLOBALS['TSFE']->config['config']['MP_disableTypolinkClosestMPvalue'] = 1;
         }
 
@@ -651,11 +645,11 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         # Fetch typoscript config
         #####################
         $strictMode = (bool)(int)$tsConfig['strict'];
-        $noMpMode = (bool)(int)$tsConfig['noMP'];
-        $linkConf = !empty($tsConfig['typolink.']) ? $tsConfig['typolink.'] : array();
-        $blacklist = !empty($tsConfig['blacklist.']) ? $tsConfig['blacklist.'] : array();
+        $noMpMode   = (bool)(int)$tsConfig['noMP'];
+        $linkConf   = !empty($tsConfig['typolink.']) ? $tsConfig['typolink.'] : array();
+        $blacklist  = !empty($tsConfig['blacklist.']) ? $tsConfig['blacklist.'] : array();
 
-        $linkParam = null;
+        $linkParam  = null;
         $linkMpMode = false;
 
         // Init link configuration
@@ -779,7 +773,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         // #################
         // Adv meta tags (from editor)
         // #################
-        $advMetaTagList = array();
+        $advMetaTagList      = array();
         $advMetaTagCondition = array();
 
         if (!empty($storeMeta['flag']['meta:og:external'])) {
@@ -799,12 +793,12 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         }
 
         // Fetch list of meta tags from database
-        $query
-            = 'SELECT tag_name, tag_value
-                    FROM tx_metaseo_metatag
-                   WHERE pid = ' . (int)$tsfePageId . '
-                     AND sys_language_uid = ' . (int)$sysLanguageId . '
-                     AND ' . $advMetaTagCondition;
+        $query          = 'SELECT tag_name,
+                                  tag_value
+                             FROM tx_metaseo_metatag
+                            WHERE pid = ' . (int)$tsfePageId . '
+                              AND sys_language_uid = ' . (int)$sysLanguageId . '
+                              AND ' . $advMetaTagCondition;
         $advMetaTagList = DatabaseUtility::getList($query);
 
         // Add metadata to tag list

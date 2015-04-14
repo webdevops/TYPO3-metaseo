@@ -59,29 +59,29 @@ class SitemapXmlTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
             // Language lock enabled
             $rootPageLinkTempalte = 'sitemap-r%s-l%s-p###PAGE###.xml.gz';
             $sitemapIndexFileName = 'index-r%s-l%s.xml.gz';
-            $sitemapPageFileName = 'sitemap-r%s-l%s-p%s.xml.gz';
+            $sitemapPageFileName  = 'sitemap-r%s-l%s-p%s.xml.gz';
         } else {
             $rootPageLinkTempalte = 'sitemap-r%s-p###PAGE###.xml.gz';
             $sitemapIndexFileName = 'index-r%s.xml.gz';
-            $sitemapPageFileName = 'sitemap-r%s-p%3$s.xml.gz';
+            $sitemapPageFileName  = 'sitemap-r%s-p%3$s.xml.gz';
         }
 
         // Init builder
-        $generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\XmlGenerator');
-        $fileName = sprintf($rootPageLinkTempalte, $rootPageId, $languageId);
+        $generator                    = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\XmlGenerator');
+        $fileName                     = sprintf($rootPageLinkTempalte, $rootPageId, $languageId);
         $generator->indexPathTemplate = $this->generateSitemapLinkTemplate($fileName);
 
         // Get list of pages
         $pageCount = $generator->pageCount();
 
         // Index
-        $content = $generator->sitemapIndex();
+        $content  = $generator->sitemapIndex();
         $fileName = sprintf($sitemapIndexFileName, $rootPageId, $languageId);
         $this->writeToFile(PATH_site . '/' . $this->sitemapDir . '/' . $fileName, $content);
 
         // Page
         for ($i = 0; $i < $pageCount; $i++) {
-            $content = $generator->sitemap($i);
+            $content  = $generator->sitemap($i);
             $fileName = sprintf($sitemapPageFileName, $rootPageId, $languageId, $i);
             $this->writeToFile(PATH_site . '/' . $this->sitemapDir . '/' . $fileName, $content);
         }

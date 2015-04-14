@@ -47,11 +47,11 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
         $settings = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSetting();
 
         // INIT
-        $tsSetup = $GLOBALS['TSFE']->tmpl->setup;
-        $cObj = $GLOBALS['TSFE']->cObj;
+        $tsSetup  = $GLOBALS['TSFE']->tmpl->setup;
+        $cObj     = $GLOBALS['TSFE']->cObj;
         $tsfePage = $GLOBALS['TSFE']->page;
-        $rootPid = \Metaseo\Metaseo\Utility\GeneralUtility::getRootPid();
-        $ret = '';
+        $rootPid  = \Metaseo\Metaseo\Utility\GeneralUtility::getRootPid();
+        $ret      = '';
 
         $tsSetupSeo = null;
         if (!empty($tsSetup['plugin.']['metaseo.']['robotsTxt.'])) {
@@ -67,15 +67,13 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
             return true;
         }
 
-        $linkToStaticSitemap = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue(
-            'is_robotstxt_sitemap_static',
-            false
-        );
+        $linkToStaticSitemap = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_robotstxt_sitemap_static',
+            false);
 
         // Language lock
         $sitemapLanguageLock = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock',
             false);
-        $languageId = \Metaseo\Metaseo\Utility\GeneralUtility::getLanguageId();
+        $languageId          = \Metaseo\Metaseo\Utility\GeneralUtility::getLanguageId();
 
         // ###############################
         // Fetch robots.txt content
@@ -113,7 +111,7 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
         // ###############################
         if (!empty($tsSetupSeo['marker.'])) {
             // Init marker list
-            $markerList = array();
+            $markerList     = array();
             $markerConfList = array();
 
             foreach ($tsSetupSeo['marker.'] as $name => $data) {
@@ -129,10 +127,8 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
 
             // Fetch marker content
             foreach ($markerConfList as $name => $conf) {
-                $markerList['%' . $name . '%'] = $cObj->cObjGetSingle(
-                    $tsSetupSeo['marker.'][$name],
-                    $tsSetupSeo['marker.'][$name . '.']
-                );
+                $markerList['%' . $name . '%'] = $cObj->cObjGetSingle($tsSetupSeo['marker.'][$name],
+                    $tsSetupSeo['marker.'][$name . '.']);
             }
 
             // generate sitemap-static marker

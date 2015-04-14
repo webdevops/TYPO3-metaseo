@@ -88,15 +88,14 @@ class RootPageUtility {
         }
 
         // Fetch domain name
-        $query
-            = 'SELECT domainName
+        $query = 'SELECT domainName
                     FROM sys_domain
                    WHERE pid = ' . (int)$rootPid . '
                      AND hidden = 0
                 ORDER BY forced DESC,
                          sorting
                    LIMIT 1';
-        $ret = DatabaseUtility::getOne($query);
+        $ret   = DatabaseUtility::getOne($query);
 
         // Remove possible slash at the end
         $ret = rtrim($ret, '/');

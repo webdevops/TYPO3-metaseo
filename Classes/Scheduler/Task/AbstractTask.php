@@ -79,12 +79,11 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
     protected function getRootPages() {
         $ret = array();
 
-        $query
-            = 'SELECT uid
+        $query = 'SELECT uid
                     FROM pages
                    WHERE is_siteroot = 1
                      AND deleted = 0';
-        $ret = DatabaseUtility::getColWithIndex($query);
+        $ret   = DatabaseUtility::getColWithIndex($query);
 
         return $ret;
     }
@@ -98,11 +97,12 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
     protected function initLanguages() {
         $this->languageIdList[0] = 0;
 
-        $query
-            = 'SELECT uid
-                    FROM sys_language
-                   WHERE hidden = 0';
-        $this->languageIdList = DatabaseUtility::getColWithIndex($query);
+        $query      = 'SELECT uid
+                         FROM sys_language
+                        WHERE hidden = 0';
+        $langIdList = DatabaseUtility::getColWithIndex($query);
+
+        $this->languageIdList = $langIdList;
     }
 
     /**
@@ -110,7 +110,7 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
      */
     protected function setRootPageLanguage($languageId) {
         $GLOBALS['TSFE']->tmpl->setup['config.']['sys_language_uid'] = $languageId;
-        $this->languageLock = $languageId;
+        $this->languageLock                                          = $languageId;
     }
 
     /**
