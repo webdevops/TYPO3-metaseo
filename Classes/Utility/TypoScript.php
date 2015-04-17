@@ -25,7 +25,7 @@
 
 namespace Metaseo\Metaseo\Utility;
 
-class TypoScript implements Iterator {
+class TypoScript implements \Iterator {
     ###########################################################################
     ## Attributes
     ###########################################################################
@@ -190,7 +190,7 @@ class TypoScript implements Iterator {
     /**
      * Search next iterator node
      */
-    public function _iteratorNextNode() {
+    public function iteratorNextNode() {
         // INIT
         $iteratorPosition       = null;
         $this->iteratorPosition = false;
