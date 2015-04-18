@@ -26,6 +26,8 @@
 
 namespace Metaseo\Metaseo\Page;
 
+use Metaseo\Metaseo\Utility\GeneralUtility;
+
 /**
  * Robots txt Page
  */
@@ -44,12 +46,12 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
      * Fetch and build robots.txt
      */
     public function main() {
-        $settings = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSetting();
+        $settings = GeneralUtility::getRootSetting();
 
         // INIT
         $tsSetup  = $GLOBALS['TSFE']->tmpl->setup;
         $cObj     = $GLOBALS['TSFE']->cObj;
-        $rootPid  = \Metaseo\Metaseo\Utility\GeneralUtility::getRootPid();
+        $rootPid  = GeneralUtility::getRootPid();
         $ret      = '';
 
         $tsSetupSeo = null;
@@ -58,17 +60,17 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
         }
 
         // check if sitemap is enabled in root
-        if (!\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_robotstxt', true)) {
+        if (!GeneralUtility::getRootSettingValue('is_robotstxt', true)) {
             return true;
         }
 
-        $linkToStaticSitemap = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_robotstxt_sitemap_static',
+        $linkToStaticSitemap = GeneralUtility::getRootSettingValue('is_robotstxt_sitemap_static',
             false);
 
         // Language lock
-        $sitemapLanguageLock = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock',
+        $sitemapLanguageLock = GeneralUtility::getRootSettingValue('is_sitemap_language_lock',
             false);
-        $languageId          = \Metaseo\Metaseo\Utility\GeneralUtility::getLanguageId();
+        $languageId          = GeneralUtility::getLanguageId();
 
         // ###############################
         // Fetch robots.txt content
@@ -142,10 +144,10 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
             }
 
             // Fix sitemap-marker url (add prefix if needed)
-            $markerList['%sitemap%'] = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($markerList['%sitemap%']);
+            $markerList['%sitemap%'] = GeneralUtility::fullUrl($markerList['%sitemap%']);
 
             // Call hook
-            \Metaseo\Metaseo\Utility\GeneralUtility::callHook('robotstxt-marker', $this, $markerList);
+            GeneralUtility::callHook('robotstxt-marker', $this, $markerList);
 
             // Apply marker list
             if (!empty($markerList)) {
@@ -154,7 +156,7 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('robotstxt-output', $this, $ret);
+        GeneralUtility::callHook('robotstxt-output', $this, $ret);
 
         return $ret;
     }
