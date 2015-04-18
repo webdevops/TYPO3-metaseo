@@ -129,7 +129,6 @@ class TypoScript implements \Iterator {
         $ret = null;
 
         // extract TypoScript-path informations
-        $nodeFound     = true;
         $nodeSections  = explode('.', $tsNodePath);
         $nodeValueType = end($nodeSections);
         $nodeValueName = end($nodeSections) . '.';
