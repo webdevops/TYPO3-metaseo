@@ -109,7 +109,7 @@ class HttpHook {
         }
 
         // Call hook
-        GeneralUtility::callHook('httpheader-output', $this, $headers);
+        GeneralUtility::callHookAndSignal(__CLASS__, 'httpheader-output', $this, $headers);
 
         // #####################################
         // Sender headers

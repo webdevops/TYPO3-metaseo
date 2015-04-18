@@ -67,7 +67,7 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('pagetitle-setup', $this, $tsSeoSetup);
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'pagetitle-setup', $this, $tsSeoSetup);
 
         // get stdwrap list
         if (!empty($tsSeoSetup['pageTitle.']['stdWrap.'])) {
@@ -250,7 +250,7 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('pagetitle-output', $this, $ret);
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'pagetitle-output', $this, $ret);
 
         return $ret;
     }

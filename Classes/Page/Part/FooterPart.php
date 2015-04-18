@@ -58,7 +58,7 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('pagefooter-setup', $this, $tsServices);
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'pagefooter-setup', $this, $tsServices);
 
         // #########################################
         // GOOGLE ANALYTICS
@@ -115,7 +115,7 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('pagefooter-output', $this, $ret);
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'pagefooter-output', $this, $ret);
 
         return implode("\n", $ret);
     }

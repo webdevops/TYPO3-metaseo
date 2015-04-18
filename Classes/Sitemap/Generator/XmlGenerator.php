@@ -75,7 +75,7 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
         $ret .= ' xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('sitemap-xml-index-sitemap-list', $this, $sitemaps);
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'sitemap-xml-index-sitemap-list', $this, $sitemaps);
 
         foreach ($sitemaps as $sitemapPage) {
             $ret .= '<sitemap><loc>' . htmlspecialchars($sitemapPage) . '</loc></sitemap>';
@@ -84,7 +84,7 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
         $ret .= '</sitemapindex>';
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('sitemap-xml-index-output', $this, $ret);
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'sitemap-xml-index-output', $this, $ret);
 
         return $ret;
     }
@@ -241,7 +241,7 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
         $ret .= '</urlset>';
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('sitemap-xml-page-output', $this, $ret);
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'sitemap-xml-page-output', $this, $ret);
 
         return $ret;
     }

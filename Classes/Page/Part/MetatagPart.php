@@ -230,7 +230,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             }
 
             // Call hook
-            \Metaseo\Metaseo\Utility\GeneralUtility::callHook('metatag-setup', $this, $tsSetupSeo);
+            \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'metatag-setup', $this, $tsSetupSeo);
 
             // #####################################
             // Generate MetaTags
@@ -1048,7 +1048,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      */
     protected function processMetaTags(&$tags) {
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('metatag-output', $this, $tags);
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'metatag-output', $this, $tags);
 
         // Add marker
         $markerList = array(

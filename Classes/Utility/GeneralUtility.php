@@ -332,7 +332,7 @@ class GeneralUtility {
     }
 
     /**
-     * Call hook
+     * Call hook and signal
      *
      * @param   string     $name Name of hook
      * @param   boolean    $obj  Object
@@ -340,8 +340,9 @@ class GeneralUtility {
      *
      * @return  mixed
      */
-    public static function callHook($name, $obj, &$args = null) {
+    public static function callHookAndSignal($class, $name, $obj, &$args = null) {
         static $hookConf = null;
+        static $signalSlotDispatcher = null;
 
         // Fetch hooks config for metaseo, minimize array lookups
         if ($hookConf === null) {
@@ -360,7 +361,18 @@ class GeneralUtility {
                 }
             }
         }
+
+        // Call signal
+        if ($signalSlotDispatcher === null) {
+            /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+
+            /** @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher */
+            $signalSlotDispatcher = $objectManager->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+        }
+        $signalSlotDispatcher->dispatch($class, $name, array($args, $obj));
     }
+
 
     /**
      * Generate full url

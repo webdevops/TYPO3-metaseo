@@ -115,7 +115,7 @@ abstract class AbstractGenerator {
         $this->pages        = $list['pages'];
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('sitemap-setup', $this);
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'sitemap-setup', $this);
     }
 
     /**

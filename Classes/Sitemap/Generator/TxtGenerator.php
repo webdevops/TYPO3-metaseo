@@ -66,7 +66,7 @@ class TxtGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('sitemap-text-output', $this, $ret);
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'sitemap-text-output', $this, $ret);
 
         return implode("\n", $ret);
     }

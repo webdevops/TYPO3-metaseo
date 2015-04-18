@@ -174,7 +174,7 @@ class SitemapIndexLinkHook extends SitemapIndexHook {
         );
 
         // Call hook
-        GeneralUtility::callHook('sitemap-index-link', null, $ret);
+        GeneralUtility::callHookAndSignal(__CLASS__, 'sitemap-index-link', $this, $ret);
 
         return $ret;
     }
