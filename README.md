@@ -8,8 +8,8 @@ It's an replacement of the "metatag"-extension and the successor of "tq_seo".
 
 * Manual:     http://docs.typo3.org/typo3cms/extensions/metaseo/
 * Git:        https://github.com/mblaschke/TYPO3-metaseo
-* Support:    http://forge.typo3.org/projects/extension-metaseo/
-* Bugtracker: http://forge.typo3.org/projects/extension-metaseo/issues
+* Support:    https://github.com/mblaschke/TYPO3-metaseo/issues
+* Bugtracker: https://github.com/mblaschke/TYPO3-metaseo/issues
 
 ## Version status
 
@@ -24,6 +24,8 @@ It's an replacement of the "metatag"-extension and the successor of "tq_seo".
   + Branch **develop**
   + TYPO3 Version: 6.2.x - 7.1.x
   + Composer: dev-develop
+
+For version specific information see [Changelog for MetaSEO](CHANGELOG.md)
 
 
 ## Composer Support
