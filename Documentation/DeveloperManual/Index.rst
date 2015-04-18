@@ -161,6 +161,8 @@ plugin.metaseo.sitemap.index.fileExtension                   List of allowed fil
 Hooks
 -----
 
+All hooks are also available as Extbase Signal. Please use signals instead of hooks.
+
 ::
 
     <?php
