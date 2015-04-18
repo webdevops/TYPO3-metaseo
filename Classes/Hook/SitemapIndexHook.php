@@ -159,6 +159,29 @@ abstract class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
     }
 
     /**
+     * Return page change frequency
+     *
+     * @param array $page Page data
+     *
+     * @return integer
+     */
+    protected function getPageChangeFrequency($page) {
+        $ret = 0;
+
+        if (!empty($page['tx_metaseo_change_frequency'])) {
+            $ret = (int)$page['tx_metaseo_change_frequency'];
+        } elseif (!empty($this->conf['sitemap.']['changeFrequency'])) {
+            $ret = (int)$this->conf['sitemap.']['changeFrequency'];
+        }
+
+        if (empty($pageChangeFrequency)) {
+            $ret = 0;
+        }
+
+        return $ret;
+    }
+
+    /**
      * Check if current page is indexable
      *
      * Will do following checks:

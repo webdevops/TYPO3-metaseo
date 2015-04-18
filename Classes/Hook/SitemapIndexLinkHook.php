@@ -124,44 +124,18 @@ class SitemapIndexLinkHook extends SitemapIndexHook {
             return;
         }
 
+        // Get page data from rootline
         $page = reset($rootline);
-
-        // #####################################
-        // Build relative url
-        // #####################################
-        $linkParts = parse_url($linkUrl);
-
-        // Remove left / (but only if not root page)
-        if ($linkParts['path'] === '/') {
-            // Link points to root page
-            $pageUrl = '/';
-        } else {
-            // Link points to another page, strip left /
-            $pageUrl = ltrim($linkParts['path'], '/');
-        }
-
-        // Add query
-        if (!empty($linkParts['query'])) {
-            $pageUrl .= '?' . $linkParts['query'];
-        }
 
         // #####################################
         // Page settings
         // #####################################
-        // Fetch page changeFrequency
-        $pageChangeFrequency = 0;
-        if (!empty($page['tx_metaseo_change_frequency'])) {
-            $pageChangeFrequency = (int)$page['tx_metaseo_change_frequency'];
-        } elseif (!empty($this->conf['sitemap.']['changeFrequency'])) {
-            $pageChangeFrequency = (int)$this->conf['sitemap.']['changeFrequency'];
-        }
 
         // Fetch sysLanguage
-        $pageLanguage = 0;
         if (isset($addParameters['L'])) {
             $pageLanguage = (int)$addParameters['L'];
-        } elseif (!empty($GLOBALS['TSFE']->tmpl->setup['config.']['sys_language_uid'])) {
-            $pageLanguage = (int)$GLOBALS['TSFE']->tmpl->setup['config.']['sys_language_uid'];
+        } else {
+            $pageLanguage = (int)GeneralUtility::getLanguageId();
         }
 
         // #####################################
@@ -175,9 +149,9 @@ class SitemapIndexLinkHook extends SitemapIndexHook {
             'page_rootpid'          => $rootline[0]['uid'],
             'page_uid'              => $linkPageUid,
             'page_language'         => $pageLanguage,
-            'page_url'              => $pageUrl,
+            'page_url'              => $this->getPageUrl($linkUrl),
             'page_depth'            => count($rootline),
-            'page_change_frequency' => $pageChangeFrequency,
+            'page_change_frequency' => $this->getPageChangeFrequency($page),
             'page_type'             => $linkType,
             'expire'                => $this->indexExpiration,
         );
@@ -275,6 +249,33 @@ class SitemapIndexLinkHook extends SitemapIndexHook {
                     break;
                 }
             }
+        }
+
+        return $ret;
+    }
+
+    /**
+     * Get current page url
+     *
+     * @param string $linkUrl Link url
+     *
+     * @return null|string
+     */
+    protected function getPageUrl($linkUrl) {
+        $linkParts = parse_url($linkUrl);
+
+        // Remove left / (but only if not root page)
+        if ($linkParts['path'] === '/') {
+            // Link points to root page
+            $ret = '/';
+        } else {
+            // Link points to another page, strip left /
+            $ret = ltrim($linkParts['path'], '/');
+        }
+
+        // Add query
+        if (!empty($linkParts['query'])) {
+            $ret .= '?' . $linkParts['query'];
         }
 
         return $ret;

@@ -83,6 +83,8 @@ class SitemapIndexPageHook extends SitemapIndexHook {
             return true;
         }
 
+        $page = $GLOBALS['TSFE']->page;
+
         $tstamp = $_SERVER['REQUEST_TIME'];
 
         $pageData = array(
@@ -93,7 +95,7 @@ class SitemapIndexPageHook extends SitemapIndexHook {
             'page_language'         => GeneralUtility::getLanguageId(),
             'page_url'              => $pageUrl,
             'page_depth'            => count($GLOBALS['TSFE']->rootLine),
-            'page_change_frequency' => $this->getPageChangeFrequency(),
+            'page_change_frequency' => $this->getPageChangeFrequency($page),
             'page_type'             => SitemapUtility::SITEMAP_TYPE_PAGE,
             'expire'                => $this->indexExpiration,
         );
@@ -106,27 +108,6 @@ class SitemapIndexPageHook extends SitemapIndexHook {
         }
 
         return true;
-    }
-
-    /**
-     * Return page change frequency
-     *
-     * @return integer
-     */
-    protected function getPageChangeFrequency() {
-        $ret = 0;
-
-        if (!empty($GLOBALS['TSFE']->page['tx_metaseo_change_frequency'])) {
-            $ret = (int)$GLOBALS['TSFE']->page['tx_metaseo_change_frequency'];
-        } elseif (!empty($this->conf['sitemap.']['changeFrequency'])) {
-            $ret = (int)$this->conf['sitemap.']['changeFrequency'];
-        }
-
-        if (empty($pageChangeFrequency)) {
-            $ret = 0;
-        }
-
-        return $ret;
     }
 
     /**
