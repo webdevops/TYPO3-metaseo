@@ -41,10 +41,8 @@ class SitemapIndexPageHook extends SitemapIndexHook {
 
     /**
      * Hook: Index Page Content
-     *
-     * @param    object $pObj Object
      */
-    public function hook_indexContent(&$pObj) {
+    public function hook_indexContent() {
         $this->addPageToSitemapIndex();
 
         $possibility = (int)GeneralUtility::getExtConf('sitemap_clearCachePossibility', 0);
@@ -53,7 +51,7 @@ class SitemapIndexPageHook extends SitemapIndexHook {
 
             $clearCacheChance = ceil(mt_rand(0, $possibility));
             if ($clearCacheChance == 1) {
-                \Metaseo\Metaseo\Utility\SitemapUtility::expire();
+                SitemapUtility::expire();
             }
         }
     }
@@ -75,45 +73,14 @@ class SitemapIndexPageHook extends SitemapIndexHook {
 
         // check current page
         if (!$this->checkIfCurrentPageIsIndexable()) {
-            return;
+            return true;
         }
 
-        // Fetch chash
-        $pageHash = null;
-        if (!empty($GLOBALS['TSFE']->cHash)) {
-            $pageHash = $GLOBALS['TSFE']->cHash;
-        }
-
-        // Fetch sysLanguage
-        $pageLanguage = GeneralUtility::getLanguageId();
-
-        // Fetch page changeFrequency
-        $pageChangeFrequency = 0;
-        if (!empty($GLOBALS['TSFE']->page['tx_metaseo_change_frequency'])) {
-            $pageChangeFrequency = (int)$GLOBALS['TSFE']->page['tx_metaseo_change_frequency'];
-        } elseif (!empty($this->conf['sitemap.']['changeFrequency'])) {
-            $pageChangeFrequency = (int)$this->conf['sitemap.']['changeFrequency'];
-        }
-
-        if (empty($pageChangeFrequency)) {
-            $pageChangeFrequency = 0;
-        }
-
-        // Fetch pageUrl
-        if ($pageHash !== null) {
-            $pageUrl = FrontendUtility::getCurrentUrl();
-        } else {
-            $linkConf = array(
-                'parameter' => $GLOBALS['TSFE']->id,
-            );
-
-            $pageUrl = $GLOBALS['TSFE']->cObj->typoLink_URL($linkConf);
-            $pageUrl = $this->processLinkUrl($pageUrl);
-        }
+        $pageUrl = $this->getPageUrl();
 
         // check blacklisting
         if (GeneralUtility::checkUrlForBlacklisting($pageUrl, $this->blacklistConf)) {
-            return;
+            return true;
         }
 
         $tstamp = $_SERVER['REQUEST_TIME'];
@@ -123,10 +90,10 @@ class SitemapIndexPageHook extends SitemapIndexHook {
             'crdate'                => $tstamp,
             'page_rootpid'          => GeneralUtility::getRootPid(),
             'page_uid'              => $GLOBALS['TSFE']->id,
-            'page_language'         => $pageLanguage,
+            'page_language'         => GeneralUtility::getLanguageId(),
             'page_url'              => $pageUrl,
             'page_depth'            => count($GLOBALS['TSFE']->rootLine),
-            'page_change_frequency' => $pageChangeFrequency,
+            'page_change_frequency' => $this->getPageChangeFrequency(),
             'page_type'             => SitemapUtility::SITEMAP_TYPE_PAGE,
             'expire'                => $this->indexExpiration,
         );
@@ -135,9 +102,58 @@ class SitemapIndexPageHook extends SitemapIndexHook {
         GeneralUtility::callHook('sitemap-index-page', null, $pageData);
 
         if (!empty($pageData)) {
-            \Metaseo\Metaseo\Utility\SitemapUtility::index($pageData, 'page');
+            SitemapUtility::index($pageData, 'page');
         }
 
         return true;
+    }
+
+    /**
+     * Return page change frequency
+     *
+     * @return integer
+     */
+    protected function getPageChangeFrequency() {
+        $ret = 0;
+
+        if (!empty($GLOBALS['TSFE']->page['tx_metaseo_change_frequency'])) {
+            $ret = (int)$GLOBALS['TSFE']->page['tx_metaseo_change_frequency'];
+        } elseif (!empty($this->conf['sitemap.']['changeFrequency'])) {
+            $ret = (int)$this->conf['sitemap.']['changeFrequency'];
+        }
+
+        if (empty($pageChangeFrequency)) {
+            $ret = 0;
+        }
+
+        return $ret;
+    }
+
+    /**
+     * Get current page url
+     *
+     * @return null|string
+     */
+    protected function getPageUrl() {
+        // Fetch chash
+        $pageHash = null;
+        if (!empty($GLOBALS['TSFE']->cHash)) {
+            $pageHash = $GLOBALS['TSFE']->cHash;
+        }
+
+
+        // Fetch pageUrl
+        if ($pageHash !== null) {
+            $ret = FrontendUtility::getCurrentUrl();
+        } else {
+            $linkConf = array(
+                'parameter' => $GLOBALS['TSFE']->id,
+            );
+
+            $ret = $GLOBALS['TSFE']->cObj->typoLink_URL($linkConf);
+            $ret = $this->processLinkUrl($ret);
+        }
+
+        return $ret;
     }
 }
