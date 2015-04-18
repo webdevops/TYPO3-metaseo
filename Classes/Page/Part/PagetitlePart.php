@@ -27,7 +27,6 @@
 namespace Metaseo\Metaseo\Page\Part;
 
 use Metaseo\Metaseo\Utility\FrontendUtility;
-use Metaseo\Metaseo\Utility\CacheUtility;
 
 /**
  * Page Title Changer

@@ -26,7 +26,7 @@
 
 namespace Metaseo\Metaseo\Hook;
 
-use Metaseo\Metaseo\Utility\CacheUtility;
+use Metaseo\Metaseo\Utility\FrontendUtility;
 use Metaseo\Metaseo\Utility\GeneralUtility;
 
 /**
@@ -46,6 +46,14 @@ class HttpHook {
         if (headers_sent()) {
             return;
         }
+
+        // Init caches
+        $cacheIdentification = $GLOBALS['TSFE']->id . '_' . substr(sha1(FrontendUtility::getCurrentUrl()),10,30) . '_http';
+
+        /** @var \TYPO3\CMS\Core\Cache\CacheManager $cacheManager */
+        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $cacheManager  = $objectManager->get('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+        $cache         = $cacheManager->getCache('cache_pagesection');
 
         if (!empty($GLOBALS['TSFE']->tmpl->loaded)) {
             // ##################################
@@ -81,30 +89,21 @@ class HttpHook {
                     }
 
                     $headers['P3P'] = implode(' ', $p3pHeader);
-
-                    // cache informations
-                    $curentTemplate     = end($GLOBALS['TSFE']->tmpl->hierarchyInfo);
-                    $currentTemplatePid = $curentTemplate['pid'];
-                    CacheUtility::set($currentTemplatePid, 'http', 'p3p', $headers['P3P']);
                 }
             }
+
+            // Store headers into cache
+            $cache->set($cacheIdentification, $headers, array('pageId_' . $GLOBALS['TSFE']->id));
         } else {
             // #####################################
             // Cached page
             // #####################################
-            // build root pid list
-            $rootPidList = array();
-            foreach ($GLOBALS['TSFE']->rootLine as $pageRow) {
-                $rootPidList[$pageRow['uid']] = $pageRow['uid'];
-            }
 
-            // fetch from cache
-            $cacheList = CacheUtility::getList('http', 'p3p');
-            foreach ($rootPidList as $pageId) {
-                if (!empty($cacheList[$pageId])) {
-                    $headers['P3P'] = $cacheList[$pageId];
-                    break;
-                }
+            // Fetched cached headers
+            $cachedHeaders = $cache->get($cacheIdentification);
+
+            if (!empty($cachedHeaders)) {
+                $headers = $cachedHeaders;
             }
         }
 

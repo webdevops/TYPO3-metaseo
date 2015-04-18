@@ -39,10 +39,6 @@ class GarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
     public function execute() {
         // Expire sitemap entries
         \Metaseo\Metaseo\Utility\SitemapUtility::expire();
-
-        // Expire cache entries
-        \Metaseo\Metaseo\Utility\CacheUtility::expire();
-
         return true;
     }
 }

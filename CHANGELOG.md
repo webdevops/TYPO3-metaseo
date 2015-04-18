@@ -10,6 +10,7 @@
 - Implemented canonical url support for mounte pages, pointing to real page instead of mount path (disabled by default)
 - Implemented expiry date for sitemap entries (customizable with SetupTS or Connector)
 - Implemented pagetitle caching (if there is any USER_INT on the current page)
+- Removed own caching solution, using TYPO3 caching framework now
 - Fixed many bugs and issues
 - Fixed coding style (added .editorconfig)
 - Refactored whole extension

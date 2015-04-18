@@ -43,9 +43,6 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
     public function garbageCollectorCommand() {
         // Expire sitemap entries
         \Metaseo\Metaseo\Utility\SitemapUtility::expire();
-
-        // Expire cache entries
-        \Metaseo\Metaseo\Utility\CacheUtility::expire();
     }
 
     /**
