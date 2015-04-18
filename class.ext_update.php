@@ -74,7 +74,6 @@ class ext_update {
      * should by showed.
      *
      * @return bool
-     * @todo find a better way to determine if update is needed or not.
      */
     public function access() {
         return true;
