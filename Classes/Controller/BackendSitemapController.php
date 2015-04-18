@@ -61,7 +61,7 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
                                 ON p.uid = s.page_uid
                                AND p.deleted = 0
                                AND ' . DatabaseUtility::conditionNotIn('p.doktype',
-                \Metaseo\Metaseo\Utility\SitemapUtility::getPageTypeBlacklist()) . '
+                \Metaseo\Metaseo\Utility\SitemapUtility::getDoktypeBlacklist()) . '
                 GROUP BY page_rootpid';
         $statsList = DatabaseUtility::getAllWithIndex($query, 'page_rootpid');
 
@@ -117,7 +117,7 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
             $joinWhere = DatabaseUtility::conditionNotIn(
                         'p.doktype',
-                        \Metaseo\Metaseo\Utility\SitemapUtility::getPageTypeBlacklist()
+                        \Metaseo\Metaseo\Utility\SitemapUtility::getDoktypeBlacklist()
                     );
 
             // Root statistics

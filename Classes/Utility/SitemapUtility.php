@@ -44,11 +44,23 @@ class SitemapUtility {
     // Attributes
     // ########################################################################
 
-    protected static $typeBlacklist = array(
+    /**
+     * List of blacklisted doktypes (from table pages)
+     * @var array
+     */
+    protected static $doktypeBlacklist = array(
         PageRepository::DOKTYPE_BE_USER_SECTION,      // Backend Section (TYPO3 CMS)
         PageRepository::DOKTYPE_SPACER,               // Menu separator  (TYPO3 CMS)
         PageRepository::DOKTYPE_SYSFOLDER,            // Folder          (TYPO3 CMS)
         PageRepository::DOKTYPE_RECYCLER,             // Recycler        (TYPO3 CMS)
+    );
+
+    /**
+     * List of blacklisted rendering PAGE typenum (typoscript object)
+     *
+     * @var array
+     */
+    protected static $pagetypeBlacklist = array(
         self::DOKTYPE_SITEMAP_TXT,                    // sitemap.txt     (EXT:metaseo)
         self::DOKTYPE_SITEMAP_XML,                    // sitemap.xml     (EXT:metaseo)
         self::DOKTYPE_ROBOTS_TXT,                     // robots.txt      (EXT:metaseo)
@@ -162,7 +174,7 @@ class SitemapUtility {
                            AND p.deleted = 0
                            AND p.hidden = 0
                            AND p.tx_metaseo_is_exclude = 0
-                           AND ' . DatabaseUtility::conditionNotIn('p.doktype', self::getPageTypeBlacklist()) . '
+                           AND ' . DatabaseUtility::conditionNotIn('p.doktype', self::getDoktypeBlacklist()) . '
                    WHERE p.uid IS NULL';
 
         $deletedSitemapPages = DatabaseUtility::getColWithIndex($query);
@@ -177,12 +189,21 @@ class SitemapUtility {
     }
 
     /**
-     * Get list of blacklisted page types
+     * Get list of blacklisted doktypes (from table pages)
+     *
+     * @return array
+     */
+    public static function getDoktypeBlacklist() {
+        return self::$doktypeBlacklist;
+    }
+
+    /**
+     * Get list of blacklisted PAGE typenum (typoscript object)
      *
      * @return array
      */
     public static function getPageTypeBlacklist() {
-        return self::$typeBlacklist;
+        return self::$pagetypeBlacklist;
     }
 
     /**
@@ -206,7 +227,7 @@ class SitemapUtility {
                                 AND	p.deleted = 0
                                 AND	p.hidden = 0
                                 AND	p.tx_metaseo_is_exclude = 0
-                                AND ' . DatabaseUtility::conditionNotIn('p.doktype', self::getPageTypeBlacklist()) . '
+                                AND ' . DatabaseUtility::conditionNotIn('p.doktype', self::getDoktypeBlacklist()) . '
                    WHERE ts.page_rootpid = ' . (int)$rootPid . '
                      AND ts.is_blacklisted = 0';
 

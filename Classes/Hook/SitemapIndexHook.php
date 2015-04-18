@@ -39,7 +39,12 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
     // Attributes
     // ########################################################################
 
-    protected $typeBlacklist = array();
+    /**
+     * List of blacklisted page doktypes
+     *
+     * @var array
+     */
+    protected $doktypeBlacklist = array();
 
     /**
      * Page index status
@@ -118,8 +123,11 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
 
         $this->indexExpiration = $_SERVER['REQUEST_TIME'] + ($expirationInDays * 24 * 60 * 60);
 
-        // Init blacklist for page types
-        $this->typeBlacklist = SitemapUtility::getPageTypeBlacklist();
+        // Init blacklist for doktype (from table pages)
+        $this->doktypeBlacklist  = SitemapUtility::getDoktypeBlacklist();
+
+        // Init blacklist for PAGE typenum
+        $this->pageTypeBlacklist = SitemapUtility::getPageTypeBlacklist();
     }
 
     /**
@@ -525,8 +533,13 @@ class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
             return false;
         }
 
-        // Check for type blacklisting
-        if (in_array($GLOBALS['TSFE']->type, $this->typeBlacklist)) {
+        // Check for type blacklisting (from typoscript PAGE object)
+        if (in_array((int)$GLOBALS['TSFE']->type, $this->pageTypeBlacklist)) {
+            return false;
+        }
+
+        // Check for doktype blacklisting (from current page record)
+        if (in_array((int)$GLOBALS['TSFE']->page['doktype'], $this->doktypeBlacklist)) {
             return false;
         }
 

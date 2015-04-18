@@ -84,7 +84,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
 
         // Filter blacklisted page types
         $where[] = DatabaseUtility::conditionNotIn('p.doktype',
-            \Metaseo\Metaseo\Utility\SitemapUtility::getPageTypeBlacklist());
+            \Metaseo\Metaseo\Utility\SitemapUtility::getDoktypeBlacklist());
 
         // Build where
         $where = DatabaseUtility::buildCondition($where);
