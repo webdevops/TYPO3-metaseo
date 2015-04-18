@@ -145,6 +145,16 @@ plugin.metaseo.sitemap.index.blacklist                       List of Regular Exp
                                                              20 = /foobar/
                                                              30 = /imprint/i
                                                              40 = /[a-z]/
+
+plugin.metaseo.sitemap.index.pageTypeBlacklist               List of blacklisted page typeNums (SetupTS PAGE objects)     String, comma separated
+
+plugin.metaseo.sitemap.index.fileExtension                   List of allowed file extensions for indexing                 List
+
+                                                             Default:
+                                                             1 = pdf
+                                                             2 = doc,docx,xls,xlsx,ppt,pptx
+                                                             3 = odt,odp,ods,odg
+
 ==========================================================   ==========================================================   ======================
 
 

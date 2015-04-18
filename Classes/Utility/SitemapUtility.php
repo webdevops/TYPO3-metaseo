@@ -203,7 +203,22 @@ class SitemapUtility {
      * @return array
      */
     public static function getPageTypeBlacklist() {
-        return self::$pagetypeBlacklist;
+        $ret = self::$pagetypeBlacklist;
+
+        // Fetch from SetupTS (comma separated list)
+        if (isset($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist'])
+           && strlen($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist']) >= 1)
+        {
+            $pageTypeBlacklist = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist'];
+            $pageTypeBlacklist = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $pageTypeBlacklist);
+
+            $ret = array_merge(
+                $ret,
+                $pageTypeBlacklist
+            );
+        }
+
+        return $ret;
     }
 
     /**

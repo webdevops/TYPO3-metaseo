@@ -247,7 +247,7 @@ abstract class SitemapIndexHook implements SingletonInterface {
         }
 
         // Check for type blacklisting (from typoscript PAGE object)
-        if (in_array((int)$GLOBALS['TSFE']->type, $this->pageTypeBlacklist)) {
+        if (in_array($GLOBALS['TSFE']->type, $this->pageTypeBlacklist)) {
             return false;
         }
 
