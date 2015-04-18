@@ -9,7 +9,7 @@
 - Implemented blacklist for canonical url
 - Implemented canonical url support for mounte pages, pointing to real page instead of mount path (disabled by default)
 - Implemented expiry date for sitemap entries (customizable with SetupTS or Connector)
-- Fixed several bugs
+- Fixed many bugs and issues
 - Fixed coding style (added .editorconfig)
 - Refactored whole extension
 
