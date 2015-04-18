@@ -26,8 +26,6 @@
 
 namespace Metaseo\Metaseo\Hook;
 
-use Metaseo\Metaseo\Utility\FrontendUtility;
-use Metaseo\Metaseo\Utility\GeneralUtility;
 use Metaseo\Metaseo\Utility\SitemapUtility;
 
 /**
