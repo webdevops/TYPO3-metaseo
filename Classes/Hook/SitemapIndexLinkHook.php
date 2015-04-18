@@ -48,7 +48,6 @@ class SitemapIndexLinkHook extends SitemapIndexHook {
      * @return  boolean|null
      */
     public function hook_linkParse(&$pObj) {
-        
         // check if sitemap is enabled in root
         if (!GeneralUtility::getRootSettingValue('is_sitemap',
                 true) || !GeneralUtility::getRootSettingValue('is_sitemap_typolink_indexer', true)

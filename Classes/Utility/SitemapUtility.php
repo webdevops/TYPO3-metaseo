@@ -36,9 +36,9 @@ class SitemapUtility {
     CONST SITEMAP_TYPE_PAGE = 0;
     CONST SITEMAP_TYPE_FILE = 1;
 
-    CONST DOKTYPE_SITEMAP_TXT = 841131; // sitemap.txt     (EXT:metaseo), apply changes in Configuration/TypoScript/setup.txt
-    CONST DOKTYPE_SITEMAP_XML = 841132; // sitemap.xml     (EXT:metaseo)
-    CONST DOKTYPE_ROBOTS_TXT  = 841133; // robots.txt      (EXT:metaseo)
+    CONST PAGE_TYPE_SITEMAP_TXT = 841131; // sitemap.txt     (EXT:metaseo), apply changes in Configuration/TypoScript/setup.txt
+    CONST PAGE_TYPE_SITEMAP_XML = 841132; // sitemap.xml     (EXT:metaseo)
+    CONST PAGE_TYPE_ROBOTS_TXT  = 841133; // robots.txt      (EXT:metaseo)
 
     // ########################################################################
     // Attributes
@@ -49,10 +49,10 @@ class SitemapUtility {
      * @var array
      */
     protected static $doktypeBlacklist = array(
-        PageRepository::DOKTYPE_BE_USER_SECTION,      // Backend Section (TYPO3 CMS)
-        PageRepository::DOKTYPE_SPACER,               // Menu separator  (TYPO3 CMS)
-        PageRepository::DOKTYPE_SYSFOLDER,            // Folder          (TYPO3 CMS)
-        PageRepository::DOKTYPE_RECYCLER,             // Recycler        (TYPO3 CMS)
+        PageRepository::DOKTYPE_BE_USER_SECTION,  // Backend Section (TYPO3 CMS)
+        PageRepository::DOKTYPE_SPACER,           // Menu separator  (TYPO3 CMS)
+        PageRepository::DOKTYPE_SYSFOLDER,        // Folder          (TYPO3 CMS)
+        PageRepository::DOKTYPE_RECYCLER,         // Recycler        (TYPO3 CMS)
     );
 
     /**
@@ -61,9 +61,9 @@ class SitemapUtility {
      * @var array
      */
     protected static $pagetypeBlacklist = array(
-        self::DOKTYPE_SITEMAP_TXT,                    // sitemap.txt     (EXT:metaseo)
-        self::DOKTYPE_SITEMAP_XML,                    // sitemap.xml     (EXT:metaseo)
-        self::DOKTYPE_ROBOTS_TXT,                     // robots.txt      (EXT:metaseo)
+        self::PAGE_TYPE_SITEMAP_TXT,   // sitemap.txt     (EXT:metaseo)
+        self::PAGE_TYPE_SITEMAP_XML,   // sitemap.xml     (EXT:metaseo)
+        self::PAGE_TYPE_ROBOTS_TXT,    // robots.txt      (EXT:metaseo)
     );
 
 

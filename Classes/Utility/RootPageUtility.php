@@ -50,7 +50,7 @@ class RootPageUtility {
      * @return string
      */
     public static function getSitemapIndexUrl($rootPid) {
-        return self::getFrontendUrl($rootPid, SitemapUtility::DOKTYPE_SITEMAP_XML);
+        return self::getFrontendUrl($rootPid, SitemapUtility::PAGE_TYPE_SITEMAP_XML);
     }
 
     /**
@@ -114,6 +114,6 @@ class RootPageUtility {
      * @return string
      */
     public static function getRobotsTxtUrl($rootPid) {
-        return self::getFrontendUrl($rootPid, SitemapUtility::DOKTYPE_ROBOTS_TXT);
+        return self::getFrontendUrl($rootPid, SitemapUtility::PAGE_TYPE_ROBOTS_TXT);
     }
 }
