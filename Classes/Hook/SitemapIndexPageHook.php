@@ -130,7 +130,7 @@ class SitemapIndexPageHook extends SitemapIndexHook {
         );
 
         // Call hook
-        GeneralUtility::callHookAndSignal(__CLASS__, 'sitemap-index-page', $this, $ret);
+        GeneralUtility::callHookAndSignal(__CLASS__, 'sitemapIndexPage', $this, $ret);
 
         return $ret;
     }

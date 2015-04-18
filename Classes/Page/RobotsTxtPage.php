@@ -147,7 +147,7 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
             $markerList['%sitemap%'] = GeneralUtility::fullUrl($markerList['%sitemap%']);
 
             // Call hook
-            GeneralUtility::callHookAndSignal(__CLASS__, 'robotstxt-marker', $this, $markerList);
+            GeneralUtility::callHookAndSignal(__CLASS__, 'robotsTxtMarker', $this, $markerList);
 
             // Apply marker list
             if (!empty($markerList)) {
@@ -156,7 +156,7 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
         }
 
         // Call hook
-        GeneralUtility::callHookAndSignal(__CLASS__, 'robotstxt-output', $this, $ret);
+        GeneralUtility::callHookAndSignal(__CLASS__, 'robotsTxtOutput', $this, $ret);
 
         return $ret;
     }
