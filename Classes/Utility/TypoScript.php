@@ -68,8 +68,6 @@ class TypoScript implements \Iterator {
      * @param NULL|string $type TypoScript node type
      */
     public function __construct($conf = null, $type = null) {
-        global $TSFE;
-
         if ($conf !== null) {
             $this->tsData = $conf;
         }
@@ -148,7 +146,6 @@ class TypoScript implements \Iterator {
                 if (is_array($nodeData) && array_key_exists($sectionName, $nodeData)) {
                     $nodeData = $nodeData[$sectionName];
                 } else {
-                    $nodeFound = false;
                     break;
                 }
             }

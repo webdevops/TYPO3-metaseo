@@ -40,11 +40,8 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
      */
     protected function executeGetList() {
         // Init
-        $rootPageList = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
-
         $rootPid      = (int)$this->postVar['pid'];
         $offset       = (int)$this->postVar['start'];
-        $limit        = (int)$this->postVar['limit'];
         $itemsPerPage = (int)$this->postVar['pagingSize'];
 
         $searchFulltext      = trim((string)$this->postVar['criteriaFulltext']);

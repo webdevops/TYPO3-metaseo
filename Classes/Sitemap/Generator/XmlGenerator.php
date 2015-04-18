@@ -107,8 +107,6 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
 
         $pageItems     = count($this->sitemapPages);
         $pageItemBegin = $pageLimit * ($page - 1);
-        $pageCount     = ceil($pageItems / $pageLimit);
-
 
         if ($pageItemBegin <= $pageItems) {
             $this->sitemapPages = array_slice($this->sitemapPages, $pageItemBegin, $pageLimit);
@@ -207,7 +205,7 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
             $pageChangeFrequency = null;
             if (!empty($page['tx_metaseo_change_frequency'])) {
                 // from page
-                $pageChangeFdrequency = (int)$page['tx_metaseo_change_frequency'];
+                $pageChangeFrequency = (int)$page['tx_metaseo_change_frequency'];
             } elseif (!empty($sitemapPage['page_change_frequency'])) {
                 // from sitemap settings
                 $pageChangeFrequency = (int)$sitemapPage['page_change_frequency'];

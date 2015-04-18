@@ -810,7 +810,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         // Custom meta tags (from connector)
         // #################
         foreach ($customMetaTagList as $tagName => $tagValue) {
-            $ret['adv.' . $tagName] = '<meta name="' . htmlspecialchars($tagName) . '" content="' . htmlspecialchars($tagValue) . '">';
+            $metaTags['adv.' . $tagName] = '<meta name="' . htmlspecialchars($tagName) . '" content="' . htmlspecialchars($tagValue) . '">';
         }
     }
 

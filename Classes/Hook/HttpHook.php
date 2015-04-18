@@ -67,7 +67,7 @@ class HttpHook {
                 }
 
                 if (!empty($p3pCP) || !empty($p3pPolicyUrl)) {
-                    $p3pHeaders = array();
+                    $p3pHeader = array();
 
                     if (!empty($p3pCP)) {
                         $p3pHeader[] = 'CP="' . $p3pCP . '"';

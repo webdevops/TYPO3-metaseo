@@ -49,17 +49,12 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
         // INIT
         $tsSetup  = $GLOBALS['TSFE']->tmpl->setup;
         $cObj     = $GLOBALS['TSFE']->cObj;
-        $tsfePage = $GLOBALS['TSFE']->page;
         $rootPid  = \Metaseo\Metaseo\Utility\GeneralUtility::getRootPid();
         $ret      = '';
 
         $tsSetupSeo = null;
         if (!empty($tsSetup['plugin.']['metaseo.']['robotsTxt.'])) {
             $tsSetupSeo = $tsSetup['plugin.']['metaseo.']['robotsTxt.'];
-        }
-
-        if (!empty($tsSetup['plugin.']['metaseo.']['sitemap.'])) {
-            $tsSetupSeoSitemap = $tsSetup['plugin.']['metaseo.']['sitemap.'];
         }
 
         // check if sitemap is enabled in root

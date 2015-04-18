@@ -142,7 +142,6 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
         $this->template = $this->objectManager->get('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
         $pageRenderer   = $this->template->getPageRenderer();
 
-        $basePathJs  = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript';
         $basePathCss = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/Css';
         $pageRenderer->addCssFile($basePathCss . '/Default.css');
 

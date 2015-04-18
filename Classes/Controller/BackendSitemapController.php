@@ -100,12 +100,6 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
                 'sum_xml_pages' => 0,
             );
 
-            // Get domain
-            $domain = null;
-            if (!empty($domainList[$pageId])) {
-                $domain = $domainList[$pageId];
-            }
-
             // Setting row
             $settingRow = array();
             if (!empty($rootSettingList[$pageId])) {

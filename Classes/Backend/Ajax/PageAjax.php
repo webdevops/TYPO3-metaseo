@@ -59,9 +59,6 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         $list = array();
 
         $pid          = (int)$this->postVar['pid'];
-        $offset       = (int)$this->postVar['start'];
-        $limit        = (int)$this->postVar['limit'];
-        $itemsPerPage = (int)$this->postVar['pagingSize'];
         $depth        = (int)$this->postVar['depth'];
         $sysLanguage  = (int)$this->postVar['sysLanguage'];
         $listType     = (string)$this->postVar['listType'];
@@ -152,8 +149,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
                     break;
 
                 case 'pagetitlesim':
-                    $buildTree = false;
-                    $list      = $this->listPageTitleSim($page, $depth, $sysLanguage);
+                    $list = $this->listPageTitleSim($page, $depth, $sysLanguage);
                     break;
 
                 default:
@@ -283,7 +279,6 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
             unset($row);
 
             while ($overlayRow = DatabaseUtility::connection()->sql_fetch_assoc($res)) {
-                $pageOverlayId  = $overlayRow['uid'];
                 $pageOriginalId = $overlayRow['pid'];
 
                 // Dont use uid and pid
@@ -545,7 +540,6 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         $fieldName   = strtolower((string)$this->postVar['field']);
         $fieldValue  = (string)$this->postVar['value'];
         $sysLanguage = (int)$this->postVar['sysLanguage'];
-        $mode        = (string)$this->postVar['mode'];
 
         // validate field name
         $fieldName = preg_replace('/[^-_a-zA-Z0-9:]/i', '', $fieldName);
