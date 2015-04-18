@@ -35,6 +35,26 @@ use Metaseo\Metaseo\Utility\SitemapUtility;
  */
 class SitemapIndexPageHook extends SitemapIndexHook {
 
+
+
+    /**
+     * Init configuration
+     */
+    protected function initConfiguration() {
+        parent::initConfiguration();
+
+        // Check custom index expiration (from connector)
+        /** @var \Metaseo\Metaseo\Connector $connector */
+        $connector    = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
+        $sitemapStore = $connector->getStore('sitemap');
+
+        // Set new expiration date
+        if (!empty($sitemapStore['expiration'])) {
+            $this->indexExpiration = $_SERVER['REQUEST_TIME'] + ($sitemapStore['expiration'] * 24 * 60 * 60);
+        }
+
+    }
+
     // ########################################################################
     // HOOKS
     // ########################################################################

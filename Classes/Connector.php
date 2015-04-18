@@ -46,6 +46,7 @@ class Connector implements \TYPO3\CMS\Core\SingletonInterface {
         'meta:og'   => array(),
         'custom'    => array(),
         'pagetitle' => array(),
+        'sitemap'   => array(),
     );
 
     // ########################################################################
@@ -168,6 +169,19 @@ class Connector implements \TYPO3\CMS\Core\SingletonInterface {
         $key = (string)$key;
 
         self::$store['meta'][$key] = null;
+    }
+
+    // ########################################################################
+    // Sitemap methods
+    // ########################################################################
+
+    /**
+     * Set sitemap index expiration in days
+     *
+     * @param integer $days Entry expiration in days
+     */
+    public static function setSitemapIndexExpiration($days) {
+        self::$store['sitemap']['expiration'] = abs($days);
     }
 
     // ########################################################################

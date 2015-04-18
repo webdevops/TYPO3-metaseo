@@ -88,6 +88,15 @@ abstract class SitemapIndexHook implements SingletonInterface {
      */
     protected $indexExpiration;
 
+
+    /**
+     * Object manager
+     *
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     */
+    protected $objectManager;
+
+
     // ########################################################################
     // Methods
     // ########################################################################
@@ -96,6 +105,9 @@ abstract class SitemapIndexHook implements SingletonInterface {
      * Constructor
      */
     public function __construct() {
+        /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+
         $this->initConfiguration();
     }
 
