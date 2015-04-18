@@ -13,9 +13,6 @@ if (TYPO3_MODE == 'BE') {
 
     // Field validations
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals']['tx_metaseo_backend_validation_float'] = 'EXT:metaseo/Classes/Backend/Validator/ValidatorImport.php';
-
-    // Hooks
-    //$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][]  = 'Metaseo\\Metaseo\\Hook\\ClearCacheHook->main';
 }
 
 // ##############################################
@@ -41,9 +38,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndex
 // ##############################################
 // HOOKS
 // ##############################################
-
-// Add tables for clear cache
-$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearAllCache_additionalTables']['tx_metaseo_cache'] = 'tx_metaseo_cache';
 
 
 // EXT:tt_news
