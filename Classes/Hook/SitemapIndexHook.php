@@ -28,11 +28,12 @@ namespace Metaseo\Metaseo\Hook;
 
 use Metaseo\Metaseo\Utility\SitemapUtility;
 use Metaseo\Metaseo\Utility\GeneralUtility;
+use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * Sitemap Indexer
  */
-abstract class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
+abstract class SitemapIndexHook implements SingletonInterface {
 
     // ########################################################################
     // Attributes
@@ -44,6 +45,13 @@ abstract class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
      * @var array
      */
     protected $doktypeBlacklist = array();
+
+    /**
+     * List of blacklisted page types (Setup PAGE object typeNum)
+     *
+     * @var array
+     */
+    protected $pageTypeBlacklist = array();
 
     /**
      * Page index status

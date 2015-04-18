@@ -42,14 +42,14 @@ class SitemapIndexLinkHook extends SitemapIndexHook {
     /**
      * Hook: Link Parser
      *
-     * @param   object $pObj Object
+     * @param   array $pObj Object
      *
-     * @return  boolean|null
+     * @return  void
      */
     public function hook_linkParse(&$pObj) {
 
         if (!$this->checkIfSitemapIndexingIsEnabled('typolink')) {
-            return true;
+            return;
         }
 
         // Check
@@ -131,10 +131,8 @@ class SitemapIndexLinkHook extends SitemapIndexHook {
         // Index link
         $pageData = $this->generateSitemapPageData($linkUrl, $linkPageUid, $rootline, $pageLanguage, $linkType);
         if (!empty($pageData)) {
-            \Metaseo\Metaseo\Utility\SitemapUtility::index($pageData);
+            SitemapUtility::index($pageData);
         }
-
-        return true;
     }
 
     // ########################################################################
@@ -146,7 +144,7 @@ class SitemapIndexLinkHook extends SitemapIndexHook {
      *
      * @param string  $linkUrl      Link of current url
      * @param integer $linkPageUid  Link target page id
-     * @param integer $rootline     Rootline of link
+     * @param array   $rootline     Rootline of link
      * @param integer $pageLanguage Language id
      * @param integer $linkType     Link type
      *

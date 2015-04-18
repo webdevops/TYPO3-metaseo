@@ -62,17 +62,19 @@ class SitemapIndexPageHook extends SitemapIndexHook {
 
     /**
      * Add Page to sitemap table
+     *
+     * @return void
      */
     public function addPageToSitemapIndex() {
         if (!$this->checkIfSitemapIndexingIsEnabled('page')) {
-            return true;
+            return;
         }
 
         $pageUrl = $this->getPageUrl();
 
         // check blacklisting
         if (GeneralUtility::checkUrlForBlacklisting($pageUrl, $this->blacklistConf)) {
-            return true;
+            return;
         }
 
         // Index page
@@ -80,8 +82,6 @@ class SitemapIndexPageHook extends SitemapIndexHook {
         if (!empty($pageData)) {
             SitemapUtility::index($pageData, 'page');
         }
-
-        return true;
     }
 
     /**
