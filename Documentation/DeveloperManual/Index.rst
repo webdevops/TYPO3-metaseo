@@ -169,29 +169,29 @@ Hooks
     //
     // Example integrations (eg. in localconf.php or ext_localconf.php):
     //
-    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['metatag-setup'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_metatagSetup';
-    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['metatag-output'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_metatagOutput';
+    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['metatagSetup'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_metatagSetup';
+    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['metatagOutput'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_metatagOutput';
     //
-    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['pagetitle-setup'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_pagetitleSetup';
-    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['pagetitle-output'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_pagetitleOutput';
+    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['pageTitleSetup'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_pagetitleSetup';
+    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['pageTitleOutput'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_pagetitleOutput';
     //
-    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['pagefooter-setup'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_pagefooterSetup';
-    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['pagefooter-output'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_pagefooterOutput';
+    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['pageFooterSetup'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_pagefooterSetup';
+    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['pageFooterOutput'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_pagefooterOutput';
     //
-    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['sitemap-index-page'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_sitemapIndexPage';
-    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['sitemap-index-link'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_sitemapIndexLink';
+    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['sitemapIndexPage'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_sitemapIndexPage';
+    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['sitemapIndexLink'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_sitemapIndexLink';
     //
-    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['sitemap-setup'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_sitemapSetup';
-    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['sitemap-text-output'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_sitemapTextOutput';
-    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['sitemap-xml-index-sitemap-list'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_sitemapXmlIndexSitemapList';
-    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['sitemap-xml-index-output'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_sitemapXmlIndexOutput';
-    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['sitemap-xml-page-output'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_sitemapXmlPageOutput';
-    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['sitemap-clear'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_sitemapClear';
+    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['sitemapSetup'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_sitemapSetup';
+    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['sitemapTextOutput'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_sitemapTextOutput';
+    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['sitemapXmlIndexSitemapList'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_sitemapXmlIndexSitemapList';
+    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['sitemapXmlIndexOutput'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_sitemapXmlIndexOutput';
+    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['sitemapXmlPageOutput'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_sitemapXmlPageOutput';
+    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['sitemapClear'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_sitemapClear';
     //
-    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['robotstxt-marker'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_robotsTxtMarker';
-    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['robotstxt-output'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_robotsTxtOutput';
+    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['robotsTxtMarker'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_robotsTxtMarker';
+    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['robotsTxtOutput'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_robotsTxtOutput';
     //
-    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['httpheader-output'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_httpHeaderOutput';
+    // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']['httpHeaderOutput'][] = 'EXT:metaseo/examples/hooks.php:user_metaseo_hook->hook_httpHeaderOutput';
     // ----------------------------------------------------------------------------
 
     class user_metaseo_hook {
