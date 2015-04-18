@@ -138,18 +138,57 @@ class FrontendUtility {
     }
 
     /**
+     * Check if frontend page is cacheable
+     *
+     * @return bool
+     */
+    public static function isCacheable() {
+        $TSFE = self::getTsfe();
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'GET' || !empty($TSFE->fe_user->user['uid'])
+        ) {
+            return false;
+        }
+
+        // dont parse if page is not cacheable
+        if (!$TSFE->isStaticCacheble()) {
+            return false;
+        }
+
+        // Skip no_cache-pages
+        if (!empty($TSFE->no_cache)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Return current URL
      *
      * @return null|string
      */
     public static function getCurrentUrl() {
         $ret = null;
-        if (!empty($GLOBALS['TSFE']->anchorPrefix)) {
-            $ret = (string)$GLOBALS['TSFE']->anchorPrefix;
+
+        $TSFE = self::getTsfe();
+
+        if (!empty($TSFE->anchorPrefix)) {
+            $ret = (string)$TSFE->anchorPrefix;
         } else {
-            $ret = (string)$GLOBALS['TSFE']->siteScript;
+            $ret = (string)$TSFE->siteScript;
         }
 
         return $ret;
     }
+
+    /**
+     * Get TSFE
+     *
+     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     */
+    public static function getTsfe() {
+        return $GLOBALS['TSFE'];
+    }
+
 }

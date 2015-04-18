@@ -252,9 +252,7 @@ abstract class SitemapIndexHook implements SingletonInterface {
         // Basic checks
         // ############################
 
-        // skip POST-calls and feuser login
-        if ($_SERVER['REQUEST_METHOD'] !== 'GET' || !empty($GLOBALS['TSFE']->fe_user->user['uid'])
-        ) {
+        if (!\Metaseo\Metaseo\Utility\FrontendUtility::isCacheable()) {
             return false;
         }
 
@@ -265,20 +263,6 @@ abstract class SitemapIndexHook implements SingletonInterface {
 
         // Check for doktype blacklisting (from current page record)
         if (in_array((int)$GLOBALS['TSFE']->page['doktype'], $this->doktypeBlacklist)) {
-            return false;
-        }
-
-        // ############################
-        // Cache checks
-        // ############################
-
-        // dont parse if page is not cacheable
-        if (!$GLOBALS['TSFE']->isStaticCacheble()) {
-            return false;
-        }
-
-        // Skip no_cache-pages
-        if (!empty($GLOBALS['TSFE']->no_cache)) {
             return false;
         }
 

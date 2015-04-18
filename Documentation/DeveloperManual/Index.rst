@@ -54,6 +54,15 @@ PageTitle
 =============================================   ==========================================================   ======================
 TypoScript Node                                 Description                                                  Type
 =============================================   ==========================================================   ======================
+plugin.metaseo.pageTitle.caching                Enables caching of page title.                               *boolean*
+                                                If the page is fully cacheable you don't have to enable
+                                                this option.
+                                                If you use USER_INTs and one USER plugin changes page
+                                                title (eg. via Connector) than this is not working
+                                                because the output of the USER plugin is cached and
+                                                the Connctor not called again with the second hit.
+                                                The caching fixes that issue.
+
 plugin.metaseo.pageTitle.stdWrap.before         Manipulation of the raw page title                           *stdWrap*
                                                 (before MetaSEO processing)
 

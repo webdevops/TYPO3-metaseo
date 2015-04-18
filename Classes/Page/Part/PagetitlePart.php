@@ -26,6 +26,9 @@
 
 namespace Metaseo\Metaseo\Page\Part;
 
+use Metaseo\Metaseo\Utility\FrontendUtility;
+use Metaseo\Metaseo\Utility\CacheUtility;
+
 /**
  * Page Title Changer
  */
@@ -39,6 +42,81 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      * @return    string            Modified page title
      */
     public function main($title) {
+        $ret = null;
+
+        // ############################
+        // Fetch from cache
+        // ############################
+
+        $pageTitleCachingEnabled = $this->checkIfPageTitleCachingEnabled();
+        if ($pageTitleCachingEnabled) {
+            $cacheIdentification = $GLOBALS['TSFE']->id . '_' . substr(sha1(FrontendUtility::getCurrentUrl()),10,30) . '_title';
+
+            /** @var \TYPO3\CMS\Core\Cache\CacheManager $cacheManager */
+            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+            $cacheManager  = $objectManager->get('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+            $cache         = $cacheManager->getCache('cache_pagesection');
+
+            $cacheTitle = $cache->get($cacheIdentification);
+            if (!empty($cacheTitle)) {
+                $ret = $cacheTitle;
+            }
+        }
+
+        // ############################
+        // Generate page title
+        // ############################
+
+        // Generate page title if not set
+        // also fallback
+        if (empty($ret)) {
+            $ret = $this->generatePageTitle($title);
+
+            // Cache page title (if page is not cacheable)
+            if ($pageTitleCachingEnabled) {
+                $cache->set($cacheIdentification, $ret, array('pageId_' . $GLOBALS['TSFE']->id));
+            }
+        }
+
+        // ############################
+        // Output
+        // ############################
+
+        // Call hook
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'pageTitleOutput', $this, $ret);
+
+        return $ret;
+    }
+
+    /**
+     * Check if page title caching is enabled
+     *
+     * @return bool
+     */
+    protected function checkIfPageTitleCachingEnabled() {
+        $cachingEnabled = !empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['pageTitle.']['caching']);
+
+        // Enable caching only if caching is enabled in SetupTS
+        // And if there is any USER_INT on the current page
+        //
+        // -> USER_INT will break Connector pagetitle setting
+        //    because the plugin output is cached but not the whole
+        //    page. so the Connector will not be called again
+        //    and the default page title will be shown
+        //    which is wrong
+        // -> if the page is fully cacheable we don't have anything
+        //    to do
+        return $cachingEnabled && !FrontendUtility::isCacheable();
+    }
+
+    /**
+     * Add SEO-Page Title
+     *
+     * @param    string $title Default page title (rendered by TYPO3)
+     *
+     * @return    string            Modified page title
+     */
+    public function generatePageTitle($title) {
         // INIT
         $ret              = $title;
         $rawTitel         = !empty($GLOBALS['TSFE']->altPageTitle) ? $GLOBALS['TSFE']->altPageTitle : $GLOBALS['TSFE']->page['title'];
@@ -248,9 +326,6 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         if (!empty($stdWrapList['after.'])) {
             $ret = $this->cObj->stdWrap($ret, $stdWrapList['after.']);
         }
-
-        // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'pageTitleOutput', $this, $ret);
 
         return $ret;
     }
