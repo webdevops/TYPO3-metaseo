@@ -27,6 +27,7 @@
 namespace Metaseo\Metaseo\Hook;
 
 use Metaseo\Metaseo\Utility\SitemapUtility;
+use Metaseo\Metaseo\Utility\GeneralUtility;
 
 /**
  * Sitemap Indexer
@@ -179,6 +180,29 @@ abstract class SitemapIndexHook implements \TYPO3\CMS\Core\SingletonInterface {
         }
 
         return $ret;
+    }
+
+    /**
+     * Check if sitemap indexing is enabled
+     *
+     * @param string $indexingType Indexing type (page or typolink)
+     *
+     * @return bool
+     */
+    protected function checkIfSitemapIndexingIsEnabled($indexingType) {
+        // check if sitemap is enabled in root
+        if (!GeneralUtility::getRootSettingValue('is_sitemap', true)
+            || !GeneralUtility::getRootSettingValue('is_sitemap_' . $indexingType . '_indexer', true)
+        ) {
+            return false;
+        }
+
+        // check current page
+        if (!$this->checkIfCurrentPageIsIndexable()) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

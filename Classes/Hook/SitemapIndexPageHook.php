@@ -64,15 +64,7 @@ class SitemapIndexPageHook extends SitemapIndexHook {
      * Add Page to sitemap table
      */
     public function addPageToSitemapIndex() {
-        // check if sitemap is enabled in root
-        if (!GeneralUtility::getRootSettingValue('is_sitemap', true)
-            || !GeneralUtility::getRootSettingValue('is_sitemap_page_indexer', true)
-        ) {
-            return true;
-        }
-
-        // check current page
-        if (!$this->checkIfCurrentPageIsIndexable()) {
+        if (!$this->checkIfSitemapIndexingIsEnabled('page')) {
             return true;
         }
 
@@ -83,11 +75,28 @@ class SitemapIndexPageHook extends SitemapIndexHook {
             return true;
         }
 
+        // Index page
+        $pageData = $this->generateSitemapPageData($pageUrl);
+        if (!empty($pageData)) {
+            SitemapUtility::index($pageData, 'page');
+        }
+
+        return true;
+    }
+
+    /**
+     * Generate sitemap page data
+     *
+     * @param string $pageUrl Page url
+     *
+     * @return array
+     */
+    protected function generateSitemapPageData($pageUrl) {
         $page = $GLOBALS['TSFE']->page;
 
         $tstamp = $_SERVER['REQUEST_TIME'];
 
-        $pageData = array(
+        $ret = array(
             'tstamp'                => $tstamp,
             'crdate'                => $tstamp,
             'page_rootpid'          => GeneralUtility::getRootPid(),
@@ -101,13 +110,9 @@ class SitemapIndexPageHook extends SitemapIndexHook {
         );
 
         // Call hook
-        GeneralUtility::callHook('sitemap-index-page', null, $pageData);
+        GeneralUtility::callHook('sitemap-index-page', null, $ret);
 
-        if (!empty($pageData)) {
-            SitemapUtility::index($pageData, 'page');
-        }
-
-        return true;
+        return $ret;
     }
 
     /**
