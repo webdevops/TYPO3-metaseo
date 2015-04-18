@@ -9,7 +9,6 @@ It's an replacement of the "metatag"-extension and the successor of "tq_seo".
 * Manual:     http://docs.typo3.org/typo3cms/extensions/metaseo/
 * Git:        https://github.com/mblaschke/TYPO3-metaseo
 * Support:    https://github.com/mblaschke/TYPO3-metaseo/issues
-* Bugtracker: https://github.com/mblaschke/TYPO3-metaseo/issues
 
 ## Version status
 
