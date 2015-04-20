@@ -689,6 +689,11 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                 }
             }
 
+
+            // #################
+            // Canonical URL
+            // #################
+
             // Canonical URL
             $canonicalUrl = null;
 
@@ -709,6 +714,42 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                             'href' => $canonicalUrl,
                         ),
                     );
+                }
+            }
+
+
+            // #################
+            // OpenGraph
+            // #################
+
+            if (!empty($tsSetupSeo['opengraph.'])) {
+                $tsSetupSeoOg = $tsSetupSeo['opengraph.'];
+
+                // Get list of tags (filtered array)
+                $ogTagNameList = array_keys($tsSetupSeoOg);
+                $ogTagNameList = array_unique(array_map(function($item) {
+                    return rtrim($item, '.');
+                }, $ogTagNameList));
+
+                foreach ($ogTagNameList as $ogTagName) {
+                    $ogTagValue = null;
+
+
+                    if (!empty($tsSetupSeoOg[$ogTagName]) && !array_key_exists($ogTagName . '.', $tsSetupSeoOg)) {
+                        $ogTagValue = $tsSetupSeoOg[$ogTagName];
+                    } elseif(!empty($tsSetupSeoOg[$ogTagName])) {
+                        $ogTagValue = $this->cObj->cObjGetSingle($tsSetupSeoOg[$ogTagName], $tsSetupSeoOg[$ogTagName . '.']);
+                    }
+
+                    if ($ogTagValue !== null && strlen($ogTagValue) >= 1) {
+                        $ret['og.' . $ogTagName] = array(
+                            'tag'        => 'meta',
+                            'attributes' => array(
+                                'property' => 'og:' . $ogTagName,
+                                'content'  => $ogTagValue,
+                            ),
+                        );
+                    }
                 }
             }
 
