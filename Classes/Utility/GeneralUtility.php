@@ -380,44 +380,11 @@ class GeneralUtility {
      * Makes sure the url is absolute (http://....)
      *
      * @param   string $url    URL
-     * @param   string $domain Domain
      *
      * @return  string
      */
-    public static function fullUrl($url, $domain = null) {
-        if (!preg_match('/^https?:\/\//i', $url)) {
-
-            // Fix for root page link
-            if ($url === '/') {
-                $url = '';
-            }
-
-            // remove first /
-            if (strpos($url, '/') === 0) {
-                $url = substr($url, 1);
-            }
-
-            if ($domain !== null) {
-                // specified domain
-                $url = 'http://' . $domain . '/' . $url;
-            } else {
-                // domain from env
-                $url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $url;
-            }
-        }
-
-
-        // Fix url stuff
-        $url = str_replace('?&', '?', $url);
-
-        // Removed by request of https://forge.typo3.org/issues/61845
-        // replace double slashes but not before a : (eg. http://)
-        //$url = preg_replace('_(?<!:)\//_', '/', $url);
-
-        // Fallback
-        //if (!empty($GLOBALS['TSFE']) && !preg_match('/^https?:\/\//i', $url ) ) {
-        //	$url = $GLOBALS['TSFE']->baseUrlWrap($url);
-        //}
+    public static function fullUrl($url) {
+        $url = \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($url);
 
         return $url;
     }
