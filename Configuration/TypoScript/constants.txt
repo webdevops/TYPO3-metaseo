@@ -1,165 +1,163 @@
 ###
 # This are the default TS-constants for metaseo
 ##
-plugin.metaseo.metaTags.useCanonical.noMP
 plugin.metaseo {
     # cat=plugin.metaseo.metaTags/page/01; type=string; label= Meta Description: Short description of your webpage.
-  metaTags.description =
+    metaTags.description =
 
     # cat=plugin.metaseo.metaTags/page/02; type=string; label= Meta Keywords: Comma separated list of keywords.
-  metaTags.keywords =
+    metaTags.keywords =
 
     # cat=plugin.metaseo.metaTags/page/03; type=string; label= Meta Copyright info: Copyright information (eg. "Me Myself and I, %YEAR%. All rights reserved.", %YEAR% will be substituted with the current year).
-  metaTags.copyright =
+    metaTags.copyright =
 
     # cat=plugin.metaseo.metaTags/page/04; type=string; label= Meta Reply-to email: Enter the e-mail adress for contact issues
-  metaTags.email =
+    metaTags.email =
 
     # cat=plugin.metaseo.metaTags/page/05; type=string; label= Meta Author: Enter name of author.
-  metaTags.author =
+    metaTags.author =
 
     # cat=plugin.metaseo.metaTags/page/06; type=string; label= Meta Publisher: Enter name of publisher.
-  metaTags.publisher =
+    metaTags.publisher =
 
     # cat=plugin.metaseo.metaTags/page/08; type=string; label= Distribution
-  metaTags.distribution =
+    metaTags.distribution =
 
     # cat=plugin.metaseo.metaTags/page/08; type=options[,General,Mature,14 years,Restricted]; label= Rating
-  metaTags.rating =
+    metaTags.rating =
 
     # cat=plugin.metaseo.metaTags/page/10; type=int+; label= Revisit after: Number of days between search engine visits.
-  metaTags.revisit =
+    metaTags.revisit =
 
     # cat=plugin.metaseo.metaTags/page/14; type=string; label= Geo Position Latitude: Latitude of webpage
-  metaTags.geoPositionLatitude =
+    metaTags.geoPositionLatitude =
 
     # cat=plugin.metaseo.metaTags/page/15; type=string; label= Geo Position Longitude: Longitude of webpage
-  metaTags.geoPositionLongitude =
+    metaTags.geoPositionLongitude =
 
     # cat=plugin.metaseo.metaTags/page/16; type=string; label= Geo Region: Region of webpage (eg. DE-BW)
-  metaTags.geoRegion =
+    metaTags.geoRegion =
 
     # cat=plugin.metaseo.metaTags/page/17; type=string; label= Geo Placename: Placename of webpage (eg. Stuttgart)
-  metaTags.geoPlacename =
+    metaTags.geoPlacename =
 
     # cat=plugin.metaseo.metaTags/page/19; type=string; label= PICS-Label: Platform for Internet Content Selection Label, see http://www.w3.org/PICS/
-  metaTags.picsLabel =
+    metaTags.picsLabel =
 
     # cat=plugin.metaseo.metaTags/enable/20; type=boolean; label= Publish LastUpdate-Time: Should the crawler be informed about the time a page was last updated.
-  metaTags.useLastUpdate = 1
+    metaTags.useLastUpdate = 1
 
     # cat=plugin.metaseo.metaTags/enable/22; type=boolean; label= Canonical Tag: Autogenerate Canonical-Metatag if possible.
-  metaTags.useCanonical = 1
+    metaTags.canonicalUrl = 1
 
     # cat=plugin.metaseo.metaTags/enable/23; type=boolean; label= Canonical Tag (Strict mode): Enable strict mode (all wrong GET-parameters will generate a canonical-tag to the self without GET-params).
-  metaTags.useCanonical.strict = 1
+    metaTags.canonicalUrl.strict = 1
 
     # cat=plugin.metaseo.metaTags/enable/23; type=boolean; label= Canonical Tag (No MP mode): Link all mount point links to origin pages.
-  metaTags.useCanonical.noMP = 0
+    metaTags.canonicalUrl.noMP = 0
 
     # cat=plugin.metaseo.metaTags/enable/24; type=boolean; label= Publish Page Expire Time: Anounce Expire Tag (TYPO3's enddate in content elements).
-  metaTags.useExpire = 1
+    metaTags.useExpire = 1
 
     # cat=plugin.metaseo.metaTags/page/25; type=string; label= P3P Compact Policy: W3C P3P Compact Policy String.
-  metaTags.p3pCP =
+    metaTags.p3pCP =
 
     # cat=plugin.metaseo.metaTags/page/26; type=string; label= P3P Policy Url: URL to your W3C P3P Policy file.
-  metaTags.p3pPolicyUrl =
+    metaTags.p3pPolicyUrl =
 
     # cat=plugin.metaseo.metaTags/enable/27; type=boolean; label= Link generation: Automatic generate index, up, prev und next links (metatags).
-  metaTags.linkGeneration = 1
+    metaTags.linkGeneration = 1
 
     # cat=plugin.metaseo.metaTags/enable/28; type=boolean; label= Meta Description: Enable Dublin Core (DC.) metatags
-  metaTags.enableDC  = 1
+    metaTags.enableDC = 1
 
     # cat=plugin.metaseo.crawler/page/01; type=boolean; label= Crawler Robots-Tag: Enable robot-metatag
-  metaTags.robotsEnable = 1
+    metaTags.robotsEnable = 1
     # cat=plugin.metaseo.crawler/page/02; type=boolean; label= Crawler Index: Should the crawler (eg. Google) index the page and subpages
-  metaTags.robotsIndex = 1
+    metaTags.robotsIndex = 1
     # cat=plugin.metaseo.crawler/page/03; type=boolean; label= Crawler Follow: Should the crawler (eg. Google) follow links
-  metaTags.robotsFollow = 1
+    metaTags.robotsFollow = 1
     # cat=plugin.metaseo.crawler/page/04; type=boolean; label= Crawler Archive: Should the crawler (eg. Google) put the content of the page into the archive (eg. Google Cache)
-  metaTags.robotsArchive = 1
+    metaTags.robotsArchive = 1
     # cat=plugin.metaseo.crawler/page/05; type=boolean; label= Crawler Snippet: Should the crawler (eg. Google) show the snippet in the search result
-  metaTags.robotsSnippet = 1
-     # cat=plugin.metaseo.crawler/page/06; type=boolean; label= Crawler Noimageindex: Should the crawler (eg. Google) not index images
-  metaTags.robotsNoImageindex = 0
-     # cat=plugin.metaseo.crawler/page/07; type=boolean; label= Crawler Notranslate: Should the crawler (eg. Google) not translate content
-  metaTags.robotsNoTranslate = 0
+    metaTags.robotsSnippet = 1
+    # cat=plugin.metaseo.crawler/page/06; type=boolean; label= Crawler Noimageindex: Should the crawler (eg. Google) not index images
+    metaTags.robotsNoImageindex = 0
+    # cat=plugin.metaseo.crawler/page/07; type=boolean; label= Crawler Notranslate: Should the crawler (eg. Google) not translate content
+    metaTags.robotsNoTranslate = 0
     # cat=plugin.metaseo.crawler/page/08; type=boolean; label= Crawler ODP: Should the crawler (eg. Google) use the description from the OpenDirectoryProject
-  metaTags.robotsOdp = 1
+    metaTags.robotsOdp = 1
     # cat=plugin.metaseo.crawler/page/09; type=boolean; label= Crawler YDir: Should the crawler (eg. Google) use the description from the Yahoo Directory
-  metaTags.robotsYdir = 1
-
+    metaTags.robotsYdir = 1
 
     # cat=plugin.metaseo.userAgent/ie/1; type=options[,Highest Version=edge,10.x=10,9.x=9,8.x=8,7.x=7,6.x=6,5.x=5]; label= IE Compatibility Mode: Compatibility mode for Microsoft Internet Explorer.
-  userAgent.ieCompatibilityMode =
-
+    userAgent.ieCompatibilityMode =
 
     # cat=plugin.metaseo.services/enable/01; type=boolean; label= Enable Services if header is disabled: If config.disableAllHeaderCode = 1 then services are automatically disabled (eg. for ajax calls) to prevent duplicate hits in google analytics/piwik (and/or javascript issues)
-  services.enableIfHeaderIsDisabled = 0
+    services.enableIfHeaderIsDisabled = 0
 
     # cat=plugin.metaseo.services/page/02; type=string; label= Google Crawler Verification: Verification code for google webmaster tools
-  metaTags.googleVerification =
+    metaTags.googleVerification =
 
     # cat=plugin.metaseo.services/page/03; type=string; label= MSN Crawler Verification: Verification code for msn webmaster tools
-  metaTags.msnVerification =
+    metaTags.msnVerification =
 
     # cat=plugin.metaseo.services/page/04; type=string; label= Yahoo! Crawler Verification: Verification code for yahoo! webmaster tools
-  metaTags.yahooVerification =
+    metaTags.yahooVerification =
 
     # cat=plugin.metaseo.services/page/05; type=string; label= Web Of Trust Verification: Verification code for Web of trust (mywot.com)
-  metaTags.wotVerification =
+    metaTags.wotVerification =
 
     # cat=plugin.metaseo.services/page/06; type=string; label= Google Analytics: Code for google analytics (eg. UA-12345456-1)  (multiple codes, comma separated)
-  services.googleAnalytics =
+    services.googleAnalytics =
     # cat=plugin.metaseo.services/page/07; type=string; label= Google Analytics Download & Click Domain Name: "auto", "none", single domain support: "example.com", subdomain support: ".example.com"
-  services.googleAnalytics.domainName =
+    services.googleAnalytics.domainName =
     # cat=plugin.metaseo.services/page/08; type=boolean; label= Google Analytics Anonymize IP: Enable anonymize IP
-  services.googleAnalytics.anonymizeIp = 0
+    services.googleAnalytics.anonymizeIp = 0
     # cat=plugin.metaseo.services/page/09; type=boolean; label= Google Analytics Track Downloads: Track downloads (with javascript) (BETA!)
-  services.googleAnalytics.trackDownloads = 0
-
+    services.googleAnalytics.trackDownloads = 0
 
     # cat=plugin.metaseo.services/page/11; type=string; label= Piwik URL: Url to your piwik installation (eg. www.example.com/piwik/ - don't use http:// or https:// as prefix!)
-  services.piwik.url =
+    services.piwik.url =
     # cat=plugin.metaseo.services/page/12; type=string; label= Piwik Id: Id of your website (multiple ids, comma separated)
-  services.piwik.id =
+    services.piwik.id =
     # cat=plugin.metaseo.services/page/13; type=string; label= Piwik Download & Click Domain Name: single domain support: "example.com", subdomain support: ".example.com"
-  services.piwik.domainName =
+    services.piwik.domainName =
     # cat=plugin.metaseo.services/page/14; type=string; label= Piwik Cookie Domain Name: single domain support: "example.com", subdomain support: ".example.com"
-  services.piwik.cookieDomainName =
+    services.piwik.cookieDomainName =
     # cat=plugin.metaseo.services/page/15; type=boolean; label= Piwik DoNotTrack: Opt Out users with Mozilla's DoNotTrack browser setting
-  services.piwik.doNotTrack = 1
-
+    services.piwik.doNotTrack = 1
 
     # cat=plugin.metaseo.social/page/1; type=string; label= Google+ Direct Connect: Your Google+ Profile Page ID (see https://developers.google.com/+/plugins/badge/)
-  social.googleplus.profilePageId =
+    social.googleplus.profilePageId =
 
     # cat=plugin.metaseo.pageTitle/enable/01; type=boolean; label= Apply Tmpl-Sitetitle to absolute <title>: This enables the addition of the template-sitetitle to the rendered page-title (in absolute <title>-mode)
-  pageTitle.applySitetitleToPagetitle = 0
+    pageTitle.applySitetitleToPagetitle = 0
 
     # cat=plugin.metaseo.pageTitle/enable/02; type=boolean; label= Apply Tmpl-Sitetitle to prefix/suffix: This enables the addition of the template-sitetitle to the rendered page-title (in pagetitle-prefix/suffix-mode)
-  pageTitle.applySitetitleToPrefixSuffix = 1
+    pageTitle.applySitetitleToPrefixSuffix = 1
 
     # cat=plugin.metaseo.pageTitle/enable/03; type=string; label= Sitetitle glue: String between titel and sitetitle (from template)
-  pageTitle.sitetitleGlue = :
+    pageTitle.sitetitleGlue = :
 
     # cat=plugin.metaseo.pageTitle/enable/04; type=boolean; label= Sitetitle glue spacer (before): Add spacer between title and glue (from template)
-  pageTitle.sitetitleGlueSpaceBefore = 0
+    pageTitle.sitetitleGlueSpaceBefore = 0
 
     # cat=plugin.metaseo.pageTitle/enable/05; type=boolean; label= Sitetitle glue spacer (after): Add spacer between glue and sitetitle (from template)
-  pageTitle.sitetitleGlueSpaceAfter = 1
+    pageTitle.sitetitleGlueSpaceAfter = 1
 
     # cat=plugin.metaseo.pageTitle/enable/06; type=options[Sitetitle-Pagetitle=0, Pagetitle-Sitetitle=1]; label= Sitetitle position: Position of template-sitetitle in title
-  pageTitle.sitetitlePosition = 0
+    pageTitle.sitetitlePosition = 0
 
-	# cat=plugin.metaseo.pageTitle/enable/07; type=string; label= Sitetitle : Overwrite the template sitetitle with a custom one
-  pageTitle.sitetitle =
+    # cat=plugin.metaseo.pageTitle/enable/07; type=string; label= Sitetitle : Overwrite the template sitetitle with a custom one
+    pageTitle.sitetitle =
 
-	# cat=plugin.metaseo.sitemap/page/02; type=int+; label= Default page priority (0-100)
-  sitemap.pagePriority =
+    # cat=plugin.metaseo.sitemap/page/02; type=int+; label= Default page priority (0-100)
+    sitemap.pagePriority =
 
     # cat=plugin.metaseo.sitemap/page/03; type=options[,Always=1,Hourly=2,Daily=3,Weekly=4,Monthly=5,Yearly=6,Never (archive)=7]; label= Default change frequency: Default change frequency for sitemap cache (will be cached!)
-  sitemap.changeFrequency =
+    sitemap.changeFrequency =
+
+    # cat=plugin.metaseo.sitemap/page/04; type=int+; label= Default expiration: Sitemap entry expiration in days
+    sitemap.expiration = 60
 }

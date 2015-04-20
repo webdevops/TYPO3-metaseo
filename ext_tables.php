@@ -12,8 +12,8 @@ defined('TYPO3_MODE') or exit;
 // \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_metaseo_setting_root');
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-	'tx_metaseo_setting_root',
-	'EXT:metaseo/Resources/Private/Language/locallang.tca.xml'
+    'tx_metaseo_setting_root',
+    'EXT:metaseo/Resources/Private/Language/locallang.tca.xml'
 );
 
 

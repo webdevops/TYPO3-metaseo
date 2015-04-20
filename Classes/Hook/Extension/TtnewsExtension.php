@@ -1,11 +1,10 @@
 <?php
-namespace Metaseo\Metaseo\Hook\Extension;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de>
- *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,68 +22,67 @@ namespace Metaseo\Metaseo\Hook\Extension;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Hook\Extension;
 
 /**
  * EXT:tt_news hook for metatags
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: TtnewsExtension.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
 class TtnewsExtension {
 
-	/**
-	 * Extra item marker hook for metatag fetching
-	 *
-	 * @param   array  $markerArray  Marker array
-	 * @param   array  $row          Current tt_news row
-	 * @param   array  $lConf        Local configuration
-	 * @param   object $ttnewsObj    Pi-object from tt_news
-	 * @return  array                Marker array (not changed)
-	 */
-	public function extraItemMarkerProcessor($markerArray, $row, $lConf, $ttnewsObj) {
-		$theCode = (string)strtoupper(trim($ttnewsObj->theCode));
+    /**
+     * Extra item marker hook for metatag fetching
+     *
+     * @param   array                                     $markerArray Marker array
+     * @param   array                                     $row         Current tt_news row
+     * @param   array                                     $lConf       Local configuration
+     * @param   \TYPO3\CMS\Frontend\Plugin\AbstractPlugin $ttnewsObj   Pi-object from tt_news
+     *
+     * @return  array                Marker array (not changed)
+     */
+    public function extraItemMarkerProcessor($markerArray, $row, $lConf, $ttnewsObj) {
+        $theCode = (string)strtoupper(trim($ttnewsObj->theCode));
 
-		$connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Metaseo\\Metaseo\\Connector');
+        $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Metaseo\\Metaseo\\Connector');
 
-		switch ($theCode) {
-			case 'SINGLE':
-			case 'SINGLE2':
-				// Title
-				if (!empty($row['title'])) {
-					$connector->setMetaTag('title', $row['title']);
-				}
+        switch ($theCode) {
+            case 'SINGLE':
+            case 'SINGLE2':
+                // Title
+                if (!empty($row['title'])) {
+                    $connector->setMetaTag('title', $row['title']);
+                }
 
-				// Description
-				if (!empty($row['short'])) {
-					$connector->setMetaTag('description', $row['short']);
-				}
+                // Description
+                if (!empty($row['short'])) {
+                    $connector->setMetaTag('description', $row['short']);
+                }
 
-				// Keywords
-				if (!empty($row['keywords'])) {
-					$connector->setMetaTag('keywords', $row['keywords']);
-				}
+                // Keywords
+                if (!empty($row['keywords'])) {
+                    $connector->setMetaTag('keywords', $row['keywords']);
+                }
 
-				// Short/Description
-				if (!empty($row['short'])) {
-					$connector->setMetaTag('description', $row['short']);
-				}
+                // Short/Description
+                if (!empty($row['short'])) {
+                    $connector->setMetaTag('description', $row['short']);
+                }
 
-				// Author
-				if (!empty($row['author'])) {
-					$connector->setMetaTag('author', $row['author']);
-				}
+                // Author
+                if (!empty($row['author'])) {
+                    $connector->setMetaTag('author', $row['author']);
+                }
 
-				// E-Mail
-				if (!empty($row['author_email'])) {
-					$connector->setMetaTag('email', $row['author_email']);
-				}
-				break;
-		}
+                // E-Mail
+                if (!empty($row['author_email'])) {
+                    $connector->setMetaTag('email', $row['author_email']);
+                }
+                break;
+        }
 
-		return $markerArray;
-	}
+        return $markerArray;
+    }
 }
 
 ?>

@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Sitemap\Generator;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,143 +22,137 @@ namespace Metaseo\Metaseo\Sitemap\Generator;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Sitemap\Generator;
 
 /**
  * Sitemap abstract generator
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: AbstractGenerator.php 81677 2013-11-21 12:32:33Z mblaschke $
  */
 abstract class AbstractGenerator {
-	// ########################################################################
-	// Attributes
-	// ########################################################################
+    // ########################################################################
+    // Attributes
+    // ########################################################################
 
-	/**
-	 * Current root pid
-	 *
-	 * @var integer
-	 */
-	public $rootPid = NULL;
+    /**
+     * Current root pid
+     *
+     * @var integer
+     */
+    public $rootPid = null;
 
-	/**
-	 * Sitemap pages
-	 *
-	 * @var array
-	 */
-	public $sitemapPages = array();
+    /**
+     * Sitemap pages
+     *
+     * @var array
+     */
+    public $sitemapPages = array();
 
-	/**
-	 * Page lookups
-	 *
-	 * @var array
-	 */
-	public $pages = array();
+    /**
+     * Page lookups
+     *
+     * @var array
+     */
+    public $pages = array();
+    /**
+     * Extension setup configuration
+     *
+     * @var array
+     */
+    public $tsSetup = array();
+    /**
+     * Page change frequency definition list
+     *
+     * @var array
+     */
+    public $pageChangeFrequency = array(
+        1 => 'always',
+        2 => 'hourly',
+        3 => 'daily',
+        4 => 'weekly',
+        5 => 'monthly',
+        6 => 'yearly',
+        7 => 'never',
+    );
+    /**
+     * Link template for sitemap index
+     *
+     * Replacemennt marker ###PAGE### for page-uid
+     *
+     * @var string|boolean
+     */
+    public $indexPathTemplate = false;
+    /**
+     * Extension configuration
+     *
+     * @var array
+     */
+    protected $extConf = array();
 
-	/**
-	 * Extension configuration
-	 *
-	 * @var array
-	 */
-	protected $extConf = array();
+    // ########################################################################
+    // Methods
+    // ########################################################################
 
-	/**
-	 * Extension setup configuration
-	 *
-	 * @var array
-	 */
-	public $tsSetup = array();
+    /**
+     * Fetch sitemap information and generate sitemap
+     */
+    public function __construct() {
+        // INIT
+        $this->rootPid = \Metaseo\Metaseo\Utility\GeneralUtility::getRootPid();
+        $sysLanguageId = null;
 
-	/**
-	 * Page change frequency definition list
-	 *
-	 * @var array
-	 */
-	public $pageChangeFrequency = array(
-		1 => 'always',
-		2 => 'hourly',
-		3 => 'daily',
-		4 => 'weekly',
-		5 => 'monthly',
-		6 => 'yearly',
-		7 => 'never',
-	);
+        $this->tsSetup = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.'];
 
-	/**
-	 * Link template for sitemap index
-	 *
-	 * Replacemennt marker ###PAGE### for page-uid
-	 *
-	 * @var string|boolean
-	 */
-	public $indexPathTemplate = FALSE;
+        // Language limit via setupTS
+        if (\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', false)) {
+            $sysLanguageId = \Metaseo\Metaseo\Utility\GeneralUtility::getLanguageId();
+        }
 
-	// ########################################################################
-	// Methods
-	// ########################################################################
+        // Fetch sitemap list/pages
+        $list = \Metaseo\Metaseo\Utility\SitemapUtility::getList($this->rootPid, $sysLanguageId);
 
-	/**
-	 * Fetch sitemap information and generate sitemap
-	 */
-	public function __construct() {
-		// INIT
-		$this->rootPid = \Metaseo\Metaseo\Utility\GeneralUtility::getRootPid();
-		$sysLanguageId = NULL;
+        $this->sitemapPages = $list['tx_metaseo_sitemap'];
+        $this->pages        = $list['pages'];
 
-		$this->tsSetup = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.'];
+        // Call hook
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'sitemapSetup', $this);
+    }
 
-		// Language limit via setupTS
-		if (\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', FALSE)) {
-			$sysLanguageId = \Metaseo\Metaseo\Utility\GeneralUtility::getLanguageId();
-		}
+    /**
+     * Return page count
+     *
+     * @return integer
+     */
+    public function pageCount() {
+        $pageLimit = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('sitemap_page_limit', null);
 
-		// Fetch sitemap list/pages
-		$list = \Metaseo\Metaseo\Utility\SitemapUtility::getList($this->rootPid, $sysLanguageId);
+        if (empty($pageLimit)) {
+            $pageLimit = 1000;
+        }
 
-		$this->sitemapPages = $list['tx_metaseo_sitemap'];
-		$this->pages        = $list['pages'];
+        $pageItems = count($this->sitemapPages);
+        $pageCount = ceil($pageItems / $pageLimit);
 
-		// Call hook
-		\Metaseo\Metaseo\Utility\GeneralUtility::callHook('sitemap-setup', $this);
-	}
+        return $pageCount;
+    }
 
-	/**
-	 * Return page count
-	 *
-	 * @return integer
-	 */
-	public function pageCount() {
-		$pageLimit = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('sitemap_page_limit', NULL);
+    // ########################################################################
+    // Abstract methods
+    // ########################################################################
 
-		if (empty($pageLimit)) {
-			$pageLimit = 1000;
-		}
+    /**
+     * Create sitemap index
+     *
+     * @return string
+     */
+    abstract public function sitemapIndex();
 
-		$pageItems = count($this->sitemapPages);
-		$pageCount = ceil($pageItems / $pageLimit);
-
-		return $pageCount;
-	}
-
-	// ########################################################################
-	// Abstract methods
-	// ########################################################################
-
-	/**
-	 * Create sitemap index
-	 *
-	 * @return string
-	 */
-	abstract public function sitemapIndex();
-
-	/**
-	 * Create sitemap (for page)
-	 *
-	 * @param   integer $page   Page
-	 * @return  string
-	 */
-	abstract public function sitemap($page = NULL);
-
+    /**
+     * Create sitemap (for page)
+     *
+     * @param   integer $page Page
+     *
+     * @return  string
+     */
+    abstract public function sitemap($page = null);
 }

@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Page;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,152 +22,142 @@ namespace Metaseo\Metaseo\Page;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Page;
+
+use Metaseo\Metaseo\Utility\GeneralUtility;
 
 /**
  * Robots txt Page
- *
- * @package     metaseo
- * @subpackage  Page
- * @version     $Id: RobotsTxtPage.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
 class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
 
-	// ########################################################################
-	// Attributes
-	// ########################################################################
+    // ########################################################################
+    // Attributes
+    // ########################################################################
 
 
-	// ########################################################################
-	// Methods
-	// ########################################################################
+    // ########################################################################
+    // Methods
+    // ########################################################################
 
-	/**
-	 * Fetch and build robots.txt
-	 */
-	public function main() {
-		$settings = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSetting();
+    /**
+     * Fetch and build robots.txt
+     */
+    public function main() {
+        $settings = GeneralUtility::getRootSetting();
 
-		// INIT
-		$tsSetup  = $GLOBALS['TSFE']->tmpl->setup;
-		$cObj     = $GLOBALS['TSFE']->cObj;
-		$tsfePage = $GLOBALS['TSFE']->page;
-		$rootPid  = \Metaseo\Metaseo\Utility\GeneralUtility::getRootPid();
-		$ret      = '';
+        // INIT
+        $tsSetup  = $GLOBALS['TSFE']->tmpl->setup;
+        $cObj     = $GLOBALS['TSFE']->cObj;
+        $rootPid  = GeneralUtility::getRootPid();
+        $ret      = '';
 
-		$tsSetupSeo = NULL;
-		if (!empty($tsSetup['plugin.']['metaseo.']['robotsTxt.'])) {
-			$tsSetupSeo = $tsSetup['plugin.']['metaseo.']['robotsTxt.'];
-		}
+        $tsSetupSeo = null;
+        if (!empty($tsSetup['plugin.']['metaseo.']['robotsTxt.'])) {
+            $tsSetupSeo = $tsSetup['plugin.']['metaseo.']['robotsTxt.'];
+        }
 
-		if (!empty($tsSetup['plugin.']['metaseo.']['sitemap.'])) {
-			$tsSetupSeoSitemap = $tsSetup['plugin.']['metaseo.']['sitemap.'];
-		}
+        // check if sitemap is enabled in root
+        if (!GeneralUtility::getRootSettingValue('is_robotstxt', true)) {
+            return true;
+        }
 
-		// check if sitemap is enabled in root
-		if (!\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_robotstxt', TRUE)) {
-			return TRUE;
-		}
+        $linkToStaticSitemap = GeneralUtility::getRootSettingValue('is_robotstxt_sitemap_static',
+            false);
 
-		$linkToStaticSitemap = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue(
-			'is_robotstxt_sitemap_static',
-			FALSE
-		);
+        // Language lock
+        $sitemapLanguageLock = GeneralUtility::getRootSettingValue('is_sitemap_language_lock',
+            false);
+        $languageId          = GeneralUtility::getLanguageId();
 
-		// Language lock
-		$sitemapLanguageLock = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', FALSE);
-		$languageId          = \Metaseo\Metaseo\Utility\GeneralUtility::getLanguageId();
+        // ###############################
+        // Fetch robots.txt content
+        // ###############################
+        $settings['robotstxt'] = trim($settings['robotstxt']);
 
-		// ###############################
-		// Fetch robots.txt content
-		// ###############################
-		$settings['robotstxt'] = trim($settings['robotstxt']);
+        if (!empty($settings['robotstxt'])) {
+            // Custom Robots.txt
+            $ret .= $settings['robotstxt'];
+        } elseif ($tsSetupSeo) {
+            // Default robots.txt
+            $ret .= $cObj->cObjGetSingle($tsSetupSeo['default'], $tsSetupSeo['default.']);
+        }
 
-		if (!empty($settings['robotstxt'])) {
-			// Custom Robots.txt
-			$ret .= $settings['robotstxt'];
+        // ###############################
+        // Fetch extra robots.txt content
+        // ###############################
+        // User additional
+        if (!empty($settings['robotstxt_additional'])) {
+            $ret .= "\n\n" . $settings['robotstxt_additional'];
+        }
 
-		} elseif ($tsSetupSeo) {
-			// Default robots.txt
-			$ret .= $cObj->cObjGetSingle($tsSetupSeo['default'], $tsSetupSeo['default.']);
-		}
+        // Setup additional
+        if ($tsSetupSeo) {
+            // Default robots.txt
+            $tmp = $cObj->cObjGetSingle($tsSetupSeo['extra'], $tsSetupSeo['extra.']);
 
-		// ###############################
-		// Fetch extra robots.txt content
-		// ###############################
-		// User additional
-		if (!empty($settings['robotstxt_additional'])) {
-			$ret .= "\n\n" . $settings['robotstxt_additional'];
-		}
+            if (!empty($tmp)) {
+                $ret .= "\n\n" . $tmp;
+            }
+        }
 
-		// Setup additional
-		if ($tsSetupSeo) {
-			// Default robots.txt
-			$tmp = $cObj->cObjGetSingle($tsSetupSeo['extra'], $tsSetupSeo['extra.']);
+        // ###############################
+        // Marker
+        // ###############################
+        if (!empty($tsSetupSeo['marker.'])) {
+            // Init marker list
+            $markerList     = array();
+            $markerConfList = array();
 
-			if (!empty($tmp)) {
-				$ret .= "\n\n" . $tmp;
-			}
-		}
+            foreach ($tsSetupSeo['marker.'] as $name => $data) {
+                if (strpos($name, '.') === false) {
+                    $markerConfList[$name] = null;
+                }
+            }
 
-		// ###############################
-		// Marker
-		// ###############################
-		if (!empty($tsSetupSeo['marker.'])) {
-			// Init marker list
-			$markerList     = array();
-			$markerConfList = array();
+            if ($linkToStaticSitemap) {
+                // remove sitemap-marker because we link to static url
+                unset($markerConfList['sitemap']);
+            }
 
-			foreach ($tsSetupSeo['marker.'] as $name => $data) {
-				if (strpos($name, '.') === FALSE) {
-					$markerConfList[$name] = NULL;
-				}
-			}
+            // Fetch marker content
+            foreach ($markerConfList as $name => $conf) {
+                $markerList['%' . $name . '%'] = $cObj->cObjGetSingle($tsSetupSeo['marker.'][$name],
+                    $tsSetupSeo['marker.'][$name . '.']);
+            }
 
-			if ($linkToStaticSitemap) {
-				// remove sitemap-marker because we link to static url
-				unset($markerConfList['sitemap']);
-			}
+            // generate sitemap-static marker
+            if ($linkToStaticSitemap) {
+                if ($sitemapLanguageLock) {
+                    $path = 'uploads/tx_metaseo/sitemap_xml/index-r' . (int)$rootPid . '-l' . (int)$languageId . '.xml.gz';
+                } else {
+                    $path = 'uploads/tx_metaseo/sitemap_xml/index-r' . (int)$rootPid . '.xml.gz';
+                }
 
-			// Fetch marker content
-			foreach ($markerConfList as $name => $conf) {
-				$markerList['%' . $name . '%'] = $cObj->cObjGetSingle(
-					$tsSetupSeo['marker.'][$name],
-					$tsSetupSeo['marker.'][$name . '.']
-				);
-			}
+                $conf = array(
+                    'parameter' => $path
+                );
 
-			// generate sitemap-static marker
-			if ($linkToStaticSitemap) {
-				if ($sitemapLanguageLock) {
-					$path = 'uploads/tx_metaseo/sitemap_xml/index-r' . (int)$rootPid . '-l' . (int)$languageId . '.xml.gz';
-				} else {
-					$path = 'uploads/tx_metaseo/sitemap_xml/index-r' . (int)$rootPid . '.xml.gz';
-				}
+                $markerList['%sitemap%'] = $cObj->typolink_URL($conf);
+            }
 
-				$conf = array(
-					'parameter' => $path
-				);
+            // Fix sitemap-marker url (add prefix if needed)
+            $markerList['%sitemap%'] = GeneralUtility::fullUrl($markerList['%sitemap%']);
 
-				$markerList['%sitemap%'] = $cObj->typolink_URL($conf);
-			}
+            // Call hook
+            GeneralUtility::callHookAndSignal(__CLASS__, 'robotsTxtMarker', $this, $markerList);
 
-			// Fix sitemap-marker url (add prefix if needed)
-			$markerList['%sitemap%'] = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($markerList['%sitemap%']);
+            // Apply marker list
+            if (!empty($markerList)) {
+                $ret = strtr($ret, $markerList);
+            }
+        }
 
-			// Call hook
-			\Metaseo\Metaseo\Utility\GeneralUtility::callHook('robotstxt-marker', $this, $markerList);
+        // Call hook
+        GeneralUtility::callHookAndSignal(__CLASS__, 'robotsTxtOutput', $this, $ret);
 
-			// Apply marker list
-			if (!empty($markerList)) {
-				$ret = strtr($ret, $markerList);
-			}
-		}
-
-		// Call hook
-		\Metaseo\Metaseo\Utility\GeneralUtility::callHook('robotstxt-output', $this, $ret);
-
-		return $ret;
-	}
-
+        return $ret;
+    }
 }

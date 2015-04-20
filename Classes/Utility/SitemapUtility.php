@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Utility;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,212 +22,266 @@ namespace Metaseo\Metaseo\Utility;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
 
-use Metaseo\Metaseo\Utility\DatabaseUtility;
+namespace Metaseo\Metaseo\Utility;
+
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Sitemap utility
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: SitemapUtility.php 81677 2013-11-21 12:32:33Z mblaschke $
  */
 class SitemapUtility {
 
-	CONST SITEMAP_TYPE_PAGE = 0;
-	CONST SITEMAP_TYPE_FILE = 1;
+    CONST SITEMAP_TYPE_PAGE = 0;
+    CONST SITEMAP_TYPE_FILE = 1;
 
-	// ########################################################################
-	// Public methods
-	// ########################################################################
+    CONST PAGE_TYPE_SITEMAP_TXT = 841131; // sitemap.txt     (EXT:metaseo), apply changes in Configuration/TypoScript/setup.txt
+    CONST PAGE_TYPE_SITEMAP_XML = 841132; // sitemap.xml     (EXT:metaseo)
+    CONST PAGE_TYPE_ROBOTS_TXT  = 841133; // robots.txt      (EXT:metaseo)
 
-	/**
-	 * Insert into sitemap
-	 *
-	 * @param   array $pageData   Page informations
-	 */
-	public static function index($pageData) {
-		static $cache = array();
+    // ########################################################################
+    // Attributes
+    // ########################################################################
 
-		// do not index empty urls
-		if (empty($pageData['page_url']) ) {
-			return;
-		}
+    /**
+     * List of blacklisted doktypes (from table pages)
+     * @var array
+     */
+    protected static $doktypeBlacklist = array(
+        PageRepository::DOKTYPE_BE_USER_SECTION,  // Backend Section (TYPO3 CMS)
+        PageRepository::DOKTYPE_SPACER,           // Menu separator  (TYPO3 CMS)
+        PageRepository::DOKTYPE_SYSFOLDER,        // Folder          (TYPO3 CMS)
+        PageRepository::DOKTYPE_RECYCLER,         // Recycler        (TYPO3 CMS)
+    );
 
-		// Trim url
-		$pageData['page_url'] = trim($pageData['page_url']);
+    /**
+     * List of blacklisted rendering PAGE typenum (typoscript object)
+     *
+     * @var array
+     */
+    protected static $pagetypeBlacklist = array(
+        self::PAGE_TYPE_SITEMAP_TXT,   // sitemap.txt     (EXT:metaseo)
+        self::PAGE_TYPE_SITEMAP_XML,   // sitemap.xml     (EXT:metaseo)
+        self::PAGE_TYPE_ROBOTS_TXT,    // robots.txt      (EXT:metaseo)
+    );
 
-		// calc page hash
-		$pageData['page_hash'] = md5($pageData['page_url']);
-		$pageHash = $pageData['page_hash'];
 
-		// set default type if not set
-		if (!isset($pageData['page_type'])) {
-			$pageData['page_type'] = self::SITEMAP_TYPE_PAGE;
-		}
+    // ########################################################################
+    // Public methods
+    // ########################################################################
 
-		// Escape/Quote data
-		unset($pageDataValue);
-		foreach ($pageData as &$pageDataValue) {
-			if ($pageDataValue === NULL) {
-				$pageDataValue = 'NULL';
-			} elseif (is_int($pageDataValue) || is_numeric($pageDataValue)) {
-				// Don't quote numeric/integers
-				$pageDataValue = (int)$pageDataValue;
-			} else {
-				// String
-				$pageDataValue = DatabaseUtility::quote($pageDataValue, 'tx_metaseo_sitemap');
-			}
-		}
-		unset($pageDataValue);
+    /**
+     * Insert into sitemap
+     *
+     * @param   array $pageData Page informations
+     */
+    public static function index($pageData) {
+        static $cache = array();
 
-		// only process each page once to keep sql-statements at a normal level
-		if (empty($cache[$pageHash])) {
+        // do not index empty urls
+        if (empty($pageData['page_url'])) {
+            return;
+        }
 
-			// $pageData is already quoted
+        // Trim url
+        $pageData['page_url'] = trim($pageData['page_url']);
 
-			// TODO: INSERT INTO ... ON DUPLICATE KEY UPDATE?
+        // calc page hash
+        $pageData['page_hash'] = md5($pageData['page_url']);
+        $pageHash              = $pageData['page_hash'];
 
-			$query = 'SELECT uid
-						FROM tx_metaseo_sitemap
-					   WHERE page_uid      = ' . $pageData['page_uid'] . '
-						 AND page_language = ' . $pageData['page_language'] . '
-						 AND page_hash     = ' . $pageData['page_hash'] . '
-						 AND page_type     = ' . $pageData['page_type'];
-			$sitemapUid = DatabaseUtility::getOne($query);
+        // set default type if not set
+        if (!isset($pageData['page_type'])) {
+            $pageData['page_type'] = self::SITEMAP_TYPE_PAGE;
+        }
 
-			if ( !empty($sitemapUid) ) {
-				$query = 'UPDATE tx_metaseo_sitemap
-							 SET tstamp                = ' . $pageData['tstamp'] . ',
-								 page_rootpid          = ' . $pageData['page_rootpid'] . ',
-								 page_language         = ' . $pageData['page_language'] . ',
-								 page_url              = ' . $pageData['page_url'] . ',
-								 page_depth            = ' . $pageData['page_depth'] . ',
-								 page_change_frequency = ' . $pageData['page_change_frequency'] . ',
-								 page_type             = ' . $pageData['page_type'] . ',
-								 expire                = ' . $pageData['expire'] . '
-						   WHERE uid = ' . (int)$sitemapUid;
-				DatabaseUtility::exec($query);
-			} else {
-				// #####################################
-				// INSERT
-				// #####################################
-				$GLOBALS['TYPO3_DB']->exec_INSERTquery(
-					'tx_metaseo_sitemap',
-					$pageData,
-					array_keys($pageData)
-				);
-			}
+        // Escape/Quote data
+        unset($pageDataValue);
+        foreach ($pageData as &$pageDataValue) {
+            if ($pageDataValue === null) {
+                $pageDataValue = 'NULL';
+            } elseif (is_int($pageDataValue) || is_numeric($pageDataValue)) {
+                // Don't quote numeric/integers
+                $pageDataValue = (int)$pageDataValue;
+            } else {
+                // String
+                $pageDataValue = DatabaseUtility::quote($pageDataValue, 'tx_metaseo_sitemap');
+            }
+        }
+        unset($pageDataValue);
 
-			$cache[$pageHash] = 1;
-		}
-	}
+        // only process each page once to keep sql-statements at a normal level
+        if (empty($cache[$pageHash])) {
 
-	/**
-	 * Clear outdated and invalid pages from sitemap table
-	 */
-	public static function expire() {
-		// #####################
-		// Expired pages
-		// #####################
-		$expireDays = (int)\Metaseo\Metaseo\Utility\GeneralUtility::getExpireDaysInSeconds();
+            // $pageData is already quoted
 
-		// tstamp for too old indexed sitemap url
-		$tstamp = time() - $expireDays;
+            // TODO: INSERT INTO ... ON DUPLICATE KEY UPDATE?
 
-		// special expire time
-		$expire = time();
+            $query      = 'SELECT uid
+                             FROM tx_metaseo_sitemap
+                            WHERE page_uid      = ' . $pageData['page_uid'] . '
+                              AND page_language = ' . $pageData['page_language'] . '
+                              AND page_hash     = ' . $pageData['page_hash'] . '
+                              AND page_type     = ' . $pageData['page_type'];
+            $sitemapUid = DatabaseUtility::getOne($query);
 
-		$query = 'DELETE FROM tx_metaseo_sitemap
-						WHERE is_blacklisted = 0
-						  AND ( tstamp <= ' . (int)$tstamp . '
-							 OR expire <= ' . (int)$expire . '
-						  ) ';
-		DatabaseUtility::exec($query);
+            if (!empty($sitemapUid)) {
+                $query = 'UPDATE tx_metaseo_sitemap
+                             SET tstamp                = ' . $pageData['tstamp'] . ',
+                                 page_rootpid          = ' . $pageData['page_rootpid'] . ',
+                                 page_language         = ' . $pageData['page_language'] . ',
+                                 page_url              = ' . $pageData['page_url'] . ',
+                                 page_depth            = ' . $pageData['page_depth'] . ',
+                                 page_change_frequency = ' . $pageData['page_change_frequency'] . ',
+                                 page_type             = ' . $pageData['page_type'] . ',
+                                 expire                = ' . $pageData['expire'] . '
+                           WHERE uid = ' . (int)$sitemapUid;
+                DatabaseUtility::exec($query);
+            } else {
+                // #####################################
+                // INSERT
+                // #####################################
+                \Metaseo\Metaseo\Utility\DatabaseUtility::connection()->exec_INSERTquery('tx_metaseo_sitemap',
+                    $pageData, array_keys($pageData));
+            }
 
-		// #####################
-		//  Deleted or
-		// excluded pages
-		// #####################
-		$query = 'SELECT ts.uid
-					FROM tx_metaseo_sitemap ts
-						 LEFT JOIN pages p
-							ON p.uid = ts.page_uid
-						   AND p.deleted = 0
-						   AND p.hidden = 0
-						   AND p.tx_metaseo_is_exclude = 0
-				   WHERE p.uid IS NULL';
-		$deletedSitemapPages = DatabaseUtility::getColWithIndex($query);
+            $cache[$pageHash] = 1;
+        }
+    }
 
-		// delete pages
-		if (!empty($deletedSitemapPages)) {
-			$query = 'DELETE FROM tx_metaseo_sitemap
-							WHERE uid IN (' . implode(',', $deletedSitemapPages) . ')
-							  AND is_blacklisted = 0';
-			DatabaseUtility::exec($query);
-		}
-	}
+    /**
+     * Clear outdated and invalid pages from sitemap table
+     */
+    public static function expire() {
+        // #####################
+        // Delete expired entries
+        // #####################
 
-	/**
-	 * Return list of sitemap pages
-	 *
-	 * @param   integer $rootPid        Root page id of tree
-	 * @param   integer $languageId     Limit to language id
-	 * @return  boolean|array
-	 */
-	public static function getList($rootPid, $languageId = NULL) {
-		$sitemapList = array();
-		$pageList    = array();
+        $query = 'DELETE FROM tx_metaseo_sitemap
+                        WHERE is_blacklisted = 0
+                          AND expire <= ' . (int)time();
+        DatabaseUtility::exec($query);
 
-		$typo3Pids     = array();
+        // #####################
+        //  Deleted or
+        // excluded pages
+        // #####################
+        $query = 'SELECT ts.uid
+                    FROM tx_metaseo_sitemap ts
+                         LEFT JOIN pages p
+                            ON p.uid = ts.page_uid
+                           AND p.deleted = 0
+                           AND p.hidden = 0
+                           AND p.tx_metaseo_is_exclude = 0
+                           AND ' . DatabaseUtility::conditionNotIn('p.doktype', self::getDoktypeBlacklist()) . '
+                   WHERE p.uid IS NULL';
 
-		$query = 'SELECT ts.*
-					FROM tx_metaseo_sitemap ts
-							INNER JOIN pages p
-							  ON	p.uid = ts.page_uid
-								AND	p.deleted = 0
-								AND	p.hidden = 0
-								AND	p.tx_metaseo_is_exclude = 0
-				   WHERE ts.page_rootpid = ' . (int)$rootPid . '
-					 AND ts.is_blacklisted = 0';
+        $deletedSitemapPages = DatabaseUtility::getColWithIndex($query);
 
-		if ($languageId !== NULL) {
-			$query .= ' AND ts.page_language = ' . (int)$languageId;
-		}
-		$query .= ' ORDER BY
-						ts.page_depth ASC,
-						p.pid ASC,
-						p.sorting ASC';
-		$resultRows = DatabaseUtility::getAll($query);
+        // delete pages
+        if (!empty($deletedSitemapPages)) {
+            $query = 'DELETE FROM tx_metaseo_sitemap
+                            WHERE uid IN (' . implode(',', $deletedSitemapPages) . ')
+                              AND is_blacklisted = 0';
+            DatabaseUtility::exec($query);
+        }
+    }
 
-		if (!$resultRows) {
-			return FALSE;
-		}
+    /**
+     * Get list of blacklisted doktypes (from table pages)
+     *
+     * @return array
+     */
+    public static function getDoktypeBlacklist() {
+        return self::$doktypeBlacklist;
+    }
 
-		foreach ($resultRows as $row) {
-			$sitemapList[] = $row;
+    /**
+     * Get list of blacklisted PAGE typenum (typoscript object)
+     *
+     * @return array
+     */
+    public static function getPageTypeBlacklist() {
+        $ret = self::$pagetypeBlacklist;
 
-			$sitemapPageId             = $row['page_uid'];
-			$typo3Pids[$sitemapPageId] = (int)$sitemapPageId;
-		}
+        // Fetch from SetupTS (comma separated list)
+        if (isset($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist'])
+           && strlen($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist']) >= 1)
+        {
+            $pageTypeBlacklist = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist'];
+            $pageTypeBlacklist = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $pageTypeBlacklist);
 
-		if (!empty($typo3Pids)) {
-			$query = 'SELECT *
-						FROM pages
-					   WHERE ' . DatabaseUtility::conditionIn('uid', $typo3Pids);
-			$pageList = DatabaseUtility::getAllWithIndex($query, 'uid');
+            $ret = array_merge(
+                $ret,
+                $pageTypeBlacklist
+            );
+        }
 
-			if ( empty($pageList) ) {
-				return FALSE;
-			}
-		}
+        return $ret;
+    }
 
-		$ret = array(
-			'tx_metaseo_sitemap' => $sitemapList,
-			'pages'              => $pageList
-		);
+    /**
+     * Return list of sitemap pages
+     *
+     * @param   integer $rootPid    Root page id of tree
+     * @param   integer $languageId Limit to language id
+     *
+     * @return  boolean|array
+     */
+    public static function getList($rootPid, $languageId = null) {
+        $sitemapList = array();
+        $pageList    = array();
 
-		return $ret;
-	}
+        $typo3Pids = array();
+
+        $query = 'SELECT ts.*
+                    FROM tx_metaseo_sitemap ts
+                            INNER JOIN pages p
+                              ON	p.uid = ts.page_uid
+                                AND	p.deleted = 0
+                                AND	p.hidden = 0
+                                AND	p.tx_metaseo_is_exclude = 0
+                                AND ' . DatabaseUtility::conditionNotIn('p.doktype', self::getDoktypeBlacklist()) . '
+                   WHERE ts.page_rootpid = ' . (int)$rootPid . '
+                     AND ts.is_blacklisted = 0';
+
+        if ($languageId !== null) {
+            $query .= ' AND ts.page_language = ' . (int)$languageId;
+        }
+        $query .= ' ORDER BY
+                        ts.page_depth ASC,
+                        p.pid ASC,
+                        p.sorting ASC';
+        $resultRows = DatabaseUtility::getAll($query);
+
+        if (!$resultRows) {
+            return false;
+        }
+
+        foreach ($resultRows as $row) {
+            $sitemapList[] = $row;
+
+            $sitemapPageId             = $row['page_uid'];
+            $typo3Pids[$sitemapPageId] = (int)$sitemapPageId;
+        }
+
+        if (!empty($typo3Pids)) {
+            $query    = 'SELECT *
+                           FROM pages
+                          WHERE ' . DatabaseUtility::conditionIn('uid', $typo3Pids);
+            $pageList = DatabaseUtility::getAllWithIndex($query, 'uid');
+
+            if (empty($pageList)) {
+                return false;
+            }
+        }
+
+        $ret = array(
+            'tx_metaseo_sitemap' => $sitemapList,
+            'pages'              => $pageList
+        );
+
+        return $ret;
+    }
 }

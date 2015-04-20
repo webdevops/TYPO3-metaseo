@@ -1,11 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Scheduler\Task;
 
-
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -24,127 +22,126 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Scheduler\Task;
 
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Scheduler Task Sitemap Base
- *
- * @package     metaseo
- * @subpackage  Sitemap
- * @version     $Id: AbstractTask.php 84520 2014-03-28 10:33:24Z mblaschke $
  */
 abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
-	// ########################################################################
-	// Attributes
-	// ########################################################################
+    // ########################################################################
+    // Attributes
+    // ########################################################################
 
-	/**
-	 * Backend Form Protection object
-	 *
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-	 * @inject
-	 */
-	protected $objectManager = NULL;
+    /**
+     * Backend Form Protection object
+     *
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     * @inject
+     */
+    protected $objectManager = null;
 
-	/**
-	 * Language lock
-	 *
-	 * @var integer
-	 */
-	protected $languageLock = FALSE;
+    /**
+     * Language lock
+     *
+     * @var integer
+     */
+    protected $languageLock = false;
 
-	/**
-	 * Language list
-	 *
-	 * @var array
-	 */
-	protected $languageIdList = NULL;
+    /**
+     * Language list
+     *
+     * @var array
+     */
+    protected $languageIdList = null;
 
-	// ########################################################################
-	// Methods
-	// ########################################################################
+    // ########################################################################
+    // Methods
+    // ########################################################################
 
-	/**
-	 * Initialize task
-	 */
-	protected function initialize() {
-		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-	}
+    /**
+     * Initialize task
+     */
+    protected function initialize() {
+        $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+    }
 
-	/**
-	 * Get list of root pages in current typo3
-	 *
-	 * @return  array
-	 */
-	protected function getRootPages() {
-		$ret = array();
+    /**
+     * Get list of root pages in current typo3
+     *
+     * @return  array
+     */
+    protected function getRootPages() {
+        $ret = array();
 
-		$query = 'SELECT uid
-					FROM pages
-				   WHERE is_siteroot = 1
-					 AND deleted = 0';
-		$ret = DatabaseUtility::getColWithIndex($query);
+        $query = 'SELECT uid
+                    FROM pages
+                   WHERE is_siteroot = 1
+                     AND deleted = 0';
+        $ret   = DatabaseUtility::getColWithIndex($query);
 
-		return $ret;
-	}
+        return $ret;
+    }
 
 
-	/**
-	 * Get list of root pages in current typo3
-	 *
-	 * @return  array
-	 */
-	protected function initLanguages() {
-		$this->languageIdList[0] = 0;
+    /**
+     * Get list of root pages in current typo3
+     *
+     * @return  array
+     */
+    protected function initLanguages() {
+        $this->languageIdList[0] = 0;
 
-		$query = 'SELECT uid
-					FROM sys_language
-				   WHERE hidden = 0';
-		$this->languageIdList = DatabaseUtility::getColWithIndex($query);
-	}
+        $query      = 'SELECT uid
+                         FROM sys_language
+                        WHERE hidden = 0';
+        $langIdList = DatabaseUtility::getColWithIndex($query);
 
-	/**
-	 * Set root page language
-	 */
-	protected function setRootPageLanguage($languageId) {
-		$GLOBALS['TSFE']->tmpl->setup['config.']['sys_language_uid'] = $languageId;
-		$this->languageLock = $languageId;
-	}
+        $this->languageIdList = $langIdList;
+    }
 
-	/**
-	 * Initalize root page (TSFE and stuff)
-	 *
-	 * @param   integer $rootPageId $rootPageId
-	 */
-	protected function initRootPage($rootPageId) {
-		\Metaseo\Metaseo\Utility\FrontendUtility::init($rootPageId);
-	}
+    /**
+     * Set root page language
+     */
+    protected function setRootPageLanguage($languageId) {
+        $GLOBALS['TSFE']->tmpl->setup['config.']['sys_language_uid'] = $languageId;
+        $this->languageLock                                          = $languageId;
+    }
 
-	/**
-	 * Write content to file
-	 *
-	 * @param   string $file       Filename/path
-	 * @param   string $content    Content
-	 * @throws  \Exception
-	 */
-	protected function writeToFile($file, $content) {
-		if (!function_exists('gzopen')) {
-			throw new \Exception('metaseo needs zlib support');
-		}
+    /**
+     * Initalize root page (TSFE and stuff)
+     *
+     * @param   integer $rootPageId $rootPageId
+     */
+    protected function initRootPage($rootPageId) {
+        \Metaseo\Metaseo\Utility\FrontendUtility::init($rootPageId);
+    }
 
-		$fp = gzopen($file, 'w');
+    /**
+     * Write content to file
+     *
+     * @param   string $file    Filename/path
+     * @param   string $content Content
+     *
+     * @throws  \Exception
+     */
+    protected function writeToFile($file, $content) {
+        if (!function_exists('gzopen')) {
+            throw new \Exception('metaseo needs zlib support');
+        }
 
-		if ($fp) {
-			gzwrite($fp, $content);
-			gzclose($fp);
-		} else {
-			throw new \Exception('Could not open ' . $file . ' for writing');
-		}
+        $fp = gzopen($file, 'w');
 
-	}
-
+        if ($fp) {
+            gzwrite($fp, $content);
+            gzclose($fp);
+        } else {
+            throw new \Exception('Could not open ' . $file . ' for writing');
+        }
+    }
 }

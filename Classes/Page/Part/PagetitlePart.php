@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Page\Part;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,237 +22,310 @@ namespace Metaseo\Metaseo\Page\Part;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Page\Part;
+
+use Metaseo\Metaseo\Utility\FrontendUtility;
 
 /**
  * Page Title Changer
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: PagetitlePart.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
 class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
-	/**
-	 * Add SEO-Page Title
-	 *
-	 * @param    string $title    Default page title (rendered by TYPO3)
-	 * @return    string            Modified page title
-	 */
-	public function main($title) {
-		// INIT
-		$ret              = $title;
-		$rawTitel         = !empty($GLOBALS['TSFE']->altPageTitle) ? $GLOBALS['TSFE']->altPageTitle : $GLOBALS['TSFE']->page['title'];
-		$tsSetup          = $GLOBALS['TSFE']->tmpl->setup;
-		$tsSeoSetup       = array();
-		$rootLine         = $GLOBALS['TSFE']->rootLine;
-		$currentPid       = $GLOBALS['TSFE']->id;
-		$skipPrefixSuffix = FALSE;
-		$applySitetitle   = TRUE;
+    /**
+     * Add SEO-Page Title
+     *
+     * @param    string $title Default page title (rendered by TYPO3)
+     *
+     * @return    string            Modified page title
+     */
+    public function main($title) {
+        $ret = null;
 
-		$pageTitelPrefix = FALSE;
-		$pageTitelSuffix = FALSE;
+        // ############################
+        // Fetch from cache
+        // ############################
 
-		$stdWrapList = array();
+        $pageTitleCachingEnabled = $this->checkIfPageTitleCachingEnabled();
+        if ($pageTitleCachingEnabled) {
+            $cacheIdentification = $GLOBALS['TSFE']->id . '_' . substr(sha1(FrontendUtility::getCurrentUrl()),10,30) . '_title';
 
-		$sitetitle = $tsSetup['sitetitle'];
+            /** @var \TYPO3\CMS\Core\Cache\CacheManager $cacheManager */
+            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+            $cacheManager  = $objectManager->get('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+            $cache         = $cacheManager->getCache('cache_pagesection');
 
-		// get configuration
-		if (!empty($tsSetup['plugin.']['metaseo.'])) {
-			$tsSeoSetup = $tsSetup['plugin.']['metaseo.'];
-		}
+            $cacheTitle = $cache->get($cacheIdentification);
+            if (!empty($cacheTitle)) {
+                $ret = $cacheTitle;
+            }
+        }
 
-		// Use browsertitle if available
-		if (!empty($GLOBALS['TSFE']->page['tx_metaseo_pagetitle_rel'])) {
-			$rawTitel = $GLOBALS['TSFE']->page['tx_metaseo_pagetitle_rel'];
-		}
+        // ############################
+        // Generate page title
+        // ############################
 
-		// Call hook
-		\Metaseo\Metaseo\Utility\GeneralUtility::callHook('pagetitle-setup', $this, $tsSeoSetup);
+        // Generate page title if not set
+        // also fallback
+        if (empty($ret)) {
+            $ret = $this->generatePageTitle($title);
 
-		// get stdwrap list
-		if (!empty($tsSeoSetup['pageTitle.']['stdWrap.'])) {
-			$stdWrapList = $tsSeoSetup['pageTitle.']['stdWrap.'];
-		}
+            // Cache page title (if page is not cacheable)
+            if ($pageTitleCachingEnabled) {
+                $cache->set($cacheIdentification, $ret, array('pageId_' . $GLOBALS['TSFE']->id));
+            }
+        }
 
-		// Apply stdWrap before
-		if (!empty($stdWrapList['before.'])) {
-			$rawTitel = $this->cObj->stdWrap($rawTitel, $stdWrapList['before.']);
-		}
+        // ############################
+        // Output
+        // ############################
 
-		// #######################################################################
-		// RAW PAGE TITEL
-		// #######################################################################
-		if (!empty($GLOBALS['TSFE']->page['tx_metaseo_pagetitle'])) {
-			$ret = $GLOBALS['TSFE']->page['tx_metaseo_pagetitle'];
+        // Call hook
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'pageTitleOutput', $this, $ret);
 
-			// Add template prefix/suffix
-			if (empty($tsSeoSetup['pageTitle.']['applySitetitleToPagetitle'])) {
-				$applySitetitle = FALSE;
-			}
+        return $ret;
+    }
 
-			$skipPrefixSuffix = TRUE;
-		}
+    /**
+     * Check if page title caching is enabled
+     *
+     * @return bool
+     */
+    protected function checkIfPageTitleCachingEnabled() {
+        $cachingEnabled = !empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['pageTitle.']['caching']);
 
+        // Enable caching only if caching is enabled in SetupTS
+        // And if there is any USER_INT on the current page
+        //
+        // -> USER_INT will break Connector pagetitle setting
+        //    because the plugin output is cached but not the whole
+        //    page. so the Connector will not be called again
+        //    and the default page title will be shown
+        //    which is wrong
+        // -> if the page is fully cacheable we don't have anything
+        //    to do
+        return $cachingEnabled && !FrontendUtility::isCacheable();
+    }
 
-		// #######################################################################
-		// PAGE TITEL PREFIX/SUFFIX
-		// #######################################################################
-		if (!$skipPrefixSuffix) {
-			foreach ($rootLine as $page) {
-				switch ((int)$page['tx_metaseo_inheritance']) {
-					case 0:
-						// ###################################
-						// Normal
-						// ###################################
-						if (!empty($page['tx_metaseo_pagetitle_prefix'])) {
-							$pageTitelPrefix = $page['tx_metaseo_pagetitle_prefix'];
-						}
+    /**
+     * Add SEO-Page Title
+     *
+     * @param    string $title Default page title (rendered by TYPO3)
+     *
+     * @return    string            Modified page title
+     */
+    public function generatePageTitle($title) {
+        // INIT
+        $ret              = $title;
+        $rawTitel         = !empty($GLOBALS['TSFE']->altPageTitle) ? $GLOBALS['TSFE']->altPageTitle : $GLOBALS['TSFE']->page['title'];
+        $tsSetup          = $GLOBALS['TSFE']->tmpl->setup;
+        $tsSeoSetup       = array();
+        $rootLine         = $GLOBALS['TSFE']->rootLine;
+        $currentPid       = $GLOBALS['TSFE']->id;
+        $skipPrefixSuffix = false;
+        $applySitetitle   = true;
 
-						if (!empty($page['tx_metaseo_pagetitle_suffix'])) {
-							$pageTitelSuffix = $page['tx_metaseo_pagetitle_suffix'];
-						}
+        $pageTitelPrefix = false;
+        $pageTitelSuffix = false;
 
-						if ($pageTitelPrefix !== FALSE || $pageTitelSuffix !== FALSE) {
-							// pagetitle found - break foreach
-							break 2;
-						}
-						break;
+        $stdWrapList = array();
 
-					case 1:
-						// ###################################
-						// Skip
-						// (don't herit from this page)
-						// ###################################
-						if ((int)$page['uid'] != $currentPid) {
-							continue 2;
-						}
+        $sitetitle = $tsSetup['sitetitle'];
 
-						if (!empty($page['tx_metaseo_pagetitle_prefix'])) {
-							$pageTitelPrefix = $page['tx_metaseo_pagetitle_prefix'];
-						}
+        // get configuration
+        if (!empty($tsSetup['plugin.']['metaseo.'])) {
+            $tsSeoSetup = $tsSetup['plugin.']['metaseo.'];
+        }
 
-						if (!empty($page['tx_metaseo_pagetitle_suffix'])) {
-							$pageTitelSuffix = $page['tx_metaseo_pagetitle_suffix'];
-						}
+        // Use browsertitle if available
+        if (!empty($GLOBALS['TSFE']->page['tx_metaseo_pagetitle_rel'])) {
+            $rawTitel = $GLOBALS['TSFE']->page['tx_metaseo_pagetitle_rel'];
+        }
 
-						break 2;
-						break;
-				}
-			}
+        // Call hook
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'pageTitleSetup', $this, $tsSeoSetup);
 
-			// #################
-			// Process settings from access point
-			// #################
-			$connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
-			$store     = $connector->getStore('pagetitle');
+        // get stdwrap list
+        if (!empty($tsSeoSetup['pageTitle.']['stdWrap.'])) {
+            $stdWrapList = $tsSeoSetup['pageTitle.']['stdWrap.'];
+        }
 
-			if (!empty($store)) {
-				if (isset($store['pagetitle.title'])) {
-					$rawTitel = $store['pagetitle.title'];
-				}
+        // Apply stdWrap before
+        if (!empty($stdWrapList['before.'])) {
+            $rawTitel = $this->cObj->stdWrap($rawTitel, $stdWrapList['before.']);
+        }
 
-				if (isset($store['pagetitle.prefix'])) {
-					$pageTitelPrefix = $store['pagetitle.prefix'];
-				}
+        // #######################################################################
+        // RAW PAGE TITEL
+        // #######################################################################
+        if (!empty($GLOBALS['TSFE']->page['tx_metaseo_pagetitle'])) {
+            $ret = $GLOBALS['TSFE']->page['tx_metaseo_pagetitle'];
 
-				if (isset($store['pagetitle.suffix'])) {
-					$pageTitelSuffix = $store['pagetitle.suffix'];
-				}
+            // Add template prefix/suffix
+            if (empty($tsSeoSetup['pageTitle.']['applySitetitleToPagetitle'])) {
+                $applySitetitle = false;
+            }
 
-				if (isset($store['pagetitle.absolute'])) {
-					$ret      = $store['pagetitle.absolute'];
-					$rawTitel = $store['pagetitle.absolute'];
-
-					$pageTitelPrefix = FALSE;
-					$pageTitelSuffix = FALSE;
-
-					if (empty($tsSeoSetup['pageTitle.']['applySitetitleToPagetitle'])) {
-						$applySitetitle = FALSE;
-					}
-				}
-
-				if (isset($store['pagetitle.sitetitle'])) {
-					$sitetitle = $store['pagetitle.sitetitle'];
-				}
-			}
-
-			// Apply prefix and suffix
-			if ($pageTitelPrefix !== FALSE || $pageTitelSuffix !== FALSE) {
-				$ret = $rawTitel;
-
-				if ($pageTitelPrefix !== FALSE) {
-					$ret = $pageTitelPrefix . ' ' . $ret;
-				}
-
-				if ($pageTitelSuffix !== FALSE) {
-					$ret .= ' ' . $pageTitelSuffix;
-				}
-
-				if (!empty($tsSeoSetup['pageTitle.']['applySitetitleToPrefixSuffix'])) {
-					$applySitetitle = TRUE;
-				}
-			} else {
-				$ret = $rawTitel;
-			}
-		}
-
-		// #######################################################################
-		// APPLY SITETITLE (from setup)
-		// #######################################################################
-		if ($applySitetitle) {
-			$pageTitleGlue    = ':';
-			$glueSpacerBefore = '';
-			$glueSpacerAfter  = '';
-
-			// Overwrite sitetitle with the one from ts-setup (if available)
-			if (!empty($tsSeoSetup['pageTitle.']['sitetitle'])) {
-				$sitetitle = $tsSeoSetup['pageTitle.']['sitetitle'];
-			}
-
-			// Apply stdWrap after
-			if (!empty($stdWrapList['sitetitle.'])) {
-				$sitetitle = $this->cObj->stdWrap($sitetitle, $stdWrapList['sitetitle.']);
-			}
+            $skipPrefixSuffix = true;
+        }
 
 
-			if (isset($tsSeoSetup['pageTitle.']['sitetitleGlue'])) {
-				$pageTitleGlue = $tsSeoSetup['pageTitle.']['sitetitleGlue'];
-			}
+        // #######################################################################
+        // PAGE TITEL PREFIX/SUFFIX
+        // #######################################################################
+        if (!$skipPrefixSuffix) {
+            foreach ($rootLine as $page) {
+                switch ((int)$page['tx_metaseo_inheritance']) {
+                    case 0:
+                        // ###################################
+                        // Normal
+                        // ###################################
+                        if (!empty($page['tx_metaseo_pagetitle_prefix'])) {
+                            $pageTitelPrefix = $page['tx_metaseo_pagetitle_prefix'];
+                        }
 
-			if (!empty($tsSeoSetup['pageTitle.']['sitetitleGlueSpaceBefore'])) {
-				$glueSpacerBefore = ' ';
-			}
+                        if (!empty($page['tx_metaseo_pagetitle_suffix'])) {
+                            $pageTitelSuffix = $page['tx_metaseo_pagetitle_suffix'];
+                        }
 
-			if (!empty($tsSeoSetup['pageTitle.']['sitetitleGlueSpaceAfter'])) {
-				$glueSpacerAfter = ' ';
-			}
+                        if ($pageTitelPrefix !== false || $pageTitelSuffix !== false) {
+                            // pagetitle found - break foreach
+                            break 2;
+                        }
+                        break;
 
-			$sitetitlePosition = 0;
-			if (isset($tsSeoSetup['pageTitle.']['sitetitlePosition'])) {
-				$sitetitlePosition = (int)$tsSeoSetup['pageTitle.']['sitetitlePosition'];
-			} elseif (isset($tsSetup['config.']['pageTitleFirst'])) {
-				$sitetitlePosition = (int)$tsSetup['config.']['pageTitleFirst'];
-			}
+                    case 1:
+                        // ###################################
+                        // Skip
+                        // (don't herit from this page)
+                        // ###################################
+                        if ((int)$page['uid'] != $currentPid) {
+                            continue 2;
+                        }
 
-			// add overall pagetitel from template/ts-setup
-			if ($sitetitlePosition) {
-				// suffix
-				$ret .= $glueSpacerBefore . $pageTitleGlue . $glueSpacerAfter . $sitetitle;
-			} else {
-				// prefix (default)
-				$ret = $sitetitle . $glueSpacerBefore . $pageTitleGlue . $glueSpacerAfter . $ret;
-			}
-		}
+                        if (!empty($page['tx_metaseo_pagetitle_prefix'])) {
+                            $pageTitelPrefix = $page['tx_metaseo_pagetitle_prefix'];
+                        }
 
-		// Apply stdWrap after
-		if (!empty($stdWrapList['after.'])) {
-			$ret = $this->cObj->stdWrap($ret, $stdWrapList['after.']);
-		}
+                        if (!empty($page['tx_metaseo_pagetitle_suffix'])) {
+                            $pageTitelSuffix = $page['tx_metaseo_pagetitle_suffix'];
+                        }
 
-		// Call hook
-		\Metaseo\Metaseo\Utility\GeneralUtility::callHook('pagetitle-output', $this, $ret);
+                        break 2;
+                        break;
+                }
+            }
 
-		return $ret;
-	}
+            // #################
+            // Process settings from access point
+            // #################
+            $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
+            $store     = $connector->getStore('pagetitle');
+
+            if (!empty($store)) {
+                if (isset($store['pagetitle.title'])) {
+                    $rawTitel = $store['pagetitle.title'];
+                }
+
+                if (isset($store['pagetitle.prefix'])) {
+                    $pageTitelPrefix = $store['pagetitle.prefix'];
+                }
+
+                if (isset($store['pagetitle.suffix'])) {
+                    $pageTitelSuffix = $store['pagetitle.suffix'];
+                }
+
+                if (isset($store['pagetitle.absolute'])) {
+                    $ret      = $store['pagetitle.absolute'];
+                    $rawTitel = $store['pagetitle.absolute'];
+
+                    $pageTitelPrefix = false;
+                    $pageTitelSuffix = false;
+
+                    if (empty($tsSeoSetup['pageTitle.']['applySitetitleToPagetitle'])) {
+                        $applySitetitle = false;
+                    }
+                }
+
+                if (isset($store['pagetitle.sitetitle'])) {
+                    $sitetitle = $store['pagetitle.sitetitle'];
+                }
+            }
+
+            // Apply prefix and suffix
+            if ($pageTitelPrefix !== false || $pageTitelSuffix !== false) {
+                $ret = $rawTitel;
+
+                if ($pageTitelPrefix !== false) {
+                    $ret = $pageTitelPrefix . ' ' . $ret;
+                }
+
+                if ($pageTitelSuffix !== false) {
+                    $ret .= ' ' . $pageTitelSuffix;
+                }
+
+                if (!empty($tsSeoSetup['pageTitle.']['applySitetitleToPrefixSuffix'])) {
+                    $applySitetitle = true;
+                }
+            } else {
+                $ret = $rawTitel;
+            }
+        }
+
+        // #######################################################################
+        // APPLY SITETITLE (from setup)
+        // #######################################################################
+        if ($applySitetitle) {
+            $pageTitleGlue    = ':';
+            $glueSpacerBefore = '';
+            $glueSpacerAfter  = '';
+
+            // Overwrite sitetitle with the one from ts-setup (if available)
+            if (!empty($tsSeoSetup['pageTitle.']['sitetitle'])) {
+                $sitetitle = $tsSeoSetup['pageTitle.']['sitetitle'];
+            }
+
+            // Apply stdWrap after
+            if (!empty($stdWrapList['sitetitle.'])) {
+                $sitetitle = $this->cObj->stdWrap($sitetitle, $stdWrapList['sitetitle.']);
+            }
+
+
+            if (isset($tsSeoSetup['pageTitle.']['sitetitleGlue'])) {
+                $pageTitleGlue = $tsSeoSetup['pageTitle.']['sitetitleGlue'];
+            }
+
+            if (!empty($tsSeoSetup['pageTitle.']['sitetitleGlueSpaceBefore'])) {
+                $glueSpacerBefore = ' ';
+            }
+
+            if (!empty($tsSeoSetup['pageTitle.']['sitetitleGlueSpaceAfter'])) {
+                $glueSpacerAfter = ' ';
+            }
+
+            $sitetitlePosition = 0;
+            if (isset($tsSeoSetup['pageTitle.']['sitetitlePosition'])) {
+                $sitetitlePosition = (int)$tsSeoSetup['pageTitle.']['sitetitlePosition'];
+            } elseif (isset($tsSetup['config.']['pageTitleFirst'])) {
+                $sitetitlePosition = (int)$tsSetup['config.']['pageTitleFirst'];
+            }
+
+            // add overall pagetitel from template/ts-setup
+            if ($sitetitlePosition) {
+                // suffix
+                $ret .= $glueSpacerBefore . $pageTitleGlue . $glueSpacerAfter . $sitetitle;
+            } else {
+                // prefix (default)
+                $ret = $sitetitle . $glueSpacerBefore . $pageTitleGlue . $glueSpacerAfter . $ret;
+            }
+        }
+
+        // Apply stdWrap after
+        if (!empty($stdWrapList['after.'])) {
+            $ret = $this->cObj->stdWrap($ret, $stdWrapList['after.']);
+        }
+
+        return $ret;
+    }
 }

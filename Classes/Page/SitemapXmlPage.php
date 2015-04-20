@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Page;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,65 +22,62 @@ namespace Metaseo\Metaseo\Page;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Page;
 
 /**
  * Sitemap xml page
- *
- * @package     metaseo
- * @subpackage  Page
- * @version     $Id: class.robots_txt.php 62700 2012-05-22 15:53:22Z mblaschke $
  */
 class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage {
 
-	// ########################################################################
-	// Attributes
-	// ########################################################################
+    // ########################################################################
+    // Attributes
+    // ########################################################################
 
 
-	// ########################################################################
-	// Methods
-	// ########################################################################
+    // ########################################################################
+    // Methods
+    // ########################################################################
 
-	/**
-	 * Build sitemap xml
-	 *
-	 * @return  string
-	 */
-	public function main() {
-		// INIT
-		$this->tsSetup = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.'];
+    /**
+     * Build sitemap xml
+     *
+     * @return  string
+     */
+    public function main() {
+        // INIT
+        $this->tsSetup = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.'];
 
-		// TODO: prevent output if scheduler tasks is enabled
+        // TODO: prevent output if scheduler tasks is enabled
 
-		// check if sitemap is enabled in root
-		if (!\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap', TRUE)) {
-			$this->showError('Sitemap is not available, please check your configuration [control-center]');
-		}
+        // check if sitemap is enabled in root
+        if (!\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap', true)) {
+            $this->showError('Sitemap is not available, please check your configuration [control-center]');
+        }
 
-		$ret = $this->build();
+        $ret = $this->build();
 
-		return $ret;
-	}
+        return $ret;
+    }
 
-	/**
-	 * Build sitemap index or specific page
-	 *
-	 * @return mixed
-	 */
-	protected function build() {
-		$page = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('page');
+    /**
+     * Build sitemap index or specific page
+     *
+     * @return mixed
+     */
+    protected function build() {
+        $page = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('page');
 
-		/** @var \Metaseo\Metaseo\Sitemap\Generator\XmlGenerator $generator */
-		$generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\XmlGenerator');
+        /** @var \Metaseo\Metaseo\Sitemap\Generator\XmlGenerator $generator */
+        $generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\XmlGenerator');
 
-		if (empty($page) || $page == 'index') {
-			$ret = $generator->sitemapIndex();
-		} else {
-			$ret = $generator->sitemap($page);
-		}
+        if (empty($page) || $page == 'index') {
+            $ret = $generator->sitemapIndex();
+        } else {
+            $ret = $generator->sitemap($page);
+        }
 
-		return $ret;
-	}
-
+        return $ret;
+    }
 }

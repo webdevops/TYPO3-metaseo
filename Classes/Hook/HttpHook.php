@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Hook;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,101 +22,99 @@ namespace Metaseo\Metaseo\Hook;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Hook;
+
+use Metaseo\Metaseo\Utility\FrontendUtility;
+use Metaseo\Metaseo\Utility\GeneralUtility;
 
 /**
  * Http Header generator
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: HttpHook.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
 class HttpHook {
 
-	/**
-	 * Add HTTP Headers
-	 */
-	public function main() {
-		// INIT
-		$tsSetup  = $GLOBALS['TSFE']->tmpl->setup;
-		$headers  = array();
+    /**
+     * Add HTTP Headers
+     */
+    public function main() {
+        // INIT
+        $tsSetup = $GLOBALS['TSFE']->tmpl->setup;
+        $headers = array();
 
-		// dont send any headers if headers are already sent
-		if (headers_sent()) {
-			return;
-		}
+        // dont send any headers if headers are already sent
+        if (headers_sent()) {
+            return;
+        }
 
-		if (!empty($GLOBALS['TSFE']->tmpl->loaded)) {
-			// ##################################
-			// Non-Cached page
-			// ##################################
+        // Init caches
+        $cacheIdentification = $GLOBALS['TSFE']->id . '_' . substr(sha1(FrontendUtility::getCurrentUrl()),10,30) . '_http';
 
-			if (!empty($tsSetup['plugin.']['metaseo.']['metaTags.'])) {
-				$tsSetupSeo = $tsSetup['plugin.']['metaseo.']['metaTags.'];
+        /** @var \TYPO3\CMS\Core\Cache\CacheManager $cacheManager */
+        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $cacheManager  = $objectManager->get('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+        $cache         = $cacheManager->getCache('cache_pagesection');
 
-				// ##################################
-				// W3C P3P Tags
-				// ##################################
-				$p3pCP        = NULL;
-				$p3pPolicyUrl = NULL;
+        if (!empty($GLOBALS['TSFE']->tmpl->loaded)) {
+            // ##################################
+            // Non-Cached page
+            // ##################################
 
-				if (!empty($tsSetupSeo['p3pCP'])) {
-					$p3pCP = $tsSetupSeo['p3pCP'];
-				}
+            if (!empty($tsSetup['plugin.']['metaseo.']['metaTags.'])) {
+                $tsSetupSeo = $tsSetup['plugin.']['metaseo.']['metaTags.'];
 
-				if (!empty($tsSetupSeo['p3pPolicyUrl'])) {
-					$p3pPolicyUrl = $tsSetupSeo['p3pPolicyUrl'];
-				}
+                // ##################################
+                // W3C P3P Tags
+                // ##################################
+                $p3pCP        = null;
+                $p3pPolicyUrl = null;
 
-				if (!empty($p3pCP) || !empty($p3pPolicyUrl)) {
-					$p3pHeaders = array();
+                if (!empty($tsSetupSeo['p3pCP'])) {
+                    $p3pCP = $tsSetupSeo['p3pCP'];
+                }
 
-					if (!empty($p3pCP)) {
-						$p3pHeader[] = 'CP="' . $p3pCP . '"';
-					}
+                if (!empty($tsSetupSeo['p3pPolicyUrl'])) {
+                    $p3pPolicyUrl = $tsSetupSeo['p3pPolicyUrl'];
+                }
 
-					if (!empty($p3pPolicyUrl)) {
-						$p3pHeader[] = 'policyref="' . $p3pPolicyUrl . '"';
-					}
+                if (!empty($p3pCP) || !empty($p3pPolicyUrl)) {
+                    $p3pHeader = array();
 
-					$headers['P3P'] = implode(' ', $p3pHeader);
+                    if (!empty($p3pCP)) {
+                        $p3pHeader[] = 'CP="' . $p3pCP . '"';
+                    }
 
-					// cache informations
-					$curentTemplate     = end($GLOBALS['TSFE']->tmpl->hierarchyInfo);
-					$currentTemplatePid = $curentTemplate['pid'];
-					\Metaseo\Metaseo\Utility\CacheUtility::set($currentTemplatePid, 'http', 'p3p', $headers['P3P']);
-				}
-			}
+                    if (!empty($p3pPolicyUrl)) {
+                        $p3pHeader[] = 'policyref="' . $p3pPolicyUrl . '"';
+                    }
 
-		} else {
-			// #####################################
-			// Cached page
-			// #####################################
-			// build root pid list
-			$rootPidList = array();
-			foreach ($GLOBALS['TSFE']->rootLine as $pageRow) {
-				$rootPidList[$pageRow['uid']] = $pageRow['uid'];
-			}
+                    $headers['P3P'] = implode(' ', $p3pHeader);
+                }
+            }
 
-			// fetch from cache
-			$cacheList = \Metaseo\Metaseo\Utility\CacheUtility::getList('http', 'p3p');
-			foreach ($rootPidList as $pageId) {
-				if (!empty($cacheList[$pageId])) {
-					$headers['P3P'] = $cacheList[$pageId];
-					break;
-				}
-			}
-		}
+            // Store headers into cache
+            $cache->set($cacheIdentification, $headers, array('pageId_' . $GLOBALS['TSFE']->id));
+        } else {
+            // #####################################
+            // Cached page
+            // #####################################
 
-		// Call hook
-		\Metaseo\Metaseo\Utility\GeneralUtility::callHook('httpheader-output', $this, $headers);
+            // Fetched cached headers
+            $cachedHeaders = $cache->get($cacheIdentification);
 
-		// #####################################
-		// Sender headers
-		// #####################################
-		if (!empty($headers['P3P'])) {
-			header('P3P: ' . $headers['P3P']);
-		}
+            if (!empty($cachedHeaders)) {
+                $headers = $cachedHeaders;
+            }
+        }
 
-	}
+        // Call hook
+        GeneralUtility::callHookAndSignal(__CLASS__, 'httpHeaderOutput', $this, $headers);
+
+        // #####################################
+        // Sender headers
+        // #####################################
+        if (!empty($headers['P3P'])) {
+            header('P3P: ' . $headers['P3P']);
+        }
+    }
 }

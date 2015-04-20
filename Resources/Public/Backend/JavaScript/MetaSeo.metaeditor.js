@@ -25,49 +25,49 @@ Ext.ns('MetaSeo');
 
 MetaSeo.metaeditor = Ext.extend(Ext.Window, {
     layout: 'fit',
-    width:  '90%',
+    width: '90%',
     height: '90%',
-    modal:  true,
+    modal: true,
 
     t3PageTitle: '',
     pid: 0,
 
-    initComponent : function() {
+    initComponent: function () {
         var window = this;
 
         this.title = MetaSeo.overview.conf.lang.metaeditor_title;
 
-        if( this.t3PageTitle ) {
-            this.title += ' "'+this.t3PageTitle+'"';
+        if (this.t3PageTitle) {
+            this.title += ' "' + this.t3PageTitle + '"';
         }
 
-        if( this.pid ) {
-            this.title += ' [PID:'+this.pid+']';
+        if (this.pid) {
+            this.title += ' [PID:' + this.pid + ']';
         }
 
         this.items = [{
-            xtype:'tabpanel',
-            activeItem:0,
+            xtype: 'tabpanel',
+            activeItem: 0,
             //autoScroll: true,
-            enableTabScroll : true,
+            enableTabScroll: true,
             //autoHeight:true,
-            height:340,
+            height: 340,
             //collapseMode: "mini",
-            items:[
+            items: [
                 window.initTabOpenGraph()
             ]
         }];
 
         this.buttons = [{
             text: MetaSeo.overview.conf.lang.button_cancel,
-            handler: function(cmp, e) {
+            handler: function (cmp, e) {
                 window.onClose(false);
                 window.destroy();
             }
-        },{
+        }, {
             text: MetaSeo.overview.conf.lang.button_save,
-            handler: function(cmp, e) {
-                window.saveMeta(function() {
+            handler: function (cmp, e) {
+                window.saveMeta(function () {
                     window.onClose(true);
                     window.destroy();
                 });
@@ -78,11 +78,11 @@ MetaSeo.metaeditor = Ext.extend(Ext.Window, {
         // call parent
         MetaSeo.metaeditor.superclass.initComponent.call(this);
 
-        this.addListener("show", function() {
+        this.addListener("show", function () {
             var el = window.getEl();
             el.mask();
 
-            window.loadMeta(function() {
+            window.loadMeta(function () {
                 el.unmask();
             });
         });
@@ -90,24 +90,24 @@ MetaSeo.metaeditor = Ext.extend(Ext.Window, {
 
     },
 
-    onClose: function(reload) {
+    onClose: function (reload) {
         // placeholder
     },
 
-    loadMeta: function(callback) {
+    loadMeta: function (callback) {
         var me = this;
 
 
         // Process data from database/ajax call
-        var callbackSuccess = function(response) {
-            var responseJson =  Ext.util.JSON.decode(response.responseText);
+        var callbackSuccess = function (response) {
+            var responseJson = Ext.util.JSON.decode(response.responseText);
 
-            for( var index in responseJson ) {
+            for (var index in responseJson) {
                 var value = responseJson[index];
 
                 // Inject data into form
                 var formField = me.find("name", index);
-                if( formField.length == 1 ) {
+                if (formField.length == 1) {
                     formField = formField[0];
                     formField.setValue(value);
                 }
@@ -119,35 +119,35 @@ MetaSeo.metaeditor = Ext.extend(Ext.Window, {
             callback();
         }
 
-        var callbackFailure = function() {
+        var callbackFailure = function () {
             // TODO
         }
 
         Ext.Ajax.request({
             url: MetaSeo.overview.conf.ajaxController + '&cmd=loadAdvMetaTags',
             params: {
-                pid             : Ext.encode(me.pid),
-                sysLanguage     : Ext.encode( MetaSeo.overview.conf.sysLanguage ),
-                mode            : Ext.encode( MetaSeo.overview.conf.listType ),
-                sessionToken    : Ext.encode( MetaSeo.overview.conf.sessionToken )
+                pid: Ext.encode(me.pid),
+                sysLanguage: Ext.encode(MetaSeo.overview.conf.sysLanguage),
+                mode: Ext.encode(MetaSeo.overview.conf.listType),
+                sessionToken: Ext.encode(MetaSeo.overview.conf.sessionToken)
             },
             success: callbackSuccess,
             failure: callbackFailure
         });
     },
 
-    saveMeta: function(callbackSuccess) {
+    saveMeta: function (callbackSuccess) {
         var me = this;
 
         var metaTagList = {};
 
         var formOpenGraph = this.find("name", "form-opengraph");
-        if( formOpenGraph.length = 1 ) {
+        if (formOpenGraph.length = 1) {
             formOpenGraph = formOpenGraph[0];
 
-            formOpenGraph.items.each(function(formField) {
-                    if( formField.isVisible() ) {
-                    var formFieldName  = formField.getName();
+            formOpenGraph.items.each(function (formField) {
+                if (formField.isVisible()) {
+                    var formFieldName = formField.getName();
                     var formFieldValue = formField.getValue();
 
                     metaTagList[formFieldName] = formFieldValue;
@@ -155,52 +155,52 @@ MetaSeo.metaeditor = Ext.extend(Ext.Window, {
             });
         }
 
-        var callbackFailure = function() {
+        var callbackFailure = function () {
             // TODO: failure function
         }
 
         Ext.Ajax.request({
             url: MetaSeo.overview.conf.ajaxController + '&cmd=updateAdvMetaTags',
             params: {
-                pid             : Ext.encode(me.pid),
-                metaTags        : Ext.encode(metaTagList),
-                sysLanguage     : Ext.encode( MetaSeo.overview.conf.sysLanguage ),
-                mode            : Ext.encode( MetaSeo.overview.conf.listType ),
-                sessionToken    : Ext.encode( MetaSeo.overview.conf.sessionToken )
+                pid: Ext.encode(me.pid),
+                metaTags: Ext.encode(metaTagList),
+                sysLanguage: Ext.encode(MetaSeo.overview.conf.sysLanguage),
+                mode: Ext.encode(MetaSeo.overview.conf.listType),
+                sessionToken: Ext.encode(MetaSeo.overview.conf.sessionToken)
             },
             success: callbackSuccess,
             failure: callbackFailure
         });
     },
 
-    onChangeOgType: function() {
+    onChangeOgType: function () {
         var formOpenGraph = this.find("name", "form-opengraph")[0];
         var typeField = formOpenGraph.find("name", "og:type")[0];
 
         // Get current type
-        var ogType           = typeField.getValue();
+        var ogType = typeField.getValue();
 
         // Default types
-        var ogTypeDefault    = "og:general";
-        var ogTypeMain       = "og:general";
+        var ogTypeDefault = "og:general";
+        var ogTypeMain = "og:general";
         var ogTypeMainAndSub = "og:general";
 
         // Lookup current selected type
         var ogTypeMatch = ogType.match(/^([^:]+):?([^:]+)?/);
-        if( ogTypeMatch ) {
-            ogTypeMain = 'og:'+ogTypeMatch[1];
+        if (ogTypeMatch) {
+            ogTypeMain = 'og:' + ogTypeMatch[1];
 
-            if( ogTypeMatch[2] ) {
-                ogTypeMainAndSub  = 'og:'+ogTypeMatch[1]+'-'+ogTypeMatch[2];
+            if (ogTypeMatch[2]) {
+                ogTypeMainAndSub = 'og:' + ogTypeMatch[1] + '-' + ogTypeMatch[2];
             }
         }
 
         // dynamic dis- and enable form elements
-        formOpenGraph.items.each(function(formField) {
-            if( formField.metaSeoFieldCat ) {
-                if( MetaSeo.inList(formField.metaSeoFieldCat, ogTypeDefault)
+        formOpenGraph.items.each(function (formField) {
+            if (formField.metaSeoFieldCat) {
+                if (MetaSeo.inList(formField.metaSeoFieldCat, ogTypeDefault)
                     || MetaSeo.inList(formField.metaSeoFieldCat, ogTypeMain)
-                    || MetaSeo.inList(formField.metaSeoFieldCat, ogTypeMainAndSub) ) {
+                    || MetaSeo.inList(formField.metaSeoFieldCat, ogTypeMainAndSub)) {
                     formField.show();
                 } else {
                     formField.hide();
@@ -210,7 +210,7 @@ MetaSeo.metaeditor = Ext.extend(Ext.Window, {
 
     },
 
-    initTabOpenGraph: function() {
+    initTabOpenGraph: function () {
         var me = this;
 
         var panel = {
@@ -239,12 +239,12 @@ MetaSeo.metaeditor = Ext.extend(Ext.Window, {
                 name: 'og:title',
                 width: fieldWidth,
                 metaSeoFieldCat: 'og:general'
-            },{
+            }, {
                 xtype: 'combo',
                 fieldLabel: 'og:type',
                 name: 'og:type',
                 listeners: {
-                    select: function(f,e){
+                    select: function (f, e) {
                         // dynamic field handling
                         me.onChangeOgType();
                     }
@@ -253,7 +253,7 @@ MetaSeo.metaeditor = Ext.extend(Ext.Window, {
                 editable: false,
                 mode: 'local',
                 triggerAction: 'all',
-                value : "",
+                value: "",
                 store: new Ext.data.ArrayStore({
                     id: 0,
                     fields: [
@@ -357,7 +357,6 @@ MetaSeo.metaeditor = Ext.extend(Ext.Window, {
         // ########################
 
         // TODO
-
 
 
         // ########################
@@ -481,7 +480,7 @@ MetaSeo.metaeditor = Ext.extend(Ext.Window, {
                 fieldLabel: 'og:profile:gender',
                 name: 'og:profile:gender',
                 listeners: {
-                    select: function(f,e){
+                    select: function (f, e) {
                         // dynamic field handling
                         me.onChangeOgType();
                     }
@@ -490,7 +489,7 @@ MetaSeo.metaeditor = Ext.extend(Ext.Window, {
                 editable: false,
                 mode: 'local',
                 triggerAction: 'all',
-                value : "",
+                value: "",
                 store: new Ext.data.ArrayStore({
                     id: 0,
                     fields: [

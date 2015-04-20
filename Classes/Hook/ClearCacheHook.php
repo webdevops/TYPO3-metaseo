@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Hook;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,22 +22,19 @@ namespace Metaseo\Metaseo\Hook;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Hook;
 
 /**
  * Clear cache hook
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: HttpHook.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
 class ClearCacheHook {
 
-	/**
-	 * Clear cache hook
-	 */
-	public function main() {
-		// TODO: clear cache
-	}
-
+    /**
+     * Clear cache hook
+     */
+    public function main() {
+        // TODO: clear cache
+    }
 }

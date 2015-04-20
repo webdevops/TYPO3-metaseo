@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Sitemap\Generator;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,240 +22,227 @@ namespace Metaseo\Metaseo\Sitemap\Generator;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Sitemap\Generator;
 
 /**
  * Sitemap XML generator
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: XmlGenerator.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
 class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator {
 
-	// ########################################################################
-	// Methods
-	// ########################################################################
+    // ########################################################################
+    // Methods
+    // ########################################################################
 
-	/**
-	 * Create sitemap index
-	 *
-	 * @return  string
-	 */
-	public function sitemapIndex() {
-		$pageLimit = 10000;
+    /**
+     * Create sitemap index
+     *
+     * @return  string
+     */
+    public function sitemapIndex() {
+        $pageLimit = 10000;
 
-		if (isset($this->tsSetup['pageLimit']) && $this->tsSetup['pageLimit'] != '') {
-			$pageLimit = (int)$this->tsSetup['pageLimit'];
-		}
+        if (isset($this->tsSetup['pageLimit']) && $this->tsSetup['pageLimit'] != '') {
+            $pageLimit = (int)$this->tsSetup['pageLimit'];
+        }
 
-		$sitemaps  = array();
-		$pageItems = count($this->sitemapPages);
-		$pageCount = ceil($pageItems / $pageLimit);
+        $sitemaps  = array();
+        $pageItems = count($this->sitemapPages);
+        $pageCount = ceil($pageItems / $pageLimit);
 
-		$linkConf = array(
-			'parameter'        => \Metaseo\Metaseo\Utility\GeneralUtility::getCurrentPid() . ',' . $GLOBALS['TSFE']->type,
-			'additionalParams' => '',
-			'useCacheHash'     => 1,
-		);
+        $linkConf = array(
+            'parameter'        => \Metaseo\Metaseo\Utility\GeneralUtility::getCurrentPid() . ',' . $GLOBALS['TSFE']->type,
+            'additionalParams' => '',
+            'useCacheHash'     => 1,
+        );
 
-		for ($i = 0; $i < $pageCount; $i++) {
-			if ($this->indexPathTemplate) {
-				$link = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl(
-					str_replace('###PAGE###', $i, $this->indexPathTemplate)
-				);
+        for ($i = 0; $i < $pageCount; $i++) {
+            if ($this->indexPathTemplate) {
+                $link = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl(str_replace('###PAGE###', $i,
+                    $this->indexPathTemplate));
 
-				$sitemaps[] = $link;
-			} else {
-				$linkConf['additionalParams'] = '&page=' . ($i + 1);
+                $sitemaps[] = $link;
+            } else {
+                $linkConf['additionalParams'] = '&page=' . ($i + 1);
 
-				$sitemaps[] = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl(
-					$GLOBALS['TSFE']->cObj->typoLink_URL($linkConf)
-				);
-			}
-		}
+                $sitemaps[] = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($GLOBALS['TSFE']->cObj->typoLink_URL($linkConf));
+            }
+        }
 
-		$ret = '<?xml version="1.0" encoding="UTF-8"?>';
-		$ret .= '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"';
-		$ret .= ' xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
+        $ret = '<?xml version="1.0" encoding="UTF-8"?>';
+        $ret .= '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"';
+        $ret .= ' xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
 
-		// Call hook
-		\Metaseo\Metaseo\Utility\GeneralUtility::callHook('sitemap-xml-index-sitemap-list', $this, $sitemaps);
+        // Call hook
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'sitemapXmlIndexSitemapList', $this, $sitemaps);
 
-		foreach ($sitemaps as $sitemapPage) {
-			$ret .= '<sitemap><loc>' . htmlspecialchars($sitemapPage) . '</loc></sitemap>';
-		}
+        foreach ($sitemaps as $sitemapPage) {
+            $ret .= '<sitemap><loc>' . htmlspecialchars($sitemapPage) . '</loc></sitemap>';
+        }
 
-		$ret .= '</sitemapindex>';
+        $ret .= '</sitemapindex>';
 
-		// Call hook
-		\Metaseo\Metaseo\Utility\GeneralUtility::callHook('sitemap-xml-index-output', $this, $ret);
+        // Call hook
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'sitemapXmlIndexOutput', $this, $ret);
 
-		return $ret;
-	}
+        return $ret;
+    }
 
-	/**
-	 * Create sitemap (for page)
-	 *
-	 * @param   integer $page   Page
-	 * @return  string
-	 */
-	public function sitemap($page = NULL) {
-		$ret = '';
+    /**
+     * Create sitemap (for page)
+     *
+     * @param   integer $page Page
+     *
+     * @return  string
+     */
+    public function sitemap($page = null) {
+        $ret = '';
 
-		$pageLimit = 10000;
+        $pageLimit = 10000;
 
-		if (isset($this->tsSetup['pageLimit']) && $this->tsSetup['pageLimit'] != '') {
-			$pageLimit = (int)$this->tsSetup['pageLimit'];
-		}
+        if (isset($this->tsSetup['pageLimit']) && $this->tsSetup['pageLimit'] != '') {
+            $pageLimit = (int)$this->tsSetup['pageLimit'];
+        }
 
-		$pageItems     = count($this->sitemapPages);
-		$pageItemBegin = $pageLimit * ($page - 1);
-		$pageCount     = ceil($pageItems / $pageLimit);
+        $pageItems     = count($this->sitemapPages);
+        $pageItemBegin = $pageLimit * ($page - 1);
 
+        if ($pageItemBegin <= $pageItems) {
+            $this->sitemapPages = array_slice($this->sitemapPages, $pageItemBegin, $pageLimit);
+            $ret                = $this->createSitemapPage($page);
+        }
 
-		if ($pageItemBegin <= $pageItems) {
-			$this->sitemapPages = array_slice($this->sitemapPages, $pageItemBegin, $pageLimit);
-			$ret                = $this->createSitemapPage($page);
-		}
+        return $ret;
+    }
 
-		return $ret;
-	}
+    /**
+     * Create Sitemap Page
+     *
+     * @return string
+     */
+    protected function createSitemapPage() {
+        $ret = '<?xml version="1.0" encoding="UTF-8"?>';
+        $ret .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"';
+        $ret .= ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"';
+        $ret .= ' xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9';
+        $ret .= ' http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
 
-	/**
-	 * Create Sitemap Page
-	 *
-	 * @return string
-	 */
-	protected function createSitemapPage() {
-		$ret = '<?xml version="1.0" encoding="UTF-8"?>';
-		$ret .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"';
-		$ret .= ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"';
-		$ret .= ' xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9';
-		$ret .= ' http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
+        $pagePriorityDefaultValue     = (float)\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('sitemap_priorty',
+            0);
+        $pagePriorityDepthMultiplier  = (float)\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('sitemap_priorty_depth_multiplier',
+            0);
+        $pagePriorityDepthModificator = (float)\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('sitemap_priorty_depth_modificator',
+            0);
 
-		$pagePriorityDefaultValue     = (float)\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue(
-			'sitemap_priorty',
-			0
-		);
-		$pagePriorityDepthMultiplier  = (float)\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue(
-			'sitemap_priorty_depth_multiplier',
-			0
-		);
-		$pagePriorityDepthModificator = (float)\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue(
-			'sitemap_priorty_depth_modificator',
-			0
-		);
+        if ($pagePriorityDefaultValue == 0) {
+            $pagePriorityDefaultValue = 1;
+        }
 
-		if ($pagePriorityDefaultValue == 0) {
-			$pagePriorityDefaultValue = 1;
-		}
+        if ($pagePriorityDepthMultiplier == 0) {
+            $pagePriorityDepthMultiplier = 1;
+        }
 
-		if ($pagePriorityDepthMultiplier == 0) {
-			$pagePriorityDepthMultiplier = 1;
-		}
-
-		if ($pagePriorityDepthModificator == 0) {
-			$pagePriorityDepthModificator = 1;
-		}
+        if ($pagePriorityDepthModificator == 0) {
+            $pagePriorityDepthModificator = 1;
+        }
 
 
-		// #####################
-		// SetupTS conf
-		// #####################
+        // #####################
+        // SetupTS conf
+        // #####################
 
-		foreach ($this->sitemapPages as $sitemapPage) {
-			if (empty($this->pages[$sitemapPage['page_uid']])) {
-				// invalid page
-				continue;
-			}
+        foreach ($this->sitemapPages as $sitemapPage) {
+            if (empty($this->pages[$sitemapPage['page_uid']])) {
+                // invalid page
+                continue;
+            }
 
-			$page = $this->pages[$sitemapPage['page_uid']];
+            $page = $this->pages[$sitemapPage['page_uid']];
 
-			// #####################################
-			// Page priority
-			// #####################################
-			$pageDepth     = $sitemapPage['page_depth'];
-			$pageDepthBase = 1;
+            // #####################################
+            // Page priority
+            // #####################################
+            $pageDepth     = $sitemapPage['page_depth'];
+            $pageDepthBase = 1;
 
-			if (!empty($sitemapPage['page_hash'])) {
-				// page has module-content - trade as subpage
-				++$pageDepth;
-			}
+            if (!empty($sitemapPage['page_hash'])) {
+                // page has module-content - trade as subpage
+                ++$pageDepth;
+            }
 
-			$pageDepth -= $pagePriorityDepthModificator;
-
-
-			if ($pageDepth > 0.1) {
-				$pageDepthBase = 1 / $pageDepth;
-			}
-
-			$pagePriority = $pagePriorityDefaultValue * ($pageDepthBase * $pagePriorityDepthMultiplier);
-			if (!empty($page['tx_metaseo_priority'])) {
-				$pagePriority = $page['tx_metaseo_priority'] / 100;
-			}
-
-			$pagePriority = number_format($pagePriority, 2);
-
-			if ($pagePriority > 1) {
-				$pagePriority = '1.00';
-			} elseif ($pagePriority <= 0) {
-				$pagePriority = '0.00';
-			}
-
-			// #####################################
-			// Page informations
-			// #####################################
-
-			// page Url
-			$pageUrl = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($sitemapPage['page_url']);
-
-			// Page modification date
-			$pageModifictionDate = date('c', $sitemapPage['tstamp']);
-
-			// Page change frequency
-			$pageChangeFrequency = NULL;
-			if (!empty($page['tx_metaseo_change_frequency'])) {
-				// from page
-				$pageChangeFdrequency = (int)$page['tx_metaseo_change_frequency'];
-			} elseif (!empty($sitemapPage['page_change_frequency'])) {
-				// from sitemap settings
-				$pageChangeFrequency = (int)$sitemapPage['page_change_frequency'];
-			} elseif (!empty($this->tsSetup['changeFrequency'])) {
-				// default from SetupTS
-				$pageChangeFrequency = (int)$this->tsSetup['changeFrequency'];
-			}
-
-			// translate change frequency
-			if (!empty($pageChangeFrequency) && !empty($this->pageChangeFrequency[$pageChangeFrequency])) {
-				$pageChangeFrequency = $this->pageChangeFrequency[$pageChangeFrequency];
-			} else {
-				$pageChangeFrequency = NULL;
-			}
-
-			// #####################################
-			// Sitemal page output
-			// #####################################
-			$ret .= '<url>';
-			$ret .= '<loc>' . htmlspecialchars($pageUrl) . '</loc>';
-			$ret .= '<lastmod>' . $pageModifictionDate . '</lastmod>';
-
-			if (!empty($pageChangeFrequency)) {
-				$ret .= '<changefreq>' . htmlspecialchars($pageChangeFrequency) . '</changefreq>';
-			}
-
-			$ret .= '<priority>' . $pagePriority . '</priority>';
-
-			$ret .= '</url>';
-		}
+            $pageDepth -= $pagePriorityDepthModificator;
 
 
-		$ret .= '</urlset>';
+            if ($pageDepth > 0.1) {
+                $pageDepthBase = 1 / $pageDepth;
+            }
 
-		// Call hook
-		\Metaseo\Metaseo\Utility\GeneralUtility::callHook('sitemap-xml-page-output', $this, $ret);
+            $pagePriority = $pagePriorityDefaultValue * ($pageDepthBase * $pagePriorityDepthMultiplier);
+            if (!empty($page['tx_metaseo_priority'])) {
+                $pagePriority = $page['tx_metaseo_priority'] / 100;
+            }
 
-		return $ret;
-	}
+            $pagePriority = number_format($pagePriority, 2);
 
+            if ($pagePriority > 1) {
+                $pagePriority = '1.00';
+            } elseif ($pagePriority <= 0) {
+                $pagePriority = '0.00';
+            }
+
+            // #####################################
+            // Page informations
+            // #####################################
+
+            // page Url
+            $pageUrl = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($sitemapPage['page_url']);
+
+            // Page modification date
+            $pageModifictionDate = date('c', $sitemapPage['tstamp']);
+
+            // Page change frequency
+            $pageChangeFrequency = null;
+            if (!empty($page['tx_metaseo_change_frequency'])) {
+                // from page
+                $pageChangeFrequency = (int)$page['tx_metaseo_change_frequency'];
+            } elseif (!empty($sitemapPage['page_change_frequency'])) {
+                // from sitemap settings
+                $pageChangeFrequency = (int)$sitemapPage['page_change_frequency'];
+            } elseif (!empty($this->tsSetup['changeFrequency'])) {
+                // default from SetupTS
+                $pageChangeFrequency = (int)$this->tsSetup['changeFrequency'];
+            }
+
+            // translate change frequency
+            if (!empty($pageChangeFrequency) && !empty($this->pageChangeFrequency[$pageChangeFrequency])) {
+                $pageChangeFrequency = $this->pageChangeFrequency[$pageChangeFrequency];
+            } else {
+                $pageChangeFrequency = null;
+            }
+
+            // #####################################
+            // Sitemal page output
+            // #####################################
+            $ret .= '<url>';
+            $ret .= '<loc>' . htmlspecialchars($pageUrl) . '</loc>';
+            $ret .= '<lastmod>' . $pageModifictionDate . '</lastmod>';
+
+            if (!empty($pageChangeFrequency)) {
+                $ret .= '<changefreq>' . htmlspecialchars($pageChangeFrequency) . '</changefreq>';
+            }
+
+            $ret .= '<priority>' . $pagePriority . '</priority>';
+
+            $ret .= '</url>';
+        }
+
+
+        $ret .= '</urlset>';
+
+        // Call hook
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'sitemapXmlPageOutput', $this, $ret);
+
+        return $ret;
+    }
 }

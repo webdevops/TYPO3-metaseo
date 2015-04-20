@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Page;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,59 +22,56 @@ namespace Metaseo\Metaseo\Page;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Page;
 
 /**
  * Abstract page
- *
- * @package     metaseo
- * @subpackage  Page
- * @version     $Id: class.robots_txt.php 62700 2012-05-22 15:53:22Z mblaschke $
  */
 abstract class AbstractPage {
-	// ########################################################################
-	// Attributes
-	// ########################################################################
+    // ########################################################################
+    // Attributes
+    // ########################################################################
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-	 * @inject
-	 */
-	protected $objectManager;
+    /**
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     * @inject
+     */
+    protected $objectManager;
 
 
-	// ########################################################################
-	// Methods
-	// ########################################################################
+    // ########################################################################
+    // Methods
+    // ########################################################################
 
-	/**
-	 * Constuctor
-	 */
-	public function __construct() {
-		// Init object manager
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-	}
+    /**
+     * Constuctor
+     */
+    public function __construct() {
+        // Init object manager
+        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+    }
 
-	/**
-	 * Main
-	 *
-	 * @return mixed
-	 */
-	abstract public function main();
+    /**
+     * Main
+     *
+     * @return mixed
+     */
+    abstract public function main();
 
-	/**
-	 * Show error
-	 *
-	 * @param    string $msg            Message
-	 */
-	protected function showError($msg = NULL) {
-		if ($msg === NULL) {
-			$msg = 'Sitemap is not available, please check your configuration';
-		}
+    /**
+     * Show error
+     *
+     * @param    string $msg Message
+     */
+    protected function showError($msg = null) {
+        if ($msg === null) {
+            $msg = 'Sitemap is not available, please check your configuration';
+        }
 
-		header('HTTP/1.0 503 Service Unavailable');
-		$GLOBALS['TSFE']->pageErrorHandler(TRUE, NULL, $msg);
-		exit;
-	}
-
+        header('HTTP/1.0 503 Service Unavailable');
+        $GLOBALS['TSFE']->pageErrorHandler(true, null, $msg);
+        exit;
+    }
 }
