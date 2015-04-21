@@ -50,7 +50,7 @@ class ext_update {
      *
      * @var boolean
      */
-    protected $clearCache = FALSE;
+    protected $clearCache = false;
 
     // ########################################################################
     // Methods
@@ -74,10 +74,9 @@ class ext_update {
      * should by showed.
      *
      * @return bool
-     * @todo find a better way to determine if update is needed or not.
      */
     public function access() {
-        return TRUE;
+        return true;
     }
 
 
@@ -96,7 +95,7 @@ class ext_update {
      */
     protected function processClearCache() {
 
-        if( $this->clearCache ) {
+        if ($this->clearCache) {
 
             // Init TCE
             $TCE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
@@ -104,9 +103,9 @@ class ext_update {
             $TCE->clear_cacheCmd('all');
 
             // Add msg
-            $msgTitle  = 'Clearing TYPO3 cache';
+            $msgTitle = 'Clearing TYPO3 cache';
             $msgStatus = FlashMessage::INFO;
-            $msgText   = 'Cleared all caches due migration';
+            $msgText = 'Cleared all caches due migration';
 
             $this->addMessage($msgStatus, $msgTitle, $msgText);
         }
@@ -115,15 +114,15 @@ class ext_update {
     /**
      * Add message
      *
-     * @param integer $status   Status code
-     * @param string  $title    Title
-     * @param string  $message  Message
+     * @param integer $status  Status code
+     * @param string  $title   Title
+     * @param string  $message Message
      */
     protected function addMessage($status, $title, $message) {
-        if( !empty($message) && is_array($message) ) {
+        if (!empty($message) && is_array($message)) {
             $liStyle = 'style="margin-bottom: 0;"';
 
-            $message = '<ul><li '.$liStyle.'>'.implode('</li><li '.$liStyle.'>', $message).'</li></ul>';
+            $message = '<ul><li ' . $liStyle . '>' . implode('</li><li ' . $liStyle . '>', $message) . '</li></ul>';
         }
 
         $this->messageList[] = array($status, $title, $message);
@@ -132,18 +131,19 @@ class ext_update {
     /**
      * Generate message title from database row (using title and uid)
      *
-     * @param   array   $row    Database row
+     * @param   array $row Database row
+     *
      * @return  string
      */
     protected function messageTitleFromRow($row) {
         $ret = array();
 
-        if( !empty($row['title']) ) {
-            $ret[] = '"'.htmlspecialchars($row['title']).'"';
+        if (!empty($row['title'])) {
+            $ret[] = '"' . htmlspecialchars($row['title']) . '"';
         }
 
-        if( !empty($row['uid']) ) {
-            $ret[] = '[UID #'.htmlspecialchars($row['uid']).']';
+        if (!empty($row['uid'])) {
+            $ret[] = '[UID #' . htmlspecialchars($row['uid']) . ']';
         }
 
         return implode(' ', $ret);
@@ -168,5 +168,4 @@ class ext_update {
 
         return $output;
     }
-
 }

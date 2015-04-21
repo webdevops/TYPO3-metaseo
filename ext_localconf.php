@@ -9,13 +9,10 @@ $confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['metaseo'])
 if (TYPO3_MODE == 'BE') {
     // AJAX
     $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['tx_metaseo_backend_ajax::sitemap'] = 'Metaseo\\Metaseo\\Backend\\Ajax\SitemapAjax->main';
-    $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['tx_metaseo_backend_ajax::page']    = 'Metaseo\\Metaseo\\Backend\\Ajax\PageAjax->main';
+    $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['tx_metaseo_backend_ajax::page'] = 'Metaseo\\Metaseo\\Backend\\Ajax\PageAjax->main';
 
     // Field validations
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals']['tx_metaseo_backend_validation_float'] = 'EXT:metaseo/Classes/Backend/Validator/ValidatorImport.php';
-
-    // Hooks
-    //$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][]  = 'Metaseo\\Metaseo\\Hook\\ClearCacheHook->main';
 }
 
 // ##############################################
@@ -26,7 +23,7 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields'] .= ',tx_metaseo_pagetitle
 $GLOBALS['TYPO3_CONF_VARS']['FE']['addRootLineFields'] .= ',tx_metaseo_pagetitle_prefix,tx_metaseo_pagetitle_suffix,tx_metaseo_inheritance';
 
 //$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'][] = 'EXT:metaseo/lib/class.linkparser.php:user_metaseo_linkparser->main';
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'][] = 'Metaseo\\Metaseo\\Hook\\SitemapIndexHook->hook_linkParse';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'][] = 'Metaseo\\Metaseo\\Hook\\SitemapIndexLinkHook->hook_linkParse';
 
 // HTTP Header extension
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['isOutputting']['metaseo'] = 'Metaseo\\Metaseo\\Hook\\HttpHook->main';
@@ -36,14 +33,11 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['isOutputt
 // SITEMAP
 // ##############################################
 // Frontend indexed
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'][] = 'Metaseo\\Metaseo\\Hook\\SitemapIndexHook';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'][] = 'Metaseo\\Metaseo\\Hook\\SitemapIndexPageHook';
 
 // ##############################################
 // HOOKS
 // ##############################################
-
-// Add tables for clear cache
-$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearAllCache_additionalTables']['tx_metaseo_cache'] = 'tx_metaseo_cache';
 
 
 // EXT:tt_news

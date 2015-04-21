@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Backend\Module;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,14 +22,12 @@ namespace Metaseo\Metaseo\Backend\Module;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Backend\Module;
 
 /**
  * TYPO3 Backend module standalone
- *
- * @package     TYPO3
- * @subpackage  metaseo
  */
 abstract class AbstractStandardModule extends \Metaseo\Metaseo\Backend\Module\AbstractModule {
-
 }

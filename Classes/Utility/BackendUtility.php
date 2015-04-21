@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Utility;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,16 +22,12 @@ namespace Metaseo\Metaseo\Utility;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
 
-use Metaseo\Metaseo\Utility\DatabaseUtility;
+namespace Metaseo\Metaseo\Utility;
 
 /**
  * Backend utility
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: BackendUtility.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
 class BackendUtility {
 
@@ -42,9 +37,9 @@ class BackendUtility {
      * @return  array
      */
     public static function getRootPageList() {
-        static $cache = NULL;
+        static $cache = null;
 
-        if ($cache === NULL) {
+        if ($cache === null) {
             $query = 'SELECT uid,
                              pid,
                              title
@@ -63,9 +58,9 @@ class BackendUtility {
      * @return  array
      */
     public static function getRootPageSettingList() {
-        static $cache = NULL;
+        static $cache = null;
 
-        if ($cache === NULL) {
+        if ($cache === null) {
             $query = 'SELECT seosr.*
                         FROM tx_metaseo_setting_root seosr
                              INNER JOIN pages p
@@ -78,5 +73,4 @@ class BackendUtility {
 
         return $cache;
     }
-
 }

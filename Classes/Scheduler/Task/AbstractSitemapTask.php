@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Scheduler\Task;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,14 +22,12 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Scheduler\Task;
 
 /**
  * Scheduler Task Sitemap Base
- *
- * @package     metaseo
- * @subpackage  Sitemap
- * @version     $Id: class.sitemap_base.php 78237 2013-07-23 14:50:31Z mblaschke $
  */
 abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractTask {
 
@@ -43,7 +40,7 @@ abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\Abstr
      *
      * @var string
      */
-    protected $sitemapDir = NULL;
+    protected $sitemapDir = null;
 
     // ########################################################################
     // Methods
@@ -55,7 +52,7 @@ abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\Abstr
     public function execute() {
         // Build sitemap
 
-		$this->initialize();
+        $this->initialize();
         $rootPageList = $this->getRootPages();
         $this->cleanupDirectory();
         $this->initLanguages();
@@ -63,17 +60,17 @@ abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\Abstr
         foreach ($rootPageList as $uid => $page) {
             $this->initRootPage($uid);
 
-            if (\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', FALSE, $uid)) {
+            if (\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', false, $uid)) {
                 foreach ($this->languageIdList as $languageId) {
                     $this->setRootPageLanguage($languageId);
                     $this->buildSitemap($uid, $languageId);
                 }
             } else {
-                $this->buildSitemap($uid, NULL);
+                $this->buildSitemap($uid, null);
             }
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -99,13 +96,27 @@ abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\Abstr
     }
 
     /**
+     * Build sitemap
+     *
+     * @param    integer $rootPageId Root page id
+     * @param    integer $languageId Language id
+     */
+    abstract protected function buildSitemap($rootPageId, $languageId);
+
+
+    // ########################################################################
+    // Abstract Methods
+    // ########################################################################
+
+    /**
      * Generate sitemap link template
      *
-     * @param    string $template    File link template
+     * @param    string $template File link template
+     *
      * @return    string
      */
     protected function generateSitemapLinkTemplate($template) {
-        $ret = NULL;
+        $ret = null;
 
         // Set link template for index file
         $linkConf = array(
@@ -122,18 +133,4 @@ abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\Abstr
 
         return $ret;
     }
-
-
-    // ########################################################################
-    // Abstract Methods
-    // ########################################################################
-
-    /**
-     * Build sitemap
-     *
-     * @param    integer $rootPageId    Root page id
-     * @param    integer $languageId    Language id
-     */
-    abstract protected function buildSitemap($rootPageId, $languageId);
-
 }

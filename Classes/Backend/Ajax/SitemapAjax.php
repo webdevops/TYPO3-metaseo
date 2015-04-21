@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Backend\Ajax;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,15 +22,14 @@ namespace Metaseo\Metaseo\Backend\Ajax;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Backend\Ajax;
 
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 
 /**
  * TYPO3 Backend ajax module sitemap
- *
- * @package     TYPO3
- * @subpackage  metaseo
  */
 class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
 
@@ -42,11 +40,8 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
      */
     protected function executeGetList() {
         // Init
-        $rootPageList = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
-
         $rootPid      = (int)$this->postVar['pid'];
         $offset       = (int)$this->postVar['start'];
-        $limit        = (int)$this->postVar['limit'];
         $itemsPerPage = (int)$this->postVar['pagingSize'];
 
         $searchFulltext      = trim((string)$this->postVar['criteriaFulltext']);
@@ -88,7 +83,8 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         }
 
         // Filter blacklisted page types
-        $where[] = DatabaseUtility::conditionNotIn('p.doktype', \Metaseo\Metaseo\Utility\SitemapUtility::getPageTypeBlacklist());
+        $where[] = DatabaseUtility::conditionNotIn('p.doktype',
+            \Metaseo\Metaseo\Utility\SitemapUtility::getDoktypeBlacklist());
 
         // Build where
         $where = DatabaseUtility::buildCondition($where);
@@ -98,10 +94,10 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         // ############################
 
         // Fetch total count of items with this filter settings
-        $query = 'SELECT COUNT(*) as count
-                    FROM tx_metaseo_sitemap s
-                         INNER JOIN pages p ON p.uid = s.page_uid
-                   WHERE ' . $where;
+        $query     = 'SELECT COUNT(*) as count
+                        FROM tx_metaseo_sitemap s
+                             INNER JOIN pages p ON p.uid = s.page_uid
+                       WHERE ' . $where;
         $itemCount = DatabaseUtility::getOne($query);
 
         // ############################
@@ -119,22 +115,22 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         // Fetch sitemap
         // ############################
         $query = 'SELECT s.uid,
-                         s.page_rootpid,
-                         s.page_uid,
-                         s.page_language,
-                         s.page_url,
-                         s.page_depth,
-                         s.page_type,
-                         s.is_blacklisted,
-                         p.tx_metaseo_is_exclude,
-                         FROM_UNIXTIME(s.tstamp) as tstamp,
-                         FROM_UNIXTIME(s.crdate) as crdate
-                    FROM tx_metaseo_sitemap s
-                         INNER JOIN pages p ON p.uid = s.page_uid
-                   WHERE ' . $where . '
-                ORDER BY ' . $sort . '
-                   LIMIT ' . (int)$offset . ', ' . (int)$itemsPerPage;
-        $list = DatabaseUtility::getAll($query);
+                        s.page_rootpid,
+                        s.page_uid,
+                        s.page_language,
+                        s.page_url,
+                        s.page_depth,
+                        s.page_type,
+                        s.is_blacklisted,
+                        p.tx_metaseo_is_exclude,
+                        FROM_UNIXTIME(s.tstamp) as tstamp,
+                        FROM_UNIXTIME(s.crdate) as crdate
+                   FROM tx_metaseo_sitemap s
+                        INNER JOIN pages p ON p.uid = s.page_uid
+                  WHERE ' . $where . '
+               ORDER BY ' . $sort . '
+                  LIMIT ' . (int)$offset . ', ' . (int)$itemsPerPage;
+        $list  = DatabaseUtility::getAll($query);
 
         $ret = array(
             'results' => $itemCount,
@@ -153,10 +149,10 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         $uidList = $this->postVar['uidList'];
         $rootPid = (int)$this->postVar['pid'];
 
-        $uidList = $GLOBALS['TYPO3_DB']->cleanIntArray($uidList);
+        $uidList = DatabaseUtility::connection()->cleanIntArray($uidList);
 
         if (empty($uidList) || empty($rootPid)) {
-            return FALSE;
+            return false;
         }
 
         $where   = array();
@@ -169,7 +165,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
                    WHERE ' . $where;
         DatabaseUtility::exec($query);
 
-        return TRUE;
+        return true;
     }
 
     /*
@@ -181,10 +177,10 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         $uidList = $this->postVar['uidList'];
         $rootPid = (int)$this->postVar['pid'];
 
-        $uidList = $GLOBALS['TYPO3_DB']->cleanIntArray($uidList);
+        $uidList = DatabaseUtility::connection()->cleanIntArray($uidList);
 
         if (empty($uidList) || empty($rootPid)) {
-            return FALSE;
+            return false;
         }
 
         $where   = array();
@@ -197,9 +193,8 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
                    WHERE ' . $where;
         DatabaseUtility::exec($query);
 
-        return TRUE;
+        return true;
     }
-
 
 
     /**
@@ -211,10 +206,10 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         $uidList = $this->postVar['uidList'];
         $rootPid = (int)$this->postVar['pid'];
 
-        $uidList = $GLOBALS['TYPO3_DB']->cleanIntArray($uidList);
+        $uidList = DatabaseUtility::connection()->cleanIntArray($uidList);
 
         if (empty($uidList) || empty($rootPid)) {
-            return FALSE;
+            return false;
         }
 
         $where   = array();
@@ -226,7 +221,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
                          WHERE ' . $where;
         DatabaseUtility::exec($query);
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -237,8 +232,8 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
     protected function executeDeleteAll() {
         $rootPid = (int)$this->postVar['pid'];
 
-        if (empty($rootPid) ) {
-            return FALSE;
+        if (empty($rootPid)) {
+            return false;
         }
 
         $where   = array();
@@ -249,7 +244,6 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
                          WHERE ' . $where;
         DatabaseUtility::exec($query);
 
-        return TRUE;
+        return true;
     }
-
 }

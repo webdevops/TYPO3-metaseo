@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Scheduler\Task;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,14 +22,12 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Scheduler\Task;
 
 /**
  * Scheduler Task Sitemap TXT
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: SitemapTxtTask.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
 class SitemapTxtTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask {
 
@@ -54,11 +51,12 @@ class SitemapTxtTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
      *
      * @param   integer $rootPageId Root page id
      * @param   integer $languageId Language id
+     *
      * @return  boolean
      */
     protected function buildSitemap($rootPageId, $languageId) {
 
-        if ($languageId !== NULL) {
+        if ($languageId !== null) {
             // Language lock enabled
             $sitemapFileName = 'sitemap-r%s-l%s.txt.gz';
         } else {
@@ -71,7 +69,6 @@ class SitemapTxtTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
         $fileName = sprintf($sitemapFileName, $rootPageId, $languageId);
         $this->writeToFile(PATH_site . '/' . $this->sitemapDir . '/' . $fileName, $content);
 
-        return TRUE;
+        return true;
     }
-
 }

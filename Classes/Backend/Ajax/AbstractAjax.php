@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Backend\Ajax;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,13 +22,13 @@ namespace Metaseo\Metaseo\Backend\Ajax;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Backend\Ajax;
+
 
 /**
  * TYPO3 Backend ajax module base
- *
- * @package     TYPO3
- * @subpackage  metaseo
  */
 abstract class AbstractAjax {
 
@@ -47,14 +46,14 @@ abstract class AbstractAjax {
     /**
      * Sorting field
      */
-    protected $sortField = NULL;
+    protected $sortField = null;
 
     /**
      * Sorting dir
      *
      * @var string
      */
-    protected $sortDir = NULL;
+    protected $sortDir = null;
 
     /**
      * TCE
@@ -62,14 +61,14 @@ abstract class AbstractAjax {
      * @var \TYPO3\CMS\Core\DataHandling\DataHandler
      * @inject
      */
-    protected $tce = NULL;
+    protected $tce = null;
 
     /**
      * TYPO3 Object manager
      *
      * @var \TYPO3\CMS\Extbase\Object\ObjectManager
      */
-    protected $objectManager = NULL;
+    protected $objectManager = null;
 
     /**
      * Backend Form Protection object
@@ -77,7 +76,7 @@ abstract class AbstractAjax {
      * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection
      * @inject
      */
-    protected $formProtection = NULL;
+    protected $formProtection = null;
 
     // ########################################################################
     // Methods
@@ -87,7 +86,7 @@ abstract class AbstractAjax {
      * Execute ajax call
      */
     public function main() {
-        $ret = NULL;
+        $ret = null;
 
         // Try to find method
         $function = '';
@@ -112,7 +111,6 @@ abstract class AbstractAjax {
                 if ($this->checkSessionToken()) {
                     $ret = $this->$method();
                 }
-
             }
         }
 
@@ -120,22 +118,6 @@ abstract class AbstractAjax {
         header('Content-type: application/json;charset=UTF-8');
         echo json_encode($ret);
         exit;
-    }
-
-
-    /**
-     * Init
-     */
-    protected function init() {
-        // Include ajax local lang
-        $GLOBALS['LANG']->includeLLFile('EXT:metaseo/Resources/Private/Language/locallang.xlf');
-
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-
-        // Init form protection instance
-        $this->formProtection = $this->objectManager->get(
-            'TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection'
-        );
     }
 
     /**
@@ -163,13 +145,13 @@ abstract class AbstractAjax {
                     break;
             }
         }
-
     }
 
     /**
      * Escape for sql sort fields
      *
-     * @param    string $value    Sort value
+     * @param    string $value Sort value
+     *
      * @return    string
      */
     protected function escapeSortField($value) {
@@ -177,43 +159,16 @@ abstract class AbstractAjax {
     }
 
     /**
-     * Create an (cached) instance of t3lib_TCEmain
-     *
-     * @return \TYPO3\CMS\Core\DataHandling\DataHandler
+     * Init
      */
-    protected function tce() {
+    protected function init() {
+        // Include ajax local lang
+        $GLOBALS['LANG']->includeLLFile('EXT:metaseo/Resources/Private/Language/locallang.xlf');
 
-        if ($this->tce === NULL) {
-            /** @var \TYPO3\CMS\Core\DataHandling\DataHandler tce */
-            $this->tce = $this->objectManager->get('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
-            $this->tce->start(null, null);
-        }
+        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 
-        return $this->tce;
-    }
-
-
-    /**
-     * Check if field is in table (TCA)
-     *
-     * @param   string $table  Table
-     * @param   string $field  Field
-     * @return  boolean
-     */
-    protected function isFieldInTcaTable($table, $field) {
-        return isset($GLOBALS['TCA'][$table]['columns'][$field]);
-    }
-
-
-    /**
-     * Create session token
-     *
-     * @param   string $formName    Form name/Session token name
-     * @return  string
-     */
-    protected function sessionToken($formName) {
-        $token = $this->formProtection->generateToken($formName);
-        return $token;
+        // Init form protection instance
+        $this->formProtection = $this->objectManager->get('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection');
     }
 
     /**
@@ -225,7 +180,7 @@ abstract class AbstractAjax {
 
         if (empty($this->postVar['sessionToken'])) {
             // No session token exists
-            return FALSE;
+            return false;
         }
 
         $className = strtolower(str_replace('\\', '_', get_class($this)));
@@ -233,10 +188,50 @@ abstract class AbstractAjax {
         $sessionToken = $this->sessionToken($className);
 
         if ($this->postVar['sessionToken'] === $sessionToken) {
-            return TRUE;
+            return true;
         }
 
-        return FALSE;
+        return false;
     }
 
+    /**
+     * Create session token
+     *
+     * @param   string $formName Form name/Session token name
+     *
+     * @return  string
+     */
+    protected function sessionToken($formName) {
+        $token = $this->formProtection->generateToken($formName);
+
+        return $token;
+    }
+
+    /**
+     * Create an (cached) instance of t3lib_TCEmain
+     *
+     * @return \TYPO3\CMS\Core\DataHandling\DataHandler
+     */
+    protected function tce() {
+
+        if ($this->tce === null) {
+            /** @var \TYPO3\CMS\Core\DataHandling\DataHandler tce */
+            $this->tce = $this->objectManager->get('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+            $this->tce->start(null, null);
+        }
+
+        return $this->tce;
+    }
+
+    /**
+     * Check if field is in table (TCA)
+     *
+     * @param   string $table Table
+     * @param   string $field Field
+     *
+     * @return  boolean
+     */
+    protected function isFieldInTcaTable($table, $field) {
+        return isset($GLOBALS['TCA'][$table]['columns'][$field]);
+    }
 }

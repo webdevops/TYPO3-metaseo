@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Controller;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,15 +22,14 @@ namespace Metaseo\Metaseo\Controller;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Controller;
 
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 
 /**
  * TYPO3 Backend module root settings
- *
- * @package     TYPO3
- * @subpackage  metaseo
  */
 class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule {
     // ########################################################################
@@ -53,8 +51,8 @@ class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\Abs
         $rootPageList = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
         $rootIdList   = array_keys($rootPageList);
 
-        $rootPidCondition = NULL;
-        if (!empty($rootIdList) ) {
+        $rootPidCondition = null;
+        if (!empty($rootIdList)) {
             $rootPidCondition = 'p.uid IN (' . implode(',', $rootIdList) . ')';
         } else {
             $rootPidCondition = '1=0';
@@ -65,17 +63,17 @@ class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\Abs
         // #################
 
         // check which root pages have no root settings
-        $query = 'SELECT p.uid
-                    FROM pages p
-                         LEFT JOIN tx_metaseo_setting_root seosr
-                              ON seosr.pid = p.uid
-                             AND seosr.deleted = 0
-                    WHERE ' . $rootPidCondition . '
-                      AND seosr.uid IS NULL';
+        $query   = 'SELECT p.uid
+                      FROM pages p
+                           LEFT JOIN tx_metaseo_setting_root seosr
+                                ON seosr.pid = p.uid
+                               AND seosr.deleted = 0
+                      WHERE ' . $rootPidCondition . '
+                        AND seosr.uid IS NULL';
         $rowList = DatabaseUtility::getAll($query);
         foreach ($rowList as $row) {
             $tmpUid = $row['uid'];
-            $query = 'INSERT INTO tx_metaseo_setting_root (pid, tstamp, crdate, cruser_id)
+            $query  = 'INSERT INTO tx_metaseo_setting_root (pid, tstamp, crdate, cruser_id)
                             VALUES (' . (int)$tmpUid . ',
                                     ' . (int)time() . ',
                                     ' . (int)time() . ',
@@ -83,25 +81,26 @@ class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\Abs
             DatabaseUtility::execInsert($query);
         }
 
-        $rootSettingList  = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageSettingList();
+        $rootSettingList = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageSettingList();
 
         // #################
         // Domain list
         // ##################
 
         // Fetch domain name
-        $query = 'SELECT uid,
-                         pid,
-                         domainName,
-                         forced
-                    FROM sys_domain
-                   WHERE hidden = 0
-                ORDER BY forced DESC, sorting';
+        $query   = 'SELECT uid,
+                          pid,
+                          domainName,
+                          forced
+                     FROM sys_domain
+                    WHERE hidden = 0
+                 ORDER BY forced DESC,
+                          sorting';
         $rowList = DatabaseUtility::getAll($query);
 
         $domainList = array();
         foreach ($rowList as $row) {
-            $domainList[ $row['pid'] ][ $row['uid'] ] = $row;
+            $domainList[$row['pid']][$row['uid']] = $row;
         }
 
         // #################
@@ -112,18 +111,19 @@ class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\Abs
         foreach ($rootPageList as $pageId => &$page) {
             // Domain list
             $page['domainList'] = '';
-            if (!empty($domainList[$pageId]) ) {
+            if (!empty($domainList[$pageId])) {
                 $page['domainList'] = $domainList[$pageId];
             }
 
             // Settings
             $page['rootSettings'] = array();
-            if (!empty($rootSettingList[$pageId]) ) {
+            if (!empty($rootSettingList[$pageId])) {
                 $page['rootSettings'] = $rootSettingList[$pageId];
             }
 
             // Settings available
-            $page['settingsLink'] = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_metaseo_setting_root][' . $rootSettingList[$pageId]['uid'] . ']=edit',$this->doc->backPath);
+            $page['settingsLink'] = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_metaseo_setting_root][' . $rootSettingList[$pageId]['uid'] . ']=edit',
+                $this->doc->backPath);
 
 
             $page['sitemapLink']   = \Metaseo\Metaseo\Utility\RootPageUtility::getSitemapIndexUrl($pageId);
@@ -132,12 +132,10 @@ class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\Abs
         unset($page);
 
         // check if there is any root page
-        if (empty($rootPageList) ) {
+        if (empty($rootPageList)) {
             $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
                 $this->translate('message.warning.noRootPage.message'),
-                $this->translate('message.warning.noRootPage.title'),
-                \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
-            );
+                $this->translate('message.warning.noRootPage.title'), \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
             \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($message);
         }
 
@@ -147,13 +145,11 @@ class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\Abs
 
         // FIXME: do we really need a template engine here?
         $this->template = $this->objectManager->get('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
-        $pageRenderer = $this->template->getPageRenderer();
+        $pageRenderer   = $this->template->getPageRenderer();
 
-        $basePathJs  = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript';
         $basePathCss = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/Css';
-        $pageRenderer->addCssFile($basePathCss.'/Default.css');
+        $pageRenderer->addCssFile($basePathCss . '/Default.css');
 
         $this->view->assign('RootPageList', $rootPageList);
     }
-
 }

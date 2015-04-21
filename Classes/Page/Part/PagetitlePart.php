@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Page\Part;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,24 +22,100 @@ namespace Metaseo\Metaseo\Page\Part;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Page\Part;
+
+use Metaseo\Metaseo\Utility\FrontendUtility;
 
 /**
  * Page Title Changer
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: PagetitlePart.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
 class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
     /**
      * Add SEO-Page Title
      *
-     * @param    string $title    Default page title (rendered by TYPO3)
+     * @param    string $title Default page title (rendered by TYPO3)
+     *
      * @return    string            Modified page title
      */
     public function main($title) {
+        $ret = null;
+
+        // ############################
+        // Fetch from cache
+        // ############################
+
+        $pageTitleCachingEnabled = $this->checkIfPageTitleCachingEnabled();
+        if ($pageTitleCachingEnabled) {
+            $cacheIdentification = $GLOBALS['TSFE']->id . '_' . substr(sha1(FrontendUtility::getCurrentUrl()),10,30) . '_title';
+
+            /** @var \TYPO3\CMS\Core\Cache\CacheManager $cacheManager */
+            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+            $cacheManager  = $objectManager->get('TYPO3\\CMS\\Core\\Cache\\CacheManager');
+            $cache         = $cacheManager->getCache('cache_pagesection');
+
+            $cacheTitle = $cache->get($cacheIdentification);
+            if (!empty($cacheTitle)) {
+                $ret = $cacheTitle;
+            }
+        }
+
+        // ############################
+        // Generate page title
+        // ############################
+
+        // Generate page title if not set
+        // also fallback
+        if (empty($ret)) {
+            $ret = $this->generatePageTitle($title);
+
+            // Cache page title (if page is not cacheable)
+            if ($pageTitleCachingEnabled) {
+                $cache->set($cacheIdentification, $ret, array('pageId_' . $GLOBALS['TSFE']->id));
+            }
+        }
+
+        // ############################
+        // Output
+        // ############################
+
+        // Call hook
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'pageTitleOutput', $this, $ret);
+
+        return $ret;
+    }
+
+    /**
+     * Check if page title caching is enabled
+     *
+     * @return bool
+     */
+    protected function checkIfPageTitleCachingEnabled() {
+        $cachingEnabled = !empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['pageTitle.']['caching']);
+
+        // Enable caching only if caching is enabled in SetupTS
+        // And if there is any USER_INT on the current page
+        //
+        // -> USER_INT will break Connector pagetitle setting
+        //    because the plugin output is cached but not the whole
+        //    page. so the Connector will not be called again
+        //    and the default page title will be shown
+        //    which is wrong
+        // -> if the page is fully cacheable we don't have anything
+        //    to do
+        return $cachingEnabled && !FrontendUtility::isCacheable();
+    }
+
+    /**
+     * Add SEO-Page Title
+     *
+     * @param    string $title Default page title (rendered by TYPO3)
+     *
+     * @return    string            Modified page title
+     */
+    public function generatePageTitle($title) {
         // INIT
         $ret              = $title;
         $rawTitel         = !empty($GLOBALS['TSFE']->altPageTitle) ? $GLOBALS['TSFE']->altPageTitle : $GLOBALS['TSFE']->page['title'];
@@ -48,11 +123,11 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         $tsSeoSetup       = array();
         $rootLine         = $GLOBALS['TSFE']->rootLine;
         $currentPid       = $GLOBALS['TSFE']->id;
-        $skipPrefixSuffix = FALSE;
-        $applySitetitle   = TRUE;
+        $skipPrefixSuffix = false;
+        $applySitetitle   = true;
 
-        $pageTitelPrefix = FALSE;
-        $pageTitelSuffix = FALSE;
+        $pageTitelPrefix = false;
+        $pageTitelSuffix = false;
 
         $stdWrapList = array();
 
@@ -69,7 +144,7 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('pagetitle-setup', $this, $tsSeoSetup);
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'pageTitleSetup', $this, $tsSeoSetup);
 
         // get stdwrap list
         if (!empty($tsSeoSetup['pageTitle.']['stdWrap.'])) {
@@ -89,10 +164,10 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
             // Add template prefix/suffix
             if (empty($tsSeoSetup['pageTitle.']['applySitetitleToPagetitle'])) {
-                $applySitetitle = FALSE;
+                $applySitetitle = false;
             }
 
-            $skipPrefixSuffix = TRUE;
+            $skipPrefixSuffix = true;
         }
 
 
@@ -114,7 +189,7 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                             $pageTitelSuffix = $page['tx_metaseo_pagetitle_suffix'];
                         }
 
-                        if ($pageTitelPrefix !== FALSE || $pageTitelSuffix !== FALSE) {
+                        if ($pageTitelPrefix !== false || $pageTitelSuffix !== false) {
                             // pagetitle found - break foreach
                             break 2;
                         }
@@ -165,11 +240,11 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                     $ret      = $store['pagetitle.absolute'];
                     $rawTitel = $store['pagetitle.absolute'];
 
-                    $pageTitelPrefix = FALSE;
-                    $pageTitelSuffix = FALSE;
+                    $pageTitelPrefix = false;
+                    $pageTitelSuffix = false;
 
                     if (empty($tsSeoSetup['pageTitle.']['applySitetitleToPagetitle'])) {
-                        $applySitetitle = FALSE;
+                        $applySitetitle = false;
                     }
                 }
 
@@ -179,19 +254,19 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             }
 
             // Apply prefix and suffix
-            if ($pageTitelPrefix !== FALSE || $pageTitelSuffix !== FALSE) {
+            if ($pageTitelPrefix !== false || $pageTitelSuffix !== false) {
                 $ret = $rawTitel;
 
-                if ($pageTitelPrefix !== FALSE) {
+                if ($pageTitelPrefix !== false) {
                     $ret = $pageTitelPrefix . ' ' . $ret;
                 }
 
-                if ($pageTitelSuffix !== FALSE) {
+                if ($pageTitelSuffix !== false) {
                     $ret .= ' ' . $pageTitelSuffix;
                 }
 
                 if (!empty($tsSeoSetup['pageTitle.']['applySitetitleToPrefixSuffix'])) {
-                    $applySitetitle = TRUE;
+                    $applySitetitle = true;
                 }
             } else {
                 $ret = $rawTitel;
@@ -250,9 +325,6 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         if (!empty($stdWrapList['after.'])) {
             $ret = $this->cObj->stdWrap($ret, $stdWrapList['after.']);
         }
-
-        // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('pagetitle-output', $this, $ret);
 
         return $ret;
     }

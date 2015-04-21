@@ -1,8 +1,5 @@
 .settings/
-nbproject
 .buildpath
-.DS_Store
-.idea
 *.kdev4
 .project
 .remote_password_hash
@@ -10,5 +7,3 @@ nbproject
 .remote_username
 tmp
 *~
-.svn
-*/.svn

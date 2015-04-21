@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Backend\Validator;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,13 +22,12 @@ namespace Metaseo\Metaseo\Backend\Validator;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Backend\Validator;
 
 /**
  * TYPO3 Backend field validation: float
- *
- * @package     TYPO3
- * @subpackage  metaseo
  */
 class FloatValidator {
 
@@ -62,12 +60,13 @@ return ret;
     /**
      * Validate number on serverside
      *
-     * @param    string $value    Value
-     * @param    mixed $is_in    Is in value (config)
-     * @param    mixed $set    Set
+     * @param    string $value Value
+     * @param    mixed  $is_in Is in value (config)
+     * @param    mixed  $set   Set
+     *
      * @return    float
      */
-    function evaluateFieldValue($value, $is_in, &$set) {
+    public function evaluateFieldValue($value, $is_in, &$set) {
         return (float)$value;
     }
 }

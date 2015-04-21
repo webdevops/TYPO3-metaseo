@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Utility;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,16 +22,12 @@ namespace Metaseo\Metaseo\Utility;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
 
-use Metaseo\Metaseo\Utility\DatabaseUtility;
+namespace Metaseo\Metaseo\Utility;
 
 /**
  * Root page utility
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: SitemapUtility.php 81677 2013-11-21 12:32:33Z mblaschke $
  */
 class RootPageUtility {
 
@@ -48,9 +43,42 @@ class RootPageUtility {
     protected static $domainCache = array();
 
     /**
+     * Get sitemap index url
+     *
+     * @param  integer $rootPid Root PID
+     *
+     * @return string
+     */
+    public static function getSitemapIndexUrl($rootPid) {
+        return self::getFrontendUrl($rootPid, SitemapUtility::PAGE_TYPE_SITEMAP_XML);
+    }
+
+    /**
+     * Build a frontend url
+     *
+     * @param integer $rootPid Root Page ID
+     * @param integer $typeNum Type num
+     *
+     * @return string
+     */
+    public static function getFrontendUrl($rootPid, $typeNum) {
+        $domain = self::getDomain($rootPid);
+        if (!empty($domain)) {
+            $domain = 'http://' . $domain . '/';
+        } else {
+            $domain = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+        }
+        // "build", TODO: use typolink to use TYPO3 internals
+        $url = $domain . 'index.php?id=' . (int)$rootPid . '&type=' . (int)$typeNum;
+
+        return $url;
+    }
+
+    /**
      * Get domain
      *
-     * @param   integer $rootPid    Root PID
+     * @param   integer $rootPid Root PID
+     *
      * @return  null|string
      */
     public static function getDomain($rootPid) {
@@ -62,12 +90,12 @@ class RootPageUtility {
         // Fetch domain name
         $query = 'SELECT domainName
                     FROM sys_domain
-                   WHERE pid = ' . (int)$rootPid.'
+                   WHERE pid = ' . (int)$rootPid . '
                      AND hidden = 0
                 ORDER BY forced DESC,
                          sorting
                    LIMIT 1';
-        $ret = DatabaseUtility::getOne($query);
+        $ret   = DatabaseUtility::getOne($query);
 
         // Remove possible slash at the end
         $ret = rtrim($ret, '/');
@@ -79,42 +107,13 @@ class RootPageUtility {
     }
 
     /**
-     * Build a frontend url
-     *
-     * @param integer $rootPid Root Page ID
-     * @param integer $typeNum Type num
-     * @return string
-     */
-    public static function getFrontendUrl($rootPid, $typeNum) {
-        $domain = self::getDomain($rootPid);
-        if (!empty($domain) ) {
-            $domain = 'http://' . $domain . '/';
-        } else {
-            $domain = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-        }
-        // "build", TODO: use typolink to use TYPO3 internals
-        $url = $domain . 'index.php?id=' . (int)$rootPid . '&type=' . (int)$typeNum;
-        return $url;
-    }
-
-    /**
-     * Get sitemap index url
-     *
-     * @param  integer   $rootPid    Root PID
-     * @return string
-     */
-    public static function getSitemapIndexUrl($rootPid) {
-        return self::getFrontendUrl($rootPid, 841132);
-    }
-
-    /**
      * Get robots.txt url
      *
-     * @param  integer   $rootPid    Root PID
+     * @param  integer $rootPid Root PID
+     *
      * @return string
      */
     public static function getRobotsTxtUrl($rootPid) {
-        return self::getFrontendUrl($rootPid, 841133);
+        return self::getFrontendUrl($rootPid, SitemapUtility::PAGE_TYPE_ROBOTS_TXT);
     }
-
 }

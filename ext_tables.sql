@@ -29,21 +29,6 @@ CREATE TABLE pages_language_overlay (
 );
 
 #
-# Table structure for table 'tx_metaseo_cache'
-#
-CREATE TABLE tx_metaseo_cache (
-    uid int(11) NOT NULL auto_increment,
-    tstamp int(11) DEFAULT '0' NOT NULL,
-    page_uid int(11) DEFAULT '0' NOT NULL,
-    cache_section varchar(10) DEFAULT '' NOT NULL,
-    cache_identifier varchar(10) DEFAULT '' NOT NULL,
-    cache_content blob,
-    PRIMARY KEY (uid),
-    UNIQUE cache_key (page_uid,cache_section,cache_identifier),
-    KEY cache_sect_id (cache_section,cache_identifier)
-) ENGINE=InnoDB;
-
-#
 # Table structure for table 'tx_metaseo_sitemap'
 #
 CREATE TABLE tx_metaseo_sitemap (

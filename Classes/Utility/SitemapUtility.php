@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Utility;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,39 +22,48 @@ namespace Metaseo\Metaseo\Utility;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
 
-use Metaseo\Metaseo\Utility\DatabaseUtility;
-use \TYPO3\CMS\Frontend\Page\PageRepository;
+namespace Metaseo\Metaseo\Utility;
+
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Sitemap utility
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: SitemapUtility.php 81677 2013-11-21 12:32:33Z mblaschke $
  */
 class SitemapUtility {
 
     CONST SITEMAP_TYPE_PAGE = 0;
     CONST SITEMAP_TYPE_FILE = 1;
 
-    CONST DOKTYPE_SITEMAP_TXT    = 841131; // sitemap.txt     (EXT:metaseo), apply changes in Configuration/TypoScript/setup.txt
-    CONST DOKTYPE_SITEMAP_XML    = 841132; // sitemap.xml     (EXT:metaseo)
-    CONST DOKTYPE_ROBOTS_TXT     = 841133; // robots.txt      (EXT:metaseo)
+    CONST PAGE_TYPE_SITEMAP_TXT = 841131; // sitemap.txt     (EXT:metaseo), apply changes in Configuration/TypoScript/setup.txt
+    CONST PAGE_TYPE_SITEMAP_XML = 841132; // sitemap.xml     (EXT:metaseo)
+    CONST PAGE_TYPE_ROBOTS_TXT  = 841133; // robots.txt      (EXT:metaseo)
 
     // ########################################################################
     // Attributes
     // ########################################################################
 
-    protected static $typeBlacklist = array(
-        PageRepository::DOKTYPE_BE_USER_SECTION,      // Backend Section (TYPO3 CMS)
-        PageRepository::DOKTYPE_SPACER,               // Menu separator  (TYPO3 CMS)
-        PageRepository::DOKTYPE_SYSFOLDER,            // Folder          (TYPO3 CMS)
-        PageRepository::DOKTYPE_RECYCLER,             // Recycler        (TYPO3 CMS)
-        self::DOKTYPE_SITEMAP_TXT,                    // sitemap.txt     (EXT:metaseo)
-        self::DOKTYPE_SITEMAP_XML,                    // sitemap.xml     (EXT:metaseo)
-        self::DOKTYPE_ROBOTS_TXT,                     // robots.txt      (EXT:metaseo)
+    /**
+     * List of blacklisted doktypes (from table pages)
+     * @var array
+     */
+    protected static $doktypeBlacklist = array(
+        PageRepository::DOKTYPE_BE_USER_SECTION,  // Backend Section (TYPO3 CMS)
+        PageRepository::DOKTYPE_SPACER,           // Menu separator  (TYPO3 CMS)
+        PageRepository::DOKTYPE_SYSFOLDER,        // Folder          (TYPO3 CMS)
+        PageRepository::DOKTYPE_RECYCLER,         // Recycler        (TYPO3 CMS)
+    );
+
+    /**
+     * List of blacklisted rendering PAGE typenum (typoscript object)
+     *
+     * @var array
+     */
+    protected static $pagetypeBlacklist = array(
+        self::PAGE_TYPE_SITEMAP_TXT,   // sitemap.txt     (EXT:metaseo)
+        self::PAGE_TYPE_SITEMAP_XML,   // sitemap.xml     (EXT:metaseo)
+        self::PAGE_TYPE_ROBOTS_TXT,    // robots.txt      (EXT:metaseo)
     );
 
 
@@ -64,24 +72,15 @@ class SitemapUtility {
     // ########################################################################
 
     /**
-     * Get list of blacklisted page types
-     *
-     * @return array
-     */
-    public static function getPageTypeBlacklist() {
-        return self::$typeBlacklist;
-    }
-
-    /**
      * Insert into sitemap
      *
-     * @param   array $pageData   Page informations
+     * @param   array $pageData Page informations
      */
     public static function index($pageData) {
         static $cache = array();
 
         // do not index empty urls
-        if (empty($pageData['page_url']) ) {
+        if (empty($pageData['page_url'])) {
             return;
         }
 
@@ -90,7 +89,7 @@ class SitemapUtility {
 
         // calc page hash
         $pageData['page_hash'] = md5($pageData['page_url']);
-        $pageHash = $pageData['page_hash'];
+        $pageHash              = $pageData['page_hash'];
 
         // set default type if not set
         if (!isset($pageData['page_type'])) {
@@ -100,7 +99,7 @@ class SitemapUtility {
         // Escape/Quote data
         unset($pageDataValue);
         foreach ($pageData as &$pageDataValue) {
-            if ($pageDataValue === NULL) {
+            if ($pageDataValue === null) {
                 $pageDataValue = 'NULL';
             } elseif (is_int($pageDataValue) || is_numeric($pageDataValue)) {
                 // Don't quote numeric/integers
@@ -119,15 +118,15 @@ class SitemapUtility {
 
             // TODO: INSERT INTO ... ON DUPLICATE KEY UPDATE?
 
-            $query = 'SELECT uid
-                        FROM tx_metaseo_sitemap
-                       WHERE page_uid      = ' . $pageData['page_uid'] . '
-                         AND page_language = ' . $pageData['page_language'] . '
-                         AND page_hash     = ' . $pageData['page_hash'] . '
-                         AND page_type     = ' . $pageData['page_type'];
+            $query      = 'SELECT uid
+                             FROM tx_metaseo_sitemap
+                            WHERE page_uid      = ' . $pageData['page_uid'] . '
+                              AND page_language = ' . $pageData['page_language'] . '
+                              AND page_hash     = ' . $pageData['page_hash'] . '
+                              AND page_type     = ' . $pageData['page_type'];
             $sitemapUid = DatabaseUtility::getOne($query);
 
-            if ( !empty($sitemapUid) ) {
+            if (!empty($sitemapUid)) {
                 $query = 'UPDATE tx_metaseo_sitemap
                              SET tstamp                = ' . $pageData['tstamp'] . ',
                                  page_rootpid          = ' . $pageData['page_rootpid'] . ',
@@ -143,11 +142,8 @@ class SitemapUtility {
                 // #####################################
                 // INSERT
                 // #####################################
-                $GLOBALS['TYPO3_DB']->exec_INSERTquery(
-                    'tx_metaseo_sitemap',
-                    $pageData,
-                    array_keys($pageData)
-                );
+                \Metaseo\Metaseo\Utility\DatabaseUtility::connection()->exec_INSERTquery('tx_metaseo_sitemap',
+                    $pageData, array_keys($pageData));
             }
 
             $cache[$pageHash] = 1;
@@ -178,8 +174,9 @@ class SitemapUtility {
                            AND p.deleted = 0
                            AND p.hidden = 0
                            AND p.tx_metaseo_is_exclude = 0
-                           AND ' . DatabaseUtility::conditionNotIn('p.doktype', self::getPageTypeBlacklist()) . '
+                           AND ' . DatabaseUtility::conditionNotIn('p.doktype', self::getDoktypeBlacklist()) . '
                    WHERE p.uid IS NULL';
+
         $deletedSitemapPages = DatabaseUtility::getColWithIndex($query);
 
         // delete pages
@@ -192,17 +189,51 @@ class SitemapUtility {
     }
 
     /**
+     * Get list of blacklisted doktypes (from table pages)
+     *
+     * @return array
+     */
+    public static function getDoktypeBlacklist() {
+        return self::$doktypeBlacklist;
+    }
+
+    /**
+     * Get list of blacklisted PAGE typenum (typoscript object)
+     *
+     * @return array
+     */
+    public static function getPageTypeBlacklist() {
+        $ret = self::$pagetypeBlacklist;
+
+        // Fetch from SetupTS (comma separated list)
+        if (isset($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist'])
+           && strlen($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist']) >= 1)
+        {
+            $pageTypeBlacklist = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist'];
+            $pageTypeBlacklist = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $pageTypeBlacklist);
+
+            $ret = array_merge(
+                $ret,
+                $pageTypeBlacklist
+            );
+        }
+
+        return $ret;
+    }
+
+    /**
      * Return list of sitemap pages
      *
-     * @param   integer $rootPid        Root page id of tree
-     * @param   integer $languageId     Limit to language id
+     * @param   integer $rootPid    Root page id of tree
+     * @param   integer $languageId Limit to language id
+     *
      * @return  boolean|array
      */
-    public static function getList($rootPid, $languageId = NULL) {
+    public static function getList($rootPid, $languageId = null) {
         $sitemapList = array();
         $pageList    = array();
 
-        $typo3Pids     = array();
+        $typo3Pids = array();
 
         $query = 'SELECT ts.*
                     FROM tx_metaseo_sitemap ts
@@ -211,11 +242,11 @@ class SitemapUtility {
                                 AND	p.deleted = 0
                                 AND	p.hidden = 0
                                 AND	p.tx_metaseo_is_exclude = 0
-                                AND ' . DatabaseUtility::conditionNotIn('p.doktype', self::getPageTypeBlacklist()) . '
+                                AND ' . DatabaseUtility::conditionNotIn('p.doktype', self::getDoktypeBlacklist()) . '
                    WHERE ts.page_rootpid = ' . (int)$rootPid . '
                      AND ts.is_blacklisted = 0';
 
-        if ($languageId !== NULL) {
+        if ($languageId !== null) {
             $query .= ' AND ts.page_language = ' . (int)$languageId;
         }
         $query .= ' ORDER BY
@@ -225,7 +256,7 @@ class SitemapUtility {
         $resultRows = DatabaseUtility::getAll($query);
 
         if (!$resultRows) {
-            return FALSE;
+            return false;
         }
 
         foreach ($resultRows as $row) {
@@ -236,13 +267,13 @@ class SitemapUtility {
         }
 
         if (!empty($typo3Pids)) {
-            $query = 'SELECT *
-                        FROM pages
-                       WHERE ' . DatabaseUtility::conditionIn('uid', $typo3Pids);
+            $query    = 'SELECT *
+                           FROM pages
+                          WHERE ' . DatabaseUtility::conditionIn('uid', $typo3Pids);
             $pageList = DatabaseUtility::getAllWithIndex($query, 'uid');
 
-            if ( empty($pageList) ) {
-                return FALSE;
+            if (empty($pageList)) {
+                return false;
             }
         }
 

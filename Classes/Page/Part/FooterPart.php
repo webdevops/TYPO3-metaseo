@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Page\Part;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,22 +22,22 @@ namespace Metaseo\Metaseo\Page\Part;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Page\Part;
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Page Footer
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: FooterPart.php 84520 2014-03-28 10:33:24Z mblaschke $
  */
 class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
     /**
      * Add Page Footer
      *
-     * @param    string $title    Default page title (rendered by TYPO3)
+     * @param    string $title Default page title (rendered by TYPO3)
+     *
      * @return    string            Modified page title
      */
     public function main($title) {
@@ -49,9 +48,9 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
         $beLoggedIn = isset($GLOBALS['BE_USER']->user['username']);
 
-        $disabledHeaderCode = FALSE;
+        $disabledHeaderCode = false;
         if (!empty($tsSetup['config.']['disableAllHeaderCode'])) {
-            $disabledHeaderCode = TRUE;
+            $disabledHeaderCode = true;
         }
 
         if (!empty($tsSetup['plugin.']['metaseo.']['services.'])) {
@@ -59,7 +58,7 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('pagefooter-setup', $this, $tsServices);
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'pageFooterSetup', $this, $tsServices);
 
         // #########################################
         // GOOGLE ANALYTICS
@@ -68,10 +67,10 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         if (!empty($tsServices['googleAnalytics'])) {
             $gaConf = $tsServices['googleAnalytics.'];
 
-            $gaEnabled = TRUE;
+            $gaEnabled = true;
 
             if ($disabledHeaderCode && empty($gaConf['enableIfHeaderIsDisabled'])) {
-                $gaEnabled = FALSE;
+                $gaEnabled = false;
             }
 
             if ($gaEnabled && !(empty($gaConf['showIfBeLogin']) && $beLoggedIn)) {
@@ -82,10 +81,10 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                     $ret['ga.trackdownload'] = $this->serviceGoogleAnalyticsTrackDownloads($tsServices, $gaConf);
                 }
             } elseif ($gaEnabled && $beLoggedIn) {
-				// Disable caching
-				$GLOBALS['TSFE']->set_no_cache('MetaSEO: Google Analytics code disabled, backend login detected');
+                // Disable caching
+                $GLOBALS['TSFE']->set_no_cache('MetaSEO: Google Analytics code disabled, backend login detected');
 
-				// Backend login detected, disable cache because this page is viewed by BE-users
+                // Backend login detected, disable cache because this page is viewed by BE-users
                 $ret['ga.disabled'] = '<!-- Google Analytics disabled, Page cache disabled - Backend-Login detected -->';
             }
         }
@@ -97,18 +96,18 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         if (!empty($tsServices['piwik.']) && !empty($tsServices['piwik.']['url']) && !empty($tsServices['piwik.']['id'])) {
             $piwikConf = $tsServices['piwik.'];
 
-            $piwikEnabled = TRUE;
+            $piwikEnabled = true;
 
             if ($disabledHeaderCode && empty($piwikConf['enableIfHeaderIsDisabled'])) {
-                $piwikEnabled = FALSE;
+                $piwikEnabled = false;
             }
 
             if ($piwikEnabled && !(empty($piwikConf['showIfBeLogin']) && $beLoggedIn)) {
                 // Build Piwik service
                 $ret['piwik'] = $this->buildPiwikCode($tsServices, $piwikConf);
             } elseif ($piwikEnabled && $beLoggedIn) {
-				// Disable caching
-				$GLOBALS['TSFE']->set_no_cache('MetaSEO: Piwik code disabled, backend login detected');
+                // Disable caching
+                $GLOBALS['TSFE']->set_no_cache('MetaSEO: Piwik code disabled, backend login detected');
 
                 // Backend login detected, disable cache because this page is viewed by BE-users
                 $ret['piwik.disabled'] = '<!-- Piwik disabled, Page cache disabled - Backend-Login detected -->';
@@ -116,7 +115,7 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('pagefooter-output', $this, $ret);
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'pageFooterOutput', $this, $ret);
 
         return implode("\n", $ret);
     }
@@ -124,21 +123,20 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     /**
      * Google analytics
      *
-     * @param  array $tsServices  SetupTS of services
-     * @param  array $gaConf      Google Analytics configuration
+     * @param  array $tsServices SetupTS of services
+     * @param  array $gaConf     Google Analytics configuration
+     *
      * @return string
      */
     public function buildGoogleAnalyticsCode($tsServices, $gaConf) {
-        $ret = array();
+        $ret        = array();
         $gaCodeList = GeneralUtility::trimExplode(',', $tsServices['googleAnalytics']);
 
         foreach ($gaCodeList as $gaCode) {
             $customCode = '';
             if (!empty($gaConf['customizationCode'])) {
-                $customCode .= "\n" . $this->cObj->cObjGetSingle(
-                        $gaConf['customizationCode'],
-                        $gaConf['customizationCode.']
-                    );
+                $customCode .= "\n" . $this->cObj->cObjGetSingle($gaConf['customizationCode'],
+                        $gaConf['customizationCode.']);
             }
 
             $this->cObj->data['gaCode']                  = $gaCode;
@@ -160,38 +158,37 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     /**
      * Google analytics
      *
-     * @param  array $tsServices  SetupTS of services
-     * @param  array $gaConf      Google Analytics configuration
+     * @param  array $tsServices SetupTS of services
+     * @param  array $gaConf     Google Analytics configuration
+     *
      * @return string
      */
     public function serviceGoogleAnalyticsTrackDownloads($tsServices, $gaConf) {
-        $jsFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
-            $gaConf['trackDownloadsScript']
-        );
+        $jsFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($gaConf['trackDownloadsScript']);
         $jsfile = preg_replace('/^' . preg_quote(PATH_site, '/') . '/i', '', $jsFile);
 
         $ret = '<script type="text/javascript" src="' . htmlspecialchars($jsfile) . '"></script>';
+
         return $ret;
     }
 
     /**
      * Piwik
      *
-     * @param  array $tsServices  SetupTS of services
-     * @param  array $piwikConf   Piwik configuration
+     * @param  array $tsServices SetupTS of services
+     * @param  array $piwikConf  Piwik configuration
+     *
      * @return string
      */
     public function buildPiwikCode($tsServices, $piwikConf) {
-        $ret = array();
+        $ret           = array();
         $piwikCodeList = GeneralUtility::trimExplode(',', $piwikConf['id']);
 
         foreach ($piwikCodeList as $piwikCode) {
             $customCode = '';
             if (!empty($piwikConf['customizationCode'])) {
-                $customCode .= "\n" . $this->cObj->cObjGetSingle(
-                        $piwikConf['customizationCode'],
-                        $piwikConf['customizationCode.']
-                    );
+                $customCode .= "\n" . $this->cObj->cObjGetSingle($piwikConf['customizationCode'],
+                        $piwikConf['customizationCode.']);
             }
 
             // remove last slash
@@ -213,5 +210,4 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
         return $ret;
     }
-
 }

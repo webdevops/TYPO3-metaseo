@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Sitemap\Generator;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,14 +22,12 @@ namespace Metaseo\Metaseo\Sitemap\Generator;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Sitemap\Generator;
 
 /**
  * Sitemap XML generator
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: XmlGenerator.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
 class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator {
 
@@ -62,17 +59,14 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
 
         for ($i = 0; $i < $pageCount; $i++) {
             if ($this->indexPathTemplate) {
-                $link = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl(
-                    str_replace('###PAGE###', $i, $this->indexPathTemplate)
-                );
+                $link = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl(str_replace('###PAGE###', $i,
+                    $this->indexPathTemplate));
 
                 $sitemaps[] = $link;
             } else {
                 $linkConf['additionalParams'] = '&page=' . ($i + 1);
 
-                $sitemaps[] = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl(
-                    $GLOBALS['TSFE']->cObj->typoLink_URL($linkConf)
-                );
+                $sitemaps[] = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($GLOBALS['TSFE']->cObj->typoLink_URL($linkConf));
             }
         }
 
@@ -81,7 +75,7 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
         $ret .= ' xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('sitemap-xml-index-sitemap-list', $this, $sitemaps);
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'sitemapXmlIndexSitemapList', $this, $sitemaps);
 
         foreach ($sitemaps as $sitemapPage) {
             $ret .= '<sitemap><loc>' . htmlspecialchars($sitemapPage) . '</loc></sitemap>';
@@ -90,7 +84,7 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
         $ret .= '</sitemapindex>';
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('sitemap-xml-index-output', $this, $ret);
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'sitemapXmlIndexOutput', $this, $ret);
 
         return $ret;
     }
@@ -98,10 +92,11 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
     /**
      * Create sitemap (for page)
      *
-     * @param   integer $page   Page
+     * @param   integer $page Page
+     *
      * @return  string
      */
-    public function sitemap($page = NULL) {
+    public function sitemap($page = null) {
         $ret = '';
 
         $pageLimit = 10000;
@@ -112,8 +107,6 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
 
         $pageItems     = count($this->sitemapPages);
         $pageItemBegin = $pageLimit * ($page - 1);
-        $pageCount     = ceil($pageItems / $pageLimit);
-
 
         if ($pageItemBegin <= $pageItems) {
             $this->sitemapPages = array_slice($this->sitemapPages, $pageItemBegin, $pageLimit);
@@ -135,18 +128,12 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
         $ret .= ' xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9';
         $ret .= ' http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
 
-        $pagePriorityDefaultValue     = (float)\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue(
-            'sitemap_priorty',
-            0
-        );
-        $pagePriorityDepthMultiplier  = (float)\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue(
-            'sitemap_priorty_depth_multiplier',
-            0
-        );
-        $pagePriorityDepthModificator = (float)\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue(
-            'sitemap_priorty_depth_modificator',
-            0
-        );
+        $pagePriorityDefaultValue     = (float)\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('sitemap_priorty',
+            0);
+        $pagePriorityDepthMultiplier  = (float)\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('sitemap_priorty_depth_multiplier',
+            0);
+        $pagePriorityDepthModificator = (float)\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('sitemap_priorty_depth_modificator',
+            0);
 
         if ($pagePriorityDefaultValue == 0) {
             $pagePriorityDefaultValue = 1;
@@ -215,10 +202,10 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
             $pageModifictionDate = date('c', $sitemapPage['tstamp']);
 
             // Page change frequency
-            $pageChangeFrequency = NULL;
+            $pageChangeFrequency = null;
             if (!empty($page['tx_metaseo_change_frequency'])) {
                 // from page
-                $pageChangeFdrequency = (int)$page['tx_metaseo_change_frequency'];
+                $pageChangeFrequency = (int)$page['tx_metaseo_change_frequency'];
             } elseif (!empty($sitemapPage['page_change_frequency'])) {
                 // from sitemap settings
                 $pageChangeFrequency = (int)$sitemapPage['page_change_frequency'];
@@ -231,7 +218,7 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
             if (!empty($pageChangeFrequency) && !empty($this->pageChangeFrequency[$pageChangeFrequency])) {
                 $pageChangeFrequency = $this->pageChangeFrequency[$pageChangeFrequency];
             } else {
-                $pageChangeFrequency = NULL;
+                $pageChangeFrequency = null;
             }
 
             // #####################################
@@ -254,9 +241,8 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
         $ret .= '</urlset>';
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('sitemap-xml-page-output', $this, $ret);
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'sitemapXmlPageOutput', $this, $ret);
 
         return $ret;
     }
-
 }
