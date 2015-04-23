@@ -1,5 +1,9 @@
 # MetaSEO - Search Engine Optimization for TYPO3
 
+![stable v1.0.6](https://img.shields.io/badge/stable-v1.0.6-green.svg?style=flat)
+![development v2.0.0](https://img.shields.io/badge/development-v2.0.0-red.svg?style=flat)
+![License GPL3](https://img.shields.io/badge/license-GPL3-blue.svg?style=flat)
+
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/19914ab4-1f0f-4be0-9215-410fba880af2/big.png)](https://insight.sensiolabs.com/projects/19914ab4-1f0f-4be0-9215-410fba880af2)
 
 
