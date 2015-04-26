@@ -249,19 +249,6 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         // Page/JS
         // ###############################
 
-        // FIXME: do we really need a template engine here?
-        $this->template = $this->objectManager->get('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
-        $pageRenderer   = $this->template->getPageRenderer();
-
-        $basePathJs  = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript';
-        $basePathCss = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/Css';
-
-        $pageRenderer->addJsFile($basePathJs . '/MetaSeo.js');
-        $pageRenderer->addJsFile($basePathJs . '/Ext.ux.plugin.FitToParent.js');
-        $pageRenderer->addJsFile($basePathJs . '/MetaSeo.sitemap.js');
-        $pageRenderer->addCssFile($basePathCss . '/Default.css');
-
-
         $metaSeoConf = array(
             'sessionToken'          => $this->sessionToken('metaseo_metaseo_backend_ajax_sitemapajax'),
             'ajaxController'        => $this->ajaxControllerUrl('tx_metaseo_backend_ajax::sitemap'),
@@ -336,8 +323,7 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         $metaSeoLang          = $this->translateList($metaSeoLang);
         $metaSeoLang['title'] = sprintf($metaSeoLang['title'], $rootPage['title'], $rootPid);
 
-        // Include Ext JS inline code
-        $pageRenderer->addJsInlineCode('MetaSeo.sitemap', 'Ext.namespace("MetaSeo.sitemap");
+        $this->view->assign('JavaScript', 'Ext.namespace("MetaSeo.sitemap");
             MetaSeo.sitemap.conf      = ' . json_encode($metaSeoConf) . ';
             MetaSeo.sitemap.conf.lang = ' . json_encode($metaSeoLang) . ';
         ');
