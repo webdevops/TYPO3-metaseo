@@ -722,7 +722,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             // OpenGraph
             // #################
 
-            if (!empty($tsSetupSeo['opengraph.'])) {
+            if (!empty($tsSetupSeo['opengraph']) && !empty($tsSetupSeo['opengraph.'])) {
                 $tsSetupSeoOg = $tsSetupSeo['opengraph.'];
 
                 // Get list of tags (filtered array)
@@ -734,10 +734,13 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                 foreach ($ogTagNameList as $ogTagName) {
                     $ogTagValue = null;
 
-
+                    // Check if TypoScript value is a simple one (eg. title = foo)
+                    // or it is a cObject
                     if (!empty($tsSetupSeoOg[$ogTagName]) && !array_key_exists($ogTagName . '.', $tsSetupSeoOg)) {
+                        // Simple value
                         $ogTagValue = $tsSetupSeoOg[$ogTagName];
                     } elseif(!empty($tsSetupSeoOg[$ogTagName])) {
+                        // Content object (eg. TEXT)
                         $ogTagValue = $this->cObj->cObjGetSingle($tsSetupSeoOg[$ogTagName], $tsSetupSeoOg[$ogTagName . '.']);
                     }
 

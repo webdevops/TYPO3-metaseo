@@ -132,6 +132,7 @@ plugin.metaseo {
         }
 
         # OpenGraph metatags
+        opengraph = {$plugin.metaseo.metaTags.opengraph}
         opengraph {
             site_name = TEXT
             site_name {
