@@ -26,6 +26,8 @@
 
 namespace Metaseo\Metaseo\Sitemap\Generator;
 
+use Metaseo\Metaseo\Utility\GeneralUtility;
+
 /**
  * Sitemap XML generator
  */
@@ -52,21 +54,20 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
         $pageCount = ceil($pageItems / $pageLimit);
 
         $linkConf = array(
-            'parameter'        => \Metaseo\Metaseo\Utility\GeneralUtility::getCurrentPid() . ',' . $GLOBALS['TSFE']->type,
+            'parameter'        => GeneralUtility::getCurrentPid() . ',' . $GLOBALS['TSFE']->type,
             'additionalParams' => '',
             'useCacheHash'     => 1,
         );
 
         for ($i = 0; $i < $pageCount; $i++) {
             if ($this->indexPathTemplate) {
-                $link = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl(str_replace('###PAGE###', $i,
-                    $this->indexPathTemplate));
+                $link = GeneralUtility::fullUrl(str_replace('###PAGE###', $i, $this->indexPathTemplate));
 
                 $sitemaps[] = $link;
             } else {
                 $linkConf['additionalParams'] = '&page=' . ($i + 1);
 
-                $sitemaps[] = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($GLOBALS['TSFE']->cObj->typoLink_URL($linkConf));
+                $sitemaps[] = GeneralUtility::fullUrl($GLOBALS['TSFE']->cObj->typoLink_URL($linkConf));
             }
         }
 
@@ -75,7 +76,7 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
         $ret .= ' xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'sitemapXmlIndexSitemapList', $this, $sitemaps);
+        GeneralUtility::callHookAndSignal(__CLASS__, 'sitemapXmlIndexSitemapList', $this, $sitemaps);
 
         foreach ($sitemaps as $sitemapPage) {
             $ret .= '<sitemap><loc>' . htmlspecialchars($sitemapPage) . '</loc></sitemap>';
@@ -84,7 +85,7 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
         $ret .= '</sitemapindex>';
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'sitemapXmlIndexOutput', $this, $ret);
+        GeneralUtility::callHookAndSignal(__CLASS__, 'sitemapXmlIndexOutput', $this, $ret);
 
         return $ret;
     }
@@ -110,7 +111,8 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
 
         if ($pageItemBegin <= $pageItems) {
             $this->sitemapPages = array_slice($this->sitemapPages, $pageItemBegin, $pageLimit);
-            $ret                = $this->createSitemapPage($page);
+
+            $ret = $this->createSitemapPage($page);
         }
 
         return $ret;
@@ -128,12 +130,9 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
         $ret .= ' xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9';
         $ret .= ' http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
 
-        $pagePriorityDefaultValue     = (float)\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('sitemap_priorty',
-            0);
-        $pagePriorityDepthMultiplier  = (float)\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('sitemap_priorty_depth_multiplier',
-            0);
-        $pagePriorityDepthModificator = (float)\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('sitemap_priorty_depth_modificator',
-            0);
+        $pagePriorityDefaultValue     = (float)GeneralUtility::getRootSettingValue('sitemap_priorty', 0);
+        $pagePriorityDepthMultiplier  = (float)GeneralUtility::getRootSettingValue('sitemap_priorty_depth_multiplier', 0);
+        $pagePriorityDepthModificator = (float)GeneralUtility::getRootSettingValue('sitemap_priorty_depth_modificator', 0);
 
         if ($pagePriorityDefaultValue == 0) {
             $pagePriorityDefaultValue = 1;
@@ -196,7 +195,7 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
             // #####################################
 
             // page Url
-            $pageUrl = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($sitemapPage['page_url']);
+            $pageUrl = GeneralUtility::fullUrl($sitemapPage['page_url']);
 
             // Page modification date
             $pageModifictionDate = date('c', $sitemapPage['tstamp']);
@@ -241,7 +240,7 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
         $ret .= '</urlset>';
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'sitemapXmlPageOutput', $this, $ret);
+        GeneralUtility::callHookAndSignal(__CLASS__, 'sitemapXmlPageOutput', $this, $ret);
 
         return $ret;
     }
