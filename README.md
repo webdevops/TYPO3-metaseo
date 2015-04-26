@@ -1,6 +1,6 @@
 # MetaSEO - Search Engine Optimization for TYPO3
 
-![stable v1.0.6](https://img.shields.io/badge/stable-v1.0.6-green.svg?style=flat)
+![stable v1.0.7](https://img.shields.io/badge/stable-v1.0.7-green.svg?style=flat)
 ![development v2.0.0](https://img.shields.io/badge/development-v2.0.0-red.svg?style=flat)
 ![License GPL3](https://img.shields.io/badge/license-GPL3-blue.svg?style=flat)
 
