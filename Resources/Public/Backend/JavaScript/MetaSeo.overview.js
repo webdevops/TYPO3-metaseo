@@ -542,12 +542,6 @@ MetaSeo.overview.grid = {
 
         switch (MetaSeo.overview.conf.listType) {
             case 'metadata':
-
-                var fieldRendererAdvEditor = function (value, metaData, record, rowIndex, colIndex, store) {
-                    var qtip = Ext.util.Format.htmlEncode(MetaSeo.overview.conf.lang.metaeditor_button_hin);
-                    return '<div class="metaseo-cell-editable metaseo-toolbar" ext:qtip="' + qtip + '">' + MetaSeo.overview.conf.sprite.editor + '</div>';
-                }
-
                 columnModel.push({
                     id: 'keywords',
                     header: MetaSeo.overview.conf.lang.page_keywords,
@@ -611,29 +605,6 @@ MetaSeo.overview.grid = {
                         format: 'Y-m-d'
                     }
                 });
-//                ,{
-//                    id       : 'metatag',
-//                    header   : '',
-//                    width    : 30,
-//                    sortable : false,
-//                    dataIndex: 'metatag',
-//                    renderer	: fieldRendererAdvEditor,
-//                    metaSeoOnClick: function(record, fieldName, fieldId, col, data) {
-//
-//                        // Init editor window
-//                        var editWindow = new MetaSeo.metaeditor({
-//                            t3PageTitle: record.get('title'),
-//                            pid: record.get('uid'),
-//                            onClose: function(reload) {
-//                                // TODO: Move to listener/event
-//                                if(reload) {
-//                                    me.storeReload();
-//                                }
-//                            }
-//                        });
-//                        editWindow.show();
-//                    }
-//                });
                 break;
 
             case 'geo':
@@ -917,40 +888,6 @@ MetaSeo.overview.grid = {
                 }
 
                 break;
-
-            case 'advanced':
-                var fieldRendererAdvEditor = function (value, metaData, record, rowIndex, colIndex, store) {
-                    var qtip = Ext.util.Format.htmlEncode("TODO");
-
-                    // TODO
-
-                    return '<div class="metaseo-toolbar" ext:qtip="' + qtip + '">' + MetaSeo.overview.conf.sprite.info + '</div>TODO';
-                }
-
-                columnModel.push({
-                    id: 'metatag',
-                    header: 'FOO',
-                    width: 'auto',
-                    sortable: false,
-                    dataIndex: 'metatag',
-                    renderer: fieldRendererAdvEditor,
-                    metaSeoOnClick: function (record, fieldName, fieldId, col, data) {
-
-                        // Init editor window
-                        var editWindow = new MetaSeo.metaeditor({
-                            pid: record.get('uid'),
-                            onClose: function (reload) {
-                                // TODO: Move to listener/event
-                                if (reload) {
-                                    me.storeReload();
-                                }
-                            }
-                        });
-                        editWindow.show();
-                    }
-                });
-                break;
-
 
             case 'pagetitle':
                 var fieldRendererTitleSimulate = function (value, metaData, record, rowIndex, colIndex, store) {
