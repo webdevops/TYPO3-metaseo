@@ -119,7 +119,7 @@ class GeneralUtility {
                 $rootline = $GLOBALS['TSFE']->tmpl->rootLine;
 
                 // Filter rootline by siteroot
-                $rootline = self::filterRootlineBySiteroot($rootline);
+                $rootline = self::filterRootlineBySiteroot((array)$rootline);
 
                 self::$rootlineCache['__CURRENT__'] = $rootline;
             }
@@ -134,7 +134,7 @@ class GeneralUtility {
                 $rootline = self::getSysPageObj()->getRootLine($uid);
 
                 // Filter rootline by siteroot
-                $rootline = self::filterRootlineBySiteroot($rootline);
+                $rootline = self::filterRootlineBySiteroot((array)$rootline);
 
                 self::$rootlineCache[$uid] = $rootline;
             }
