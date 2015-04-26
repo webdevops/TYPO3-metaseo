@@ -477,7 +477,7 @@ MetaSeo.overview.grid = {
             var currentLanguage = Ext.getCmp('sysLanguage').getRawValue();
 
             if (overlayStatus == 2) {
-                qtip = '<b>' + String.format(MetaSeo.overview.conf.lang.value_base_only, currentLanguage) + '</b>:<br>' + qtip;
+                qtip = '<b>' + String.format(MetaSeo.overview.conf.lang.value_only_base, currentLanguage) + '</b>:<br>' + qtip;
             } else if (overlayStatus == 1) {
                 qtip = '<b>' + String.format(MetaSeo.overview.conf.lang.value_from_overlay, currentLanguage) + '</b>:<br>' + qtip;
             } else {
