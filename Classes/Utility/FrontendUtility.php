@@ -49,11 +49,11 @@ class FrontendUtility {
         /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
         $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 
-        // FIXME: add sys langauge or check if sys langauge is needed
-
         // Fetch page if needed
         if ($pageData === null) {
+            /** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPageObj */
             $sysPageObj = $objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+            $sysPageObj->sys_language_uid = $sysLanguage;
 
             $pageData = $sysPageObj->getPage_noCheck($pageUid);
         }
@@ -70,6 +70,7 @@ class FrontendUtility {
         if ($rootLine === null) {
             /** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPageObj */
             $sysPageObj = $objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+            $sysPageObj->sys_language_uid = $sysLanguage;
             $rootLine   = $sysPageObj->getRootLine($pageUid);
 
             // save full rootline, we need it in TSFE
@@ -84,12 +85,14 @@ class FrontendUtility {
                 /** @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $tsfeController */
                 $tsfeController = $objectManager->get('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
                     $GLOBALS['TYPO3_CONF_VARS'], $pageUid, 0);
+                $tsfeController->sys_language_uid = $sysLanguage;
 
                 /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObjRenderer */
                 $cObjRenderer = $objectManager->get('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 
                 /** @var \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService $TSObj */
-                $TSObj           = $objectManager->get('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
+                $TSObj = $objectManager->get('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
+
                 $TSObj->tt_track = 0;
                 $TSObj->init();
                 $TSObj->runThroughTemplates($rootLine);
