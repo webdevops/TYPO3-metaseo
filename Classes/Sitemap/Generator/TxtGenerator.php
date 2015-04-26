@@ -60,8 +60,6 @@ class TxtGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
                 continue;
             }
 
-            //$page = $this->pages[ $sitemapPage['page_uid'] ];
-
             $ret[] = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($sitemapPage['page_url']);
         }
 
