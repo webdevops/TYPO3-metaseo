@@ -56,19 +56,22 @@ plugin.metaseo {
     # cat=plugin.metaseo.metaTags/enable/23; type=boolean; label= Canonical Tag (No MP mode): Link all mount point links to origin pages.
     metaTags.canonicalUrl.noMP = 0
 
-    # cat=plugin.metaseo.metaTags/enable/24; type=boolean; label= Publish Page Expire Time: Anounce Expire Tag (TYPO3's enddate in content elements).
+    # cat=plugin.metaseo.metaTags/enable/24; type=boolean; label= OpenGraph Tags: Enable generation of OpenGraph Tags
+    metaTags.opengraph = 1
+
+    # cat=plugin.metaseo.metaTags/enable/25; type=boolean; label= Publish Page Expire Time: Anounce Expire Tag (TYPO3's enddate in content elements).
     metaTags.useExpire = 1
 
-    # cat=plugin.metaseo.metaTags/page/25; type=string; label= P3P Compact Policy: W3C P3P Compact Policy String.
+    # cat=plugin.metaseo.metaTags/page/26; type=string; label= P3P Compact Policy: W3C P3P Compact Policy String.
     metaTags.p3pCP =
 
-    # cat=plugin.metaseo.metaTags/page/26; type=string; label= P3P Policy Url: URL to your W3C P3P Policy file.
+    # cat=plugin.metaseo.metaTags/page/27; type=string; label= P3P Policy Url: URL to your W3C P3P Policy file.
     metaTags.p3pPolicyUrl =
 
-    # cat=plugin.metaseo.metaTags/enable/27; type=boolean; label= Link generation: Automatic generate index, up, prev und next links (metatags).
+    # cat=plugin.metaseo.metaTags/enable/28; type=boolean; label= Link generation: Automatic generate index, up, prev und next links (metatags).
     metaTags.linkGeneration = 1
 
-    # cat=plugin.metaseo.metaTags/enable/28; type=boolean; label= Meta Description: Enable Dublin Core (DC.) metatags
+    # cat=plugin.metaseo.metaTags/enable/29; type=boolean; label= Meta Description: Enable Dublin Core (DC.) metatags
     metaTags.enableDC = 1
 
     # cat=plugin.metaseo.crawler/page/01; type=boolean; label= Crawler Robots-Tag: Enable robot-metatag

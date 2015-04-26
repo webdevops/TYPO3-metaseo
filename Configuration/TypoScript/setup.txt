@@ -113,6 +113,7 @@ plugin.metaseo {
         picsLabel = {$plugin.metaseo.metaTags.picsLabel}
 
         useLastUpdate = {$plugin.metaseo.metaTags.useLastUpdate}
+
         # canonical tag generator settings
         canonicalUrl = {$plugin.metaseo.metaTags.canonicalUrl}
         canonicalUrl {
@@ -128,6 +129,33 @@ plugin.metaseo {
             blacklist {
 
             }
+        }
+
+        # OpenGraph metatags
+        opengraph = {$plugin.metaseo.metaTags.opengraph}
+        opengraph {
+            site_name = TEXT
+            site_name {
+                data = TSFE:tmpl|sitetitle
+            }
+
+            title = TEXT
+            title {
+                field = title
+            }
+
+            type = article
+            admins = 
+            email = {$plugin.metaseo.metaTags.email}
+            phone_number =
+            fax_number =
+            latitude = {$plugin.metaseo.metaTags.geoPositionLatitude}
+            longitude = {$plugin.metaseo.metaTags.geoPositionLongitude}
+            street-address =
+            locality = {$plugin.metaseo.metaTags.geoPlacename}
+            region = {$plugin.metaseo.metaTags.geoRegion}
+            postal-code =
+            country-name =
         }
 
         useExpire = {$plugin.metaseo.metaTags.useExpire}
