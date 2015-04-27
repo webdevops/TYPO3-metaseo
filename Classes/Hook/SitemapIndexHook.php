@@ -58,7 +58,7 @@ abstract class SitemapIndexHook implements SingletonInterface {
      *
      * @var null|boolean
      */
-    protected $pageIndexFlag = null;
+    protected $pageIndexFlag;
 
     /**
      * MetaSEO configuration

@@ -35,14 +35,14 @@ class TypoScript implements \Iterator {
      *
      * @var array
      */
-    protected $tsData = null;
+    protected $tsData;
 
     /**
      * TYPO3 TypoScript Data Type
      *
      * @var string
      */
-    protected $tsType = null;
+    protected $tsType;
 
     /**
      * Iterator position
@@ -55,7 +55,7 @@ class TypoScript implements \Iterator {
      * cObj
      * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
      */
-    protected $cObj = null;
+    protected $cObj;
 
     ###########################################################################
     ## Constructor

@@ -41,7 +41,7 @@ abstract class AbstractGenerator {
      *
      * @var integer
      */
-    public $rootPid = null;
+    public $rootPid;
 
     /**
      * Sitemap pages

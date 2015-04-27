@@ -40,7 +40,7 @@ class GeneralUtility {
      *
      * @var \TYPO3\CMS\Frontend\Page\PageRepository
      */
-    protected static $sysPageObj = null;
+    protected static $sysPageObj;
 
     /**
      * Rootline cache

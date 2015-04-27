@@ -46,14 +46,14 @@ abstract class AbstractAjax {
     /**
      * Sorting field
      */
-    protected $sortField = null;
+    protected $sortField;
 
     /**
      * Sorting dir
      *
      * @var string
      */
-    protected $sortDir = null;
+    protected $sortDir;
 
     /**
      * TCE
@@ -61,14 +61,14 @@ abstract class AbstractAjax {
      * @var \TYPO3\CMS\Core\DataHandling\DataHandler
      * @inject
      */
-    protected $tce = null;
+    protected $tce;
 
     /**
      * TYPO3 Object manager
      *
      * @var \TYPO3\CMS\Extbase\Object\ObjectManager
      */
-    protected $objectManager = null;
+    protected $objectManager;
 
     /**
      * Backend Form Protection object
@@ -76,7 +76,7 @@ abstract class AbstractAjax {
      * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection
      * @inject
      */
-    protected $formProtection = null;
+    protected $formProtection;
 
     // ########################################################################
     // Methods
