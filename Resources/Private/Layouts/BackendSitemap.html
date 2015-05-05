@@ -1,10 +1,12 @@
 <f:be.container
-	addCssFile="{f:uri.resource(path:'Backend/Css/Default.css')}"
+	includeCssFiles="{
+		0: '{f:uri.resource(path:\'Backend/Css/Default.css\')}'
+	}"
 	includeJsFiles="{
-				0:'{f:uri.resource(path:\'Backend/JavaScript/MetaSeo.js\')}',
-				1:'{f:uri.resource(path:\'Backend/JavaScript/Ext.ux.plugin.FitToParent.js\')}',
-				2:'{f:uri.resource(path:\'Backend/JavaScript/MetaSeo.sitemap.js\')}'
-			}">
+		0:'{f:uri.resource(path:\'Backend/JavaScript/MetaSeo.js\')}',
+		1:'{f:uri.resource(path:\'Backend/JavaScript/Ext.ux.plugin.FitToParent.js\')}',
+		2:'{f:uri.resource(path:\'Backend/JavaScript/MetaSeo.sitemap.js\')}'
+	}">
 
 	<div class="typo3-fullDoc">
 
