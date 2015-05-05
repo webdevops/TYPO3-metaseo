@@ -1,5 +1,14 @@
 # MetaSEO - Search Engine Optimization for TYPO3
 
+![stable v1.0.8](https://img.shields.io/badge/stable-v1.0.8-green.svg?style=flat)
+![development v2.0.0](https://img.shields.io/badge/development-v2.0.0-red.svg?style=flat)
+![License GPL3](https://img.shields.io/badge/license-GPL3-blue.svg?style=flat)
+
+
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/mblaschke/typo3-metaseo.svg)](http://isitmaintained.com/project/mblaschke/typo3-metaseo "Average time to resolve an issue")
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/mblaschke/typo3-metaseo.svg)](http://isitmaintained.com/project/mblaschke/typo3-metaseo "Percentage of issues still open")
+
+
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/19914ab4-1f0f-4be0-9215-410fba880af2/big.png)](https://insight.sensiolabs.com/projects/19914ab4-1f0f-4be0-9215-410fba880af2)
 
 

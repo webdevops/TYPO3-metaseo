@@ -44,21 +44,21 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
      * @var \TYPO3\CMS\Extbase\Object\ObjectManager
      * @inject
      */
-    protected $objectManager = null;
+    protected $objectManager;
 
     /**
      * Language lock
      *
      * @var integer
      */
-    protected $languageLock = false;
+    protected $languageLock;
 
     /**
      * Language list
      *
      * @var array
      */
-    protected $languageIdList = null;
+    protected $languageIdList;
 
     // ########################################################################
     // Methods

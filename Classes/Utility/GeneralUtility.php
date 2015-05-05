@@ -40,7 +40,7 @@ class GeneralUtility {
      *
      * @var \TYPO3\CMS\Frontend\Page\PageRepository
      */
-    protected static $sysPageObj = null;
+    protected static $sysPageObj;
 
     /**
      * Rootline cache
@@ -119,7 +119,7 @@ class GeneralUtility {
                 $rootline = $GLOBALS['TSFE']->tmpl->rootLine;
 
                 // Filter rootline by siteroot
-                $rootline = self::filterRootlineBySiteroot($rootline);
+                $rootline = self::filterRootlineBySiteroot((array)$rootline);
 
                 self::$rootlineCache['__CURRENT__'] = $rootline;
             }
@@ -134,7 +134,7 @@ class GeneralUtility {
                 $rootline = self::getSysPageObj()->getRootLine($uid);
 
                 // Filter rootline by siteroot
-                $rootline = self::filterRootlineBySiteroot($rootline);
+                $rootline = self::filterRootlineBySiteroot((array)$rootline);
 
                 self::$rootlineCache[$uid] = $rootline;
             }
@@ -406,18 +406,8 @@ class GeneralUtility {
             }
         }
 
-
         // Fix url stuff
         $url = str_replace('?&', '?', $url);
-
-        // Removed by request of https://forge.typo3.org/issues/61845
-        // replace double slashes but not before a : (eg. http://)
-        //$url = preg_replace('_(?<!:)\//_', '/', $url);
-
-        // Fallback
-        //if (!empty($GLOBALS['TSFE']) && !preg_match('/^https?:\/\//i', $url ) ) {
-        //	$url = $GLOBALS['TSFE']->baseUrlWrap($url);
-        //}
 
         return $url;
     }
