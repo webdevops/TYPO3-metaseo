@@ -24,3 +24,11 @@
 - TypoScript Constant `plugin.metaseo.metaTags.useCanonical` changed to `plugin.metaseo.metaTags.canonicalUrl`
 - TypoScript Setup    `plugin.metaseo.metaTags.useCanonical` changed to `plugin.metaseo.metaTags.canonicalUrl`
 - Names of Hooks changed, now camelCase
+
+
+## MetaSEO 1.0 (2014-04-20)
+
+- Version 1.0.0
+- Fork of metaseo
+- Fixed several bugs and improved codebase
+- Fixed and improved manual (now reStructuredText)
