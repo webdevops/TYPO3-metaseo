@@ -554,11 +554,16 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         );
 
         foreach ($keyList as $key) {
-            if (!empty($tags[$key])) {
+            if (!empty($tags[$key]['attributes'])) {
                 foreach ($markerList as $marker => $value) {
-                    if (strpos($tags[$key], $marker)) {
-                        $tags[$key] = str_replace($marker, $value, $tags[$key]);
+                    // only replace markers if they are present
+                    unset($metaTagAttribute);
+                    foreach ($tags[$key]['attributes'] as &$metaTagAttribute) {
+                        if (strpos($metaTagAttribute, $marker)) {
+                            $metaTagAttribute = str_replace($marker, $value, $metaTagAttribute);
+                        }
                     }
+                    unset($metaTagAttribute);
                 }
             }
         }
