@@ -133,10 +133,11 @@ class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\Abs
 
         // check if there is any root page
         if (empty($rootPageList)) {
-            $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+            $this->addFlashMessage(
                 $this->translate('message.warning.noRootPage.message'),
-                $this->translate('message.warning.noRootPage.title'), \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
-            \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($message);
+                $this->translate('message.warning.noRootPage.title'),
+                \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+            );
         }
 
         $this->view->assign('RootPageList', $rootPageList);

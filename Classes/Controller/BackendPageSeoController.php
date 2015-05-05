@@ -51,18 +51,16 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         $pageId = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 
         if (empty($pageId)) {
-            $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+            $this->addFlashMessage(
                 $this->translate('message.warning.no_valid_page.message'),
                 $this->translate('message.warning.no_valid_page.title'),
-                \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
-            \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($message);
-
+                \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+            );
             return;
         }
 
         // Load PageTS
         $pageTsConf = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($pageId);
-
 
         // Build langauge list
         $defaultLanguageText = $this->translate('default.language');
