@@ -51,18 +51,16 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         $pageId = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 
         if (empty($pageId)) {
-            $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+            $this->addFlashMessage(
                 $this->translate('message.warning.no_valid_page.message'),
                 $this->translate('message.warning.no_valid_page.title'),
-                \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
-            \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($message);
-
+                \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+            );
             return;
         }
 
         // Load PageTS
         $pageTsConf = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($pageId);
-
 
         // Build langauge list
         $defaultLanguageText = $this->translate('default.language');
@@ -131,16 +129,6 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         // ############################
         // HTML
         // ############################
-        // FIXME: do we really need a template engine here?
-        $this->template = $this->objectManager->get('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
-        $pageRenderer   = $this->template->getPageRenderer();
-
-        $pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript/Ext.ux.plugin.FitToParent.js');
-        $pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript/MetaSeo.js');
-        $pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript/MetaSeo.overview.js');
-        $pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript/MetaSeo.metaeditor.js');
-        $pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript/MetaSeo.metaeditor.fields.js');
-        $pageRenderer->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/Css/Default.css');
 
         $realUrlAvailable = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('realurl');
 
@@ -225,10 +213,7 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         $metaSeoLang                            = $this->translateList($metaSeoLang);
         $metaSeoLang['emptySearchPageLanguage'] = $defaultLanguageText;
 
-        // Include Ext JS inline code
-        $pageRenderer->addJsInlineCode('MetaSeo.overview',
-
-            'Ext.namespace("MetaSeo.overview");
+        $this->view->assign('JavaScript', 'Ext.namespace("MetaSeo.overview");
             MetaSeo.overview.conf      = ' . json_encode($metaSeoConf) . ';
             MetaSeo.overview.conf.lang = ' . json_encode($metaSeoLang) . ';
         ');

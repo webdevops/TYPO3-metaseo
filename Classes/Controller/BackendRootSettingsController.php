@@ -128,22 +128,12 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
 
         // check if there is any root page
         if (empty($rootPageList)) {
-            $message = $this->objectManager->get('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+            $this->addFlashMessage(
                 $this->translate('message.warning.noRootPage.message'),
-                $this->translate('message.warning.noRootPage.title'), \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
-            \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($message);
+                $this->translate('message.warning.noRootPage.title'),
+                \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+            );
         }
-
-        // ############################
-        // Page/JS
-        // ############################
-
-        // FIXME: do we really need a template engine here?
-        $this->template = $this->objectManager->get('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
-        $pageRenderer   = $this->template->getPageRenderer();
-
-        $basePathCss = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/Css';
-        $pageRenderer->addCssFile($basePathCss . '/Default.css');
 
         $this->view->assign('RootPageList', $rootPageList);
     }

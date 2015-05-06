@@ -41,7 +41,7 @@ class TtnewsExtension {
      *
      * @return  array                Marker array (not changed)
      */
-    public function extraItemMarkerProcessor($markerArray, $row, $lConf, $ttnewsObj) {
+    public function extraItemMarkerProcessor($markerArray, $row, $lConf, \TYPO3\CMS\Frontend\Plugin\AbstractPlugin $ttnewsObj) {
         $theCode = (string)strtoupper(trim($ttnewsObj->theCode));
 
         $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Metaseo\\Metaseo\\Connector');

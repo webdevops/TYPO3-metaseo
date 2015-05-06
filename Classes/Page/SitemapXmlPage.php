@@ -49,8 +49,6 @@ class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage {
         // INIT
         $this->tsSetup = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.'];
 
-        // TODO: prevent output if scheduler tasks is enabled
-
         // check if sitemap is enabled in root
         if (!\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap', true)) {
             $this->showError('Sitemap is not available, please check your configuration [control-center]');

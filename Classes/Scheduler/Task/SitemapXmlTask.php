@@ -67,8 +67,9 @@ class SitemapXmlTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
         }
 
         // Init builder
-        $generator                    = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\XmlGenerator');
-        $fileName                     = sprintf($rootPageLinkTempalte, $rootPageId, $languageId);
+        $generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\XmlGenerator');
+        $fileName  = sprintf($rootPageLinkTempalte, $rootPageId, $languageId);
+
         $generator->indexPathTemplate = $this->generateSitemapLinkTemplate($fileName);
 
         // Get list of pages

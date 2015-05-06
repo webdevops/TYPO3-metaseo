@@ -40,7 +40,7 @@ abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\Abstr
      *
      * @var string
      */
-    protected $sitemapDir = null;
+    protected $sitemapDir;
 
     // ########################################################################
     // Methods

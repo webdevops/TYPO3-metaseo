@@ -112,9 +112,24 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
         $ret = null;
 
         if (is_numeric($var)) {
-            // TODO: check if var is a valid root page
-            $ret = (int)$var;
+            // Passed variable is nummeric
+            $pageId = (int)$var;
+
+            /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+
+            /** @var \TYPO3\CMS\Frontend\Page\PageRepository $pageRepo */
+            $pageRepo = $objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+
+            $page = $pageRepo->getPage($pageId);
+
+            if (empty($page['is_siteroot'])) {
+                throw new \RuntimeException('MetaSEO: Page with UID "' . $pageId . '" is no valid root page');
+            }
+
+            $ret = $page['uid'];
         } else {
+            // Passed variable is domain name
             $query = 'SELECT pid
                         FROM sys_domain
                        WHERE domainName = ' . DatabaseUtility::quote($var, 'sys_domain') . '

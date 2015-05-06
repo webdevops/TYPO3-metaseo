@@ -26,6 +26,8 @@
 
 namespace Metaseo\Metaseo\Sitemap\Generator;
 
+use Metaseo\Metaseo\Utility\GeneralUtility;
+
 /**
  * Sitemap TXT generator
  */
@@ -60,13 +62,11 @@ class TxtGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
                 continue;
             }
 
-            //$page = $this->pages[ $sitemapPage['page_uid'] ];
-
-            $ret[] = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($sitemapPage['page_url']);
+            $ret[] = GeneralUtility::fullUrl($sitemapPage['page_url']);
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'sitemapTextOutput', $this, $ret);
+        GeneralUtility::callHookAndSignal(__CLASS__, 'sitemapTextOutput', $this, $ret);
 
         return implode("\n", $ret);
     }
