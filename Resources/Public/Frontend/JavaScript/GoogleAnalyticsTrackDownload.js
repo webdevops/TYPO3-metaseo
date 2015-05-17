@@ -1,7 +1,7 @@
 function tqSeoGa_AddTracker(type, obj) {
     var callback = function (e) {
         tqSeoGa_TrackLink(e, obj);
-    }
+    };
 
     if (obj.addEventListener) {
         obj.addEventListener("click", callback, true);
