@@ -65,13 +65,9 @@ MetaSeo = {
      * @copyright    Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
      */
     highlightTextExists: function (value, search) {
+        var pos;
         search = search.toUpperCase();
-
-        var pos = value.toUpperCase().indexOf(search);
-        if (pos >= 0) {
-            return true;
-        }
-
-        return false;
+        pos = value.toUpperCase().indexOf(search);
+        return pos >= 0;
     }
 }
