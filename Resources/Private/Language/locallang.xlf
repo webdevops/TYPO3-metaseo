@@ -169,6 +169,9 @@
             <trans-unit id="button.save" xml:space="preserve">
                 <source>Save</source>
             </trans-unit>
+            <trans-unit id="button.saverecursively" xml:space="preserve">
+                <source>Save recursively</source>
+            </trans-unit>
             <trans-unit id="button.cancel" xml:space="preserve">
                 <source>Cancel</source>
             </trans-unit>
@@ -406,3 +409,4 @@
         </body>
     </file>
 </xliff>
+

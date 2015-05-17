@@ -224,6 +224,10 @@
                 <source>Save</source>
                 <target>Speichern</target>
             </trans-unit>
+            <trans-unit id="button.saverecursively" xml:space="preserve" approved="yes">
+                <source>Save recursively</source>
+                <target>Rekursiv speichern</target>
+            </trans-unit>
             <trans-unit id="button.cancel" xml:space="preserve" approved="yes">
                 <source>Cancel</source>
                 <target>Abbrechen</target>
@@ -539,3 +543,4 @@
         </body>
     </file>
 </xliff>
+

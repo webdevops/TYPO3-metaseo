@@ -285,6 +285,43 @@ MetaSeo.overview.grid = {
                         items: [field],
                         buttons: [
                             {
+                                text: MetaSeo.overview.conf.lang.button_saverecursively,
+                                itemId: 'form-button-save-recursively',
+
+                                disabled: true,
+                                handler: function(cmp, e) {
+                                    grid.loadMask.show();
+
+                                    var pid = record.get('uid');
+                                    var fieldValue = editWindow.getComponent('form-field').getValue();
+
+                                    var callbackFinish = function(response) {
+                                        var response = Ext.decode(response.responseText);
+
+                                        if( response && response.error ) {
+                                            TYPO3.Flashmessage.display(TYPO3.Severity.error, '', Ext.util.Format.htmlEncode(response.error) );
+                                        }
+
+                                        grid.getStore().load();
+                                    };
+
+                                    Ext.Ajax.request({
+                                        url: MetaSeo.overview.conf.ajaxController + '&cmd=updatePageFieldRecursively',
+                                        params: {
+                                            pid             : Ext.encode(pid),
+                                            field           : Ext.encode(fieldName),
+                                            value           : Ext.encode(fieldValue),
+                                            sysLanguage     : Ext.encode( MetaSeo.overview.conf.sysLanguage ),
+                                            mode            : Ext.encode( MetaSeo.overview.conf.listType ),
+                                            sessionToken    : Ext.encode( MetaSeo.overview.conf.sessionToken )
+                                        },
+                                        success: callbackFinish,
+                                        failure: callbackFinish
+                                    });
+                                
+                                    editWindow.destroy();
+                                }
+                            },{
                                 text: MetaSeo.overview.conf.lang.button_save,
                                 itemId: 'form-button-save',
                                 disabled: true,
@@ -332,14 +369,17 @@ MetaSeo.overview.grid = {
 
                     var formField = editWindow.getComponent('form-field');
                     var formButtonSave = editWindow.getFooterToolbar().getComponent('form-button-save');
+                    var formButtonSaveRecursively = editWindow.getFooterToolbar().getComponent('form-button-save-recursively');
 
                     // add listeners
                     formField.on('valid', function () {
                         formButtonSave.setDisabled(false);
+                        formButtonSaveRecursively.setDisabled(false);
                     });
 
                     formField.on('invalid', function () {
                         formButtonSave.setDisabled(true);
+                        formButtonSaveRecursively.setDisabled(true);
                     });
 
 
@@ -1042,3 +1082,4 @@ MetaSeo.overview.grid = {
 
 
 };
+
