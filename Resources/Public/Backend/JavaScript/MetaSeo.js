@@ -46,7 +46,6 @@ MetaSeo = {
                 var spannode = document.createElement('span');
                 spannode.className = cls || 'metaseo-search-highlight';
                 var middlebit = node.splitText(pos);
-                var endbit = middlebit.splitText(search.length);
                 var middleclone = middlebit.cloneNode(true);
                 spannode.appendChild(middleclone);
                 middlebit.parentNode.replaceChild(spannode, middlebit);
@@ -67,7 +66,6 @@ MetaSeo = {
      */
     highlightTextExists: function (value, search) {
         search = search.toUpperCase();
-        var skip = 0;
 
         var pos = value.toUpperCase().indexOf(search);
         if (pos >= 0) {
