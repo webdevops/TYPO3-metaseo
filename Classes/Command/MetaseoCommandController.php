@@ -112,7 +112,7 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
         $ret = null;
 
         if (is_numeric($var)) {
-            // Passed variable is nummeric
+            // Passed variable is numeric
             $pageId = (int)$var;
 
             /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */

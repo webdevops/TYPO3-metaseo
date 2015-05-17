@@ -57,7 +57,7 @@ MetaSeo.sitemap.grid = {
                     {name: 'tstamp', type: 'string'},
                     {name: 'crdate', type: 'string'},
                     {name: 'is_blacklisted', type: 'bool'},
-                    {name: 'tx_metaseo_is_exclude', type: 'bool'},
+                    {name: 'tx_metaseo_is_exclude', type: 'bool'}
                 ]
             ),
             sortInfo: {
@@ -110,15 +110,15 @@ MetaSeo.sitemap.grid = {
 
         var function_blacklist = function (ob) {
             rowAction(ob, "blacklist", MetaSeo.sitemap.conf.lang.messageBlacklistTitle, MetaSeo.sitemap.conf.lang.messageBlacklistQuestion)
-        }
+        };
 
         var function_whitelist = function (ob) {
             rowAction(ob, "whitelist", MetaSeo.sitemap.conf.lang.messageWhitelistTitle, MetaSeo.sitemap.conf.lang.messageWhitelistQuestion)
-        }
+        };
 
         var function_delete = function (ob) {
             rowAction(ob, "delete", MetaSeo.sitemap.conf.lang.messageDeleteTitle, MetaSeo.sitemap.conf.lang.messageDeleteQuestion)
-        }
+        };
 
         var function_delete_all = function (ob) {
             var cmd = "deleteAll";
@@ -166,7 +166,7 @@ MetaSeo.sitemap.grid = {
                 ]
             });
             frmConfirm.show();
-        }
+        };
 
 
         var rowAction = function (ob, cmd, confirmTitle, confirmText) {
@@ -233,7 +233,7 @@ MetaSeo.sitemap.grid = {
                     icon: Ext.MessageBox.INFO
                 });
             }
-        }
+        };
 
         /****************************************************
          * row checkbox
@@ -257,7 +257,7 @@ MetaSeo.sitemap.grid = {
             ret = ret.split(dateYesterday).join('<strong>' + MetaSeo.sitemap.conf.lang.yesterday + '</strong>');
 
             return '<div ext:qtip="' + qtip + '">' + ret + '</div>';
-        }
+        };
 
 
         var rendererLanguage = function (value, metaData, record, rowIndex, colIndex, store) {
@@ -282,7 +282,7 @@ MetaSeo.sitemap.grid = {
             }
 
             return '<div ext:qtip="' + qtip + '">' + ret + '</div>';
-        }
+        };
 
         var rendererType = function (value, metaData, record, rowIndex, colIndex, store) {
             var ret = '';
@@ -294,7 +294,7 @@ MetaSeo.sitemap.grid = {
             }
 
             return ret;
-        }
+        };
 
         var rendererUrl = function (value, metaData, record, rowIndex, colIndex, store) {
             value = Ext.util.Format.htmlEncode(value);
@@ -302,7 +302,7 @@ MetaSeo.sitemap.grid = {
             var qtip = Ext.util.Format.htmlEncode(value);
 
             return '<div ext:qtip="' + qtip + '">' + value + '</div>';
-        }
+        };
 
         var rendererBoolean = function (value, metaData, record, rowIndex, colIndex, store) {
             var ret;
@@ -314,7 +314,7 @@ MetaSeo.sitemap.grid = {
             }
 
             return ret;
-        }
+        };
 
         /****************************************************
          * grid panel
@@ -545,7 +545,7 @@ MetaSeo.sitemap.grid = {
                     menu: new Ext.menu.Menu({
                         items: [
                             // these items will render as dropdown menu items when the arrow is clicked:
-                            {text: MetaSeo.sitemap.conf.lang.buttonWhitelist, handler: function_whitelist},
+                            {text: MetaSeo.sitemap.conf.lang.buttonWhitelist, handler: function_whitelist}
                         ]
                     })
                 }, {
@@ -565,7 +565,7 @@ MetaSeo.sitemap.grid = {
                     menu: new Ext.menu.Menu({
                         items: [
                             // these items will render as dropdown menu items when the arrow is clicked:
-                            {text: MetaSeo.sitemap.conf.lang.buttonDeleteAll, handler: function_delete_all},
+                            {text: MetaSeo.sitemap.conf.lang.buttonDeleteAll, handler: function_delete_all}
                         ]
                     })
                 }

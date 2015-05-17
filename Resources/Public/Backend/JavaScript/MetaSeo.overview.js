@@ -235,12 +235,6 @@ MetaSeo.overview.grid = {
                 var fieldId = grid.getColumnModel().getColumnId(colIndex);
                 var col = grid.getColumnModel().getColumnById(fieldId);
                 var data = record.get(fieldName);
-                var overlayStatus = record.get('_overlay')[fieldName];
-
-                // overlayStatus = 2 => only in base
-                // overlayStatus = 1 => value from overlay
-                // overlayStatus = 0 => value from base
-
                 var title = record.get('title');
 
                 // Fire custom MetaSEO onClick event
@@ -332,7 +326,7 @@ MetaSeo.overview.grid = {
                                     var fieldValue = editWindow.getComponent('form-field').getValue();
 
                                     var callbackFinish = function (response) {
-                                        var response = Ext.decode(response.responseText);
+                                        response = Ext.decode(response.responseText);
 
                                         if (response && response.error) {
                                             TYPO3.Flashmessage.display(TYPO3.Severity.error, '', Ext.util.Format.htmlEncode(response.error));
@@ -391,8 +385,6 @@ MetaSeo.overview.grid = {
 
 
     _createGridDs: function () {
-        var me = this;
-
         var gridDsColumns = [
             {name: 'uid', type: 'int'},
             {name: 'title', type: 'string'},
@@ -514,6 +506,10 @@ MetaSeo.overview.grid = {
             var overlayStatus = record.get('_overlay')[fieldName];
             var qtip = value;
 
+            // overlayStatus = 2 => only in base
+            // overlayStatus = 1 => value from overlay
+            // overlayStatus = 0 => value from base
+
             var currentLanguage = Ext.getCmp('sysLanguage').getRawValue();
 
             if (overlayStatus == 2) {
@@ -550,7 +546,7 @@ MetaSeo.overview.grid = {
             }
 
             return me._fieldRendererCallback(value, '', false, false);
-        }
+        };
 
         var columnModel = [{
             id: 'uid',
@@ -703,7 +699,7 @@ MetaSeo.overview.grid = {
                     }
 
                     return me._fieldRendererCallback(value, qtip, false, false);
-                }
+                };
 
                 columnModel.push({
                     id: 'tx_metaseo_canonicalurl',
@@ -776,13 +772,13 @@ MetaSeo.overview.grid = {
                     }
 
                     return ret;
-                }
+                };
 
                 var fieldRendererUrlSimulate = function (value, metaData, record, rowIndex, colIndex, store) {
                     var qtip = Ext.util.Format.htmlEncode(MetaSeo.overview.conf.lang.qtip_url_simulate);
 
                     return '<div class="metaseo-toolbar" ext:qtip="' + qtip + '">' + MetaSeo.overview.conf.sprite.info + '</div>';
-                }
+                };
 
 
                 columnModel.push({
@@ -900,7 +896,7 @@ MetaSeo.overview.grid = {
                             me.grid.loadMask.show();
 
                             var callbackFinish = function (response) {
-                                var response = Ext.decode(response.responseText);
+                                response = Ext.decode(response.responseText);
 
                                 me.grid.loadMask.hide();
 
@@ -934,7 +930,7 @@ MetaSeo.overview.grid = {
                     var qtip = Ext.util.Format.htmlEncode(MetaSeo.overview.conf.lang.qtip_pagetitle_simulate);
 
                     return '<div class="metaseo-toolbar" ext:qtip="' + qtip + '">' + MetaSeo.overview.conf.sprite.info + '</div>';
-                }
+                };
 
                 columnModel.push({
                     id: 'tx_metaseo_pagetitle_rel',
