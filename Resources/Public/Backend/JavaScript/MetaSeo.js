@@ -46,7 +46,6 @@ MetaSeo = {
                 var spannode = document.createElement('span');
                 spannode.className = cls || 'metaseo-search-highlight';
                 var middlebit = node.splitText(pos);
-                var endbit = middlebit.splitText(search.length);
                 var middleclone = middlebit.cloneNode(true);
                 spannode.appendChild(middleclone);
                 middlebit.parentNode.replaceChild(spannode, middlebit);
@@ -66,14 +65,9 @@ MetaSeo = {
      * @copyright    Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
      */
     highlightTextExists: function (value, search) {
+        var pos;
         search = search.toUpperCase();
-        var skip = 0;
-
-        var pos = value.toUpperCase().indexOf(search);
-        if (pos >= 0) {
-            return true;
-        }
-
-        return false;
+        pos = value.toUpperCase().indexOf(search);
+        return pos >= 0;
     }
 }

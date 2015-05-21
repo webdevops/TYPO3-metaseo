@@ -162,6 +162,7 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
             'boolean_yes'                      => 'boolean.yes',
             'boolean_no'                       => 'boolean.no',
             'button_save'                      => 'button.save',
+            'button_saverecursively'           => 'button.saverecursively',
             'button_cancel'                    => 'button.cancel',
             'labelDepth'                       => 'label.depth',
             'labelSearchFulltext'              => 'label.search.fulltext',
@@ -254,3 +255,4 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         return $this->handleSubAction('pagetitlesim');
     }
 }
+

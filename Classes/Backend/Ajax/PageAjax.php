@@ -619,6 +619,30 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
     }
 
     /**
+     * Update page field recursively.
+     */
+    protected function executeUpdatePageFieldRecursively()
+    {
+        if (empty($this->postVar['pid']) || empty($this->postVar['field'])
+        ) {
+            return;
+        }
+
+        $pid            = $this->postVar['pid'];
+        $sysLanguage    = (int) $this->postVar['sysLanguage'];
+        $depth          = (int)$this->postVar['depth'];
+        $fieldList      = array();
+
+        $list           = $this->listDefaultTree($page, 999, $sysLanguage, $fieldList);
+
+        foreach ($list as $key => $page) {
+            $this->postVar['pid'] = $key;
+            $this->executeUpdatePageField();
+        }
+    }
+
+
+    /**
      * Update field in page table
      *
      * @param integer      $pid         PID
