@@ -303,6 +303,28 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     }
 
     /**
+     * Check if page is configured as XHTML
+     *
+     * @return bool
+     */
+    protected function isXhtml() {
+        $ret = false;
+
+        if (strpos($GLOBALS['TSFE']->config['config']['doctype'], 'xhtml') !== FALSE) {
+            // doctype xhtml
+            $ret = true;
+        }
+
+        if (strpos($GLOBALS['TSFE']->config['config']['xhtmlDoctype'], 'xhtml') !== FALSE) {
+            // doctype xhtml doctype
+            $ret = true;
+        }
+
+        return $ret;
+    }
+
+
+    /**
      * Generate a link via TYPO3-Api
      *
      * @param    integer|string $url       URL (id or string)
@@ -580,7 +602,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     protected function renderMetaTags(array $metaTags) {
         $ret = array();
 
-        $isHtml5 = $this->isHtml5();
+        $isXtml = $this->isXhtml();
 
         foreach ($metaTags as $metaTag) {
             $tag        = $metaTag['tag'];
@@ -591,10 +613,10 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                 $attributes[] = $key . '="' . htmlspecialchars($value) . '"';
             }
 
-            if ($isHtml5) {
-                $ret[] = '<' . $tag . ' ' . implode(' ', $attributes) . '>';
-            } else {
+            if ($isXtml) {
                 $ret[] = '<' . $tag . ' ' . implode(' ', $attributes) . '/>';
+            } else {
+                $ret[] = '<' . $tag . ' ' . implode(' ', $attributes) . '>';
             }
         }
 
