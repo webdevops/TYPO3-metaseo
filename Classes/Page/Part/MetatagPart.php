@@ -299,7 +299,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      * @return bool
      */
     protected function isHtml5() {
-        return ($GLOBALS['TSFE']->config['config']['doctype'] === 'html5');
+        return ($GLOBALS['TSFE']->config['config']['config.']['doctype'] === 'html5');
     }
 
     /**
