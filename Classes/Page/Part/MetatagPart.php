@@ -80,7 +80,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      *
      * @var
      */
-    protected $enableMetaD = true;
+    protected $enableMetaDc = true;
 
     /**
      * Generated MetaTag list
