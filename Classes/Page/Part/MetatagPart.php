@@ -1302,11 +1302,11 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
      */
     protected function generateOpenGraphMetaTags()
     {
-        $this->tsSetupSeoOg = $this->tsSetupSeo['opengraph.'];
+        $tsSetupSeoOg = $this->tsSetupSeo['opengraph.'];
 
         // Get list of tags (filtered array)
-        $ogTagNameList = array_keys($this->tsSetupSeoOg);
-        $ogTagNameList = array_unique(
+        $ogTagNameList = array_keys($tsSetupSeoOg);
+        $ogTagNameList = array_unique(array_map(function ($item) {
             array_map(
                 function ($item) {
                     return rtrim($item, '.');
@@ -1320,14 +1320,14 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
 
             // Check if TypoScript value is a simple one (eg. title = foo)
             // or it is a cObject
-            if (!empty($this->tsSetupSeoOg[$ogTagName]) && !array_key_exists($ogTagName . '.', $this->tsSetupSeoOg)) {
+            if (!empty($tsSetupSeoOg[$ogTagName]) && !array_key_exists($ogTagName . '.', $tsSetupSeoOg)) {
                 // Simple value
-                $ogTagValue = $this->tsSetupSeoOg[$ogTagName];
-            } elseif (!empty($this->tsSetupSeoOg[$ogTagName])) {
+                $ogTagValue = $tsSetupSeoOg[$ogTagName];
+            } elseif (!empty($tsSetupSeoOg[$ogTagName])) {
                 // Content object (eg. TEXT)
-                $ogTagValue = $this->cObj->cObjGetSingle(
+                $ogTagValue = $this->cObj->cObjGetSingle($tsSetupSeoOg[$ogTagName],
                     $this->tsSetupSeoOg[$ogTagName],
-                    $this->tsSetupSeoOg[$ogTagName . '.']
+                    $tsSetupSeoOg[$ogTagName . '.']);
                 );
             }
 
