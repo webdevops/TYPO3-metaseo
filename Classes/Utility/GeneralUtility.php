@@ -40,7 +40,7 @@ class GeneralUtility {
      *
      * @var \TYPO3\CMS\Frontend\Page\PageRepository
      */
-    protected static $sysPageObj;
+    protected static $sysPageObj = null;
 
     /**
      * Rootline cache
@@ -116,10 +116,10 @@ class GeneralUtility {
             #################
             if (empty(self::$rootlineCache['__CURRENT__'])) {
                 // Current rootline
-                $rootline = $GLOBALS['TSFE']->tmpl->rootLine;
+                $rootline = (array)$GLOBALS['TSFE']->tmpl->rootLine;
 
                 // Filter rootline by siteroot
-                $rootline = self::filterRootlineBySiteroot((array)$rootline);
+                $rootline = self::filterRootlineBySiteroot($rootline);
 
                 self::$rootlineCache['__CURRENT__'] = $rootline;
             }
@@ -131,10 +131,10 @@ class GeneralUtility {
             #################
             if (empty(self::$rootlineCache[$uid])) {
                 // Fetch full rootline to TYPO3 root (0)
-                $rootline = self::getSysPageObj()->getRootLine($uid);
+                $rootline = (array)self::getSysPageObj()->getRootLine($uid);
 
                 // Filter rootline by siteroot
-                $rootline = self::filterRootlineBySiteroot((array)$rootline);
+                $rootline = self::filterRootlineBySiteroot($rootline);
 
                 self::$rootlineCache[$uid] = $rootline;
             }
@@ -380,34 +380,11 @@ class GeneralUtility {
      * Makes sure the url is absolute (http://....)
      *
      * @param   string $url    URL
-     * @param   string $domain Domain
      *
      * @return  string
      */
-    public static function fullUrl($url, $domain = null) {
-        if (!preg_match('/^https?:\/\//i', $url)) {
-
-            // Fix for root page link
-            if ($url === '/') {
-                $url = '';
-            }
-
-            // remove first /
-            if (strpos($url, '/') === 0) {
-                $url = substr($url, 1);
-            }
-
-            if ($domain !== null) {
-                // specified domain
-                $url = 'http://' . $domain . '/' . $url;
-            } else {
-                // domain from env
-                $url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $url;
-            }
-        }
-
-        // Fix url stuff
-        $url = str_replace('?&', '?', $url);
+    public static function fullUrl($url) {
+        $url = \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($url);
 
         return $url;
     }
