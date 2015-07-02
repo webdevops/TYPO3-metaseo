@@ -198,7 +198,7 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
             $pageUrl = GeneralUtility::fullUrl($sitemapPage['page_url']);
 
             // Page modification date
-            $pageModifictionDate = date('c', $sitemapPage['tstamp']);
+            $pageModificationDate = date('c', $sitemapPage['tstamp']);
 
             // Page change frequency
             $pageChangeFrequency = null;
@@ -225,7 +225,7 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
             // #####################################
             $ret .= '<url>';
             $ret .= '<loc>' . htmlspecialchars($pageUrl) . '</loc>';
-            $ret .= '<lastmod>' . $pageModifictionDate . '</lastmod>';
+            $ret .= '<lastmod>' . $pageModificationDate . '</lastmod>';
 
             if (!empty($pageChangeFrequency)) {
                 $ret .= '<changefreq>' . htmlspecialchars($pageChangeFrequency) . '</changefreq>';
