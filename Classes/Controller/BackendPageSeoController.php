@@ -120,10 +120,10 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
             );
         }
 
-        $sysLangaugeDefault = (int)$GLOBALS['BE_USER']->getSessionData('MetaSEO.sysLanguage');
+        $sysLanguageDefault = (int)$GLOBALS['BE_USER']->getSessionData('MetaSEO.sysLanguage');
 
-        if (empty($sysLangaugeDefault)) {
-            $sysLangaugeDefault = 0;
+        if (empty($sysLanguageDefault)) {
+            $sysLanguageDefault = 0;
         }
 
         // ############################
@@ -144,7 +144,7 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
             'sortDir'          => 'DESC',
             'filterIcon'       => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-tree-search-open'),
             'dataLanguage'     => $languageList,
-            'sysLanguage'      => $sysLangaugeDefault,
+            'sysLanguage'      => $sysLanguageDefault,
             'listType'         => $type,
             'criteriaFulltext' => '',
             'realurlAvailable' => $realUrlAvailable,
