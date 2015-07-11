@@ -65,6 +65,15 @@ Or (unstable, don't blame me for bugs - but feel free to report bugs) directly *
         }
     }
 
+## Found a bug? Got problems?
+
+Please send use following informations for easier bug hunting:
+
+* MetaSEO version
+* TYPO3 version
+* PHP version
+* Hoster and/or Linux distribution
+
 ## Contribution
 
 If you want to contribute make sure you have an Editorconfig-Plugin installed in your IDE.
