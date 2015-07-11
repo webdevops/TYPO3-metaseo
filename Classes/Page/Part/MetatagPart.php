@@ -1306,7 +1306,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
 
         // Get list of tags (filtered array)
         $ogTagNameList = array_keys($tsSetupSeoOg);
-        $ogTagNameList = array_unique(array_map(function ($item) {
+        $ogTagNameList = array_unique(
             array_map(
                 function ($item) {
                     return rtrim($item, '.');
@@ -1327,7 +1327,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
                 // Content object (eg. TEXT)
                 $ogTagValue = $this->cObj->cObjGetSingle($tsSetupSeoOg[$ogTagName],
                     $this->tsSetupSeoOg[$ogTagName],
-                    $tsSetupSeoOg[$ogTagName . '.']);
+                    $tsSetupSeoOg[$ogTagName . '.']
                 );
             }
 
