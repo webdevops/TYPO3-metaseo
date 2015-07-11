@@ -45,7 +45,7 @@ Indexed Sitemap
 | **Problem:**
 |     There is only one site in my XML-Sitemap, what's wrong? In the sitemap-database are thousands of pages.
 | **Solution:**
-|     That's correct. MetaSEO always uses “Sitemap Groups” (as defined in http://www.sitemaps.org/protocol.php#index), each group can contain about 50.000 pages/urls so if we have more than 50.000 urls we have to use sitemap groups. Visit the url defined in the LOC-tag and you will see that the sub-sitemap will contain all your stored URLs.
+|     That's correct. MetaSEO always uses “Sitemap Groups” (as defined in http://www.sitemaps.org/protocol.html#index), each group can contain about 50.000 pages/urls so if we have more than 50.000 urls we have to use sitemap groups. Visit the url defined in the LOC-tag and you will see that the sub-sitemap will contain all your stored URLs.
 |
 | **Problem:**
 |     The generated pages from my extension still are not included in the sitemap!

@@ -81,7 +81,7 @@ P3P Compact Policy               Your P3P Compact Policy.
 
                                  - http://www.w3.org/P3P/
                                  - http://www.w3.org/TR/P3P/
-                                 - http://en.wikipedia.org/wiki/P3P
+                                 - https://en.wikipedia.org/wiki/P3P
                                  - http://www.p3pwriter.com/LRN_111.asp
 
 P3P Policy Url                   Link (full URL) to your P3P Policy File
@@ -184,7 +184,7 @@ Piwik Download & Click Domain    Specifies which domains are internal domains:
 
                                  For more informations visit:
 
-                                 - http://piwik.org/docs/javascript-tracking/
+                                 - http://developer.piwik.org/api-reference/tracking-javascript
 
 Piwik Cookie Domain Name         Specifies the domain name for the tracking cookie:
 
@@ -193,7 +193,7 @@ Piwik Cookie Domain Name         Specifies the domain name for the tracking cook
 
                                  For more informations visit:
 
-                                 - http://piwik.org/docs/javascript-tracking/
+                                 - http://developer.piwik.org/api-reference/tracking-javascript
 
 Piwik DoNotTrack                 Opt Out users with Mozilla's DoNotTrack                      *enabled*
                                  browser setting
@@ -207,7 +207,7 @@ Constant                         Description                                    
 ==============================   ==========================================================   =================
 Google+ Direct Connect           Your Google+ Profile Page ID
 
-                                 see https://developers.google.com/+/plugins/badge/
+                                 see https://developers.google.com/+/web/badge/
 ==============================   ==========================================================   =================
 
 PageTitle

@@ -120,7 +120,7 @@ Found a bug?
 ------------
 
 Just send me a mail to typo3@markus-blaschke.de
-or just enter the bug into the bugtracker at http://forge.typo3.org/
+or just enter the bug into the bugtracker at https://github.com/mblaschke/TYPO3-metaseo
 
 Thanks to...
 ------------

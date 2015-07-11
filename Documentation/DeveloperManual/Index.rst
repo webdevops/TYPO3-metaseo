@@ -124,8 +124,8 @@ plugin.metaseo.services.piwik.template                       Template rendering 
 
 It's quite easy, for more information read:
 
-- http://forge.typo3.org/projects/typo3v4-mvc/wiki/FLUIDTEMPLATE%20Content%20Object
-- http://typo3.org/development/articles/the-fluidtemplate-cobject/
+- http://docs.typo3.org/typo3cms/TyposcriptReference/ContentObjects/Fluidtemplate/Index.html
+- http://typo3.org/documentation/article/the-fluidtemplate-cobject
 
 Example for your own Google Analytics Template:
 
