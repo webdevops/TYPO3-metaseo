@@ -31,7 +31,8 @@ use Metaseo\Metaseo\Utility\GeneralUtility;
 /**
  * Sitemap abstract generator
  */
-abstract class AbstractGenerator {
+abstract class AbstractGenerator
+{
     // ########################################################################
     // Attributes
     // ########################################################################
@@ -98,7 +99,8 @@ abstract class AbstractGenerator {
     /**
      * Fetch sitemap information and generate sitemap
      */
-    public function __construct() {
+    public function __construct()
+    {
         // INIT
         $this->rootPid = GeneralUtility::getRootPid();
         $sysLanguageId = null;
@@ -125,7 +127,8 @@ abstract class AbstractGenerator {
      *
      * @return integer
      */
-    public function pageCount() {
+    public function pageCount()
+    {
         $pageLimit = GeneralUtility::getRootSettingValue('sitemap_page_limit', null);
 
         if (empty($pageLimit)) {

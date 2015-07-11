@@ -29,7 +29,8 @@ namespace Metaseo\Metaseo\Hook\Extension;
 /**
  * EXT:news hook for metatags
  */
-class NewsExtension {
+class NewsExtension
+{
 
 
 }

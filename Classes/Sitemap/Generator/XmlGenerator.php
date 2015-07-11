@@ -31,7 +31,8 @@ use Metaseo\Metaseo\Utility\GeneralUtility;
 /**
  * Sitemap XML generator
  */
-class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator {
+class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator
+{
 
     // ########################################################################
     // Methods
@@ -42,7 +43,8 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
      *
      * @return  string
      */
-    public function sitemapIndex() {
+    public function sitemapIndex()
+    {
         $pageLimit = 10000;
 
         if (isset($this->tsSetup['pageLimit']) && $this->tsSetup['pageLimit'] != '') {
@@ -97,7 +99,8 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
      *
      * @return  string
      */
-    public function sitemap($page = null) {
+    public function sitemap($page = null)
+    {
         $ret = '';
 
         $pageLimit = 10000;
@@ -123,7 +126,8 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
      *
      * @return string
      */
-    protected function createSitemapPage() {
+    protected function createSitemapPage()
+    {
         $ret = '<?xml version="1.0" encoding="UTF-8"?>';
         $ret .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"';
         $ret .= ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"';
@@ -131,8 +135,14 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
         $ret .= ' http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
 
         $pagePriorityDefaultValue     = (float)GeneralUtility::getRootSettingValue('sitemap_priorty', 0);
-        $pagePriorityDepthMultiplier  = (float)GeneralUtility::getRootSettingValue('sitemap_priorty_depth_multiplier', 0);
-        $pagePriorityDepthModificator = (float)GeneralUtility::getRootSettingValue('sitemap_priorty_depth_modificator', 0);
+        $pagePriorityDepthMultiplier  = (float)GeneralUtility::getRootSettingValue(
+            'sitemap_priorty_depth_multiplier',
+            0
+        );
+        $pagePriorityDepthModificator = (float)GeneralUtility::getRootSettingValue(
+            'sitemap_priorty_depth_modificator',
+            0
+        );
 
         if ($pagePriorityDefaultValue == 0) {
             $pagePriorityDefaultValue = 1;

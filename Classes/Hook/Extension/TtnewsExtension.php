@@ -29,7 +29,8 @@ namespace Metaseo\Metaseo\Hook\Extension;
 /**
  * EXT:tt_news hook for metatags
  */
-class TtnewsExtension {
+class TtnewsExtension
+{
 
     /**
      * Extra item marker hook for metatag fetching
@@ -41,7 +42,8 @@ class TtnewsExtension {
      *
      * @return  array                Marker array (not changed)
      */
-    public function extraItemMarkerProcessor($markerArray, $row, $lConf, \TYPO3\CMS\Frontend\Plugin\AbstractPlugin $ttnewsObj) {
+    public function extraItemMarkerProcessor($markerArray, $row, $lConf, \TYPO3\CMS\Frontend\Plugin\AbstractPlugin $ttnewsObj)
+    {
         $theCode = (string)strtoupper(trim($ttnewsObj->theCode));
 
         $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Metaseo\\Metaseo\\Connector');
@@ -84,5 +86,3 @@ class TtnewsExtension {
         return $markerArray;
     }
 }
-
-?>

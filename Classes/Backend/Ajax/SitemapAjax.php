@@ -31,14 +31,16 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
 /**
  * TYPO3 Backend ajax module sitemap
  */
-class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
+class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
+{
 
     /**
      * Return sitemap entry list for root tree
      *
      * @return    array
      */
-    protected function executeGetList() {
+    protected function executeGetList()
+    {
         // Init
         $rootPid      = (int)$this->postVar['pid'];
         $offset       = (int)$this->postVar['start'];
@@ -83,8 +85,10 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
         }
 
         // Filter blacklisted page types
-        $where[] = DatabaseUtility::conditionNotIn('p.doktype',
-            \Metaseo\Metaseo\Utility\SitemapUtility::getDoktypeBlacklist());
+        $where[] = DatabaseUtility::conditionNotIn(
+            'p.doktype',
+            \Metaseo\Metaseo\Utility\SitemapUtility::getDoktypeBlacklist()
+        );
 
         // Build where
         $where = DatabaseUtility::buildCondition($where);
@@ -145,7 +149,8 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
      *
      * @return    boolean
      */
-    protected function executeBlacklist() {
+    protected function executeBlacklist()
+    {
         $uidList = $this->postVar['uidList'];
         $rootPid = (int)$this->postVar['pid'];
 
@@ -173,7 +178,8 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
      *
      * @return    boolean
      */
-    protected function executeWhitelist() {
+    protected function executeWhitelist()
+    {
         $uidList = $this->postVar['uidList'];
         $rootPid = (int)$this->postVar['pid'];
 
@@ -202,7 +208,8 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
      *
      * @return    boolean
      */
-    protected function executeDelete() {
+    protected function executeDelete()
+    {
         $uidList = $this->postVar['uidList'];
         $rootPid = (int)$this->postVar['pid'];
 
@@ -229,7 +236,8 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax {
      *
      * @return    boolean
      */
-    protected function executeDeleteAll() {
+    protected function executeDeleteAll()
+    {
         $rootPid = (int)$this->postVar['pid'];
 
         if (empty($rootPid)) {

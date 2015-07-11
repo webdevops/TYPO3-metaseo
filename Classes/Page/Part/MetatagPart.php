@@ -31,7 +31,8 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
 /**
  * Metatags generator
  */
-class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
+class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
+{
 
     /**
      * List of stdWrap manipulations
@@ -70,7 +71,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
     /**
      * Page record
-     * 
+     *
      * @var array
      */
     protected $pageRecord = array();
@@ -92,7 +93,8 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     /**
      * Initialize
      */
-    protected function initialize() {
+    protected function initialize()
+    {
         $this->cObj       = $GLOBALS['TSFE']->cObj;
         $this->tsSetup    = $GLOBALS['TSFE']->tmpl->setup;
         $this->pageRecord = $GLOBALS['TSFE']->page;
@@ -121,7 +123,8 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      *
      * @return    string            XHTML Code with metatags
      */
-    public function main() {
+    public function main()
+    {
         // INIT
         $this->metaTagList = array();
 
@@ -171,7 +174,12 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
             }
 
             // Call hook
-            \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'metatagSetup', $this, $this->tsSetupSeo);
+            \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(
+                __CLASS__,
+                'metatagSetup',
+                $this,
+                $this->tsSetupSeo
+            );
 
             // standard metatags
             $this->generateStandardMetaTags();
@@ -213,9 +221,9 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
             if (!empty($this->tsSetupSeo['googlePlus.']['profilePageId'])) {
                 $this->metaTagList['social.googleplus.direct-connect'] = array(
-                    'tag' => 'link',
+                    'tag'        => 'link',
                     'attributes' => array(
-                        'rel' => 'publisher',
+                        'rel'  => 'publisher',
                         'href' => 'https://plus.google.com/' . $this->tsSetupSeo['googlePlus.']['profilePageId'],
                     ),
                 );
@@ -231,7 +239,8 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     /**
      * Init extension support
      */
-    protected function initExtensionSupport() {
+    protected function initExtensionSupport()
+    {
 
         // Extension: news
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('news')) {
@@ -242,7 +251,8 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     /**
      * Init extension support for "news" extension
      */
-    protected function initExtensionSupportNews() {
+    protected function initExtensionSupportNews()
+    {
         if (empty($GLOBALS['TSFE']->register)) {
             return;
         }
@@ -283,7 +293,8 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      *
      * @return   string
      */
-    protected function applyStdWrap($key, $value) {
+    protected function applyStdWrap($key, $value)
+    {
         $key .= '.';
 
         if (empty($this->stdWrapList[$key])) {
@@ -298,7 +309,8 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      *
      * @return bool
      */
-    protected function isHtml5() {
+    protected function isHtml5()
+    {
         return ($GLOBALS['TSFE']->config['config']['doctype'] === 'html5');
     }
 
@@ -307,15 +319,16 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      *
      * @return bool
      */
-    protected function isXhtml() {
+    protected function isXhtml()
+    {
         $ret = false;
 
-        if (strpos($GLOBALS['TSFE']->config['config']['doctype'], 'xhtml') !== FALSE) {
+        if (strpos($GLOBALS['TSFE']->config['config']['doctype'], 'xhtml') !== false) {
             // doctype xhtml
             $ret = true;
         }
 
-        if (strpos($GLOBALS['TSFE']->config['config']['xhtmlDoctype'], 'xhtml') !== FALSE) {
+        if (strpos($GLOBALS['TSFE']->config['config']['xhtmlDoctype'], 'xhtml') !== false) {
             // doctype xhtml doctype
             $ret = true;
         }
@@ -333,7 +346,8 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      *
      * @return   string                      URL
      */
-    protected function generateLink($url, $conf = null, $disableMP = false) {
+    protected function generateLink($url, $conf = null, $disableMP = false)
+    {
         if ($conf === null) {
             $conf = array();
         }
@@ -366,7 +380,8 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      *
      * @return   string            Page Id or url
      */
-    protected function detectCanonicalPage($tsConfig = array()) {
+    protected function detectCanonicalPage($tsConfig = array())
+    {
         #####################
         # Fetch typoscript config
         #####################
@@ -486,11 +501,12 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      * Advanced meta tags
      *
      * @param array   $metaTags          MetaTags
-     * @param array   $this->pageRecord          TSFE Page
+     * @param array   $this              ->pageRecord          TSFE Page
      * @param integer $sysLanguageId     Sys Language ID
      * @param array   $customMetaTagList Custom Meta Tag list
      */
-    protected function advMetaTags(&$metaTags, $pageRecord, $sysLanguageId, $customMetaTagList) {
+    protected function advMetaTags(&$metaTags, $pageRecord, $sysLanguageId, $customMetaTagList)
+    {
         $this->pageRecordId = $this->pageRecord['uid'];
 
         $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
@@ -530,9 +546,9 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         // Add metadata to tag list
         foreach ($advMetaTagList as $tagName => $tagValue) {
             $metaTags['adv.' . $tagName] = array(
-                'tag' => 'meta',
+                'tag'        => 'meta',
                 'attributes' => array(
-                    'rel' => $tagName,
+                    'rel'  => $tagName,
                     'href' => $tagValue,
                 ),
             );
@@ -543,9 +559,9 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         // #################
         foreach ($customMetaTagList as $tagName => $tagValue) {
             $metaTags['adv.' . $tagName] = array(
-                'tag' => 'meta',
+                'tag'        => 'meta',
                 'attributes' => array(
-                    'rel' => $tagName,
+                    'rel'  => $tagName,
                     'href' => $tagValue,
                 ),
             );
@@ -555,7 +571,8 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     /**
      * Process meta tags
      */
-    protected function processMetaTags(&$tags) {
+    protected function processMetaTags(&$tags)
+    {
         // Call hook
         \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'metatagOutput', $this, $tags);
 
@@ -599,13 +616,14 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      *
      * @return string
      */
-    protected function renderMetaTags(array $metaTags) {
+    protected function renderMetaTags(array $metaTags)
+    {
         $ret = array();
 
         $isXtml = $this->isXhtml();
 
         foreach ($metaTags as $metaTag) {
-            $tag        = $metaTag['tag'];
+            $tag = $metaTag['tag'];
 
             $attributes = array();
 
@@ -621,55 +639,69 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         }
 
         $separator = "\n";
+
         return $separator . implode($separator, $ret) . $separator;
     }
 
     /**
      * Collect meta data (eg. from page via stdwrap)
      */
-    protected function collectMetaDataFromPage() {
+    protected function collectMetaDataFromPage()
+    {
         // #################
         // Page meta
         // #################
 
         // description
-        $tmp = $this->cObj->stdWrap($this->tsSetupSeo['conf.']['description_page'],
-            $this->tsSetupSeo['conf.']['description_page.']);
+        $tmp = $this->cObj->stdWrap(
+            $this->tsSetupSeo['conf.']['description_page'],
+            $this->tsSetupSeo['conf.']['description_page.']
+        );
         if (!empty($tmp)) {
             $this->pageMeta['description'] = $tmp;
         }
 
         // keywords
-        $tmp = $this->cObj->stdWrap($this->tsSetupSeo['conf.']['keywords_page'],
-            $this->tsSetupSeo['conf.']['keywords_page.']);
+        $tmp = $this->cObj->stdWrap(
+            $this->tsSetupSeo['conf.']['keywords_page'],
+            $this->tsSetupSeo['conf.']['keywords_page.']
+        );
         if (!empty($tmp)) {
             $this->pageMeta['keywords'] = $tmp;
         }
 
         // title
-        $tmp = $this->cObj->stdWrap($this->tsSetupSeo['conf.']['title_page'],
-            $this->tsSetupSeo['conf.']['title_page.']);
+        $tmp = $this->cObj->stdWrap(
+            $this->tsSetupSeo['conf.']['title_page'],
+            $this->tsSetupSeo['conf.']['title_page.']
+        );
         if (!empty($tmp)) {
             $this->pageMeta['title'] = $tmp;
         }
 
         // author
-        $tmp = $this->cObj->stdWrap($this->tsSetupSeo['conf.']['author_page'],
-            $this->tsSetupSeo['conf.']['author_page.']);
+        $tmp = $this->cObj->stdWrap(
+            $this->tsSetupSeo['conf.']['author_page'],
+            $this->tsSetupSeo['conf.']['author_page.']
+        );
         if (!empty($tmp)) {
             $this->pageMeta['author'] = $tmp;
         }
 
         // email
-        $tmp = $this->cObj->stdWrap($this->tsSetupSeo['conf.']['email_page'],
-            $this->tsSetupSeo['conf.']['email_page.']);
+        $tmp = $this->cObj->stdWrap(
+            $this->tsSetupSeo['conf.']['email_page'],
+            $this->tsSetupSeo['conf.']['email_page.']
+        );
         if (!empty($tmp)) {
             $this->pageMeta['email'] = $tmp;
         }
 
         // last-update
-        $tmp = $this->cObj->stdWrap($this->tsSetupSeo['conf.']['lastUpdate_page'],
-            $this->tsSetupSeo['conf.']['lastUpdate_page.']);
+        $tmp = $this->cObj->stdWrap(
+            $this->tsSetupSeo['conf.']['lastUpdate_page'],
+            $this->tsSetupSeo['conf.']['lastUpdate_page.']
+        );
         if (!empty($tmp)) {
             $this->pageMeta['lastUpdate'] = $tmp;
         }
@@ -679,29 +711,37 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         // #################
 
         // tx_metaseo_geo_lat
-        $tmp = $this->cObj->stdWrap($this->tsSetupSeo['conf.']['tx_metaseo_geo_lat'],
-            $this->tsSetupSeo['conf.']['tx_metaseo_geo_lat.']);
+        $tmp = $this->cObj->stdWrap(
+            $this->tsSetupSeo['conf.']['tx_metaseo_geo_lat'],
+            $this->tsSetupSeo['conf.']['tx_metaseo_geo_lat.']
+        );
         if (!empty($tmp)) {
             $this->pageMeta['geoPositionLatitude'] = $tmp;
         }
 
         // tx_metaseo_geo_long
-        $tmp = $this->cObj->stdWrap($this->tsSetupSeo['conf.']['tx_metaseo_geo_long'],
-            $this->tsSetupSeo['conf.']['tx_metaseo_geo_long.']);
+        $tmp = $this->cObj->stdWrap(
+            $this->tsSetupSeo['conf.']['tx_metaseo_geo_long'],
+            $this->tsSetupSeo['conf.']['tx_metaseo_geo_long.']
+        );
         if (!empty($tmp)) {
             $this->pageMeta['geoPositionLongitude'] = $tmp;
         }
 
         // tx_metaseo_geo_place
-        $tmp = $this->cObj->stdWrap($this->tsSetupSeo['conf.']['tx_metaseo_geo_place'],
-            $this->tsSetupSeo['conf.']['tx_metaseo_geo_place.']);
+        $tmp = $this->cObj->stdWrap(
+            $this->tsSetupSeo['conf.']['tx_metaseo_geo_place'],
+            $this->tsSetupSeo['conf.']['tx_metaseo_geo_place.']
+        );
         if (!empty($tmp)) {
             $this->pageMeta['geoPlacename'] = $tmp;
         }
 
         // tx_metaseo_geo_region
-        $tmp = $this->cObj->stdWrap($this->tsSetupSeo['conf.']['tx_metaseo_geo_region'],
-            $this->tsSetupSeo['conf.']['tx_metaseo_geo_region.']);
+        $tmp = $this->cObj->stdWrap(
+            $this->tsSetupSeo['conf.']['tx_metaseo_geo_region'],
+            $this->tsSetupSeo['conf.']['tx_metaseo_geo_region.']
+        );
         if (!empty($tmp)) {
             $this->pageMeta['geoRegion'] = $tmp;
         }
@@ -725,7 +765,8 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      *
      * @return mixed
      */
-    protected function collectMetaDataFromConnector() {
+    protected function collectMetaDataFromConnector()
+    {
         $ret = array();
 
         /** @var \Metaseo\Metaseo\Connector $connector */
@@ -762,7 +803,8 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     /**
      * Generate standard metatags
      */
-    protected function generateStandardMetaTags() {
+    protected function generateStandardMetaTags()
+    {
         // dc schema
         if ($this->enableMetaDc && !$this->isHtml5()) {
             //schema.DCTERMS not allowed in HTML5 according to W3C validator #18
@@ -958,7 +1000,8 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     /**
      * Genrate crawler (eg. robots) MetaTags
      */
-    protected function generateCrawlerMetaTags() {
+    protected function generateCrawlerMetaTags()
+    {
         // robots
         if (!empty($this->tsSetupSeo['robotsEnable'])) {
             $crawlerOrder = array();
@@ -1024,7 +1067,8 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     /**
      * Generate geo position MetaTags
      */
-    protected function generateGeoPosMetaTags() {
+    protected function generateGeoPosMetaTags()
+    {
         // Geo-Position
         if (!empty($this->tsSetupSeo['geoPositionLatitude']) && !empty($this->tsSetupSeo['geoPositionLongitude'])) {
             $this->metaTagList['geo.icmb']     = array(
@@ -1069,7 +1113,8 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     /**
      * Generate service (eg. google) MetaTags
      */
-    protected function generateServicesMetaTags() {
+    protected function generateServicesMetaTags()
+    {
         // Google Verification
         if (!empty($this->tsSetupSeo['googleVerification'])) {
             $this->metaTagList['service.verification.google'] = array(
@@ -1130,7 +1175,8 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     /**
      * Generate user agent metatags
      */
-    protected function generateUserAgentMetaTags() {
+    protected function generateUserAgentMetaTags()
+    {
         if (!empty($this->tsSetupSeo['ieCompatibilityMode'])) {
             if (is_numeric($this->tsSetupSeo['ieCompatibilityMode'])) {
                 $this->metaTagList['ua.msie.compat'] = array(
@@ -1155,7 +1201,8 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     /**
      * Generate Link (next, prev..) MetaTags
      */
-    protected function generateLinkMetaTags() {
+    protected function generateLinkMetaTags()
+    {
         $rootLine = \Metaseo\Metaseo\Utility\GeneralUtility::getRootLine();
 
         $currentPage = end($rootLine);
@@ -1173,7 +1220,6 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         // to prevent linking to other domains
         // see https://github.com/mblaschke/TYPO3-metaseo/issues/5
         if (!$currentIsRootpage) {
-
             $prevPage    = $GLOBALS['TSFE']->cObj->HMENU($this->tsSetupSeo['sectionLinks.']['prev.']);
             $prevPageUrl = null;
             if (!empty($prevPage)) {
@@ -1224,13 +1270,16 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     /**
      * Generate CanonicalUrl MetaTags
      */
-    protected function generateCanonicalUrlMetaTags() {
+    protected function generateCanonicalUrlMetaTags()
+    {
         $canonicalUrl = null;
 
         if (!empty($this->pageRecord['tx_metaseo_canonicalurl'])) {
             $canonicalUrl = $this->pageRecord['tx_metaseo_canonicalurl'];
         } elseif (!empty($this->tsSetupSeo['canonicalUrl'])) {
-            list($clUrl, $clLinkConf, $clDisableMpMode) = $this->detectCanonicalPage($this->tsSetupSeo['canonicalUrl.']);
+            list($clUrl, $clLinkConf, $clDisableMpMode) = $this->detectCanonicalPage(
+                $this->tsSetupSeo['canonicalUrl.']
+            );
         }
 
         if (!empty($clUrl)) {
@@ -1251,14 +1300,20 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     /**
      * Generate OpenGraph MetaTags
      */
-    protected function generateOpenGraphMetaTags() {
+    protected function generateOpenGraphMetaTags()
+    {
         $this->tsSetupSeoOg = $this->tsSetupSeo['opengraph.'];
 
         // Get list of tags (filtered array)
         $ogTagNameList = array_keys($this->tsSetupSeoOg);
-        $ogTagNameList = array_unique(array_map(function ($item) {
-            return rtrim($item, '.');
-        }, $ogTagNameList));
+        $ogTagNameList = array_unique(
+            array_map(
+                function ($item) {
+                    return rtrim($item, '.');
+                },
+                $ogTagNameList
+            )
+        );
 
         foreach ($ogTagNameList as $ogTagName) {
             $ogTagValue = null;
@@ -1270,8 +1325,10 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
                 $ogTagValue = $this->tsSetupSeoOg[$ogTagName];
             } elseif (!empty($this->tsSetupSeoOg[$ogTagName])) {
                 // Content object (eg. TEXT)
-                $ogTagValue = $this->cObj->cObjGetSingle($this->tsSetupSeoOg[$ogTagName],
-                    $this->tsSetupSeoOg[$ogTagName . '.']);
+                $ogTagValue = $this->cObj->cObjGetSingle(
+                    $this->tsSetupSeoOg[$ogTagName],
+                    $this->tsSetupSeoOg[$ogTagName . '.']
+                );
             }
 
             if ($ogTagValue !== null && strlen($ogTagValue) >= 1) {

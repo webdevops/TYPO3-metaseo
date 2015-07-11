@@ -31,7 +31,8 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
 /**
  * TYPO3 Backend module root settings
  */
-class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule {
+class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule
+{
     // ########################################################################
     // Attributes
     // ########################################################################
@@ -43,7 +44,8 @@ class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\Abs
     /**
      * Main action
      */
-    public function mainAction() {
+    public function mainAction()
+    {
         // #################
         // Root page list
         // #################
@@ -122,9 +124,10 @@ class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\Abs
             }
 
             // Settings available
-            $page['settingsLink'] = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_metaseo_setting_root][' . $rootSettingList[$pageId]['uid'] . ']=edit',
-                $this->doc->backPath);
-
+            $page['settingsLink'] = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick(
+                '&edit[tx_metaseo_setting_root][' . $rootSettingList[$pageId]['uid'] . ']=edit',
+                $this->doc->backPath
+            );
 
             $page['sitemapLink']   = \Metaseo\Metaseo\Utility\RootPageUtility::getSitemapIndexUrl($pageId);
             $page['robotsTxtLink'] = \Metaseo\Metaseo\Utility\RootPageUtility::getRobotsTxtUrl($pageId);

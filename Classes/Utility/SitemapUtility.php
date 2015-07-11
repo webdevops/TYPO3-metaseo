@@ -31,14 +31,15 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 /**
  * Sitemap utility
  */
-class SitemapUtility {
+class SitemapUtility
+{
 
-    CONST SITEMAP_TYPE_PAGE = 0;
-    CONST SITEMAP_TYPE_FILE = 1;
+    const SITEMAP_TYPE_PAGE = 0;
+    const SITEMAP_TYPE_FILE = 1;
 
-    CONST PAGE_TYPE_SITEMAP_TXT = 841131; // sitemap.txt     (EXT:metaseo), apply changes in Configuration/TypoScript/setup.txt
-    CONST PAGE_TYPE_SITEMAP_XML = 841132; // sitemap.xml     (EXT:metaseo)
-    CONST PAGE_TYPE_ROBOTS_TXT  = 841133; // robots.txt      (EXT:metaseo)
+    const PAGE_TYPE_SITEMAP_TXT = 841131; // sitemap.txt     (EXT:metaseo), apply changes in Configuration/TypoScript/setup.txt
+    const PAGE_TYPE_SITEMAP_XML = 841132; // sitemap.xml     (EXT:metaseo)
+    const PAGE_TYPE_ROBOTS_TXT  = 841133; // robots.txt      (EXT:metaseo)
 
     // ########################################################################
     // Attributes
@@ -76,7 +77,8 @@ class SitemapUtility {
      *
      * @param   array $pageData Page informations
      */
-    public static function index($pageData) {
+    public static function index($pageData)
+    {
         static $cache = array();
 
         // do not index empty urls
@@ -113,9 +115,7 @@ class SitemapUtility {
 
         // only process each page once to keep sql-statements at a normal level
         if (empty($cache[$pageHash])) {
-
             // $pageData is already quoted
-
             // TODO: INSERT INTO ... ON DUPLICATE KEY UPDATE?
 
             $query      = 'SELECT uid
@@ -142,8 +142,11 @@ class SitemapUtility {
                 // #####################################
                 // INSERT
                 // #####################################
-                \Metaseo\Metaseo\Utility\DatabaseUtility::connection()->exec_INSERTquery('tx_metaseo_sitemap',
-                    $pageData, array_keys($pageData));
+                \Metaseo\Metaseo\Utility\DatabaseUtility::connection()->exec_INSERTquery(
+                    'tx_metaseo_sitemap',
+                    $pageData,
+                    array_keys($pageData)
+                );
             }
 
             $cache[$pageHash] = 1;
@@ -153,7 +156,8 @@ class SitemapUtility {
     /**
      * Clear outdated and invalid pages from sitemap table
      */
-    public static function expire() {
+    public static function expire()
+    {
         // #####################
         // Delete expired entries
         // #####################
@@ -193,7 +197,8 @@ class SitemapUtility {
      *
      * @return array
      */
-    public static function getDoktypeBlacklist() {
+    public static function getDoktypeBlacklist()
+    {
         return self::$doktypeBlacklist;
     }
 
@@ -202,20 +207,18 @@ class SitemapUtility {
      *
      * @return array
      */
-    public static function getPageTypeBlacklist() {
+    public static function getPageTypeBlacklist()
+    {
         $ret = self::$pagetypeBlacklist;
 
         // Fetch from SetupTS (comma separated list)
         if (isset($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist'])
-           && strlen($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist']) >= 1)
-        {
+            && strlen($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist']) >= 1
+        ) {
             $pageTypeBlacklist = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist'];
             $pageTypeBlacklist = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $pageTypeBlacklist);
 
-            $ret = array_merge(
-                $ret,
-                $pageTypeBlacklist
-            );
+            $ret = array_merge($ret, $pageTypeBlacklist);
         }
 
         return $ret;
@@ -229,7 +232,8 @@ class SitemapUtility {
      *
      * @return  boolean|array
      */
-    public static function getList($rootPid, $languageId = null) {
+    public static function getList($rootPid, $languageId = null)
+    {
         $sitemapList = array();
         $pageList    = array();
 
