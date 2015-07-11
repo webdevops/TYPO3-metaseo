@@ -1326,7 +1326,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
             } elseif (!empty($tsSetupSeoOg[$ogTagName])) {
                 // Content object (eg. TEXT)
                 $ogTagValue = $this->cObj->cObjGetSingle($tsSetupSeoOg[$ogTagName],
-                    $this->tsSetupSeoOg[$ogTagName],
+                    $tsSetupSeoOg[$ogTagName],
                     $tsSetupSeoOg[$ogTagName . '.']
                 );
             }
