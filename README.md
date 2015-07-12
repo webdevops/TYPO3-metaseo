@@ -67,7 +67,7 @@ Or (unstable, don't blame me for bugs - but feel free to report bugs) directly *
 
 ## Found a bug? Got problems?
 
-Please send use following informations for easier bug hunting:
+Please send use following information for easier bug hunting:
 
 * MetaSEO version
 * TYPO3 version
