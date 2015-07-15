@@ -45,11 +45,11 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
     public $cObj;
 
     /**
-     * TypoScript Setup
+     * TypoScript Setup Seo
      *
      * @var array
      */
-    protected $tsSetup = array();
+    protected $tsSetupSeo = array();
 
     /**
      * Root page id
