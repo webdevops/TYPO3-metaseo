@@ -73,7 +73,7 @@ class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage
         /** @var \Metaseo\Metaseo\Sitemap\Generator\XmlGenerator $generator */
         $generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\XmlGenerator');
 
-        if (empty($page) || $page == 'index') {
+        if (empty($page) || $page === 'index') {
             $ret = $generator->sitemapIndex();
         } else {
             $ret = $generator->sitemap($page);

@@ -41,6 +41,12 @@ abstract class AbstractPage
      */
     protected $objectManager;
 
+    /**
+     * TypoScript Setup
+     *
+     * @var array
+     */
+    protected $tsSetup = array();
 
     // ########################################################################
     // Methods
