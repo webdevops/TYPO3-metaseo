@@ -487,7 +487,7 @@ metaSeoSitemapTxt {
 
     config {
         disableAllHeaderCode = 1
-        additionalHeaders = Content-type:text/plain;charset=UTF-8
+        additionalHeaders = Content-type:text/plain;charset=UTF-8 | X-Robots-Tag: noindex
         xhtml_cleaning = 0
 
         ## disable static documents and stuff
@@ -526,7 +526,7 @@ metaSeoSitemapXml {
 
     config {
         disableAllHeaderCode = 1
-        additionalHeaders = Content-type:application/xml;charset=UTF-8
+        additionalHeaders = Content-type: application/xml;charset=UTF-8 | X-Robots-Tag: noindex
         xhtml_cleaning = 0
 
         ## disable static documents and stuff
@@ -560,7 +560,7 @@ metaSeoRobotsTxt {
 
     config {
         disableAllHeaderCode = 1
-        additionalHeaders = Content-type:text/plain;charset=UTF-8
+        additionalHeaders = Content-type:text/plain;charset=UTF-8 | X-Robots-Tag: noindex
         xhtml_cleaning = 0
 
         ## disable static documents and stuff
