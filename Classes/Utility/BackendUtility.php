@@ -29,14 +29,16 @@ namespace Metaseo\Metaseo\Utility;
 /**
  * Backend utility
  */
-class BackendUtility {
+class BackendUtility
+{
 
     /**
      * Fetch list of root pages (is_siteroot) in TYPO3 (cached)
      *
      * @return  array
      */
-    public static function getRootPageList() {
+    public static function getRootPageList()
+    {
         static $cache = null;
 
         if ($cache === null) {
@@ -57,7 +59,8 @@ class BackendUtility {
      *
      * @return  array
      */
-    public static function getRootPageSettingList() {
+    public static function getRootPageSettingList()
+    {
         static $cache = null;
 
         if ($cache === null) {

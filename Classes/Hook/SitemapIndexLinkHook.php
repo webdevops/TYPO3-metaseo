@@ -32,7 +32,8 @@ use Metaseo\Metaseo\Utility\SitemapUtility;
 /**
  * Sitemap Indexer
  */
-class SitemapIndexLinkHook extends SitemapIndexHook {
+class SitemapIndexLinkHook extends SitemapIndexHook
+{
 
 
     // ########################################################################
@@ -46,15 +47,15 @@ class SitemapIndexLinkHook extends SitemapIndexHook {
      *
      * @return  void
      */
-    public function hook_linkParse(&$pObj) {
+    public function hook_linkParse(&$pObj)
+    {
 
         if (!$this->checkIfSitemapIndexingIsEnabled('typolink')) {
             return;
         }
 
         // Check
-        if (empty($pObj['finalTagParts']) || empty($pObj['conf']) || empty($pObj['finalTagParts']['url'])
-        ) {
+        if (empty($pObj['finalTagParts']) || empty($pObj['conf']) || empty($pObj['finalTagParts']['url'])) {
             // no valid link
             return;
         }
@@ -152,7 +153,8 @@ class SitemapIndexLinkHook extends SitemapIndexHook {
      * @internal param string $pageUrl Page url
      *
      */
-    protected function generateSitemapPageData($linkUrl, $linkPageUid, $rootline, $pageLanguage, $linkType) {
+    protected function generateSitemapPageData($linkUrl, $linkPageUid, $rootline, $pageLanguage, $linkType)
+    {
         $tstamp = $_SERVER['REQUEST_TIME'];
 
         $rootPid = $rootline[0]['uid'];
@@ -186,7 +188,8 @@ class SitemapIndexLinkHook extends SitemapIndexHook {
      *
      * @return array
      */
-    protected function parseLinkConf($conf) {
+    protected function parseLinkConf($conf)
+    {
         $uid  = null;
         $type = null;
 
@@ -196,7 +199,6 @@ class SitemapIndexLinkHook extends SitemapIndexHook {
             // Page URL
             // ##############
             case 'page':
-
                 // TODO: Add support for more parameter checks
                 if (is_numeric($conf['conf']['parameter'])) {
                     $uid = $conf['conf']['parameter'];
@@ -209,7 +211,6 @@ class SitemapIndexLinkHook extends SitemapIndexHook {
             // File URL
             // ##############
             case 'file':
-
                 $fileUrl = $conf['finalTagParts']['url'];
 
                 if ($this->checkIfFileIsWhitelisted($fileUrl)) {
@@ -234,7 +235,8 @@ class SitemapIndexLinkHook extends SitemapIndexHook {
      *
      * @return  boolean
      */
-    protected function checkIfFileIsWhitelisted($url) {
+    protected function checkIfFileIsWhitelisted($url)
+    {
         $ret = false;
 
         // check for valid url
@@ -270,7 +272,8 @@ class SitemapIndexLinkHook extends SitemapIndexHook {
      *
      * @return null|string
      */
-    protected function getPageUrl($linkUrl) {
+    protected function getPageUrl($linkUrl)
+    {
         $linkParts = parse_url($linkUrl);
 
         // Remove left / (but only if not root page)
@@ -289,5 +292,4 @@ class SitemapIndexLinkHook extends SitemapIndexHook {
 
         return $ret;
     }
-
 }

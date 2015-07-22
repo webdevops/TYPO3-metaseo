@@ -31,7 +31,8 @@ use Metaseo\Metaseo\Utility\FrontendUtility;
 /**
  * Page Title Changer
  */
-class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
+class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart
+{
 
     /**
      * List of stdWrap manipulations
@@ -68,7 +69,7 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      */
     protected $rootLine = array();
 
-    
+
     /**
      * Add SEO-Page Title
      *
@@ -76,7 +77,8 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      *
      * @return    string            Modified page title
      */
-    public function main($title) {
+    public function main($title)
+    {
         $ret = null;
 
         // ############################
@@ -85,10 +87,16 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
 
         $pageTitleCachingEnabled = $this->checkIfPageTitleCachingEnabled();
         if ($pageTitleCachingEnabled) {
-            $cacheIdentification = $GLOBALS['TSFE']->id . '_' . substr(sha1(FrontendUtility::getCurrentUrl()),10,30) . '_title';
+            $cacheIdentification = sprintf(
+                '%s_%s_title',
+                $GLOBALS['TSFE']->id,
+                substr(sha1(FrontendUtility::getCurrentUrl()), 10, 30)
+            );
 
             /** @var \TYPO3\CMS\Core\Cache\CacheManager $cacheManager */
-            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
+            );
             $cacheManager  = $objectManager->get('TYPO3\\CMS\\Core\\Cache\\CacheManager');
             $cache         = $cacheManager->getCache('cache_pagesection');
 
@@ -127,7 +135,8 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
     /**
      * Initialize
      */
-    protected function initialize() {
+    protected function initialize()
+    {
         $this->cObj       = $GLOBALS['TSFE']->cObj;
         $this->tsSetup    = $GLOBALS['TSFE']->tmpl->setup;
         $this->pageRecord = $GLOBALS['TSFE']->page;
@@ -150,7 +159,8 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      *
      * @return bool
      */
-    protected function checkIfPageTitleCachingEnabled() {
+    protected function checkIfPageTitleCachingEnabled()
+    {
         $cachingEnabled = !empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['pageTitle.']['caching']);
 
         // Enable caching only if caching is enabled in SetupTS
@@ -173,7 +183,8 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      *
      * @return    string            Modified page title
      */
-    public function generatePageTitle($title) {
+    public function generatePageTitle($title)
+    {
         // INIT
         $ret              = $title;
         $rawTitel         = !empty($GLOBALS['TSFE']->altPageTitle) ? $GLOBALS['TSFE']->altPageTitle : $GLOBALS['TSFE']->page['title'];
@@ -194,7 +205,12 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'pageTitleSetup', $this, $this->tsSetupSeo);
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(
+            __CLASS__,
+            'pageTitleSetup',
+            $this,
+            $this->tsSetupSeo
+        );
 
         // get stdwrap list
         if (!empty($this->tsSetupSeo['pageTitle.']['stdWrap.'])) {
@@ -346,7 +362,8 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      *
      * @return string
      */
-    protected function applySitetitleToPagetitle($sitetitle, $title) {
+    protected function applySitetitleToPagetitle($sitetitle, $title)
+    {
         $pageTitleGlue    = ':';
         $glueSpacerBefore = '';
         $glueSpacerAfter  = '';

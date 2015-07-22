@@ -31,7 +31,8 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
 /**
  * TYPO3 Backend module sitemap
  */
-class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule {
+class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule
+{
     // ########################################################################
     // Attributes
     // ########################################################################
@@ -43,7 +44,8 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
     /**
      * Main action
      */
-    public function mainAction() {
+    public function mainAction()
+    {
         // Init
         $rootPageList    = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
         $rootSettingList = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageSettingList();
@@ -60,8 +62,10 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
                              INNER JOIN pages p
                                 ON p.uid = s.page_uid
                                AND p.deleted = 0
-                               AND ' . DatabaseUtility::conditionNotIn('p.doktype',
-                \Metaseo\Metaseo\Utility\SitemapUtility::getDoktypeBlacklist()) . '
+                               AND ' . DatabaseUtility::conditionNotIn(
+                                        'p.doktype',
+                                        \Metaseo\Metaseo\Utility\SitemapUtility::getDoktypeBlacklist()
+                                    ) . '
                 GROUP BY page_rootpid';
         $statsList = DatabaseUtility::getAllWithIndex($query, 'page_rootpid');
 
@@ -116,16 +120,16 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
 
             $joinWhere = DatabaseUtility::conditionNotIn(
-                        'p.doktype',
-                        \Metaseo\Metaseo\Utility\SitemapUtility::getDoktypeBlacklist()
-                    );
+                'p.doktype',
+                \Metaseo\Metaseo\Utility\SitemapUtility::getDoktypeBlacklist()
+            );
 
             // Root statistics
             $query              = 'SELECT COUNT(s.page_uid)
                                      FROM tx_metaseo_sitemap s
                                           INNER JOIN pages p
                                              ON p.uid = s.page_uid
-                                            AND ' .$joinWhere  . '
+                                            AND ' . $joinWhere . '
                                     WHERE s.page_rootpid = ' . (int)$pageId;
             $stats['sum_pages'] = DatabaseUtility::getOne($query);
 
@@ -156,7 +160,8 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
     /**
      * Sitemap action
      */
-    public function sitemapAction() {
+    public function sitemapAction()
+    {
         $params  = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_metaseo_metaseometaseo_metaseositemap');
         $rootPid = $params['pageId'];
 
@@ -257,7 +262,9 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
             'pagingSize'            => 50,
             'sortField'             => 'crdate',
             'sortDir'               => 'DESC',
-            'filterIcon'            => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-tree-search-open'),
+            'filterIcon'            => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(
+                'actions-system-tree-search-open'
+            ),
             'dataLanguage'          => $languageList,
             'dataDepth'             => $depthList,
             'criteriaFulltext'      => '',
@@ -323,9 +330,12 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         $metaSeoLang          = $this->translateList($metaSeoLang);
         $metaSeoLang['title'] = sprintf($metaSeoLang['title'], $rootPage['title'], $rootPid);
 
-        $this->view->assign('JavaScript', 'Ext.namespace("MetaSeo.sitemap");
+        $this->view->assign(
+            'JavaScript',
+            'Ext.namespace("MetaSeo.sitemap");
             MetaSeo.sitemap.conf      = ' . json_encode($metaSeoConf) . ';
             MetaSeo.sitemap.conf.lang = ' . json_encode($metaSeoLang) . ';
-        ');
+        '
+        );
     }
 }

@@ -29,7 +29,8 @@ namespace Metaseo\Metaseo\Page;
 /**
  * Abstract page
  */
-abstract class AbstractPage {
+abstract class AbstractPage
+{
     // ########################################################################
     // Attributes
     // ########################################################################
@@ -48,9 +49,12 @@ abstract class AbstractPage {
     /**
      * Constuctor
      */
-    public function __construct() {
+    public function __construct()
+    {
         // Init object manager
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
+        );
     }
 
     /**
@@ -65,7 +69,8 @@ abstract class AbstractPage {
      *
      * @param    string $msg Message
      */
-    protected function showError($msg = null) {
+    protected function showError($msg = null)
+    {
         if ($msg === null) {
             $msg = 'Sitemap is not available, please check your configuration';
         }

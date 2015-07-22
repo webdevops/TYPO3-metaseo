@@ -31,7 +31,8 @@ use Metaseo\Metaseo\Utility\GeneralUtility;
 /**
  * Sitemap TXT generator
  */
-class TxtGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator {
+class TxtGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator
+{
 
     // ########################################################################
     // Methods
@@ -42,7 +43,8 @@ class TxtGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
      *
      * @return  string
      */
-    public function sitemapIndex() {
+    public function sitemapIndex()
+    {
         return '';
     }
 
@@ -53,7 +55,8 @@ class TxtGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
      *
      * @return  string
      */
-    public function sitemap($page = null) {
+    public function sitemap($page = null)
+    {
         $ret = array();
 
         foreach ($this->sitemapPages as $sitemapPage) {

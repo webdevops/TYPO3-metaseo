@@ -31,7 +31,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Page Footer
  */
-class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
+class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
+{
 
     /**
      * Add Page Footer
@@ -40,7 +41,8 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      *
      * @return    string            Modified page title
      */
-    public function main($title) {
+    public function main($title)
+    {
         // INIT
         $ret        = array();
         $tsSetup    = $GLOBALS['TSFE']->tmpl->setup;
@@ -128,15 +130,18 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      *
      * @return string
      */
-    public function buildGoogleAnalyticsCode($tsServices, $gaConf) {
+    public function buildGoogleAnalyticsCode($tsServices, $gaConf)
+    {
         $ret        = array();
         $gaCodeList = GeneralUtility::trimExplode(',', $tsServices['googleAnalytics']);
 
         foreach ($gaCodeList as $gaCode) {
             $customCode = '';
             if (!empty($gaConf['customizationCode'])) {
-                $customCode .= "\n" . $this->cObj->cObjGetSingle($gaConf['customizationCode'],
-                        $gaConf['customizationCode.']);
+                $customCode .= "\n" . $this->cObj->cObjGetSingle(
+                    $gaConf['customizationCode'],
+                    $gaConf['customizationCode.']
+                );
             }
 
             $this->cObj->data['gaCode']                  = $gaCode;
@@ -163,7 +168,8 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      *
      * @return string
      */
-    public function serviceGoogleAnalyticsTrackDownloads($tsServices, $gaConf) {
+    public function serviceGoogleAnalyticsTrackDownloads($tsServices, $gaConf)
+    {
         $jsFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($gaConf['trackDownloadsScript']);
         $jsfile = preg_replace('/^' . preg_quote(PATH_site, '/') . '/i', '', $jsFile);
 
@@ -180,15 +186,19 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart {
      *
      * @return string
      */
-    public function buildPiwikCode($tsServices, $piwikConf) {
+    public function buildPiwikCode($tsServices, $piwikConf)
+    {
         $ret           = array();
         $piwikCodeList = GeneralUtility::trimExplode(',', $piwikConf['id']);
 
         foreach ($piwikCodeList as $piwikCode) {
             $customCode = '';
             if (!empty($piwikConf['customizationCode'])) {
-                $customCode .= "\n" . $this->cObj->cObjGetSingle($piwikConf['customizationCode'],
-                        $piwikConf['customizationCode.']);
+                $customCode .= "\n";
+                $customCode .= $this->cObj->cObjGetSingle(
+                    $piwikConf['customizationCode'],
+                    $piwikConf['customizationCode.']
+                );
             }
 
             // remove last slash

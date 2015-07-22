@@ -33,14 +33,16 @@ use Metaseo\Metaseo\Utility\RootPageUtility;
 /**
  * TYPO3 Command controller
  */
-class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController {
+class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController
+{
 
     /**
      * Get whole list of sitemap entries
      *
      * @return  string
      */
-    public function garbageCollectorCommand() {
+    public function garbageCollectorCommand()
+    {
         // Expire sitemap entries
         \Metaseo\Metaseo\Utility\SitemapUtility::expire();
     }
@@ -52,7 +54,8 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
      *
      * @return  string
      */
-    public function clearSitemapCommand($rootPageId) {
+    public function clearSitemapCommand($rootPageId)
+    {
         $rootPageId = $this->getRootPageIdFromId($rootPageId);
 
         if ($rootPageId !== null) {
@@ -75,13 +78,14 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
      *
      * @return  string
      */
-    public function sitemapCommand($rootPageId) {
+    public function sitemapCommand($rootPageId)
+    {
         $rootPageId = $this->getRootPageIdFromId($rootPageId);
 
         if ($rootPageId !== null) {
             $domain = RootPageUtility::getDomain($rootPageId);
 
-            $query   = 'SELECT page_url
+            $query = 'SELECT page_url
                           FROM tx_metaseo_sitemap
                          WHERE page_rootpid = ' . DatabaseUtility::quote($rootPageId, 'tx_metaseo_sitemap') . '
                            AND is_blacklisted = 0';
@@ -108,7 +112,8 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
      *
      * @return int|mixed|null
      */
-    protected function getRootPageIdFromId($var) {
+    protected function getRootPageIdFromId($var)
+    {
         $ret = null;
 
         if (is_numeric($var)) {
@@ -116,7 +121,9 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
             $pageId = (int)$var;
 
             /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
+            );
 
             /** @var \TYPO3\CMS\Frontend\Page\PageRepository $pageRepo */
             $pageRepo = $objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');

@@ -29,7 +29,8 @@ namespace Metaseo\Metaseo\Hook\TCA;
 /**
  * TCA Hook: Robots.txt default content
  */
-class RobotsTxtDefault {
+class RobotsTxtDefault
+{
 
     /**
      * TYPO3 Object manager
@@ -59,16 +60,21 @@ class RobotsTxtDefault {
      *
      * @return string
      */
-    public function main($data) {
+    public function main($data)
+    {
         // ############################
         // Init
         // ############################
 
         /** @var \TYPO3\CMS\Extbase\Object\ObjectManager objectManager */
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
+        );
 
         /** @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager configurationManager */
-        $this->configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
+        $this->configurationManager = $this->objectManager->get(
+            'TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager'
+        );
 
         /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer cObj */
         $this->cObj = $this->objectManager->get('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
@@ -85,8 +91,12 @@ class RobotsTxtDefault {
         $GLOBALS['TT']->start();
 
         /** @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $tsfeController */
-        $tsfeController = $this->objectManager->get('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
-            $GLOBALS['TYPO3_CONF_VARS'], $rootPageId, 0);
+        $tsfeController = $this->objectManager->get(
+            'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
+            $GLOBALS['TYPO3_CONF_VARS'],
+            $rootPageId,
+            0
+        );
 
         $GLOBALS['TSFE'] = $tsfeController;
 
@@ -95,13 +105,18 @@ class RobotsTxtDefault {
         // ############################
 
         // Fetch TypoScript setup
-        $tsSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::CONFIGURATION_TYPE_FULL_TYPOSCRIPT,
-            'metaseo', 'plugin');
+        $tsSetup = $this->configurationManager->getConfiguration(
+            \TYPO3\CMS\Extbase\Configuration\ConfigurationManager::CONFIGURATION_TYPE_FULL_TYPOSCRIPT,
+            'metaseo',
+            'plugin'
+        );
 
         $content = '';
         if (!empty($tsSetup['plugin.']['metaseo.']['robotsTxt.'])) {
-            $content = $this->cObj->cObjGetSingle($tsSetup['plugin.']['metaseo.']['robotsTxt.']['default'],
-                $tsSetup['plugin.']['metaseo.']['robotsTxt.']['default.']);
+            $content = $this->cObj->cObjGetSingle(
+                $tsSetup['plugin.']['metaseo.']['robotsTxt.']['default'],
+                $tsSetup['plugin.']['metaseo.']['robotsTxt.']['default.']
+            );
         }
 
         $content = htmlspecialchars($content);

@@ -33,14 +33,15 @@ use Metaseo\Metaseo\Utility\SitemapUtility;
 /**
  * Sitemap Indexer
  */
-class SitemapIndexPageHook extends SitemapIndexHook {
-
+class SitemapIndexPageHook extends SitemapIndexHook
+{
 
 
     /**
      * Init configuration
      */
-    protected function initConfiguration() {
+    protected function initConfiguration()
+    {
         parent::initConfiguration();
 
         // Check custom index expiration (from connector)
@@ -52,7 +53,6 @@ class SitemapIndexPageHook extends SitemapIndexHook {
         if (!empty($sitemapStore['expiration'])) {
             $this->indexExpiration = $_SERVER['REQUEST_TIME'] + ($sitemapStore['expiration'] * 24 * 60 * 60);
         }
-
     }
 
     // ########################################################################
@@ -62,13 +62,13 @@ class SitemapIndexPageHook extends SitemapIndexHook {
     /**
      * Hook: Index Page Content
      */
-    public function hook_indexContent() {
+    public function hook_indexContent()
+    {
         $this->addPageToSitemapIndex();
 
         $possibility = (int)GeneralUtility::getExtConf('sitemap_clearCachePossibility', 0);
 
         if ($possibility > 0) {
-
             $clearCacheChance = ceil(mt_rand(0, $possibility));
             if ($clearCacheChance == 1) {
                 SitemapUtility::expire();
@@ -85,7 +85,8 @@ class SitemapIndexPageHook extends SitemapIndexHook {
      *
      * @return void
      */
-    public function addPageToSitemapIndex() {
+    public function addPageToSitemapIndex()
+    {
         if (!$this->checkIfSitemapIndexingIsEnabled('page')) {
             return;
         }
@@ -111,7 +112,8 @@ class SitemapIndexPageHook extends SitemapIndexHook {
      *
      * @return array
      */
-    protected function generateSitemapPageData($pageUrl) {
+    protected function generateSitemapPageData($pageUrl)
+    {
         $page = $GLOBALS['TSFE']->page;
 
         $tstamp = $_SERVER['REQUEST_TIME'];
@@ -140,7 +142,8 @@ class SitemapIndexPageHook extends SitemapIndexHook {
      *
      * @return null|string
      */
-    protected function getPageUrl() {
+    protected function getPageUrl()
+    {
         // Fetch chash
         $pageHash = null;
         if (!empty($GLOBALS['TSFE']->cHash)) {

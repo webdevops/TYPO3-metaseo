@@ -31,7 +31,8 @@ use Metaseo\Metaseo\Utility\GeneralUtility;
 /**
  * Robots txt Page
  */
-class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
+class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage
+{
 
     // ########################################################################
     // Attributes
@@ -64,10 +65,10 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
      * @var integer
      */
     protected $languageId;
-    
+
     /**
      * Link to static sitemap
-     * 
+     *
      * @var boolean
      */
     protected $linkToStaticSitemap;
@@ -86,7 +87,8 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
     /**
      * Fetch and build robots.txt
      */
-    public function main() {
+    public function main()
+    {
         $ret = '';
 
         $settings = GeneralUtility::getRootSetting();
@@ -158,14 +160,15 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
 
     /**
      * Apply marker to robots.txt
-     * 
+     *
      * @param string $robotsTxt Content of robots.txt
      *
      * @return string
      */
-    protected function applyMarker($robotsTxt) {
+    protected function applyMarker($robotsTxt)
+    {
         $ret = $robotsTxt;
-        
+
         $markerList     = array();
         $markerConfList = array();
 
@@ -182,8 +185,10 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
 
         // Fetch marker content
         foreach ($markerConfList as $name => $conf) {
-            $markerList['%' . $name . '%'] = $this->cObj->cObjGetSingle($this->tsSetupSeo['marker.'][$name],
-                $this->tsSetupSeo['marker.'][$name . '.']);
+            $markerList['%' . $name . '%'] = $this->cObj->cObjGetSingle(
+                $this->tsSetupSeo['marker.'][$name],
+                $this->tsSetupSeo['marker.'][$name . '.']
+            );
         }
 
         // generate sitemap-static marker

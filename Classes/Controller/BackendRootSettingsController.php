@@ -31,7 +31,8 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
 /**
  * TYPO3 Backend module root settings
  */
-class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule {
+class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule
+{
     // ########################################################################
     // Attributes
     // ########################################################################
@@ -43,7 +44,8 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
     /**
      * Main action
      */
-    public function mainAction() {
+    public function mainAction()
+    {
         // #################
         // Root page list
         // #################
@@ -121,8 +123,10 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
             }
 
             // Settings available
-            $page['settingsLink'] = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_metaseo_setting_root][' . $rootSettingList[$pageId]['uid'] . ']=edit',
-                $this->doc->backPath);
+            $page['settingsLink'] = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick(
+                '&edit[tx_metaseo_setting_root][' . $rootSettingList[$pageId]['uid'] . ']=edit',
+                $this->doc->backPath
+            );
         }
         unset($page);
 
