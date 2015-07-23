@@ -172,7 +172,6 @@ class PageAjax extends AbstractAjax
                 default:
                     // Not defined
                     return;
-                    break;
             }
         }
 
