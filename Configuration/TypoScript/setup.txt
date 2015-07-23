@@ -436,6 +436,7 @@ Disallow: /typo3/
 Disallow: /typo3_src/
 Disallow: /typo3conf/
 Disallow: /clear.gif
+Allow: /typo3/sysext/frontend/Resources/Public/*
 
                 )
             }
