@@ -136,7 +136,7 @@ class Connector implements SingletonInterface
         $value = (string)$value;
 
         if (strpos($key, 'og:') === 0) {
-            return self::setOpenGraphTag($key, $value);
+            self::setOpenGraphTag($key, $value);
         }
 
         self::$store['meta'][$key] = $value;
