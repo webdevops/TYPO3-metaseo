@@ -26,12 +26,13 @@
 
 namespace Metaseo\Metaseo\Page\Part;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Page Footer
  */
-class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
+class FooterPart extends AbstractPart
 {
 
     /**
@@ -87,7 +88,8 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
                 $GLOBALS['TSFE']->set_no_cache('MetaSEO: Google Analytics code disabled, backend login detected');
 
                 // Backend login detected, disable cache because this page is viewed by BE-users
-                $ret['ga.disabled'] = '<!-- Google Analytics disabled, Page cache disabled - Backend-Login detected -->';
+                $ret['ga.disabled'] = '<!-- Google Analytics disabled, '
+                    . 'Page cache disabled - Backend-Login detected -->';
             }
         }
 
@@ -95,7 +97,10 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
         // #########################################
         // PIWIK
         // #########################################
-        if (!empty($tsServices['piwik.']) && !empty($tsServices['piwik.']['url']) && !empty($tsServices['piwik.']['id'])) {
+        if (!empty($tsServices['piwik.'])
+            && !empty($tsServices['piwik.']['url'])
+            && !empty($tsServices['piwik.']['id'])
+        ) {
             $piwikConf = $tsServices['piwik.'];
 
             $piwikEnabled = true;
@@ -170,7 +175,7 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
      */
     public function serviceGoogleAnalyticsTrackDownloads($tsServices, $gaConf)
     {
-        $jsFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($gaConf['trackDownloadsScript']);
+        $jsFile = Typo3GeneralUtility::getFileAbsFileName($gaConf['trackDownloadsScript']);
         $jsfile = preg_replace('/^' . preg_quote(PATH_site, '/') . '/i', '', $jsFile);
 
         $ret = '<script type="text/javascript" src="' . htmlspecialchars($jsfile) . '"></script>';

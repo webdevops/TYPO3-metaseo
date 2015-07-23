@@ -26,10 +26,13 @@
 
 namespace Metaseo\Metaseo\Page;
 
+use Metaseo\Metaseo\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
+
 /**
  * Sitemap xml page
  */
-class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage
+class SitemapXmlPage extends AbstractPage
 {
 
     // ########################################################################
@@ -52,7 +55,7 @@ class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage
         $this->tsSetup = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.'];
 
         // check if sitemap is enabled in root
-        if (!\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap', true)) {
+        if (!GeneralUtility::getRootSettingValue('is_sitemap', true)) {
             $this->showError('Sitemap is not available, please check your configuration [control-center]');
         }
 
@@ -68,7 +71,7 @@ class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage
      */
     protected function build()
     {
-        $page = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('page');
+        $page = Typo3GeneralUtility::_GP('page');
 
         /** @var \Metaseo\Metaseo\Sitemap\Generator\XmlGenerator $generator */
         $generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\XmlGenerator');

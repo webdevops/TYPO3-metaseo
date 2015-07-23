@@ -26,10 +26,13 @@
 
 namespace Metaseo\Metaseo\Backend\Module;
 
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+
 /**
  * TYPO3 Backend module base
  */
-abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+abstract class AbstractModule extends ActionController
 {
     // ########################################################################
     // Attributes
@@ -81,7 +84,7 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
      */
     protected function translate($key, $arguments = null)
     {
-        $ret = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $this->extensionName, $arguments);
+        $ret = LocalizationUtility::translate($key, $this->extensionName, $arguments);
 
         // Not translated handling
         if ($ret === null) {

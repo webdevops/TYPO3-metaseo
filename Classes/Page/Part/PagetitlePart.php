@@ -27,11 +27,13 @@
 namespace Metaseo\Metaseo\Page\Part;
 
 use Metaseo\Metaseo\Utility\FrontendUtility;
+use Metaseo\Metaseo\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
 
 /**
  * Page Title Changer
  */
-class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart
+class PagetitlePart extends AbstractPart
 {
 
     /**
@@ -94,7 +96,7 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart
             );
 
             /** @var \TYPO3\CMS\Core\Cache\CacheManager $cacheManager */
-            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            $objectManager = Typo3GeneralUtility::makeInstance(
                 'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
             );
             $cacheManager  = $objectManager->get('TYPO3\\CMS\\Core\\Cache\\CacheManager');
@@ -127,7 +129,7 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart
         // ############################
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'pageTitleOutput', $this, $ret);
+        GeneralUtility::callHookAndSignal(__CLASS__, 'pageTitleOutput', $this, $ret);
 
         return $ret;
     }
@@ -140,7 +142,7 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart
         $this->cObj       = $GLOBALS['TSFE']->cObj;
         $this->tsSetup    = $GLOBALS['TSFE']->tmpl->setup;
         $this->pageRecord = $GLOBALS['TSFE']->page;
-        $this->rootLine   = \Metaseo\Metaseo\Utility\GeneralUtility::getRootLine();
+        $this->rootLine   = GeneralUtility::getRootLine();
 
         if (!empty($this->tsSetup['plugin.']['metaseo.'])) {
             $this->tsSetupSeo = $this->tsSetup['plugin.']['metaseo.'];
@@ -187,7 +189,8 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart
     {
         // INIT
         $ret              = $title;
-        $rawTitel         = !empty($GLOBALS['TSFE']->altPageTitle) ? $GLOBALS['TSFE']->altPageTitle : $GLOBALS['TSFE']->page['title'];
+        $rawTitel         = !empty($GLOBALS['TSFE']->altPageTitle) ?
+            $GLOBALS['TSFE']->altPageTitle : $GLOBALS['TSFE']->page['title'];
         $currentPid       = $GLOBALS['TSFE']->id;
         $skipPrefixSuffix = false;
         $applySitetitle   = true;
@@ -205,7 +208,7 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(
+        GeneralUtility::callHookAndSignal(
             __CLASS__,
             'pageTitleSetup',
             $this,
@@ -260,7 +263,6 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart
                             break 2;
                         }
                         break;
-
                     case 1:
                         // ###################################
                         // Skip

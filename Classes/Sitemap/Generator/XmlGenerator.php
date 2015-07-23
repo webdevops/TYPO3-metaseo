@@ -31,7 +31,7 @@ use Metaseo\Metaseo\Utility\GeneralUtility;
 /**
  * Sitemap XML generator
  */
-class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator
+class XmlGenerator extends AbstractGenerator
 {
 
     // ########################################################################
@@ -74,8 +74,10 @@ class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator
         }
 
         $ret = '<?xml version="1.0" encoding="UTF-8"?>';
-        $ret .= '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"';
-        $ret .= ' xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
+        $ret .= '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
+            . 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"';
+        $ret .= ' xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 '
+            . 'http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
 
         // Call hook
         GeneralUtility::callHookAndSignal(__CLASS__, 'sitemapXmlIndexSitemapList', $this, $sitemaps);

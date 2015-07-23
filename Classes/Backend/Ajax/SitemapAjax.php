@@ -27,11 +27,12 @@
 namespace Metaseo\Metaseo\Backend\Ajax;
 
 use Metaseo\Metaseo\Utility\DatabaseUtility;
+use Metaseo\Metaseo\Utility\SitemapUtility;
 
 /**
  * TYPO3 Backend ajax module sitemap
  */
-class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
+class SitemapAjax extends AbstractAjax
 {
 
     /**
@@ -87,7 +88,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
         // Filter blacklisted page types
         $where[] = DatabaseUtility::conditionNotIn(
             'p.doktype',
-            \Metaseo\Metaseo\Utility\SitemapUtility::getDoktypeBlacklist()
+            SitemapUtility::getDoktypeBlacklist()
         );
 
         // Build where
@@ -98,7 +99,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
         // ############################
 
         // Fetch total count of items with this filter settings
-        $query     = 'SELECT COUNT(*) as count
+        $query     = 'SELECT COUNT(*) AS count
                         FROM tx_metaseo_sitemap s
                              INNER JOIN pages p ON p.uid = s.page_uid
                        WHERE ' . $where;
