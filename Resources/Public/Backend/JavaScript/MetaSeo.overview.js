@@ -248,11 +248,15 @@ MetaSeo.overview.grid = {
                     var field = col.metaSeoClickEdit;
                     field.itemId = 'form-field';
 
-                    if (!field.width)    field.width = 375;
+                    if (!field.width) {
+                        field.width = 375;
+                    }
 
                     switch (field.xtype) {
                         case 'textarea':
-                            if (!field.height)    field.height = 150;
+                            if (!field.height) {
+                                field.height = 150;
+                            }
                             field.value = data;
                             break;
 
@@ -288,7 +292,7 @@ MetaSeo.overview.grid = {
                                     var callbackFinish = function(response) {
                                         var response = Ext.decode(response.responseText);
 
-                                        if( response && response.error ) {
+                                        if ( response && response.error ) {
                                             TYPO3.Flashmessage.display(TYPO3.Severity.error, '', Ext.util.Format.htmlEncode(response.error) );
                                         }
 
