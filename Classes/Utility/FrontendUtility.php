@@ -47,8 +47,7 @@ class FrontendUtility
         $pageData = null,
         $rootlineFull = null,
         $sysLanguage = null
-    )
-    {
+    ) {
         static $cacheTSFE = array();
         static $lastTsSetupPid = null;
 

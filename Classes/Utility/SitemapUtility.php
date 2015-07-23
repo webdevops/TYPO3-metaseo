@@ -37,7 +37,8 @@ class SitemapUtility
     const SITEMAP_TYPE_PAGE = 0;
     const SITEMAP_TYPE_FILE = 1;
 
-    const PAGE_TYPE_SITEMAP_TXT = 841131; // sitemap.txt     (EXT:metaseo), apply changes in Configuration/TypoScript/setup.txt
+    /* apply changes in Configuration/TypoScript/setup.txt */
+    const PAGE_TYPE_SITEMAP_TXT = 841131; // sitemap.txt     (EXT:metaseo)
     const PAGE_TYPE_SITEMAP_XML = 841132; // sitemap.xml     (EXT:metaseo)
     const PAGE_TYPE_ROBOTS_TXT  = 841133; // robots.txt      (EXT:metaseo)
 
@@ -213,9 +214,14 @@ class SitemapUtility
 
         // Fetch from SetupTS (comma separated list)
         if (isset($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist'])
-            && strlen($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist']) >= 1
+            && strlen(
+                $GLOBALS['TSFE']
+                    ->tmpl
+                    ->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist']
+            ) >= 1
         ) {
-            $pageTypeBlacklist = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist'];
+            $pageTypeBlacklist = $GLOBALS['TSFE']->tmpl
+                                     ->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist'];
             $pageTypeBlacklist = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $pageTypeBlacklist);
 
             $ret = array_merge($ret, $pageTypeBlacklist);

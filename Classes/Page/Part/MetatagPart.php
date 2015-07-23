@@ -1075,14 +1075,16 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
                 'tag'        => 'meta',
                 'attributes' => array(
                     'name'    => 'ICBM',
-                    'content' => $this->tsSetupSeo['geoPositionLatitude'] . ', ' . $this->tsSetupSeo['geoPositionLongitude'],
+                    'content' => $this->tsSetupSeo['geoPositionLatitude'] . ', '
+                        . $this->tsSetupSeo['geoPositionLongitude'],
                 ),
             );
             $this->metaTagList['geo.position'] = array(
                 'tag'        => 'meta',
                 'attributes' => array(
                     'name'    => 'geo.position',
-                    'content' => $this->tsSetupSeo['geoPositionLatitude'] . ';' . $this->tsSetupSeo['geoPositionLongitude'],
+                    'content' => $this->tsSetupSeo['geoPositionLatitude'] . ';'
+                        . $this->tsSetupSeo['geoPositionLongitude'],
                 ),
             );
         }
@@ -1325,7 +1327,8 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
                 $ogTagValue = $tsSetupSeoOg[$ogTagName];
             } elseif (!empty($tsSetupSeoOg[$ogTagName])) {
                 // Content object (eg. TEXT)
-                $ogTagValue = $this->cObj->cObjGetSingle($tsSetupSeoOg[$ogTagName],
+                $ogTagValue = $this->cObj->cObjGetSingle(
+                    $tsSetupSeoOg[$ogTagName],
                     $tsSetupSeoOg[$ogTagName],
                     $tsSetupSeoOg[$ogTagName . '.']
                 );

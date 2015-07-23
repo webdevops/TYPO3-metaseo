@@ -99,7 +99,6 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
                     }
                     unset($row);
                     break;
-
                 case 'geo':
                     $fieldList = array_merge(
                         $fieldList,
@@ -113,7 +112,6 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
 
                     $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
                     break;
-
                 case 'searchengines':
                     $fieldList = array_merge(
                         $fieldList,
@@ -126,7 +124,6 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
 
                     $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
                     break;
-
                 case 'url':
                     $fieldList = array_merge(
                         $fieldList,
@@ -142,8 +139,6 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
 
                     $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
                     break;
-
-
                 case 'advanced':
                     $fieldList = array_merge(
                         $fieldList,
@@ -153,7 +148,6 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
 
                     $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList, true);
                     break;
-
                 case 'pagetitle':
                     $fieldList = array_merge(
                         $fieldList,
@@ -167,11 +161,9 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
 
                     $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
                     break;
-
                 case 'pagetitlesim':
                     $list = $this->listPageTitleSim($page, $depth, $sysLanguage);
                     break;
-
                 default:
                     // Not defined
                     return;
@@ -725,7 +717,6 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
                     );
                 }
                 break;
-
             case 'pages':
                 // Update field in page (also logs update event and clear cache for this page)
                 $this->tce()->updateDB(
@@ -845,7 +836,8 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
         }
 
         $query = 'INSERT INTO tx_metaseo_metatag
-                              (pid, tstamp, crdate, cruser_id, sys_language_uid, tag_name, tag_subname, tag_value, tag_group)
+                              (pid, tstamp, crdate, cruser_id, sys_language_uid,
+                                  tag_name, tag_subname, tag_value, tag_group)
                        VALUES (
                              ' . (int)$pid . ',
                              ' . (int)$tstamp . ',

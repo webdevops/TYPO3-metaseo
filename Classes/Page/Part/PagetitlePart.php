@@ -187,7 +187,8 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart
     {
         // INIT
         $ret              = $title;
-        $rawTitel         = !empty($GLOBALS['TSFE']->altPageTitle) ? $GLOBALS['TSFE']->altPageTitle : $GLOBALS['TSFE']->page['title'];
+        $rawTitel         = !empty($GLOBALS['TSFE']->altPageTitle) ?
+            $GLOBALS['TSFE']->altPageTitle : $GLOBALS['TSFE']->page['title'];
         $currentPid       = $GLOBALS['TSFE']->id;
         $skipPrefixSuffix = false;
         $applySitetitle   = true;
@@ -260,7 +261,6 @@ class PagetitlePart extends \Metaseo\Metaseo\Page\Part\AbstractPart
                             break 2;
                         }
                         break;
-
                     case 1:
                         // ###################################
                         // Skip

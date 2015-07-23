@@ -87,7 +87,8 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
                 $GLOBALS['TSFE']->set_no_cache('MetaSEO: Google Analytics code disabled, backend login detected');
 
                 // Backend login detected, disable cache because this page is viewed by BE-users
-                $ret['ga.disabled'] = '<!-- Google Analytics disabled, Page cache disabled - Backend-Login detected -->';
+                $ret['ga.disabled'] = '<!-- Google Analytics disabled, '
+                    . 'Page cache disabled - Backend-Login detected -->';
             }
         }
 
@@ -95,7 +96,10 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
         // #########################################
         // PIWIK
         // #########################################
-        if (!empty($tsServices['piwik.']) && !empty($tsServices['piwik.']['url']) && !empty($tsServices['piwik.']['id'])) {
+        if (!empty($tsServices['piwik.'])
+            && !empty($tsServices['piwik.']['url'])
+            && !empty($tsServices['piwik.']['id'])
+        ) {
             $piwikConf = $tsServices['piwik.'];
 
             $piwikEnabled = true;
@@ -139,9 +143,9 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
             $customCode = '';
             if (!empty($gaConf['customizationCode'])) {
                 $customCode .= "\n" . $this->cObj->cObjGetSingle(
-                        $gaConf['customizationCode'],
-                        $gaConf['customizationCode.']
-                    );
+                    $gaConf['customizationCode'],
+                    $gaConf['customizationCode.']
+                );
             }
 
             $this->cObj->data['gaCode']                  = $gaCode;

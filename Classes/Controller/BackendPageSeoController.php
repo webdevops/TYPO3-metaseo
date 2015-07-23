@@ -110,7 +110,8 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
             // Flag (if available)
             if (!empty($langRow['flag'])) {
-                $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-' . $langRow['flag'] . ' t3-icon-' . $langRow['flag'] . '"></span>';
+                $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-' . $langRow['flag']
+                    . ' t3-icon-' . $langRow['flag'] . '"></span>';
                 $flag .= '&nbsp;';
             }
 
