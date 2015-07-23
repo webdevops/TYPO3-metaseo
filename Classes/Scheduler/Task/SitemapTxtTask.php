@@ -29,7 +29,7 @@ namespace Metaseo\Metaseo\Scheduler\Task;
 /**
  * Scheduler Task Sitemap TXT
  */
-class SitemapTxtTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
+class SitemapTxtTask extends AbstractSitemapTask
 {
 
     // ########################################################################

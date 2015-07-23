@@ -31,7 +31,7 @@ use Metaseo\Metaseo\Utility\GeneralUtility;
 /**
  * Sitemap XML generator
  */
-class XmlGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator
+class XmlGenerator extends AbstractGenerator
 {
 
     // ########################################################################

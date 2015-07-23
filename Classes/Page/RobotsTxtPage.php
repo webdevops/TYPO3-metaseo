@@ -31,7 +31,7 @@ use Metaseo\Metaseo\Utility\GeneralUtility;
 /**
  * Robots txt Page
  */
-class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage
+class RobotsTxtPage extends AbstractPage
 {
 
     // ########################################################################

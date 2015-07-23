@@ -26,10 +26,12 @@
 
 namespace Metaseo\Metaseo;
 
+use TYPO3\CMS\Core\SingletonInterface;
+
 /**
  * Connector
  */
-class Connector implements \TYPO3\CMS\Core\SingletonInterface
+class Connector implements SingletonInterface
 {
 
     // ########################################################################

@@ -27,6 +27,7 @@
 namespace Metaseo\Metaseo\Scheduler\Task;
 
 use Metaseo\Metaseo\Utility\DatabaseUtility;
+use Metaseo\Metaseo\Utility\FrontendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -125,7 +126,7 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      */
     protected function initRootPage($rootPageId)
     {
-        \Metaseo\Metaseo\Utility\FrontendUtility::init($rootPageId);
+        FrontendUtility::init($rootPageId);
     }
 
     /**

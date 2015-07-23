@@ -26,12 +26,17 @@
 
 namespace Metaseo\Metaseo\Controller;
 
+use Metaseo\Metaseo\Backend\Module\AbstractStandardModule;
+use Metaseo\Metaseo\Utility\BackendUtility;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
+use Metaseo\Metaseo\Utility\RootPageUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility as Typo3BackendUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 
 /**
  * TYPO3 Backend module root settings
  */
-class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule
+class BackendControlCenterController extends AbstractStandardModule
 {
     // ########################################################################
     // Attributes
@@ -50,7 +55,7 @@ class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\Abs
         // Root page list
         // #################
 
-        $rootPageList = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
+        $rootPageList = BackendUtility::getRootPageList();
         $rootIdList   = array_keys($rootPageList);
 
         $rootPidCondition = null;
@@ -83,7 +88,7 @@ class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\Abs
             DatabaseUtility::execInsert($query);
         }
 
-        $rootSettingList = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageSettingList();
+        $rootSettingList = BackendUtility::getRootPageSettingList();
 
         // #################
         // Domain list
@@ -124,13 +129,13 @@ class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\Abs
             }
 
             // Settings available
-            $page['settingsLink'] = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick(
+            $page['settingsLink'] = Typo3BackendUtility::editOnClick(
                 '&edit[tx_metaseo_setting_root][' . $rootSettingList[$pageId]['uid'] . ']=edit',
                 $this->doc->backPath
             );
 
-            $page['sitemapLink']   = \Metaseo\Metaseo\Utility\RootPageUtility::getSitemapIndexUrl($pageId);
-            $page['robotsTxtLink'] = \Metaseo\Metaseo\Utility\RootPageUtility::getRobotsTxtUrl($pageId);
+            $page['sitemapLink']   = RootPageUtility::getSitemapIndexUrl($pageId);
+            $page['robotsTxtLink'] = RootPageUtility::getRobotsTxtUrl($pageId);
         }
         unset($page);
 
@@ -139,7 +144,7 @@ class BackendControlCenterController extends \Metaseo\Metaseo\Backend\Module\Abs
             $this->addFlashMessage(
                 $this->translate('message.warning.noRootPage.message'),
                 $this->translate('message.warning.noRootPage.title'),
-                \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+                FlashMessage::WARNING
             );
         }
 

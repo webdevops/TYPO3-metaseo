@@ -27,11 +27,12 @@
 namespace Metaseo\Metaseo\Backend\Ajax;
 
 use Metaseo\Metaseo\Utility\DatabaseUtility;
+use Metaseo\Metaseo\Utility\SitemapUtility;
 
 /**
  * TYPO3 Backend ajax module sitemap
  */
-class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
+class SitemapAjax extends AbstractAjax
 {
 
     /**
@@ -87,7 +88,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
         // Filter blacklisted page types
         $where[] = DatabaseUtility::conditionNotIn(
             'p.doktype',
-            \Metaseo\Metaseo\Utility\SitemapUtility::getDoktypeBlacklist()
+            SitemapUtility::getDoktypeBlacklist()
         );
 
         // Build where

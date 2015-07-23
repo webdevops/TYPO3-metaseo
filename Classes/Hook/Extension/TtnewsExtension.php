@@ -26,6 +26,9 @@
 
 namespace Metaseo\Metaseo\Hook\Extension;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
+
 /**
  * EXT:tt_news hook for metatags
  */
@@ -38,15 +41,15 @@ class TtnewsExtension
      * @param   array                                     $markerArray Marker array
      * @param   array                                     $row         Current tt_news row
      * @param   array                                     $lConf       Local configuration
-     * @param   \TYPO3\CMS\Frontend\Plugin\AbstractPlugin $ttnewsObj   Pi-object from tt_news
+     * @param   AbstractPlugin $ttnewsObj   Pi-object from tt_news
      *
      * @return  array                Marker array (not changed)
      */
-    public function extraItemMarkerProcessor($markerArray, $row, $lConf, \TYPO3\CMS\Frontend\Plugin\AbstractPlugin $ttnewsObj)
+    public function extraItemMarkerProcessor($markerArray, $row, $lConf, AbstractPlugin $ttnewsObj)
     {
         $theCode = (string)strtoupper(trim($ttnewsObj->theCode));
 
-        $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Metaseo\\Metaseo\\Connector');
+        $connector = GeneralUtility::makeInstance('Metaseo\\Metaseo\\Connector');
 
         switch ($theCode) {
             case 'SINGLE':

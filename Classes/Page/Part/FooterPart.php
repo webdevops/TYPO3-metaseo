@@ -26,12 +26,13 @@
 
 namespace Metaseo\Metaseo\Page\Part;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Page Footer
  */
-class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
+class FooterPart extends AbstractPart
 {
 
     /**
@@ -174,7 +175,7 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
      */
     public function serviceGoogleAnalyticsTrackDownloads($tsServices, $gaConf)
     {
-        $jsFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($gaConf['trackDownloadsScript']);
+        $jsFile = Typo3GeneralUtility::getFileAbsFileName($gaConf['trackDownloadsScript']);
         $jsfile = preg_replace('/^' . preg_quote(PATH_site, '/') . '/i', '', $jsFile);
 
         $ret = '<script type="text/javascript" src="' . htmlspecialchars($jsfile) . '"></script>';

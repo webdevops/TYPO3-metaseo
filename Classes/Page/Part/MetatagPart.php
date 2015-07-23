@@ -27,11 +27,14 @@
 namespace Metaseo\Metaseo\Page\Part;
 
 use Metaseo\Metaseo\Utility\DatabaseUtility;
+use Metaseo\Metaseo\Utility\FrontendUtility;
+use Metaseo\Metaseo\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * Metatags generator
  */
-class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
+class MetatagPart extends AbstractPart
 {
 
     /**
@@ -174,7 +177,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
             }
 
             // Call hook
-            \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(
+            GeneralUtility::callHookAndSignal(
                 __CLASS__,
                 'metatagSetup',
                 $this,
@@ -243,7 +246,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
     {
 
         // Extension: news
-        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('news')) {
+        if (ExtensionManagementUtility::isLoaded('news')) {
             $this->initExtensionSupportNews();
         }
     }
@@ -363,7 +366,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
 
         $ret = $this->cObj->typoLink_URL($conf);
         // maybe baseUrlWrap is better? but breaks with realurl currently?
-        $ret = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($ret);
+        $ret = GeneralUtility::fullUrl($ret);
 
         if ($disableMP) {
             // Restore old MP linking configuration
@@ -407,9 +410,9 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
         #####################
         # Blacklisting
         #####################
-        if (\Metaseo\Metaseo\Utility\FrontendUtility::checkPageForBlacklist($blacklist)) {
+        if (FrontendUtility::checkPageForBlacklist($blacklist)) {
             if ($strictMode) {
-                if ($noMpMode && \Metaseo\Metaseo\Utility\GeneralUtility::isMountpointInRootLine()) {
+                if ($noMpMode && GeneralUtility::isMountpointInRootLine()) {
                     // Mountpoint detected
                     $linkParam = $GLOBALS['TSFE']->id;
 
@@ -456,7 +459,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
         # Mountpoint
         #####################
 
-        if (!$linkParam && $noMpMode && \Metaseo\Metaseo\Utility\GeneralUtility::isMountpointInRootLine()) {
+        if (!$linkParam && $noMpMode && GeneralUtility::isMountpointInRootLine()) {
             // Mountpoint detected
             $linkParam = $GLOBALS['TSFE']->id;
 
@@ -480,7 +483,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
             // Fetch pageUrl
             if ($pageHash !== null) {
                 // Virtual plugin page, we have to use achnor or site script
-                $linkParam = \Metaseo\Metaseo\Utility\FrontendUtility::getCurrentUrl();
+                $linkParam = FrontendUtility::getCurrentUrl();
             } else {
                 $linkParam = $GLOBALS['TSFE']->id;
             }
@@ -574,7 +577,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
     protected function processMetaTags(&$tags)
     {
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'metatagOutput', $this, $tags);
+        GeneralUtility::callHookAndSignal(__CLASS__, 'metatagOutput', $this, $tags);
 
         // Add marker
         $markerList = array(
@@ -1205,7 +1208,7 @@ class MetatagPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
      */
     protected function generateLinkMetaTags()
     {
-        $rootLine = \Metaseo\Metaseo\Utility\GeneralUtility::getRootLine();
+        $rootLine = GeneralUtility::getRootLine();
 
         $currentPage = end($rootLine);
         $rootPage    = reset($rootLine);

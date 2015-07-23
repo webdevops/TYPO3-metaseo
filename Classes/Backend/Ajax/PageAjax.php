@@ -28,11 +28,16 @@
 namespace Metaseo\Metaseo\Backend\Ajax;
 
 use Metaseo\Metaseo\Utility\DatabaseUtility;
+use Metaseo\Metaseo\Utility\FrontendUtility;
+use Metaseo\Metaseo\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
 
 /**
  * TYPO3 Backend ajax module page
  */
-class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
+class PageAjax extends AbstractAjax
 {
 
     // ########################################################################
@@ -69,7 +74,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
         $GLOBALS['BE_USER']->setAndSaveSessionData('MetaSEO.sysLanguage', $sysLanguage);
 
         if (!empty($pid)) {
-            $page = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pid);
+            $page = BackendUtility::getRecord('pages', $pid);
 
             $fieldList = array();
 
@@ -460,7 +465,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
             $currPageIndex = key($rootLine);
             unset($rootLine[$currPageIndex]);
 
-            \Metaseo\Metaseo\Utility\FrontendUtility::init(
+            FrontendUtility::init(
                 $prevPage['uid'],
                 $rootLine,
                 $pageData,
@@ -469,7 +474,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
             );
         }
 
-        \Metaseo\Metaseo\Utility\FrontendUtility::init($page['uid'], $rootLine, $pageData, $rootlineFull, $sysLanguage);
+        FrontendUtility::init($page['uid'], $rootLine, $pageData, $rootlineFull, $sysLanguage);
     }
 
     /**
@@ -485,13 +490,13 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
         $pid = (int)$this->postVar['pid'];
 
         if (!empty($pid)) {
-            $page = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pid);
+            $page = BackendUtility::getRecord('pages', $pid);
 
             if (!empty($page)) {
                 // Load TYPO3 classes
                 $this->initTsfe($page, null, $page, null);
 
-                $pagetitle = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                $pagetitle = Typo3GeneralUtility::makeInstance(
                     'Metaseo\\Metaseo\\Page\\Part\\PagetitlePart'
                 );
                 $ret       = $pagetitle->main($page['title']);
@@ -518,10 +523,10 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
         $pid = (int)$this->postVar['pid'];
 
         if (!empty($pid)) {
-            $page = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pid);
+            $page = BackendUtility::getRecord('pages', $pid);
 
             if (!empty($page)) {
-                if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('realurl')) {
+                if (ExtensionManagementUtility::isLoaded('realurl')) {
                     // Disable caching for url
                     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['enableUrlDecodeCache'] = 0;
                     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['enableUrlEncodeCache'] = 0;
@@ -533,7 +538,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
                 $ret = $GLOBALS['TSFE']->cObj->typolink_URL(array('parameter' => $page['uid']));
 
                 if (!empty($ret)) {
-                    $ret = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($ret);
+                    $ret = GeneralUtility::fullUrl($ret);
                 }
             }
         }
@@ -585,7 +590,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
             );
         }
 
-        $page = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pid);
+        $page = BackendUtility::getRecord('pages', $pid);
 
         // check if page exists and user can edit this specific record
         if (empty($page) || !$GLOBALS['BE_USER']->doesUserHaveAccess($page, 2)) {
@@ -656,6 +661,7 @@ class PageAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
         $depth       = (int)$this->postVar['depth'];
         $fieldList   = array();
 
+        //TODO: $page is undefined. Should it be inside the loop?
         $list = $this->listDefaultTree($page, 999, $sysLanguage, $fieldList);
 
         foreach ($list as $key => $page) {

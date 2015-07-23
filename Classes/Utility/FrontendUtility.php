@@ -26,6 +26,8 @@
 
 namespace Metaseo\Metaseo\Utility;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
+
 /**
  * General utility
  */
@@ -52,7 +54,7 @@ class FrontendUtility
         static $lastTsSetupPid = null;
 
         /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        $objectManager = Typo3GeneralUtility::makeInstance(
             'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
         );
 
@@ -148,7 +150,7 @@ class FrontendUtility
      */
     public static function checkPageForBlacklist($blacklist)
     {
-        return \Metaseo\Metaseo\Utility\GeneralUtility::checkUrlForBlacklisting(self::getCurrentUrl(), $blacklist);
+        return GeneralUtility::checkUrlForBlacklisting(self::getCurrentUrl(), $blacklist);
     }
 
     /**
