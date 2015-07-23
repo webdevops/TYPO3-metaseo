@@ -31,7 +31,7 @@ use Metaseo\Metaseo\Utility\GeneralUtility;
 /**
  * Robots txt Page
  */
-class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage
+class RobotsTxtPage extends AbstractPage
 {
 
     // ########################################################################
@@ -194,7 +194,8 @@ class RobotsTxtPage extends \Metaseo\Metaseo\Page\AbstractPage
         // generate sitemap-static marker
         if ($this->linkToStaticSitemap) {
             if ($this->sitemapLanguageLock) {
-                $path = 'uploads/tx_metaseo/sitemap_xml/index-r' . (int)$this->rootPid . '-l' . (int)$this->languageId . '.xml.gz';
+                $path = 'uploads/tx_metaseo/sitemap_xml/index-r' . (int)$this->rootPid . '-l'
+                    . (int)$this->languageId . '.xml.gz';
             } else {
                 $path = 'uploads/tx_metaseo/sitemap_xml/index-r' . (int)$this->rootPid . '.xml.gz';
             }

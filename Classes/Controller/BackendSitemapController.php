@@ -26,12 +26,19 @@
 
 namespace Metaseo\Metaseo\Controller;
 
+use Metaseo\Metaseo\Backend\Module\AbstractStandardModule;
+use Metaseo\Metaseo\Utility\BackendUtility;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
+use Metaseo\Metaseo\Utility\SitemapUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility as Typo3BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * TYPO3 Backend module sitemap
  */
-class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule
+class BackendSitemapController extends AbstractStandardModule
 {
     // ########################################################################
     // Attributes
@@ -47,8 +54,8 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
     public function mainAction()
     {
         // Init
-        $rootPageList    = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
-        $rootSettingList = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageSettingList();
+        $rootPageList    = BackendUtility::getRootPageList();
+        $rootSettingList = BackendUtility::getRootPageSettingList();
 
         // ############################
         // Fetch
@@ -56,15 +63,15 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
         // Get statistics
         $query     = 'SELECT s.page_rootpid,
-                             COUNT(*) as sum_total,
-                             COUNT(s.page_uid) as sum_pages
+                             COUNT(*) AS sum_total,
+                             COUNT(s.page_uid) AS sum_pages
                         FROM tx_metaseo_sitemap s
                              INNER JOIN pages p
                                 ON p.uid = s.page_uid
                                AND p.deleted = 0
                                AND ' . DatabaseUtility::conditionNotIn(
                                         'p.doktype',
-                                        \Metaseo\Metaseo\Utility\SitemapUtility::getDoktypeBlacklist()
+                                        SitemapUtility::getDoktypeBlacklist()
                                     ) . '
                 GROUP BY page_rootpid';
         $statsList = DatabaseUtility::getAllWithIndex($query, 'page_rootpid');
@@ -121,7 +128,7 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
             $joinWhere = DatabaseUtility::conditionNotIn(
                 'p.doktype',
-                \Metaseo\Metaseo\Utility\SitemapUtility::getDoktypeBlacklist()
+                SitemapUtility::getDoktypeBlacklist()
             );
 
             // Root statistics
@@ -150,7 +157,7 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
             $this->addFlashMessage(
                 $this->translate('message.warning.noRootPage.message'),
                 $this->translate('message.warning.noRootPage.title'),
-                \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+                FlashMessage::WARNING
             );
         }
 
@@ -162,20 +169,20 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
      */
     public function sitemapAction()
     {
-        $params  = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_metaseo_metaseometaseo_metaseositemap');
+        $params  = GeneralUtility::_GP('tx_metaseo_metaseometaseo_metaseositemap');
         $rootPid = $params['pageId'];
 
         if (empty($rootPid)) {
             return '';
         }
 
-        $rootPageList = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
+        $rootPageList = BackendUtility::getRootPageList();
         $rootPage     = $rootPageList[$rootPid];
 
         // ###############################
         // Fetch
         // ###############################
-        $pageTsConf = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($rootPid);
+        $pageTsConf = Typo3BackendUtility::getPagesTSconfig($rootPid);
 
         $languageFullList = array(
             0 => array(
@@ -219,7 +226,8 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
             // Flag (if available)
             if (!empty($langRow['flag'])) {
-                $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-' . $langRow['flag'] . ' t3-icon-' . $langRow['flag'] . '"></span>';
+                $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-' . $langRow['flag']
+                    . ' t3-icon-' . $langRow['flag'] . '"></span>';
                 $flag .= '&nbsp;';
             }
 
@@ -262,7 +270,7 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
             'pagingSize'            => 50,
             'sortField'             => 'crdate',
             'sortDir'               => 'DESC',
-            'filterIcon'            => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(
+            'filterIcon'            => IconUtility::getSpriteIcon(
                 'actions-system-tree-search-open'
             ),
             'dataLanguage'          => $languageList,

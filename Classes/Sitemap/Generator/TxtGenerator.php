@@ -31,7 +31,7 @@ use Metaseo\Metaseo\Utility\GeneralUtility;
 /**
  * Sitemap TXT generator
  */
-class TxtGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator
+class TxtGenerator extends AbstractGenerator
 {
 
     // ########################################################################

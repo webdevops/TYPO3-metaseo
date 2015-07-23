@@ -26,10 +26,12 @@
 
 namespace Metaseo\Metaseo\Page;
 
+use Metaseo\Metaseo\Utility\GeneralUtility;
+
 /**
  * Sitemap txt page
  */
-class SitemapTxtPage extends \Metaseo\Metaseo\Page\AbstractPage
+class SitemapTxtPage extends AbstractPage
 {
 
     // ########################################################################
@@ -52,7 +54,7 @@ class SitemapTxtPage extends \Metaseo\Metaseo\Page\AbstractPage
         $this->tsSetup = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.'];
 
         // check if sitemap is enabled in root
-        if (!\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap', true)) {
+        if (!GeneralUtility::getRootSettingValue('is_sitemap', true)) {
             $this->showError('Sitemap is not available, please check your configuration [control-center]');
         }
 

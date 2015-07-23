@@ -27,6 +27,7 @@
 namespace Metaseo\Metaseo\Sitemap\Generator;
 
 use Metaseo\Metaseo\Utility\GeneralUtility;
+use Metaseo\Metaseo\Utility\SitemapUtility;
 
 /**
  * Sitemap abstract generator
@@ -113,7 +114,7 @@ abstract class AbstractGenerator
         }
 
         // Fetch sitemap list/pages
-        $list = \Metaseo\Metaseo\Utility\SitemapUtility::getList($this->rootPid, $sysLanguageId);
+        $list = SitemapUtility::getList($this->rootPid, $sysLanguageId);
 
         $this->sitemapPages = $list['tx_metaseo_sitemap'];
         $this->pages        = $list['pages'];

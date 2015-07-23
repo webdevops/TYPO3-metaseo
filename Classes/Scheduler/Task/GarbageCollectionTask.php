@@ -26,10 +26,13 @@
 
 namespace Metaseo\Metaseo\Scheduler\Task;
 
+use Metaseo\Metaseo\Utility\SitemapUtility;
+use TYPO3\CMS\Scheduler\Task\AbstractTask as Typo3AbstractTask;
+
 /**
  * Scheduler Task Garbage Collection
  */
-class GarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+class GarbageCollectionTask extends Typo3AbstractTask
 {
 
     /**
@@ -40,7 +43,7 @@ class GarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
     public function execute()
     {
         // Expire sitemap entries
-        \Metaseo\Metaseo\Utility\SitemapUtility::expire();
+        SitemapUtility::expire();
 
         return true;
     }

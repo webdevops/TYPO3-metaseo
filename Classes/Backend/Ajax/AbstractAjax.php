@@ -26,6 +26,8 @@
 
 namespace Metaseo\Metaseo\Backend\Ajax;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * TYPO3 Backend ajax module base
  */
@@ -125,7 +127,7 @@ abstract class AbstractAjax
      */
     protected function fetchParams()
     {
-        $rawPostVarList = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
+        $rawPostVarList = GeneralUtility::_POST();
         foreach ($rawPostVarList as $key => $value) {
             $this->postVar[$key] = json_decode($value);
         }
@@ -140,7 +142,6 @@ abstract class AbstractAjax
                 case 'ASC':
                     $this->sortDir = 'ASC';
                     break;
-
                 case 'DESC':
                     $this->sortDir = 'DESC';
                     break;
@@ -168,7 +169,7 @@ abstract class AbstractAjax
         // Include ajax local lang
         $GLOBALS['LANG']->includeLLFile('EXT:metaseo/Resources/Private/Language/locallang.xlf');
 
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        $this->objectManager = GeneralUtility::makeInstance(
             'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
         );
 
