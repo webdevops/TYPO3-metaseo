@@ -257,11 +257,7 @@ MetaSeo.overview.grid = {
                             break;
 
                         case 'checkbox':
-                            if (data == '0' || data == '') {
-                                field.checked = false;
-                            } else {
-                                field.checked = true;
-                            }
+                            field.checked = !(data == '0' || data == '');
                             break;
 
                         default:
