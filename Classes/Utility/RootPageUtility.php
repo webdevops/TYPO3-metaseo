@@ -29,7 +29,8 @@ namespace Metaseo\Metaseo\Utility;
 /**
  * Root page utility
  */
-class RootPageUtility {
+class RootPageUtility
+{
 
     /**
      * Domain cache
@@ -49,7 +50,8 @@ class RootPageUtility {
      *
      * @return string
      */
-    public static function getSitemapIndexUrl($rootPid) {
+    public static function getSitemapIndexUrl($rootPid)
+    {
         return self::getFrontendUrl($rootPid, SitemapUtility::PAGE_TYPE_SITEMAP_XML);
     }
 
@@ -61,7 +63,8 @@ class RootPageUtility {
      *
      * @return string
      */
-    public static function getFrontendUrl($rootPid, $typeNum) {
+    public static function getFrontendUrl($rootPid, $typeNum)
+    {
         $domain = self::getDomain($rootPid);
         if (!empty($domain)) {
             $domain = 'http://' . $domain . '/';
@@ -81,7 +84,8 @@ class RootPageUtility {
      *
      * @return  null|string
      */
-    public static function getDomain($rootPid) {
+    public static function getDomain($rootPid)
+    {
         // Use cached one if exists
         if (isset(self::$domainCache[$rootPid])) {
             return self::$domainCache[$rootPid];
@@ -113,7 +117,8 @@ class RootPageUtility {
      *
      * @return string
      */
-    public static function getRobotsTxtUrl($rootPid) {
+    public static function getRobotsTxtUrl($rootPid)
+    {
         return self::getFrontendUrl($rootPid, SitemapUtility::PAGE_TYPE_ROBOTS_TXT);
     }
 }

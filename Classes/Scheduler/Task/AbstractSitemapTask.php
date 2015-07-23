@@ -29,7 +29,8 @@ namespace Metaseo\Metaseo\Scheduler\Task;
 /**
  * Scheduler Task Sitemap Base
  */
-abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractTask {
+abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractTask
+{
 
     // ########################################################################
     // Attributes
@@ -49,7 +50,8 @@ abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\Abstr
     /**
      * Execute task
      */
-    public function execute() {
+    public function execute()
+    {
         // Build sitemap
 
         $this->initialize();
@@ -76,7 +78,8 @@ abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\Abstr
     /**
      * Cleanup sitemap directory
      */
-    protected function cleanupDirectory() {
+    protected function cleanupDirectory()
+    {
         if (empty($this->sitemapDir)) {
             throw new \Exception('Basedir not set');
         }
@@ -115,7 +118,8 @@ abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\Abstr
      *
      * @return    string
      */
-    protected function generateSitemapLinkTemplate($template) {
+    protected function generateSitemapLinkTemplate($template)
+    {
         $ret = null;
 
         // Set link template for index file

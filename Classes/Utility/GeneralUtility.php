@@ -29,7 +29,8 @@ namespace Metaseo\Metaseo\Utility;
 /**
  * General utility
  */
-class GeneralUtility {
+class GeneralUtility
+{
 
     // ########################################################################
     // Attributes
@@ -59,7 +60,8 @@ class GeneralUtility {
      *
      * @return  integer
      */
-    public static function getLanguageId() {
+    public static function getLanguageId()
+    {
         $ret = 0;
 
         if (!empty($GLOBALS['TSFE']->tmpl->setup['config.']['sys_language_uid'])) {
@@ -74,7 +76,8 @@ class GeneralUtility {
      *
      * @return  integer
      */
-    public static function getCurrentPid() {
+    public static function getCurrentPid()
+    {
         return $GLOBALS['TSFE']->id;
     }
 
@@ -85,7 +88,8 @@ class GeneralUtility {
      *
      * @return  boolean
      */
-    public static function isMountpointInRootLine($uid = null) {
+    public static function isMountpointInRootLine($uid = null)
+    {
         $ret = false;
 
         // Performance check, there must be an MP-GET value
@@ -109,7 +113,8 @@ class GeneralUtility {
      *
      * @return  array
      */
-    public static function getRootLine($uid = null) {
+    public static function getRootLine($uid = null)
+    {
         if ($uid === null) {
             #################
             # Current rootline
@@ -152,7 +157,8 @@ class GeneralUtility {
      *
      * @return array
      */
-    protected static function filterRootlineBySiteroot(array $rootline) {
+    protected static function filterRootlineBySiteroot(array $rootline)
+    {
         $ret = array();
 
         // Make sure sorting is right (first root, last page)
@@ -177,10 +183,13 @@ class GeneralUtility {
      *
      * @return  \TYPO3\CMS\Frontend\Page\PageRepository
      */
-    protected static function getSysPageObj() {
+    protected static function getSysPageObj()
+    {
         if (self::$sysPageObj === null) {
             /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
+            );
 
             /** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPageObj */
             $sysPageObj = $objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
@@ -196,7 +205,8 @@ class GeneralUtility {
      *
      * @return  array
      */
-    public static function getSysDomain() {
+    public static function getSysDomain()
+    {
         static $ret = null;
 
         if ($ret !== null) {
@@ -223,7 +233,8 @@ class GeneralUtility {
      *
      * @return  integer
      */
-    public static function getRootPid($uid = null) {
+    public static function getRootPid($uid = null)
+    {
         static $cache = array();
         $ret = null;
 
@@ -263,7 +274,8 @@ class GeneralUtility {
      *
      * @return  array
      */
-    public static function getRootSettingValue($name, $defaultValue = null, $rootPid = null) {
+    public static function getRootSettingValue($name, $defaultValue = null, $rootPid = null)
+    {
         $setting = self::getRootSetting($rootPid);
 
         if (isset($setting[$name])) {
@@ -282,7 +294,8 @@ class GeneralUtility {
      *
      * @return  array
      */
-    public static function getRootSetting($rootPid = null) {
+    public static function getRootSetting($rootPid = null)
+    {
         static $ret = null;
 
         if ($ret !== null) {
@@ -311,7 +324,8 @@ class GeneralUtility {
      *
      * @return  mixed
      */
-    public static function getExtConf($name, $default = null) {
+    public static function getExtConf($name, $default = null)
+    {
         static $conf = null;
         $ret = $default;
 
@@ -340,14 +354,16 @@ class GeneralUtility {
      *
      * @return  mixed
      */
-    public static function callHookAndSignal($class, $name, $obj, &$args = null) {
+    public static function callHookAndSignal($class, $name, $obj, &$args = null)
+    {
         static $hookConf = null;
         static $signalSlotDispatcher = null;
 
         // Fetch hooks config for metaseo, minimize array lookups
         if ($hookConf === null) {
             $hookConf = array();
-            if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks']) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks'])
+            if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks'])
+                && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks'])
             ) {
                 $hookConf = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks'];
             }
@@ -365,7 +381,9 @@ class GeneralUtility {
         // Call signal
         if ($signalSlotDispatcher === null) {
             /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
+            );
 
             /** @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher */
             $signalSlotDispatcher = $objectManager->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
@@ -384,9 +402,9 @@ class GeneralUtility {
      *
      * @return  string
      */
-    public static function fullUrl($url, $domain = null) {
+    public static function fullUrl($url, $domain = null)
+    {
         if (!preg_match('/^https?:\/\//i', $url)) {
-
             // Fix for root page link
             if ($url === '/') {
                 $url = '';
@@ -424,7 +442,8 @@ class GeneralUtility {
      *
      * @return bool
      */
-    public static function checkUrlForBlacklisting($url, array $blacklistConf) {
+    public static function checkUrlForBlacklisting($url, array $blacklistConf)
+    {
         // check for valid url
         if (empty($url)) {
             return true;

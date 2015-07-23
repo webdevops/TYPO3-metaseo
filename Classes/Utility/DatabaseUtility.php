@@ -29,7 +29,8 @@ namespace Metaseo\Metaseo\Utility;
 /**
  * Database utility
  */
-class DatabaseUtility {
+class DatabaseUtility
+{
 
     ###########################################################################
     # Query functions
@@ -42,7 +43,8 @@ class DatabaseUtility {
      *
      * @return array
      */
-    public static function getRow($query) {
+    public static function getRow($query)
+    {
         $ret = null;
 
         $res = self::query($query);
@@ -64,12 +66,17 @@ class DatabaseUtility {
      * @return  resource
      * @throws  \Exception
      */
-    public static function query($query) {
+    public static function query($query)
+    {
         $res = self::connection()->sql_query($query);
 
         if (!$res || self::connection()->sql_errno()) {
             // SQL statement failed
-            $errorMsg = 'SQL Error: ' . self::connection()->sql_error() . ' [errno: ' . self::connection()->sql_errno() . ']';
+            $errorMsg = sprintf(
+                'SQL Error: %s [errno: %s]',
+                self::connection()->sql_error(),
+                self::connection()->sql_errno()
+            );
 
             if (defined('TYPO3_cliMode')) {
                 throw new \Exception($errorMsg);
@@ -88,7 +95,8 @@ class DatabaseUtility {
      *
      * @return \TYPO3\CMS\Core\Database\DatabaseConnection
      */
-    public static function connection() {
+    public static function connection()
+    {
         return $GLOBALS['TYPO3_DB'];
     }
 
@@ -97,7 +105,8 @@ class DatabaseUtility {
      *
      * @param resource $res SQL resource
      */
-    public static function free($res) {
+    public static function free($res)
+    {
         if ($res && $res !== true) {
             self::connection()->sql_free_result($res);
         }
@@ -110,7 +119,8 @@ class DatabaseUtility {
      *
      * @return array
      */
-    public static function getAll($query) {
+    public static function getAll($query)
+    {
         $ret = array();
 
         $res = self::query($query);
@@ -132,7 +142,8 @@ class DatabaseUtility {
      *
      * @return array
      */
-    public static function getAllWithIndex($query, $indexCol = null) {
+    public static function getAllWithIndex($query, $indexCol = null)
+    {
         $ret = array();
 
         $res = self::query($query);
@@ -160,7 +171,8 @@ class DatabaseUtility {
      *
      * @return array
      */
-    public static function getList($query) {
+    public static function getList($query)
+    {
         $ret = array();
 
         $res = self::query($query);
@@ -181,7 +193,8 @@ class DatabaseUtility {
      *
      * @return array
      */
-    public static function getCol($query) {
+    public static function getCol($query)
+    {
         $ret = array();
 
         $res = self::query($query);
@@ -202,7 +215,8 @@ class DatabaseUtility {
      *
      * @return array
      */
-    public static function getColWithIndex($query) {
+    public static function getColWithIndex($query)
+    {
         $ret = array();
 
         $res = self::query($query);
@@ -223,7 +237,8 @@ class DatabaseUtility {
      *
      * @return integer
      */
-    public static function getCount($query) {
+    public static function getCount($query)
+    {
         $query = 'SELECT COUNT(*) FROM (' . $query . ') tmp';
 
         return self::getOne($query);
@@ -240,7 +255,8 @@ class DatabaseUtility {
      *
      * @return mixed
      */
-    public static function getOne($query) {
+    public static function getOne($query)
+    {
         $ret = null;
 
         $res = self::query($query);
@@ -261,7 +277,8 @@ class DatabaseUtility {
      *
      * @return integer        Last insert id
      */
-    public static function execInsert($query) {
+    public static function execInsert($query)
+    {
         $ret = false;
 
         $res = self::query($query);
@@ -281,7 +298,8 @@ class DatabaseUtility {
      *
      * @return integer        Affected rows
      */
-    public static function exec($query) {
+    public static function exec($query)
+    {
         $ret = false;
 
         $res = self::query($query);
@@ -301,7 +319,8 @@ class DatabaseUtility {
      *
      * @return  string
      */
-    public static function sanitizeSqlField($field) {
+    public static function sanitizeSqlField($field)
+    {
         return preg_replace('/[^_a-zA-Z0-9\.]/', '', $field);
     }
 
@@ -316,7 +335,8 @@ class DatabaseUtility {
      *
      * @return string
      */
-    public static function sanitizeSqlTable($table) {
+    public static function sanitizeSqlTable($table)
+    {
         return preg_replace('/[^_a-zA-Z0-9]/', '', $table);
     }
 
@@ -327,7 +347,8 @@ class DatabaseUtility {
      *
      * @return string
      */
-    public static function addCondition($condition) {
+    public static function addCondition($condition)
+    {
         $ret = ' ';
 
         if (!empty($condition)) {
@@ -350,7 +371,8 @@ class DatabaseUtility {
      *
      * @return string
      */
-    public static function conditionIn($field, $values, $required = true) {
+    public static function conditionIn($field, $values, $required = true)
+    {
         if (!empty($values)) {
             $quotedValues = self::quoteArray($values, 'pages');
 
@@ -374,7 +396,8 @@ class DatabaseUtility {
      *
      * @return  array
      */
-    public static function quoteArray($valueList, $table = null) {
+    public static function quoteArray($valueList, $table = null)
+    {
         $ret = array();
         foreach ($valueList as $k => $v) {
             $ret[$k] = self::quote($v, $table);
@@ -395,7 +418,8 @@ class DatabaseUtility {
      *
      * @return  string
      */
-    public static function quote($value, $table = null) {
+    public static function quote($value, $table = null)
+    {
         if ($table === null) {
             $table = 'Pages';
         }
@@ -416,7 +440,8 @@ class DatabaseUtility {
      *
      * @return string
      */
-    public static function conditionNotIn($field, $values, $required = true) {
+    public static function conditionNotIn($field, $values, $required = true)
+    {
         if (!empty($values)) {
             $quotedValues = self::quoteArray($values, 'pages');
 
@@ -439,7 +464,8 @@ class DatabaseUtility {
      *
      * @return string
      */
-    public static function buildCondition($where) {
+    public static function buildCondition($where)
+    {
         $ret = ' ';
 
         if (!empty($where)) {

@@ -29,7 +29,8 @@ namespace Metaseo\Metaseo\Page;
 /**
  * Sitemap xml page
  */
-class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage {
+class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage
+{
 
     // ########################################################################
     // Attributes
@@ -45,7 +46,8 @@ class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage {
      *
      * @return  string
      */
-    public function main() {
+    public function main()
+    {
         // INIT
         $this->tsSetup = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.'];
 
@@ -64,7 +66,8 @@ class SitemapXmlPage extends \Metaseo\Metaseo\Page\AbstractPage {
      *
      * @return mixed
      */
-    protected function build() {
+    protected function build()
+    {
         $page = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('page');
 
         /** @var \Metaseo\Metaseo\Sitemap\Generator\XmlGenerator $generator */

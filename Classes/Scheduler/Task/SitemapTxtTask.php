@@ -29,7 +29,8 @@ namespace Metaseo\Metaseo\Scheduler\Task;
 /**
  * Scheduler Task Sitemap TXT
  */
-class SitemapTxtTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask {
+class SitemapTxtTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
+{
 
     // ########################################################################
     // Attributes
@@ -54,7 +55,8 @@ class SitemapTxtTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
      *
      * @return  boolean
      */
-    protected function buildSitemap($rootPageId, $languageId) {
+    protected function buildSitemap($rootPageId, $languageId)
+    {
 
         if ($languageId !== null) {
             // Language lock enabled

@@ -26,12 +26,11 @@
 
 namespace Metaseo\Metaseo\Backend\Ajax;
 
-
 /**
  * TYPO3 Backend ajax module base
  */
-abstract class AbstractAjax {
-
+abstract class AbstractAjax
+{
     // ########################################################################
     // Attributes
     // ########################################################################
@@ -85,7 +84,8 @@ abstract class AbstractAjax {
     /**
      * Execute ajax call
      */
-    public function main() {
+    public function main()
+    {
         $ret = null;
 
         // Try to find method
@@ -123,7 +123,8 @@ abstract class AbstractAjax {
     /**
      * Collect and process POST vars and stores them into $this->postVars
      */
-    protected function fetchParams() {
+    protected function fetchParams()
+    {
         $rawPostVarList = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
         foreach ($rawPostVarList as $key => $value) {
             $this->postVar[$key] = json_decode($value);
@@ -154,18 +155,22 @@ abstract class AbstractAjax {
      *
      * @return    string
      */
-    protected function escapeSortField($value) {
+    protected function escapeSortField($value)
+    {
         return preg_replace('[^_a-zA-Z]', '', $value);
     }
 
     /**
      * Init
      */
-    protected function init() {
+    protected function init()
+    {
         // Include ajax local lang
         $GLOBALS['LANG']->includeLLFile('EXT:metaseo/Resources/Private/Language/locallang.xlf');
 
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
+        );
 
         // Init form protection instance
         $this->formProtection = $this->objectManager->get('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection');
@@ -176,7 +181,8 @@ abstract class AbstractAjax {
      *
      * @return    boolean
      */
-    protected function checkSessionToken() {
+    protected function checkSessionToken()
+    {
 
         if (empty($this->postVar['sessionToken'])) {
             // No session token exists
@@ -201,7 +207,8 @@ abstract class AbstractAjax {
      *
      * @return  string
      */
-    protected function sessionToken($formName) {
+    protected function sessionToken($formName)
+    {
         $token = $this->formProtection->generateToken($formName);
 
         return $token;
@@ -212,7 +219,8 @@ abstract class AbstractAjax {
      *
      * @return \TYPO3\CMS\Core\DataHandling\DataHandler
      */
-    protected function tce() {
+    protected function tce()
+    {
 
         if ($this->tce === null) {
             /** @var \TYPO3\CMS\Core\DataHandling\DataHandler tce */
@@ -231,7 +239,8 @@ abstract class AbstractAjax {
      *
      * @return  boolean
      */
-    protected function isFieldInTcaTable($table, $field) {
+    protected function isFieldInTcaTable($table, $field)
+    {
         return isset($GLOBALS['TCA'][$table]['columns'][$field]);
     }
 }

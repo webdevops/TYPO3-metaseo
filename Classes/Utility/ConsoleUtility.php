@@ -29,7 +29,8 @@ namespace Metaseo\Metaseo\Utility;
 /**
  * Console utility
  */
-class ConsoleUtility {
+class ConsoleUtility
+{
 
     /**
      * Write output (without forcing newline)
@@ -37,7 +38,8 @@ class ConsoleUtility {
      * @param string  $message Message text
      * @param integer $padding Pad message
      */
-    public static function write($message = null, $padding = null) {
+    public static function write($message = null, $padding = null)
+    {
         if ($padding > 0) {
             $message = str_pad($message, $padding, ' ');
         }
@@ -50,7 +52,8 @@ class ConsoleUtility {
      *
      * @param string $message Message text
      */
-    public static function stdOut($message = null) {
+    public static function stdOut($message = null)
+    {
         if (defined('TYPO3_cliMode')) {
             file_put_contents('php://stdout', $message);
         }
@@ -61,7 +64,8 @@ class ConsoleUtility {
      *
      * @param string $message Message text
      */
-    public static function writeLine($message = null) {
+    public static function writeLine($message = null)
+    {
         self::stdOut($message . "\n");
     }
 
@@ -71,7 +75,8 @@ class ConsoleUtility {
      * @param string  $message Message text
      * @param integer $padding Pad message
      */
-    public static function writeError($message = null, $padding = null) {
+    public static function writeError($message = null, $padding = null)
+    {
         if ($padding > 0) {
             $message = str_pad($message, $padding, ' ');
         }
@@ -84,7 +89,8 @@ class ConsoleUtility {
      *
      * @param string $message Message text
      */
-    public static function stdError($message = null) {
+    public static function stdError($message = null)
+    {
         if (defined('TYPO3_cliMode')) {
             file_put_contents('php://stderr', $message);
         }
@@ -95,7 +101,8 @@ class ConsoleUtility {
      *
      * @param string $message Message
      */
-    public static function writeErrorLine($message = null) {
+    public static function writeErrorLine($message = null)
+    {
         $message .= "\n";
 
         self::stdError($message);
@@ -106,7 +113,8 @@ class ConsoleUtility {
      *
      * @param integer $exitCode Exit code (0 = success)
      */
-    public static function teminate($exitCode) {
+    public static function teminate($exitCode)
+    {
         if (defined('TYPO3_cliMode')) {
             exit($exitCode);
         }

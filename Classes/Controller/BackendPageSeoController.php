@@ -31,7 +31,8 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
 /**
  * TYPO3 Backend module page seo
  */
-class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule {
+class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule
+{
     // ########################################################################
     // Attributes
     // ########################################################################
@@ -43,11 +44,13 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
     /**
      * Main action
      */
-    public function mainAction() {
+    public function mainAction()
+    {
         return $this->handleSubAction('metadata');
     }
 
-    protected function handleSubAction($type) {
+    protected function handleSubAction($type)
+    {
         $pageId = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 
         if (empty($pageId)) {
@@ -56,6 +59,7 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
                 $this->translate('message.warning.no_valid_page.title'),
                 \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
             );
+
             return;
         }
 
@@ -142,7 +146,9 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
             'depth'            => 2,
             'sortField'        => 'crdate',
             'sortDir'          => 'DESC',
-            'filterIcon'       => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-tree-search-open'),
+            'filterIcon'       => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(
+                'actions-system-tree-search-open'
+            ),
             'dataLanguage'     => $languageList,
             'sysLanguage'      => $sysLanguageDefault,
             'listType'         => $type,
@@ -214,45 +220,52 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         $metaSeoLang                            = $this->translateList($metaSeoLang);
         $metaSeoLang['emptySearchPageLanguage'] = $defaultLanguageText;
 
-        $this->view->assign('JavaScript', 'Ext.namespace("MetaSeo.overview");
+        $this->view->assign(
+            'JavaScript',
+            'Ext.namespace("MetaSeo.overview");
             MetaSeo.overview.conf      = ' . json_encode($metaSeoConf) . ';
             MetaSeo.overview.conf.lang = ' . json_encode($metaSeoLang) . ';
-        ');
+        '
+        );
     }
 
     /**
      * Geo action
      */
-    public function geoAction() {
+    public function geoAction()
+    {
         return $this->handleSubAction('geo');
     }
 
     /**
      * searchengines action
      */
-    public function searchenginesAction() {
+    public function searchenginesAction()
+    {
         return $this->handleSubAction('searchengines');
     }
 
     /**
      * url action
      */
-    public function urlAction() {
+    public function urlAction()
+    {
         return $this->handleSubAction('url');
     }
 
     /**
      * pagetitle action
      */
-    public function pagetitleAction() {
+    public function pagetitleAction()
+    {
         return $this->handleSubAction('pagetitle');
     }
 
     /**
      * pagetitle action
      */
-    public function pagetitlesimAction() {
+    public function pagetitlesimAction()
+    {
         return $this->handleSubAction('pagetitlesim');
     }
 }
-
