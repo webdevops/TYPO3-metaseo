@@ -167,7 +167,8 @@ class ext_update
                 'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
                 $message[2],
                 $message[1],
-                $message[0]);
+                $message[0]
+            );
             $output .= $flashMessage->render();
         }
 
