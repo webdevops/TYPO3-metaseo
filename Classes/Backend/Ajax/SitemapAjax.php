@@ -98,7 +98,7 @@ class SitemapAjax extends \Metaseo\Metaseo\Backend\Ajax\AbstractAjax
         // ############################
 
         // Fetch total count of items with this filter settings
-        $query     = 'SELECT COUNT(*) as count
+        $query     = 'SELECT COUNT(*) AS count
                         FROM tx_metaseo_sitemap s
                              INNER JOIN pages p ON p.uid = s.page_uid
                        WHERE ' . $where;

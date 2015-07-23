@@ -139,9 +139,9 @@ class FooterPart extends \Metaseo\Metaseo\Page\Part\AbstractPart
             $customCode = '';
             if (!empty($gaConf['customizationCode'])) {
                 $customCode .= "\n" . $this->cObj->cObjGetSingle(
-                    $gaConf['customizationCode'],
-                    $gaConf['customizationCode.']
-                );
+                        $gaConf['customizationCode'],
+                        $gaConf['customizationCode.']
+                    );
             }
 
             $this->cObj->data['gaCode']                  = $gaCode;

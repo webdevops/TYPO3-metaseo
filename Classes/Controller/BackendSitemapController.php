@@ -56,8 +56,8 @@ class BackendSitemapController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
         // Get statistics
         $query     = 'SELECT s.page_rootpid,
-                             COUNT(*) as sum_total,
-                             COUNT(s.page_uid) as sum_pages
+                             COUNT(*) AS sum_total,
+                             COUNT(s.page_uid) AS sum_pages
                         FROM tx_metaseo_sitemap s
                              INNER JOIN pages p
                                 ON p.uid = s.page_uid

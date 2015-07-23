@@ -32,7 +32,8 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
  * @package    TYPO3
  * @subpackage metaseo
  */
-class ext_update {
+class ext_update
+{
 
     // ########################################################################
     // Attributs
@@ -61,7 +62,8 @@ class ext_update {
      *
      * @return string
      */
-    public function main() {
+    public function main()
+    {
         $this->processUpdates();
 
         $ret = $this->generateOutput();
@@ -75,7 +77,8 @@ class ext_update {
      *
      * @return bool
      */
-    public function access() {
+    public function access()
+    {
         return true;
     }
 
@@ -83,26 +86,28 @@ class ext_update {
     /**
      * The actual update function. Add your update task in here.
      */
-    protected function processUpdates() {
+    protected function processUpdates()
+    {
         $this->processClearCache();
     }
 
     /**
      * Clear cache
      */
-    protected function processClearCache() {
+    protected function processClearCache()
+    {
 
         if ($this->clearCache) {
 
             // Init TCE
-            $TCE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+            $TCE        = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
             $TCE->admin = 1;
             $TCE->clear_cacheCmd('all');
 
             // Add msg
-            $msgTitle = 'Clearing TYPO3 cache';
+            $msgTitle  = 'Clearing TYPO3 cache';
             $msgStatus = FlashMessage::INFO;
-            $msgText = 'Cleared all caches due migration';
+            $msgText   = 'Cleared all caches due migration';
 
             $this->addMessage($msgStatus, $msgTitle, $msgText);
         }
@@ -115,7 +120,8 @@ class ext_update {
      * @param string  $title   Title
      * @param string  $message Message
      */
-    protected function addMessage($status, $title, $message) {
+    protected function addMessage($status, $title, $message)
+    {
         if (!empty($message) && is_array($message)) {
             $liStyle = 'style="margin-bottom: 0;"';
 
@@ -132,7 +138,8 @@ class ext_update {
      *
      * @return  string
      */
-    protected function messageTitleFromRow($row) {
+    protected function messageTitleFromRow($row)
+    {
         $ret = array();
 
         if (!empty($row['title'])) {
@@ -151,7 +158,8 @@ class ext_update {
      *
      * @return string
      */
-    protected function generateOutput() {
+    protected function generateOutput()
+    {
         $output = '';
 
         foreach ($this->messageList as $message) {

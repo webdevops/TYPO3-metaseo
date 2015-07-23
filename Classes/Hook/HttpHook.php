@@ -74,7 +74,7 @@ class HttpHook
                 // ##################################
                 // W3C P3P Tags
                 // ##################################
-                $p3pCP = null;
+                $p3pCP        = null;
                 $p3pPolicyUrl = null;
 
                 if (!empty($tsSetupSeo['p3pCP'])) {

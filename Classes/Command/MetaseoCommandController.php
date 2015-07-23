@@ -85,7 +85,7 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
         if ($rootPageId !== null) {
             $domain = RootPageUtility::getDomain($rootPageId);
 
-            $query = 'SELECT page_url
+            $query   = 'SELECT page_url
                           FROM tx_metaseo_sitemap
                          WHERE page_rootpid = ' . DatabaseUtility::quote($rootPageId, 'tx_metaseo_sitemap') . '
                            AND is_blacklisted = 0';
