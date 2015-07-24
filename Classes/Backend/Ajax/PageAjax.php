@@ -661,7 +661,7 @@ class PageAjax extends AbstractAjax
         $depth       = (int)$this->postVar['depth'];
         $fieldList   = array();
 
-        //TODO: $page is undefined. Should it be inside the loop?
+        $page = BackendUtility::getRecord('pages', $pid);
         $list = $this->listDefaultTree($page, 999, $sysLanguage, $fieldList);
 
         foreach ($list as $key => $page) {
