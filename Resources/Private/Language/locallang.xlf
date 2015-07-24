@@ -175,6 +175,9 @@
             <trans-unit id="button.saverecursively" xml:space="preserve">
                 <source>Save recursively</source>
             </trans-unit>
+            <trans-unit id="button.saverecursively.tooptip" xml:space="preserve" approved="yes">
+                <source>Recursively applies the change to all subpages with indefinite depth.</source>
+            </trans-unit>
             <trans-unit id="button.cancel" xml:space="preserve">
                 <source>Cancel</source>
             </trans-unit>

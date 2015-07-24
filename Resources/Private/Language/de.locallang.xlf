@@ -232,6 +232,10 @@
                 <source>Save recursively</source>
                 <target>Rekursiv speichern</target>
             </trans-unit>
+            <trans-unit id="button.saverecursively.tooptip" xml:space="preserve" approved="yes">
+                <source>Recursively applies the change to all subpages with indefinite depth.</source>
+                <target>Die Änderung wird rekursiv auf allen Unterseiten ohne Tiefenbegrenzung angewendet.</target>
+            </trans-unit>
             <trans-unit id="button.cancel" xml:space="preserve" approved="yes">
                 <source>Cancel</source>
                 <target>Abbrechen</target>
