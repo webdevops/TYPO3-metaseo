@@ -137,12 +137,12 @@ class SitemapAjax extends AbstractAjax
                   LIMIT ' . (int)$offset . ', ' . (int)$itemsPerPage;
         $list  = DatabaseUtility::getAll($query);
 
-        $ret = array(
+        return $this->ajaxSuccess(
+            array(
             'results' => $itemCount,
             'rows'    => $list,
+            )
         );
-
-        return $ret;
     }
 
     /*
@@ -158,7 +158,7 @@ class SitemapAjax extends AbstractAjax
         $uidList = DatabaseUtility::connection()->cleanIntArray($uidList);
 
         if (empty($uidList) || empty($rootPid)) {
-            return false;
+            return $this->ajaxError();
         }
 
         $where   = array();
@@ -171,7 +171,7 @@ class SitemapAjax extends AbstractAjax
                    WHERE ' . $where;
         DatabaseUtility::exec($query);
 
-        return true;
+        return $this->ajaxSuccess();
     }
 
     /*
@@ -187,7 +187,7 @@ class SitemapAjax extends AbstractAjax
         $uidList = DatabaseUtility::connection()->cleanIntArray($uidList);
 
         if (empty($uidList) || empty($rootPid)) {
-            return false;
+            return $this->ajaxError();
         }
 
         $where   = array();
@@ -200,7 +200,7 @@ class SitemapAjax extends AbstractAjax
                    WHERE ' . $where;
         DatabaseUtility::exec($query);
 
-        return true;
+        return $this->ajaxSuccess();
     }
 
 
@@ -217,7 +217,7 @@ class SitemapAjax extends AbstractAjax
         $uidList = DatabaseUtility::connection()->cleanIntArray($uidList);
 
         if (empty($uidList) || empty($rootPid)) {
-            return false;
+            return $this->ajaxError();
         }
 
         $where   = array();
@@ -229,7 +229,7 @@ class SitemapAjax extends AbstractAjax
                          WHERE ' . $where;
         DatabaseUtility::exec($query);
 
-        return true;
+        return $this->ajaxSuccess();
     }
 
     /**
@@ -242,7 +242,7 @@ class SitemapAjax extends AbstractAjax
         $rootPid = (int)$this->postVar['pid'];
 
         if (empty($rootPid)) {
-            return false;
+            return $this->ajaxError();
         }
 
         $where   = array();
@@ -253,6 +253,6 @@ class SitemapAjax extends AbstractAjax
                          WHERE ' . $where;
         DatabaseUtility::exec($query);
 
-        return true;
+        return $this->ajaxSuccess();
     }
 }
