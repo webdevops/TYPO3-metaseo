@@ -176,6 +176,7 @@ class BackendPageSeoController extends AbstractStandardModule
             'boolean_no'                       => 'boolean.no',
             'button_save'                      => 'button.save',
             'button_saverecursively'           => 'button.saverecursively',
+            'button_saverecursively_tooltip'   => 'button.saverecursively.tooptip',
             'button_cancel'                    => 'button.cancel',
             'labelDepth'                       => 'label.depth',
             'labelSearchFulltext'              => 'label.search.fulltext',

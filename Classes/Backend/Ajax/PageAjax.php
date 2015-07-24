@@ -558,11 +558,15 @@ class PageAjax extends AbstractAjax
 
     /**
      * Update page field
+     *
+     * @return array
      */
     protected function executeUpdatePageField()
     {
         if (empty($this->postVar['pid']) || empty($this->postVar['field'])) {
-            return;
+            return array(
+                'error' => $GLOBALS['LANG']->getLL('message.warning.incomplete_data_received.message'),
+            );
         }
 
         $pid         = (int)$this->postVar['pid'];
@@ -574,7 +578,9 @@ class PageAjax extends AbstractAjax
         $fieldName = preg_replace('/[^-_a-zA-Z0-9:]/i', '', $fieldName);
 
         if (empty($fieldName)) {
-            return;
+            return array(
+                'error' => $GLOBALS['LANG']->getLL('message.warning.incomplete_data_received.message'),
+            );
         }
 
         // ############################
@@ -649,11 +655,16 @@ class PageAjax extends AbstractAjax
 
     /**
      * Update page field recursively.
+     *
+     * @return array
      */
     protected function executeUpdatePageFieldRecursively()
     {
+
         if (empty($this->postVar['pid']) || empty($this->postVar['field'])) {
-            return;
+            return array(
+                'error' => $GLOBALS['LANG']->getLL('message.warning.incomplete_data_received.message'),
+            );
         }
 
         $pid         = $this->postVar['pid'];
@@ -661,7 +672,7 @@ class PageAjax extends AbstractAjax
         $depth       = (int)$this->postVar['depth'];
         $fieldList   = array();
 
-        //TODO: $page is undefined. Should it be inside the loop?
+        $page = BackendUtility::getRecord('pages', $pid);
         $list = $this->listDefaultTree($page, 999, $sysLanguage, $fieldList);
 
         foreach ($list as $key => $page) {
