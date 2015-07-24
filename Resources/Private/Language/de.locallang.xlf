@@ -144,6 +144,10 @@
                 <source>No domains found</source>
                 <target>Keine Domains gefunden</target>
             </trans-unit>
+            <trans-unit id="message.warning.incomplete_data_received.message" xml:space="preserve" approved="yes">
+                <source>Incomplete data received. The action was interrupted.</source>
+                <target>Unvollständige Daten empfangen. Der Vorgang wurde abgebrochen.</target>
+            </trans-unit>
             <trans-unit id="message.error.access_denied" xml:space="preserve" approved="yes">
                 <source>Access to this element was denied.</source>
                 <target>Der Zugriff auf dieses Element wurde verweigert.</target>

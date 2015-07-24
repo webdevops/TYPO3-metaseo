@@ -109,6 +109,9 @@
             <trans-unit id="message.warning.no_domain_entries_found" xml:space="preserve">
                 <source>No domains found</source>
             </trans-unit>
+            <trans-unit id="message.warning.incomplete_data_received.message" xml:space="preserve" approved="yes">
+                <source>Incomplete data received. The action was interrupted.</source>
+            </trans-unit>
             <trans-unit id="message.error.access_denied" xml:space="preserve">
                 <source>Access to this element was denied.</source>
             </trans-unit>
