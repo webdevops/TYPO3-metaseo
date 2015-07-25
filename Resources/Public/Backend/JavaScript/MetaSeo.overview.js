@@ -281,6 +281,8 @@ MetaSeo.overview.grid = {
                             {
                                 text: MetaSeo.overview.conf.lang.button_saverecursively,
                                 itemId: 'form-button-save-recursively',
+                                tooltip: MetaSeo.overview.conf.lang.button_saverecursively_tooltip,
+                                tooltipType: 'title',
 
                                 disabled: true,
                                 handler: function(cmp, e) {
