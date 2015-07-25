@@ -502,7 +502,7 @@ class MetatagPart extends AbstractPart
      * Advanced meta tags
      *
      * @param array   $metaTags          MetaTags
-     * @param array   $this              ->pageRecord          TSFE Page
+     * @param array   $pageRecord        TSFE Page
      * @param integer $sysLanguageId     Sys Language ID
      * @param array   $customMetaTagList Custom Meta Tag list
      */
@@ -571,6 +571,8 @@ class MetatagPart extends AbstractPart
 
     /**
      * Process meta tags
+     *
+     * @parameter array $tags
      */
     protected function processMetaTags(&$tags)
     {
