@@ -91,7 +91,7 @@ class TypoScript implements \Iterator
     public function rewind()
     {
         reset($this->tsData);
-        $this->iteratorNextNode(false);
+        $this->iteratorNextNode();
     }
 
     /**
@@ -186,7 +186,7 @@ class TypoScript implements \Iterator
     public function next()
     {
         next($this->tsData);
-        $this->iteratorNextNode(true);
+        $this->iteratorNextNode();
     }
 
     ###########################################################################

@@ -138,14 +138,12 @@ class MetatagPart extends AbstractPart
             $sysLanguageId = $this->tsSetup['config.']['sys_language_uid'];
         }
 
-        $customMetaTagList = array();
-
         // Init News extension
         $this->initExtensionSupport();
 
         if ($this->tsSetupSeo) {
             $this->collectMetaDataFromPage();
-            $customMetaTagList = $this->collectMetaDataFromConnector($customMetaTagList);
+            $customMetaTagList = $this->collectMetaDataFromConnector();
 
             // #####################################
             // Blacklists
