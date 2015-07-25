@@ -55,7 +55,7 @@ abstract class AbstractPage
     // ########################################################################
 
     /**
-     * Constuctor
+     * Constructor
      */
     public function __construct()
     {

@@ -113,7 +113,7 @@ class ConsoleUtility
      *
      * @param integer $exitCode Exit code (0 = success)
      */
-    public static function teminate($exitCode)
+    public static function terminate($exitCode)
     {
         if (defined('TYPO3_cliMode')) {
             exit($exitCode);

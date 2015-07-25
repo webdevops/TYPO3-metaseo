@@ -9,7 +9,7 @@
                 <target>SEO/MetaTags</target>
             </trans-unit>
             <trans-unit id="mlang_labels_tabdescr" xml:space="preserve" approved="yes">
-                <source>SEO Page Overview for MetaTags and other informations</source>
+                <source>SEO Page Overview for MetaTags and other information</source>
                 <target>SEO Seiten-Übersicht mit MetaTags und co.</target>
             </trans-unit>
         </body>

@@ -54,8 +54,8 @@
     visibility: hidden;
     position: absolute;
     right: -1px;
-    top: 0px;
-    bottom: 0px;
+    top: 0;
+    bottom: 0;
     background-color: #B3B3B3;
 }
 

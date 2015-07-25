@@ -77,7 +77,7 @@ class SitemapUtility
     /**
      * Insert into sitemap
      *
-     * @param   array $pageData Page informations
+     * @param   array $pageData page information
      */
     public static function index($pageData)
     {

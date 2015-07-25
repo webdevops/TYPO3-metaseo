@@ -276,7 +276,7 @@ abstract class SitemapIndexHook implements SingletonInterface
             return false;
         }
 
-        // all checks successfull, page is cacheable
+        // all checks successful, page is cacheable
         $this->pageIndexFlag = true;
 
         return true;

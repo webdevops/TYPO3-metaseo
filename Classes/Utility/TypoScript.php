@@ -91,7 +91,7 @@ class TypoScript implements \Iterator
     public function rewind()
     {
         reset($this->tsData);
-        $this->iteratorNextNode(false);
+        $this->iteratorNextNode();
     }
 
     /**
@@ -137,7 +137,7 @@ class TypoScript implements \Iterator
     {
         $ret = null;
 
-        // extract TypoScript-path informations
+        // extract TypoScript-path information
         $nodeSections  = explode('.', $tsNodePath);
         $nodeValueType = end($nodeSections);
         $nodeValueName = end($nodeSections) . '.';
@@ -186,7 +186,7 @@ class TypoScript implements \Iterator
     public function next()
     {
         next($this->tsData);
-        $this->iteratorNextNode(true);
+        $this->iteratorNextNode();
     }
 
     ###########################################################################
@@ -241,7 +241,7 @@ class TypoScript implements \Iterator
     {
         $ret = $defaultValue;
 
-        // extract TypoScript-path informations
+        // extract TypoScript-path information
         $nodeFound     = true;
         $nodeSections  = explode('.', $tsNodePath);
         $nodeValueName = end($nodeSections);

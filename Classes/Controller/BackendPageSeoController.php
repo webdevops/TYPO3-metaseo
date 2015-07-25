@@ -52,10 +52,13 @@ class BackendPageSeoController extends AbstractStandardModule
      */
     public function mainAction()
     {
-        return $this->handleSubAction('metadata');
+        $this->handleSubAction('metadata');
     }
 
-    protected function handleSubAction($type)
+    /**
+     * @param string $listType
+     */
+    protected function handleSubAction($listType)
     {
         $pageId = (int) GeneralUtility::_GP('id');
 
@@ -72,7 +75,7 @@ class BackendPageSeoController extends AbstractStandardModule
         // Load PageTS
         $pageTsConf = BackendUtility::getPagesTSconfig($pageId);
 
-        // Build langauge list
+        // Build language list
         $defaultLanguageText = $this->translate('default.language');
 
         $languageFullList = array(
@@ -108,7 +111,7 @@ class BackendPageSeoController extends AbstractStandardModule
             );
         }
 
-        // Langauges
+        // Languages
         $languageList = array();
 
         foreach ($languageFullList as $langId => $langRow) {
@@ -158,7 +161,7 @@ class BackendPageSeoController extends AbstractStandardModule
             ),
             'dataLanguage'     => $languageList,
             'sysLanguage'      => $sysLanguageDefault,
-            'listType'         => $type,
+            'listType'         => $listType,
             'criteriaFulltext' => '',
             'realurlAvailable' => $realUrlAvailable,
             'sprite'           => array(
@@ -176,7 +179,7 @@ class BackendPageSeoController extends AbstractStandardModule
             'boolean_no'                       => 'boolean.no',
             'button_save'                      => 'button.save',
             'button_saverecursively'           => 'button.saverecursively',
-            'button_saverecursively_tooltip'   => 'button.saverecursively.tooptip',
+            'button_saverecursively_tooltip'   => 'button.saverecursively.tooltip',
             'button_cancel'                    => 'button.cancel',
             'labelDepth'                       => 'label.depth',
             'labelSearchFulltext'              => 'label.search.fulltext',
@@ -242,7 +245,7 @@ class BackendPageSeoController extends AbstractStandardModule
      */
     public function geoAction()
     {
-        return $this->handleSubAction('geo');
+        $this->handleSubAction('geo');
     }
 
     /**
@@ -250,7 +253,7 @@ class BackendPageSeoController extends AbstractStandardModule
      */
     public function searchenginesAction()
     {
-        return $this->handleSubAction('searchengines');
+        $this->handleSubAction('searchengines');
     }
 
     /**
@@ -258,7 +261,7 @@ class BackendPageSeoController extends AbstractStandardModule
      */
     public function urlAction()
     {
-        return $this->handleSubAction('url');
+        $this->handleSubAction('url');
     }
 
     /**
@@ -266,7 +269,7 @@ class BackendPageSeoController extends AbstractStandardModule
      */
     public function pagetitleAction()
     {
-        return $this->handleSubAction('pagetitle');
+        $this->handleSubAction('pagetitle');
     }
 
     /**
@@ -274,6 +277,6 @@ class BackendPageSeoController extends AbstractStandardModule
      */
     public function pagetitlesimAction()
     {
-        return $this->handleSubAction('pagetitlesim');
+        $this->handleSubAction('pagetitlesim');
     }
 }
