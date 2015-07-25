@@ -122,7 +122,7 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
     }
 
     /**
-     * Initalize root page (TSFE and stuff)
+     * Initialize root page (TSFE and stuff)
      *
      * @param integer $rootPageId $rootPageId
      */
