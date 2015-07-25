@@ -55,7 +55,10 @@ class BackendPageSeoController extends AbstractStandardModule
         return $this->handleSubAction('metadata');
     }
 
-    protected function handleSubAction($type)
+    /**
+     * @param string $listType
+     */
+    protected function handleSubAction($listType)
     {
         $pageId = (int) GeneralUtility::_GP('id');
 
@@ -158,7 +161,7 @@ class BackendPageSeoController extends AbstractStandardModule
             ),
             'dataLanguage'     => $languageList,
             'sysLanguage'      => $sysLanguageDefault,
-            'listType'         => $type,
+            'listType'         => $listType,
             'criteriaFulltext' => '',
             'realurlAvailable' => $realUrlAvailable,
             'sprite'           => array(
@@ -242,7 +245,7 @@ class BackendPageSeoController extends AbstractStandardModule
      */
     public function geoAction()
     {
-        return $this->handleSubAction('geo');
+        $this->handleSubAction('geo');
     }
 
     /**
@@ -250,7 +253,7 @@ class BackendPageSeoController extends AbstractStandardModule
      */
     public function searchenginesAction()
     {
-        return $this->handleSubAction('searchengines');
+        $this->handleSubAction('searchengines');
     }
 
     /**
@@ -258,7 +261,7 @@ class BackendPageSeoController extends AbstractStandardModule
      */
     public function urlAction()
     {
-        return $this->handleSubAction('url');
+        $this->handleSubAction('url');
     }
 
     /**
@@ -266,7 +269,7 @@ class BackendPageSeoController extends AbstractStandardModule
      */
     public function pagetitleAction()
     {
-        return $this->handleSubAction('pagetitle');
+        $this->handleSubAction('pagetitle');
     }
 
     /**
@@ -274,6 +277,6 @@ class BackendPageSeoController extends AbstractStandardModule
      */
     public function pagetitlesimAction()
     {
-        return $this->handleSubAction('pagetitlesim');
+        $this->handleSubAction('pagetitlesim');
     }
 }
