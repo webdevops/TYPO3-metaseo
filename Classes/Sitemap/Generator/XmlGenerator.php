@@ -117,7 +117,7 @@ class XmlGenerator extends AbstractGenerator
         if ($pageItemBegin <= $pageItems) {
             $this->sitemapPages = array_slice($this->sitemapPages, $pageItemBegin, $pageLimit);
 
-            $ret = $this->createSitemapPage($page);
+            $ret = $this->createSitemapPage();
         }
 
         return $ret;
