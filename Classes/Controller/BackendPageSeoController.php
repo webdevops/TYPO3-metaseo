@@ -75,7 +75,7 @@ class BackendPageSeoController extends AbstractStandardModule
         // Load PageTS
         $pageTsConf = BackendUtility::getPagesTSconfig($pageId);
 
-        // Build langauge list
+        // Build language list
         $defaultLanguageText = $this->translate('default.language');
 
         $languageFullList = array(
@@ -111,7 +111,7 @@ class BackendPageSeoController extends AbstractStandardModule
             );
         }
 
-        // Langauges
+        // Languages
         $languageList = array();
 
         foreach ($languageFullList as $langId => $langRow) {

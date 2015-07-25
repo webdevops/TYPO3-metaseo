@@ -613,7 +613,7 @@ class PageAjax extends AbstractAjax
             );
         }
 
-        // also check for sys langauge
+        // also check for sys language
         if (!empty($sysLanguage)) {
             // check if user is able to modify pages
             if (!$GLOBALS['BE_USER']->check('tables_modify', 'pages_language_overlay')) {

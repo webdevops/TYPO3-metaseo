@@ -572,7 +572,7 @@ class MetatagPart extends AbstractPart
     /**
      * Process meta tags
      *
-     * @parameter array $tags
+     * @param array $tags
      */
     protected function processMetaTags(&$tags)
     {
