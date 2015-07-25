@@ -297,7 +297,7 @@ class PageAjax extends AbstractAjax
             while ($overlayRow = DatabaseUtility::connection()->sql_fetch_assoc($res)) {
                 $pageOriginalId = $overlayRow['pid'];
 
-                // Dont use uid and pid
+                // Don't use uid and pid
                 unset($overlayRow['uid'], $overlayRow['pid']);
 
                 // inject title
@@ -408,7 +408,7 @@ class PageAjax extends AbstractAjax
     }
 
     /**
-     * Generate simluated page title
+     * Generate simulated page title
      *
      * @param   array   $page        Page
      * @param   integer $sysLanguage System language

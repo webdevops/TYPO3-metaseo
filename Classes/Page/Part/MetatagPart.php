@@ -480,7 +480,7 @@ class MetatagPart extends AbstractPart
         if (!$linkParam) {
             // Fetch pageUrl
             if ($pageHash !== null) {
-                // Virtual plugin page, we have to use achnor or site script
+                // Virtual plugin page, we have to use anchor or site script
                 $linkParam = FrontendUtility::getCurrentUrl();
             } else {
                 $linkParam = $GLOBALS['TSFE']->id;
@@ -623,7 +623,7 @@ class MetatagPart extends AbstractPart
     {
         $ret = array();
 
-        $isXtml = $this->isXhtml();
+        $isXhtml = $this->isXhtml();
 
         foreach ($metaTags as $metaTag) {
             $tag = $metaTag['tag'];
@@ -634,7 +634,7 @@ class MetatagPart extends AbstractPart
                 $attributes[] = $key . '="' . htmlspecialchars($value) . '"';
             }
 
-            if ($isXtml) {
+            if ($isXhtml) {
                 $ret[] = '<' . $tag . ' ' . implode(' ', $attributes) . '/>';
             } else {
                 $ret[] = '<' . $tag . ' ' . implode(' ', $attributes) . '>';
@@ -1001,7 +1001,7 @@ class MetatagPart extends AbstractPart
     }
 
     /**
-     * Genrate crawler (eg. robots) MetaTags
+     * Generate crawler (eg. robots) MetaTags
      */
     protected function generateCrawlerMetaTags()
     {

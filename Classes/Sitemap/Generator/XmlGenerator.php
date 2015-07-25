@@ -203,7 +203,7 @@ class XmlGenerator extends AbstractGenerator
             }
 
             // #####################################
-            // Page informations
+            // Page information
             // #####################################
 
             // page Url

@@ -81,7 +81,7 @@ abstract class AbstractGenerator
     /**
      * Link template for sitemap index
      *
-     * Replacemennt marker ###PAGE### for page-uid
+     * Replacement marker ###PAGE### for page-uid
      *
      * @var string|boolean
      */

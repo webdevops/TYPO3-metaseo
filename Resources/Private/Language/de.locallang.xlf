@@ -65,7 +65,7 @@
                 <target>Kontrollzentrum</target>
             </trans-unit>
             <trans-unit id="title.seo.pagetitle.geo" xml:space="preserve" approved="yes">
-                <source>SEO - Geo informations</source>
+                <source>SEO - Geo information</source>
                 <target>SEO - Geo-Informationen</target>
             </trans-unit>
             <trans-unit id="title.seo.pagetitle.main" xml:space="preserve" approved="yes">
@@ -193,7 +193,7 @@
                 <target>Metadaten</target>
             </trans-unit>
             <trans-unit id="menu.seo.page.geo" xml:space="preserve" approved="yes">
-                <source>Geo informations</source>
+                <source>Geo information</source>
                 <target>Geo-Tags</target>
             </trans-unit>
             <trans-unit id="menu.seo.page.searchengines" xml:space="preserve" approved="yes">
@@ -232,7 +232,7 @@
                 <source>Save recursively</source>
                 <target>Rekursiv speichern</target>
             </trans-unit>
-            <trans-unit id="button.saverecursively.tooptip" xml:space="preserve" approved="yes">
+            <trans-unit id="button.saverecursively.tooltip" xml:space="preserve" approved="yes">
                 <source>Recursively applies the change to all subpages with indefinite depth.</source>
                 <target>Die Änderung wird rekursiv auf allen Unterseiten ohne Tiefenbegrenzung angewendet.</target>
             </trans-unit>

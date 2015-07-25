@@ -315,7 +315,7 @@ class DatabaseUtility
     /**
      * Sanitize field for sql usage
      *
-     * @param   string $field SQL Field/Attribut
+     * @param   string $field SQL relation attribute
      *
      * @return  string
      */
@@ -407,7 +407,7 @@ class DatabaseUtility
     }
 
     ###########################################################################
-    # SQL warpper functions
+    # SQL wrapper functions
     ###########################################################################
 
     /**

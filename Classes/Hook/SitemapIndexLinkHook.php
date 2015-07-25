@@ -60,7 +60,7 @@ class SitemapIndexLinkHook extends SitemapIndexHook
             return;
         }
 
-        // Init link informations
+        // Init link information
         $linkConf = $pObj['conf'];
         $linkUrl  = $pObj['finalTagParts']['url'];
         list($linkPageUid, $linkType) = $this->parseLinkConf($pObj);

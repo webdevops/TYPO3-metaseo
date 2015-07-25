@@ -44,7 +44,7 @@ class HttpHook
         $tsSetup = $GLOBALS['TSFE']->tmpl->setup;
         $headers = array();
 
-        // dont send any headers if headers are already sent
+        // don't send any headers if headers are already sent
         if (headers_sent()) {
             return;
         }

@@ -266,7 +266,7 @@ class PagetitlePart extends AbstractPart
                     case 1:
                         // ###################################
                         // Skip
-                        // (don't herit from this page)
+                        // (don't inherit from this page)
                         // ###################################
                         if ((int)$page['uid'] != $currentPid) {
                             continue 2;

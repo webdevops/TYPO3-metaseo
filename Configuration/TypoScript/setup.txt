@@ -162,7 +162,7 @@ plugin.metaseo {
 
         ieCompatibilityMode = {$plugin.metaseo.userAgent.ieCompatibilityMode}
 
-        # basic configuration for metatag informations
+        # basic configuration for metatag information
         conf =
         conf {
             description_page.field = description
