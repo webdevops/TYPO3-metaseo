@@ -54,7 +54,7 @@ class SitemapAjax extends AbstractAjax
         $searchIsBlacklisted = (bool)trim((string)$this->postVar['criteriaIsBlacklisted']);
 
         // ############################
-        // Critera
+        // Criteria
         // ############################
         $where = array();
 
@@ -71,7 +71,7 @@ class SitemapAjax extends AbstractAjax
             $where[] = 's.page_uid = ' . (int)$searchPageUid;
         }
 
-        // Lannguage
+        // Language
         if ($searchPageLanguage != -1 && strlen($searchPageLanguage) >= 1) {
             $where[] = 's.page_language = ' . (int)$searchPageLanguage;
         }
@@ -112,7 +112,7 @@ class SitemapAjax extends AbstractAjax
         $sort = 's.page_depth ASC, s.page_uid ASC';
 
         if (!empty($this->sortField) && !empty($this->sortDir)) {
-            // already filered
+            // already filtered
             $sort = $this->sortField . ' ' . $this->sortDir;
         }
 

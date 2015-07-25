@@ -63,7 +63,7 @@ class DatabaseUtility
      *
      * @param   string $query SQL query
      *
-     * @return  resource
+     * @return  \mysqli_result
      * @throws  \Exception
      */
     public static function query($query)
@@ -103,7 +103,7 @@ class DatabaseUtility
     /**
      * Free sql result
      *
-     * @param resource $res SQL resource
+     * @param \mysqli_result $res SQL result
      */
     public static function free($res)
     {
@@ -315,7 +315,7 @@ class DatabaseUtility
     /**
      * Sanitize field for sql usage
      *
-     * @param   string $field SQL Field/Attribut
+     * @param   string $field SQL relation attribute
      *
      * @return  string
      */
@@ -407,7 +407,7 @@ class DatabaseUtility
     }
 
     ###########################################################################
-    # SQL warpper functions
+    # SQL wrapper functions
     ###########################################################################
 
     /**

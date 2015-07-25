@@ -49,7 +49,7 @@ abstract class AbstractPart
     // ########################################################################
 
     /**
-     * Constuctor
+     * Constructor
      */
     public function __construct()
     {

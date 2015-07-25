@@ -71,7 +71,7 @@ class MetaseoCommandController extends CommandController
             ConsoleUtility::writeLine('Sitemap cleared');
         } else {
             ConsoleUtility::writeErrorLine('No such root page found');
-            ConsoleUtility::teminate(1);
+            ConsoleUtility::terminate(1);
         }
     }
 
@@ -104,7 +104,7 @@ class MetaseoCommandController extends CommandController
             }
         } else {
             ConsoleUtility::writeErrorLine('No such root page found');
-            ConsoleUtility::teminate(1);
+            ConsoleUtility::terminate(1);
         }
     }
 

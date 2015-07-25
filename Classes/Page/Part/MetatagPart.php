@@ -138,14 +138,12 @@ class MetatagPart extends AbstractPart
             $sysLanguageId = $this->tsSetup['config.']['sys_language_uid'];
         }
 
-        $customMetaTagList = array();
-
         // Init News extension
         $this->initExtensionSupport();
 
         if ($this->tsSetupSeo) {
             $this->collectMetaDataFromPage();
-            $customMetaTagList = $this->collectMetaDataFromConnector($customMetaTagList);
+            $customMetaTagList = $this->collectMetaDataFromConnector();
 
             // #####################################
             // Blacklists
@@ -482,7 +480,7 @@ class MetatagPart extends AbstractPart
         if (!$linkParam) {
             // Fetch pageUrl
             if ($pageHash !== null) {
-                // Virtual plugin page, we have to use achnor or site script
+                // Virtual plugin page, we have to use anchor or site script
                 $linkParam = FrontendUtility::getCurrentUrl();
             } else {
                 $linkParam = $GLOBALS['TSFE']->id;
@@ -504,7 +502,7 @@ class MetatagPart extends AbstractPart
      * Advanced meta tags
      *
      * @param array   $metaTags          MetaTags
-     * @param array   $this              ->pageRecord          TSFE Page
+     * @param array   $pageRecord        TSFE Page
      * @param integer $sysLanguageId     Sys Language ID
      * @param array   $customMetaTagList Custom Meta Tag list
      */
@@ -573,6 +571,8 @@ class MetatagPart extends AbstractPart
 
     /**
      * Process meta tags
+     *
+     * @param array $tags
      */
     protected function processMetaTags(&$tags)
     {
@@ -623,7 +623,7 @@ class MetatagPart extends AbstractPart
     {
         $ret = array();
 
-        $isXtml = $this->isXhtml();
+        $isXhtml = $this->isXhtml();
 
         foreach ($metaTags as $metaTag) {
             $tag = $metaTag['tag'];
@@ -634,7 +634,7 @@ class MetatagPart extends AbstractPart
                 $attributes[] = $key . '="' . htmlspecialchars($value) . '"';
             }
 
-            if ($isXtml) {
+            if ($isXhtml) {
                 $ret[] = '<' . $tag . ' ' . implode(' ', $attributes) . '/>';
             } else {
                 $ret[] = '<' . $tag . ' ' . implode(' ', $attributes) . '>';
@@ -1001,7 +1001,7 @@ class MetatagPart extends AbstractPart
     }
 
     /**
-     * Genrate crawler (eg. robots) MetaTags
+     * Generate crawler (eg. robots) MetaTags
      */
     protected function generateCrawlerMetaTags()
     {

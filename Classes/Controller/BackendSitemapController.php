@@ -214,7 +214,7 @@ class BackendSitemapController extends AbstractStandardModule
             );
         }
 
-        // Langauges
+        // Languages
         $languageList   = array();
         $languageList[] = array(
             -1,

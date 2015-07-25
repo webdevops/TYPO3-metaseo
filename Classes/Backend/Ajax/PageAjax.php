@@ -302,7 +302,7 @@ class PageAjax extends AbstractAjax
             while ($overlayRow = DatabaseUtility::connection()->sql_fetch_assoc($res)) {
                 $pageOriginalId = $overlayRow['pid'];
 
-                // Dont use uid and pid
+                // Don't use uid and pid
                 unset($overlayRow['uid'], $overlayRow['pid']);
 
                 // inject title
@@ -411,7 +411,7 @@ class PageAjax extends AbstractAjax
     }
 
     /**
-     * Generate simluated page title
+     * Generate simulated page title
      *
      * @param   array   $page        Page
      * @param   integer $sysLanguage System language
@@ -635,7 +635,7 @@ class PageAjax extends AbstractAjax
             );
         }
 
-        // also check for sys langauge
+        // also check for sys language
         if (!empty($sysLanguage)) {
             // check if user is able to modify pages
             if (!$this->getBackendUserAuthentication()
