@@ -26,7 +26,7 @@
 
 namespace Metaseo\Metaseo\Utility;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
 
 /**
  * Root page utility
@@ -71,7 +71,7 @@ class RootPageUtility
         if (!empty($domain)) {
             $domain = 'http://' . $domain . '/';
         } else {
-            $domain = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+            $domain = Typo3GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
         }
         // "build", TODO: use typolink to use TYPO3 internals
         $url = $domain . 'index.php?id=' . (int)$rootPid . '&type=' . (int)$typeNum;
