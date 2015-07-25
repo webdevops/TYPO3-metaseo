@@ -52,7 +52,7 @@ class BackendPageSeoController extends AbstractStandardModule
      */
     public function mainAction()
     {
-        return $this->handleSubAction('metadata');
+        $this->handleSubAction('metadata');
     }
 
     /**
