@@ -312,33 +312,9 @@ class DatabaseUtility
         return $ret;
     }
 
-    /**
-     * Sanitize field for sql usage
-     *
-     * @param   string $field SQL relation attribute
-     *
-     * @return  string
-     */
-    public static function sanitizeSqlField($field)
-    {
-        return preg_replace('/[^_a-zA-Z0-9\.]/', '', $field);
-    }
-
     ###########################################################################
     # Helper functions
     ###########################################################################
-
-    /**
-     * Sanitize table for sql usage
-     *
-     * @param  string $table SQL Table
-     *
-     * @return string
-     */
-    public static function sanitizeSqlTable($table)
-    {
-        return preg_replace('/[^_a-zA-Z0-9]/', '', $table);
-    }
 
     /**
      * Add condition to query
