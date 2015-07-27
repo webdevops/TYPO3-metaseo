@@ -108,7 +108,7 @@ class DatabaseUtility
     /**
      * Free sql result
      *
-     * @param \mysqli_result $res SQL result
+     * @param boolean|\mysqli_result|object $res SQL result
      */
     public static function free($res)
     {
