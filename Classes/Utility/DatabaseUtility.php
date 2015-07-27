@@ -339,7 +339,7 @@ class DatabaseUtility
     }
 
     /**
-     * Create condition WHERE field IN (1,2,3,4)
+     * Create condition 'field IN (1,2,3,4)'
      *
      * @param  string  $field    SQL field
      * @param  array   $values   Values
@@ -347,21 +347,45 @@ class DatabaseUtility
      *
      * @return string
      */
-    public static function conditionIn($field, $values, $required = true)
+    public static function conditionIn($field, array $values, $required = true)
     {
-        if (!empty($values)) {
-            $quotedValues = self::quoteArray($values, 'pages');
+        return self::buildConditionIn($field, $values, $required, false);
+    }
 
-            $ret = $field . ' IN (' . implode(',', $quotedValues) . ')';
-        } else {
-            if ($required) {
-                $ret = '1=0';
-            } else {
-                $ret = '1=1';
-            }
+    /**
+     * Create condition 'field NOT IN (1,2,3,4)'
+     *
+     * @param  string  $field    SQL field
+     * @param  array   $values   Values
+     * @param  boolean $required Required
+     *
+     * @return string
+     */
+    public static function conditionNotIn($field, array $values, $required = true)
+    {
+        return self::buildConditionIn($field, $values, $required, true);
+    }
+
+    /**
+     * Create condition 'field [NOT] IN (1,2,3,4)'
+     *
+     * @param  string  $field    SQL field
+     * @param  array   $values   Values
+     * @param  boolean $required Required
+     * @param  boolean $negate   use true for a NOT IN clause, use false for an IN clause (default)
+     *
+     * @return string
+     */
+    protected static function buildConditionIn($field, array $values, $required = true, $negate = false)
+    {
+        if (empty($values)) {
+            return $required ? '1=0' : '1=1';
         }
 
-        return $ret;
+        $not = $negate ? ' NOT' : '';
+        $quotedValues = self::quoteArray($values, 'pages');
+
+        return $field . $not . ' IN (' . implode(',', $quotedValues) . ')';
     }
 
     /**
@@ -405,32 +429,6 @@ class DatabaseUtility
         }
 
         return self::connection()->fullQuoteStr($value, $table);
-    }
-
-    /**
-     * Create condition WHERE field NOT IN (1,2,3,4)
-     *
-     * @param  string  $field    SQL field
-     * @param  array   $values   Values
-     * @param  boolean $required Required
-     *
-     * @return string
-     */
-    public static function conditionNotIn($field, $values, $required = true)
-    {
-        if (!empty($values)) {
-            $quotedValues = self::quoteArray($values, 'pages');
-
-            $ret = $field . ' NOT IN (' . implode(',', $quotedValues) . ')';
-        } else {
-            if ($required) {
-                $ret = '1=0';
-            } else {
-                $ret = '1=1';
-            }
-        }
-
-        return $ret;
     }
 
     /**
