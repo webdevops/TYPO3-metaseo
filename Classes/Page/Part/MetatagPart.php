@@ -505,10 +505,12 @@ class MetatagPart extends AbstractPart
      * @param array   $pageRecord        TSFE Page
      * @param integer $sysLanguageId     Sys Language ID
      * @param array   $customMetaTagList Custom Meta Tag list
+     * @todo $pageRecord not used. Possibly a bug?
      */
     protected function advMetaTags(&$metaTags, $pageRecord, $sysLanguageId, $customMetaTagList)
     {
-        $this->pageRecordId = $this->pageRecord['uid'];
+        //todo Should this be $pageRecord instead of $this->pageRecord?
+        $pageRecordId = $this->pageRecord['uid'];
 
         $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
         $storeMeta = $connector->getStore();
@@ -539,7 +541,7 @@ class MetatagPart extends AbstractPart
         $query          = 'SELECT tag_name,
                                   tag_value
                              FROM tx_metaseo_metatag
-                            WHERE pid = ' . (int)$this->pageRecordId . '
+                            WHERE pid = ' . (int)$pageRecordId . '
                               AND sys_language_uid = ' . (int)$sysLanguageId . '
                               AND ' . $advMetaTagCondition;
         $advMetaTagList = DatabaseUtility::getList($query);
