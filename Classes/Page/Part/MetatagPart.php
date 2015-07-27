@@ -353,10 +353,9 @@ class MetatagPart extends AbstractPart
             $conf = array();
         }
 
-        if ($disableMP) {
+        $mpOldConfValue = $GLOBALS['TSFE']->config['config']['MP_disableTypolinkClosestMPvalue'];
+        if ($disableMP === true) {
             // Disable MP usage in typolink - link to the real page instead
-            $mpOldConfValue = $GLOBALS['TSFE']->config['config']['MP_disableTypolinkClosestMPvalue'];
-
             $GLOBALS['TSFE']->config['config']['MP_disableTypolinkClosestMPvalue'] = 1;
         }
 
@@ -366,7 +365,7 @@ class MetatagPart extends AbstractPart
         // maybe baseUrlWrap is better? but breaks with realurl currently?
         $ret = GeneralUtility::fullUrl($ret);
 
-        if ($disableMP) {
+        if ($disableMP === true) {
             // Restore old MP linking configuration
             $GLOBALS['TSFE']->config['config']['MP_disableTypolinkClosestMPvalue'] = $mpOldConfValue;
         }
@@ -505,11 +504,12 @@ class MetatagPart extends AbstractPart
      * @param array   $pageRecord        TSFE Page
      * @param integer $sysLanguageId     Sys Language ID
      * @param array   $customMetaTagList Custom Meta Tag list
-     * @todo $pageRecord is never used
+     * @todo $pageRecord not used. Possibly a bug?
      */
     protected function advMetaTags(array &$metaTags, array $pageRecord, $sysLanguageId, array $customMetaTagList)
     {
-        $this->pageRecordId = $this->pageRecord['uid'];
+        //todo Should this be $pageRecord instead of $this->pageRecord?
+        $pageRecordId = $this->pageRecord['uid'];
 
         $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
         $storeMeta = $connector->getStore();
@@ -526,6 +526,7 @@ class MetatagPart extends AbstractPart
 
             // Add external og-tags to adv meta tag list
             if (!empty($storeMeta['meta:og'])) {
+                //todo: $advMetaTagList not in use
                 $advMetaTagList = array_merge($advMetaTagList, $storeMeta['meta:og']);
             }
         }
@@ -540,7 +541,7 @@ class MetatagPart extends AbstractPart
         $query          = 'SELECT tag_name,
                                   tag_value
                              FROM tx_metaseo_metatag
-                            WHERE pid = ' . (int)$this->pageRecordId . '
+                            WHERE pid = ' . (int)$pageRecordId . '
                               AND sys_language_uid = ' . (int)$sysLanguageId . '
                               AND ' . $advMetaTagCondition;
         $advMetaTagList = DatabaseUtility::getList($query);
@@ -1281,6 +1282,7 @@ class MetatagPart extends AbstractPart
         $canonicalUrl = null;
 
         if (!empty($this->pageRecord['tx_metaseo_canonicalurl'])) {
+            //todo: $canonicalUrl not in use
             $canonicalUrl = $this->pageRecord['tx_metaseo_canonicalurl'];
         } elseif (!empty($this->tsSetupSeo['canonicalUrl'])) {
             list($clUrl, $clLinkConf, $clDisableMpMode) = $this->detectCanonicalPage(
@@ -1288,7 +1290,7 @@ class MetatagPart extends AbstractPart
             );
         }
 
-        if (!empty($clUrl)) {
+        if (!empty($clUrl) && isset($clLinkConf) && isset($clDisableMpMode)) {
             $canonicalUrl = $this->generateLink($clUrl, $clLinkConf, $clDisableMpMode);
 
             if (!empty($canonicalUrl)) {

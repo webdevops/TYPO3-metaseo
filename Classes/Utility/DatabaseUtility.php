@@ -32,6 +32,11 @@ namespace Metaseo\Metaseo\Utility;
 class DatabaseUtility
 {
 
+    /**
+     * relation we know of that it exists and which we can use for database vendor determination
+     */
+    const TYPO3_DEFAULT_TABLE = 'pages';
+
     ###########################################################################
     # Query functions
     ###########################################################################
@@ -312,33 +317,9 @@ class DatabaseUtility
         return $ret;
     }
 
-    /**
-     * Sanitize field for sql usage
-     *
-     * @param   string $field SQL relation attribute
-     *
-     * @return  string
-     */
-    public static function sanitizeSqlField($field)
-    {
-        return preg_replace('/[^_a-zA-Z0-9\.]/', '', $field);
-    }
-
     ###########################################################################
     # Helper functions
     ###########################################################################
-
-    /**
-     * Sanitize table for sql usage
-     *
-     * @param  string $table SQL Table
-     *
-     * @return string
-     */
-    public static function sanitizeSqlTable($table)
-    {
-        return preg_replace('/[^_a-zA-Z0-9]/', '', $table);
-    }
 
     /**
      * Add condition to query
@@ -363,7 +344,7 @@ class DatabaseUtility
     }
 
     /**
-     * Create condition WHERE field IN (1,2,3,4)
+     * Create condition 'field IN (1,2,3,4)'
      *
      * @param  string  $field    SQL field
      * @param  array   $values   Values
@@ -373,19 +354,43 @@ class DatabaseUtility
      */
     public static function conditionIn($field, array $values, $required = true)
     {
-        if (!empty($values)) {
-            $quotedValues = self::quoteArray($values, 'pages');
+        return self::buildConditionIn($field, $values, $required, false);
+    }
 
-            $ret = $field . ' IN (' . implode(',', $quotedValues) . ')';
-        } else {
-            if ($required) {
-                $ret = '1=0';
-            } else {
-                $ret = '1=1';
-            }
+    /**
+     * Create condition 'field NOT IN (1,2,3,4)'
+     *
+     * @param  string  $field    SQL field
+     * @param  array   $values   Values
+     * @param  boolean $required Required
+     *
+     * @return string
+     */
+    public static function conditionNotIn($field, array $values, $required = true)
+    {
+        return self::buildConditionIn($field, $values, $required, true);
+    }
+
+    /**
+     * Create condition 'field [NOT] IN (1,2,3,4)'
+     *
+     * @param  string  $field    SQL field
+     * @param  array   $values   Values
+     * @param  boolean $required Required
+     * @param  boolean $negate   use true for a NOT IN clause, use false for an IN clause (default)
+     *
+     * @return string
+     */
+    protected static function buildConditionIn($field, array $values, $required = true, $negate = false)
+    {
+        if (empty($values)) {
+            return $required ? '1=0' : '1=1';
         }
 
-        return $ret;
+        $not = $negate ? ' NOT' : '';
+        $quotedValues = self::quoteArray($values);
+
+        return $field . $not . ' IN (' . implode(',', $quotedValues) . ')';
     }
 
     /**
@@ -421,7 +426,7 @@ class DatabaseUtility
     public static function quote($value, $table = null)
     {
         if ($table === null) {
-            $table = 'Pages';
+            $table = self::TYPO3_DEFAULT_TABLE;
         }
 
         if ($value === null) {
@@ -429,32 +434,6 @@ class DatabaseUtility
         }
 
         return self::connection()->fullQuoteStr($value, $table);
-    }
-
-    /**
-     * Create condition WHERE field NOT IN (1,2,3,4)
-     *
-     * @param  string  $field    SQL field
-     * @param  array   $values   Values
-     * @param  boolean $required Required
-     *
-     * @return string
-     */
-    public static function conditionNotIn($field, array $values, $required = true)
-    {
-        if (!empty($values)) {
-            $quotedValues = self::quoteArray($values, 'pages');
-
-            $ret = $field . ' NOT IN (' . implode(',', $quotedValues) . ')';
-        } else {
-            if ($required) {
-                $ret = '1=0';
-            } else {
-                $ret = '1=1';
-            }
-        }
-
-        return $ret;
     }
 
     /**
