@@ -371,7 +371,7 @@ class DatabaseUtility
      *
      * @return string
      */
-    public static function conditionIn($field, $values, $required = true)
+    public static function conditionIn($field, array $values, $required = true)
     {
         if (!empty($values)) {
             $quotedValues = self::quoteArray($values, 'pages');
@@ -396,7 +396,7 @@ class DatabaseUtility
      *
      * @return  array
      */
-    public static function quoteArray($valueList, $table = null)
+    public static function quoteArray(array $valueList, $table = null)
     {
         $ret = array();
         foreach ($valueList as $k => $v) {
@@ -440,7 +440,7 @@ class DatabaseUtility
      *
      * @return string
      */
-    public static function conditionNotIn($field, $values, $required = true)
+    public static function conditionNotIn($field, array $values, $required = true)
     {
         if (!empty($values)) {
             $quotedValues = self::quoteArray($values, 'pages');
@@ -464,7 +464,7 @@ class DatabaseUtility
      *
      * @return string
      */
-    public static function buildCondition($where)
+    public static function buildCondition(array $where)
     {
         $ret = ' ';
 

@@ -194,7 +194,7 @@ class PageAjax extends AbstractAjax
      *
      * @return  array
      */
-    protected function listDefaultTree($page, $depth, $sysLanguage, $fieldList, $enableAdvMetaTags = false)
+    protected function listDefaultTree(array $page, $depth, $sysLanguage, array $fieldList, $enableAdvMetaTags = false)
     {
         $rootPid = $page['uid'];
 
@@ -330,7 +330,7 @@ class PageAjax extends AbstractAjax
      *
      * @return integer
      */
-    protected function listCalcDepth($pageUid, $rootLineRaw, $depth = null)
+    protected function listCalcDepth($pageUid, array $rootLineRaw, $depth = null)
     {
 
         if ($depth === null) {
@@ -365,7 +365,7 @@ class PageAjax extends AbstractAjax
      *
      * @return  array
      */
-    protected function listPageTitleSim($page, $depth, $sysLanguage)
+    protected function listPageTitleSim(array $page, $depth, $sysLanguage)
     {
         // Init
         $list = array();
@@ -415,7 +415,7 @@ class PageAjax extends AbstractAjax
      *
      * @return  string
      */
-    protected function simulateTitle($page, $sysLanguage)
+    protected function simulateTitle(array $page, $sysLanguage)
     {
         $this->initTsfe($page, null, $page, null, $sysLanguage);
 
@@ -429,15 +429,20 @@ class PageAjax extends AbstractAjax
      * Init TSFE (for simulated pagetitle)
      *
      * @param   array        $page         Page
-     * @param   NULL|array   $rootLine     Rootline
-     * @param   NULL|array   $pageData     Page data (recursive generated)
-     * @param   NULL|array   $rootlineFull Rootline full
-     * @param   NULL|integer $sysLanguage  System language
+     * @param   null|array   $rootLine     Rootline
+     * @param   null|array   $pageData     Page data (recursive generated)
+     * @param   null|array   $rootlineFull Rootline full
+     * @param   null|integer $sysLanguage  System language
      *
      * @return  void
      */
-    protected function initTsfe($page, $rootLine = null, $pageData = null, $rootlineFull = null, $sysLanguage = null)
-    {
+    protected function initTsfe(
+        array $page,
+        array $rootLine = null,
+        array $pageData = null,
+        array $rootlineFull = null,
+        $sysLanguage = null
+    ) {
         static $cacheTSFE = array();
         static $lastTsSetupPid = null;
 

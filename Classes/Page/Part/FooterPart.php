@@ -135,7 +135,7 @@ class FooterPart extends AbstractPart
      *
      * @return string
      */
-    public function buildGoogleAnalyticsCode($tsServices, $gaConf)
+    public function buildGoogleAnalyticsCode(array $tsServices, array $gaConf)
     {
         $ret        = array();
         $gaCodeList = GeneralUtility::trimExplode(',', $tsServices['googleAnalytics']);
@@ -172,8 +172,9 @@ class FooterPart extends AbstractPart
      * @param  array $gaConf     Google Analytics configuration
      *
      * @return string
+     * @todo $tsServices is never used
      */
-    public function serviceGoogleAnalyticsTrackDownloads($tsServices, $gaConf)
+    public function serviceGoogleAnalyticsTrackDownloads(array $tsServices, array $gaConf)
     {
         $jsFile = Typo3GeneralUtility::getFileAbsFileName($gaConf['trackDownloadsScript']);
         $jsfile = preg_replace('/^' . preg_quote(PATH_site, '/') . '/i', '', $jsFile);
@@ -191,7 +192,7 @@ class FooterPart extends AbstractPart
      *
      * @return string
      */
-    public function buildPiwikCode($tsServices, $piwikConf)
+    public function buildPiwikCode(array $tsServices, array $piwikConf)
     {
         $ret           = array();
         $piwikCodeList = GeneralUtility::trimExplode(',', $piwikConf['id']);

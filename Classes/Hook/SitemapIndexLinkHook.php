@@ -47,9 +47,8 @@ class SitemapIndexLinkHook extends SitemapIndexHook
      *
      * @return  void
      */
-    public function hook_linkParse(&$pObj)
+    public function hook_linkParse(array &$pObj)
     {
-
         if (!$this->checkIfSitemapIndexingIsEnabled('typolink')) {
             return;
         }
@@ -153,7 +152,7 @@ class SitemapIndexLinkHook extends SitemapIndexHook
      * @internal param string $pageUrl Page url
      *
      */
-    protected function generateSitemapPageData($linkUrl, $linkPageUid, $rootline, $pageLanguage, $linkType)
+    protected function generateSitemapPageData($linkUrl, $linkPageUid, array $rootline, $pageLanguage, $linkType)
     {
         $tstamp = $_SERVER['REQUEST_TIME'];
 
@@ -188,7 +187,7 @@ class SitemapIndexLinkHook extends SitemapIndexHook
      *
      * @return array
      */
-    protected function parseLinkConf($conf)
+    protected function parseLinkConf(array $conf)
     {
         $uid  = null;
         $type = null;
