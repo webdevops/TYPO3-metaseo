@@ -81,15 +81,12 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      */
     protected function getRootPages()
     {
-        $ret = array();
-
         $query = 'SELECT uid
                     FROM pages
                    WHERE is_siteroot = 1
                      AND deleted = 0';
-        $ret   = DatabaseUtility::getColWithIndex($query);
 
-        return $ret;
+        return DatabaseUtility::getColWithIndex($query);
     }
 
 

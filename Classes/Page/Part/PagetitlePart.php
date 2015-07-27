@@ -87,7 +87,7 @@ class PagetitlePart extends AbstractPart
         // ############################
 
         $pageTitleCachingEnabled = $this->checkIfPageTitleCachingEnabled();
-        if ($pageTitleCachingEnabled) {
+        if ($pageTitleCachingEnabled === true) {
             $cacheIdentification = sprintf(
                 '%s_%s_title',
                 $GLOBALS['TSFE']->id,
@@ -118,7 +118,7 @@ class PagetitlePart extends AbstractPart
             $ret = $this->generatePageTitle($title);
 
             // Cache page title (if page is not cacheable)
-            if ($pageTitleCachingEnabled) {
+            if ($pageTitleCachingEnabled === true && isset($cache) && isset($cacheIdentification)) {
                 $cache->set($cacheIdentification, $ret, array('pageId_' . $GLOBALS['TSFE']->id));
             }
         }
@@ -182,6 +182,7 @@ class PagetitlePart extends AbstractPart
      * @param    string $title Default page title (rendered by TYPO3)
      *
      * @return    string            Modified page title
+     * @todo: split up function (too long)
      */
     public function generatePageTitle($title)
     {
