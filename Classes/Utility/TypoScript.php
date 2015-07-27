@@ -25,7 +25,7 @@
 
 namespace Metaseo\Metaseo\Utility;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
 
 class TypoScript implements \Iterator
 {
@@ -328,7 +328,7 @@ class TypoScript implements \Iterator
     protected function getCObj()
     {
         if ($this->cObj === null) {
-            $this->cObj = GeneralUtility::makeInstance(
+            $this->cObj = Typo3GeneralUtility::makeInstance(
                 'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'
             );
         }
