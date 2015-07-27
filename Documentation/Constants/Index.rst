@@ -77,7 +77,7 @@ PICS-label                       Platform for Internet Content Selection
 
 P3P Compact Policy               Your P3P Compact Policy.
 
-                                 More informations about P3P:
+                                 More information about P3P:
 
                                  - http://www.w3.org/P3P/
                                  - http://www.w3.org/TR/P3P/
@@ -182,7 +182,7 @@ Piwik Download & Click Domain    Specifies which domains are internal domains:
                                  - single domain (eg. “example.com”)
                                  - subdomain (eg. “.example.com”)
 
-                                 For more informations visit:
+                                 For more information visit:
 
                                  - http://developer.piwik.org/api-reference/tracking-javascript
 
@@ -191,7 +191,7 @@ Piwik Cookie Domain Name         Specifies the domain name for the tracking cook
                                  - single domain (eg. “example.com”)
                                  - subdomain (eg. “.example.com”)
 
-                                 For more informations visit:
+                                 For more information visit:
 
                                  - http://developer.piwik.org/api-reference/tracking-javascript
 

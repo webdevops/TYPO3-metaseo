@@ -26,12 +26,18 @@
 
 namespace Metaseo\Metaseo\Controller;
 
+use Metaseo\Metaseo\Backend\Module\AbstractStandardModule;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * TYPO3 Backend module page seo
  */
-class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule
+class BackendPageSeoController extends AbstractStandardModule
 {
     // ########################################################################
     // Attributes
@@ -46,27 +52,30 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
      */
     public function mainAction()
     {
-        return $this->handleSubAction('metadata');
+        $this->handleSubAction('metadata');
     }
 
-    protected function handleSubAction($type)
+    /**
+     * @param string $listType
+     */
+    protected function handleSubAction($listType)
     {
-        $pageId = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
+        $pageId = (int) GeneralUtility::_GP('id');
 
         if (empty($pageId)) {
             $this->addFlashMessage(
                 $this->translate('message.warning.no_valid_page.message'),
                 $this->translate('message.warning.no_valid_page.title'),
-                \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+                FlashMessage::WARNING
             );
 
             return;
         }
 
         // Load PageTS
-        $pageTsConf = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($pageId);
+        $pageTsConf = BackendUtility::getPagesTSconfig($pageId);
 
-        // Build langauge list
+        // Build language list
         $defaultLanguageText = $this->translate('default.language');
 
         $languageFullList = array(
@@ -102,7 +111,7 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
             );
         }
 
-        // Langauges
+        // Languages
         $languageList = array();
 
         foreach ($languageFullList as $langId => $langRow) {
@@ -110,7 +119,8 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
 
             // Flag (if available)
             if (!empty($langRow['flag'])) {
-                $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-' . $langRow['flag'] . ' t3-icon-' . $langRow['flag'] . '"></span>';
+                $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-' . $langRow['flag']
+                    . ' t3-icon-' . $langRow['flag'] . '"></span>';
                 $flag .= '&nbsp;';
             }
 
@@ -134,7 +144,7 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
         // HTML
         // ############################
 
-        $realUrlAvailable = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('realurl');
+        $realUrlAvailable = ExtensionManagementUtility::isLoaded('realurl');
 
 
         $metaSeoConf = array(
@@ -146,18 +156,18 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
             'depth'            => 2,
             'sortField'        => 'crdate',
             'sortDir'          => 'DESC',
-            'filterIcon'       => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(
+            'filterIcon'       => IconUtility::getSpriteIcon(
                 'actions-system-tree-search-open'
             ),
             'dataLanguage'     => $languageList,
             'sysLanguage'      => $sysLanguageDefault,
-            'listType'         => $type,
+            'listType'         => $listType,
             'criteriaFulltext' => '',
             'realurlAvailable' => $realUrlAvailable,
             'sprite'           => array(
-                'edit'   => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open'),
-                'info'   => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-info'),
-                'editor' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-options-view'),
+                'edit'   => IconUtility::getSpriteIcon('actions-document-open'),
+                'info'   => IconUtility::getSpriteIcon('actions-document-info'),
+                'editor' => IconUtility::getSpriteIcon('actions-system-options-view'),
             ),
         );
 
@@ -169,6 +179,7 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
             'boolean_no'                       => 'boolean.no',
             'button_save'                      => 'button.save',
             'button_saverecursively'           => 'button.saverecursively',
+            'button_saverecursively_tooltip'   => 'button.saverecursively.tooltip',
             'button_cancel'                    => 'button.cancel',
             'labelDepth'                       => 'label.depth',
             'labelSearchFulltext'              => 'label.search.fulltext',
@@ -234,7 +245,7 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
      */
     public function geoAction()
     {
-        return $this->handleSubAction('geo');
+        $this->handleSubAction('geo');
     }
 
     /**
@@ -242,7 +253,7 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
      */
     public function searchenginesAction()
     {
-        return $this->handleSubAction('searchengines');
+        $this->handleSubAction('searchengines');
     }
 
     /**
@@ -250,7 +261,7 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
      */
     public function urlAction()
     {
-        return $this->handleSubAction('url');
+        $this->handleSubAction('url');
     }
 
     /**
@@ -258,7 +269,7 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
      */
     public function pagetitleAction()
     {
-        return $this->handleSubAction('pagetitle');
+        $this->handleSubAction('pagetitle');
     }
 
     /**
@@ -266,6 +277,6 @@ class BackendPageSeoController extends \Metaseo\Metaseo\Backend\Module\AbstractS
      */
     public function pagetitlesimAction()
     {
-        return $this->handleSubAction('pagetitlesim');
+        $this->handleSubAction('pagetitlesim');
     }
 }

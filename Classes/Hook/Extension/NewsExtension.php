@@ -31,6 +31,4 @@ namespace Metaseo\Metaseo\Hook\Extension;
  */
 class NewsExtension
 {
-
-
 }

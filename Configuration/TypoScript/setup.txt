@@ -162,7 +162,7 @@ plugin.metaseo {
 
         ieCompatibilityMode = {$plugin.metaseo.userAgent.ieCompatibilityMode}
 
-        # basic configuration for metatag informations
+        # basic configuration for metatag information
         conf =
         conf {
             description_page.field = description
@@ -436,6 +436,7 @@ Disallow: /typo3/
 Disallow: /typo3_src/
 Disallow: /typo3conf/
 Disallow: /clear.gif
+Allow: /typo3/sysext/frontend/Resources/Public/*
 
                 )
             }

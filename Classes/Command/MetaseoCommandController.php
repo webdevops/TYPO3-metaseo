@@ -28,12 +28,16 @@ namespace Metaseo\Metaseo\Command;
 
 use Metaseo\Metaseo\Utility\ConsoleUtility;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
+use Metaseo\Metaseo\Utility\GeneralUtility;
 use Metaseo\Metaseo\Utility\RootPageUtility;
+use Metaseo\Metaseo\Utility\SitemapUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 
 /**
  * TYPO3 Command controller
  */
-class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController
+class MetaseoCommandController extends CommandController
 {
 
     /**
@@ -44,7 +48,7 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
     public function garbageCollectorCommand()
     {
         // Expire sitemap entries
-        \Metaseo\Metaseo\Utility\SitemapUtility::expire();
+        SitemapUtility::expire();
     }
 
     /**
@@ -67,7 +71,7 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
             ConsoleUtility::writeLine('Sitemap cleared');
         } else {
             ConsoleUtility::writeErrorLine('No such root page found');
-            ConsoleUtility::teminate(1);
+            ConsoleUtility::terminate(1);
         }
     }
 
@@ -85,7 +89,7 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
         if ($rootPageId !== null) {
             $domain = RootPageUtility::getDomain($rootPageId);
 
-            $query = 'SELECT page_url
+            $query   = 'SELECT page_url
                           FROM tx_metaseo_sitemap
                          WHERE page_rootpid = ' . DatabaseUtility::quote($rootPageId, 'tx_metaseo_sitemap') . '
                            AND is_blacklisted = 0';
@@ -93,14 +97,14 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
 
             foreach ($urlList as $url) {
                 if ($domain) {
-                    $url = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($url, $domain);
+                    $url = GeneralUtility::fullUrl($url, $domain);
                 }
 
                 ConsoleUtility::writeLine($url);
             }
         } else {
             ConsoleUtility::writeErrorLine('No such root page found');
-            ConsoleUtility::teminate(1);
+            ConsoleUtility::terminate(1);
         }
     }
 
@@ -108,20 +112,18 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
     /**
      * Detect root page from id (either PID or sys_domain)
      *
-     * @param  $var
+     * @param  integer|string $var
      *
-     * @return int|mixed|null
+     * @return integer|null
      */
     protected function getRootPageIdFromId($var)
     {
-        $ret = null;
-
         if (is_numeric($var)) {
             // Passed variable is numeric
             $pageId = (int)$var;
 
             /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            $objectManager = Typo3GeneralUtility::makeInstance(
                 'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
             );
 
@@ -134,20 +136,21 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
                 throw new \RuntimeException('MetaSEO: Page with UID "' . $pageId . '" is no valid root page');
             }
 
-            $ret = $page['uid'];
-        } else {
-            // Passed variable is domain name
-            $query = 'SELECT pid
-                        FROM sys_domain
-                       WHERE domainName = ' . DatabaseUtility::quote($var, 'sys_domain') . '
-                         AND hidden = 0';
-            $pid   = DatabaseUtility::getOne($query);
-
-            if (!empty($pid)) {
-                $ret = $pid;
-            }
+            return $page['uid'];
         }
 
-        return $ret;
+        // Passed variable is domain name
+        $query = 'SELECT pid
+                    FROM sys_domain
+                   WHERE domainName = ' . DatabaseUtility::quote($var, 'sys_domain') . '
+                     AND hidden = 0';
+        $pid   = DatabaseUtility::getOne($query);
+
+        if (empty($pid)) {
+
+            return null;
+        }
+
+        return $pid;
     }
 }

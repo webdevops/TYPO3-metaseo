@@ -26,10 +26,12 @@
 
 namespace Metaseo\Metaseo;
 
+use TYPO3\CMS\Core\SingletonInterface;
+
 /**
  * Connector
  */
-class Connector implements \TYPO3\CMS\Core\SingletonInterface
+class Connector implements SingletonInterface
 {
 
     // ########################################################################
@@ -134,7 +136,7 @@ class Connector implements \TYPO3\CMS\Core\SingletonInterface
         $value = (string)$value;
 
         if (strpos($key, 'og:') === 0) {
-            return self::setOpenGraphTag($key, $value);
+            self::setOpenGraphTag($key, $value);
         }
 
         self::$store['meta'][$key] = $value;

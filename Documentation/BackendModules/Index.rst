@@ -18,7 +18,7 @@ SEO Page Module (Website -> SEO)
     :scale: 80%
     :alt: Backend Module - SEO Metatags
 
-The SEO page module provies an overview for all seo relevant informations (including possibility to edit this informations on click).
+The SEO page module provies an overview for all seo relevant information (including possibility to edit this information on click).
 
 ==============================   ==========================================================
 Module                           Description
@@ -33,7 +33,7 @@ SearchEngines                    Overview for all relevant search engine setting
 URL Handling                     Overview for all relevant url handling stuff including
                                  RealURL support and possibility to simulate the url.
 
-Pagetitle                        Overview for all relevant pagetitle informations and
+Pagetitle                        Overview for all relevant pagetitle information and
                                  possibility to simulate the pagetitle.
 
 Pagetitle simulator (Slow!)      Simulates the pagetitle generation for the current

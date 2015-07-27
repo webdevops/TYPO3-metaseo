@@ -25,6 +25,8 @@
 
 namespace Metaseo\Metaseo\Utility;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
+
 class TypoScript implements \Iterator
 {
     ###########################################################################
@@ -89,7 +91,7 @@ class TypoScript implements \Iterator
     public function rewind()
     {
         reset($this->tsData);
-        $this->iteratorNextNode(false);
+        $this->iteratorNextNode();
     }
 
     /**
@@ -135,7 +137,7 @@ class TypoScript implements \Iterator
     {
         $ret = null;
 
-        // extract TypoScript-path informations
+        // extract TypoScript-path information
         $nodeSections  = explode('.', $tsNodePath);
         $nodeValueType = end($nodeSections);
         $nodeValueName = end($nodeSections) . '.';
@@ -184,7 +186,7 @@ class TypoScript implements \Iterator
     public function next()
     {
         next($this->tsData);
-        $this->iteratorNextNode(true);
+        $this->iteratorNextNode();
     }
 
     ###########################################################################
@@ -239,7 +241,7 @@ class TypoScript implements \Iterator
     {
         $ret = $defaultValue;
 
-        // extract TypoScript-path informations
+        // extract TypoScript-path information
         $nodeFound     = true;
         $nodeSections  = explode('.', $tsNodePath);
         $nodeValueName = end($nodeSections);
@@ -305,9 +307,9 @@ class TypoScript implements \Iterator
     /**
      * StdWrap with TypoScript Configuration
      *
-     * @param       mixed           Value for stdWrap
+     * @param  mixed   $value    Value for stdWrap
      *
-     * @return      mixed           Result of stdWrap
+     * @return mixed             Result of stdWrap
      */
     public function stdWrap($value = null)
     {
@@ -326,7 +328,7 @@ class TypoScript implements \Iterator
     protected function getCObj()
     {
         if ($this->cObj === null) {
-            $this->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            $this->cObj = Typo3GeneralUtility::makeInstance(
                 'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'
             );
         }

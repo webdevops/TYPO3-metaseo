@@ -26,6 +26,7 @@
 
 namespace Metaseo\Metaseo\Hook;
 
+use Metaseo\Metaseo\Utility\FrontendUtility;
 use Metaseo\Metaseo\Utility\GeneralUtility;
 use Metaseo\Metaseo\Utility\SitemapUtility;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -261,7 +262,7 @@ abstract class SitemapIndexHook implements SingletonInterface
         // Basic checks
         // ############################
 
-        if (!\Metaseo\Metaseo\Utility\FrontendUtility::isCacheable()) {
+        if (!FrontendUtility::isCacheable()) {
             return false;
         }
 
@@ -275,7 +276,7 @@ abstract class SitemapIndexHook implements SingletonInterface
             return false;
         }
 
-        // all checks successfull, page is cacheable
+        // all checks successful, page is cacheable
         $this->pageIndexFlag = true;
 
         return true;

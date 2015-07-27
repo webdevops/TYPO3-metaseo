@@ -26,12 +26,16 @@
 
 namespace Metaseo\Metaseo\Controller;
 
+use Metaseo\Metaseo\Backend\Module\AbstractStandardModule;
+use Metaseo\Metaseo\Utility\BackendUtility;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility as Typo3BackendUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 
 /**
  * TYPO3 Backend module root settings
  */
-class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule
+class BackendRootSettingsController extends AbstractStandardModule
 {
     // ########################################################################
     // Attributes
@@ -50,7 +54,7 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
         // Root page list
         // #################
 
-        $rootPageList = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
+        $rootPageList = BackendUtility::getRootPageList();
         $rootIdList   = array_keys($rootPageList);
 
         $rootPidCondition = null;
@@ -64,7 +68,7 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
         // Root setting list (w/ automatic creation)
         // #################
 
-        // check which root lages have no root settings
+        // check which root pages have no root settings
         $query   = 'SELECT p.uid
                       FROM pages p
                            LEFT JOIN tx_metaseo_setting_root seosr
@@ -82,7 +86,7 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
             DatabaseUtility::execInsert($query);
         }
 
-        $rootSettingList = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageSettingList();
+        $rootSettingList = BackendUtility::getRootPageSettingList();
 
         // #################
         // Domain list
@@ -123,7 +127,7 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
             }
 
             // Settings available
-            $page['settingsLink'] = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick(
+            $page['settingsLink'] = Typo3BackendUtility::editOnClick(
                 '&edit[tx_metaseo_setting_root][' . $rootSettingList[$pageId]['uid'] . ']=edit',
                 $this->doc->backPath
             );
@@ -135,7 +139,7 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
             $this->addFlashMessage(
                 $this->translate('message.warning.noRootPage.message'),
                 $this->translate('message.warning.noRootPage.title'),
-                \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+                FlashMessage::WARNING
             );
         }
 

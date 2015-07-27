@@ -26,6 +26,8 @@
 
 namespace Metaseo\Metaseo\Page;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Abstract page
  */
@@ -53,12 +55,12 @@ abstract class AbstractPage
     // ########################################################################
 
     /**
-     * Constuctor
+     * Constructor
      */
     public function __construct()
     {
         // Init object manager
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        $this->objectManager = GeneralUtility::makeInstance(
             'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
         );
     }

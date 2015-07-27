@@ -29,7 +29,7 @@ namespace Metaseo\Metaseo\Scheduler\Task;
 /**
  * Scheduler Task Sitemap XML
  */
-class SitemapXmlTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
+class SitemapXmlTask extends AbstractSitemapTask
 {
 
     // ########################################################################
@@ -59,18 +59,18 @@ class SitemapXmlTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
     {
         if ($languageId !== null) {
             // Language lock enabled
-            $rootPageLinkTempalte = 'sitemap-r%s-l%s-p###PAGE###.xml.gz';
+            $rootPageLinkTemplate = 'sitemap-r%s-l%s-p###PAGE###.xml.gz';
             $sitemapIndexFileName = 'index-r%s-l%s.xml.gz';
             $sitemapPageFileName  = 'sitemap-r%s-l%s-p%s.xml.gz';
         } else {
-            $rootPageLinkTempalte = 'sitemap-r%s-p###PAGE###.xml.gz';
+            $rootPageLinkTemplate = 'sitemap-r%s-p###PAGE###.xml.gz';
             $sitemapIndexFileName = 'index-r%s.xml.gz';
             $sitemapPageFileName  = 'sitemap-r%s-p%3$s.xml.gz';
         }
 
         // Init builder
         $generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\XmlGenerator');
-        $fileName  = sprintf($rootPageLinkTempalte, $rootPageId, $languageId);
+        $fileName  = sprintf($rootPageLinkTemplate, $rootPageId, $languageId);
 
         $generator->indexPathTemplate = $this->generateSitemapLinkTemplate($fileName);
 

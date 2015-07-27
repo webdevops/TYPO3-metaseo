@@ -81,9 +81,9 @@ $tempColumns = array(
             'max'      => '255',
             'checkbox' => '',
             'eval'     => 'trim',
-            'wizards'  => Array(
+            'wizards'  => array(
                 '_PADDING' => 2,
-                'link'     => Array(
+                'link'     => array(
                     'type'         => 'popup',
                     'title'        => 'Link',
                     'icon'         => 'link_popup.gif',
@@ -114,35 +114,43 @@ $tempColumns = array(
             'type'     => 'select',
             'items'    => array(
                 array(
-                    'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_change_frequency.I.0',
+                    'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:'
+                    . 'pages.tx_metaseo_change_frequency.I.0',
                     0
                 ),
                 array(
-                    'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_change_frequency.I.1',
+                    'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:'
+                    . 'pages.tx_metaseo_change_frequency.I.1',
                     1
                 ),
                 array(
-                    'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_change_frequency.I.2',
+                    'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:'
+                    . 'pages.tx_metaseo_change_frequency.I.2',
                     2
                 ),
                 array(
-                    'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_change_frequency.I.3',
+                    'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:'
+                    . 'pages.tx_metaseo_change_frequency.I.3',
                     3
                 ),
                 array(
-                    'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_change_frequency.I.4',
+                    'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:'
+                    . 'pages.tx_metaseo_change_frequency.I.4',
                     4
                 ),
                 array(
-                    'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_change_frequency.I.5',
+                    'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:'
+                    . 'pages.tx_metaseo_change_frequency.I.5',
                     5
                 ),
                 array(
-                    'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_change_frequency.I.6',
+                    'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:'
+                    . 'pages.tx_metaseo_change_frequency.I.6',
                     6
                 ),
                 array(
-                    'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_change_frequency.I.7',
+                    'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:'
+                    . 'pages.tx_metaseo_change_frequency.I.7',
                     7
                 ),
             ),
@@ -202,7 +210,8 @@ $tempColumns = array(
 
 // TCA Palettes
 $GLOBALS['TCA']['pages']['palettes']['tx_metaseo_pagetitle'] = array(
-    'showitem'       => 'tx_metaseo_pagetitle,--linebreak--,tx_metaseo_pagetitle_prefix,tx_metaseo_pagetitle_suffix,--linebreak--,tx_metaseo_inheritance',
+    'showitem'       => 'tx_metaseo_pagetitle,--linebreak--,tx_metaseo_pagetitle_prefix,'
+        . 'tx_metaseo_pagetitle_suffix,--linebreak--,tx_metaseo_inheritance',
     'canNotCollapse' => 1
 );
 
@@ -217,7 +226,8 @@ $GLOBALS['TCA']['pages']['palettes']['tx_metaseo_sitemap'] = array(
 );
 
 $GLOBALS['TCA']['pages']['palettes']['tx_metaseo_geo'] = array(
-    'showitem'       => 'tx_metaseo_geo_lat,--linebreak--,tx_metaseo_geo_long,--linebreak--,tx_metaseo_geo_place,--linebreak--,tx_metaseo_geo_region',
+    'showitem'       => 'tx_metaseo_geo_lat,--linebreak--,tx_metaseo_geo_long,--linebreak--,'
+        . 'tx_metaseo_geo_place,--linebreak--,tx_metaseo_geo_region',
     'canNotCollapse' => 1
 );
 
@@ -232,7 +242,12 @@ $GLOBALS['TCA']['pages']['palettes']['tx_metaseo_geo'] = array(
 // Put it for standard page
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
     'pages',
-    '--div--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tab.seo;,--palette--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.palette.pagetitle;tx_metaseo_pagetitle,--palette--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.palette.geo;tx_metaseo_geo,--palette--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.palette.crawler;tx_metaseo_crawler,--palette--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.palette.sitemap;tx_metaseo_sitemap',
+    '--div--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tab.seo;,--palette--;'
+    . 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.palette.pagetitle;tx_metaseo_pagetitle,'
+    . '--palette--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.palette.geo;tx_metaseo_geo,'
+    . '--palette--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.palette.crawler;'
+    . 'tx_metaseo_crawler,--palette--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:'
+    . 'pages.palette.sitemap;tx_metaseo_sitemap',
     '1,4,7,3',
     'after:author_email'
 );

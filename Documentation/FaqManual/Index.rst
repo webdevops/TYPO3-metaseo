@@ -22,7 +22,7 @@ General
 | **Problem:**
 |     In my TYPO3 the feature XYZ of this extension doesn't work. What's wrong?
 | **Solution:**
-|     The metaseo-Extension was carefully written. We want to deliver correct pages and extensions will the power of the TYPO3 caching system (and those extensions are the fastest). For some features (eg. sitemap, canonical-tag) we have to trust in the caching-system – it's the only way to make sure that we don't deliver wrong informations to our search engines. If our extension doesn't work correct in your TYPO3 installation maybe there is something wrong – maybe the configuration, your setupTS or one of your extension.
+|     The metaseo-Extension was carefully written. We want to deliver correct pages and extensions will the power of the TYPO3 caching system (and those extensions are the fastest). For some features (eg. sitemap, canonical-tag) we have to trust in the caching-system – it's the only way to make sure that we don't deliver wrong information to our search engines. If our extension doesn't work correct in your TYPO3 installation maybe there is something wrong – maybe the configuration, your setupTS or one of your extension.
 
 Indexed Sitemap
 ---------------

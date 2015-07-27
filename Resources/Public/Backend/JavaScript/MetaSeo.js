@@ -70,4 +70,4 @@ MetaSeo = {
         pos = value.toUpperCase().indexOf(search);
         return pos >= 0;
     }
-}
+};

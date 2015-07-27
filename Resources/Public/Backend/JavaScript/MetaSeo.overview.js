@@ -248,20 +248,20 @@ MetaSeo.overview.grid = {
                     var field = col.metaSeoClickEdit;
                     field.itemId = 'form-field';
 
-                    if (!field.width)    field.width = 375;
+                    if (!field.width) {
+                        field.width = 375;
+                    }
 
                     switch (field.xtype) {
                         case 'textarea':
-                            if (!field.height)    field.height = 150;
+                            if (!field.height) {
+                                field.height = 150;
+                            }
                             field.value = data;
                             break;
 
                         case 'checkbox':
-                            if (data == '0' || data == '') {
-                                field.checked = false;
-                            } else {
-                                field.checked = true;
-                            }
+                            field.checked = !(data == '0' || data == '');
                             break;
 
                         default:
@@ -281,6 +281,8 @@ MetaSeo.overview.grid = {
                             {
                                 text: MetaSeo.overview.conf.lang.button_saverecursively,
                                 itemId: 'form-button-save-recursively',
+                                tooltip: MetaSeo.overview.conf.lang.button_saverecursively_tooltip,
+                                tooltipType: 'title',
 
                                 disabled: true,
                                 handler: function(cmp, e) {
@@ -292,7 +294,7 @@ MetaSeo.overview.grid = {
                                     var callbackFinish = function(response) {
                                         var response = Ext.decode(response.responseText);
 
-                                        if( response && response.error ) {
+                                        if ( response && response.error ) {
                                             TYPO3.Flashmessage.display(TYPO3.Severity.error, '', Ext.util.Format.htmlEncode(response.error) );
                                         }
 

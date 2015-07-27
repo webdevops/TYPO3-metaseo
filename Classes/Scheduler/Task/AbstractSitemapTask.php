@@ -26,10 +26,13 @@
 
 namespace Metaseo\Metaseo\Scheduler\Task;
 
+use Metaseo\Metaseo\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
+
 /**
  * Scheduler Task Sitemap Base
  */
-abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractTask
+abstract class AbstractSitemapTask extends AbstractTask
 {
 
     // ########################################################################
@@ -62,7 +65,7 @@ abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\Abstr
         foreach ($rootPageList as $uid => $page) {
             $this->initRootPage($uid);
 
-            if (\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', false, $uid)) {
+            if (GeneralUtility::getRootSettingValue('is_sitemap_language_lock', false, $uid)) {
                 foreach ($this->languageIdList as $languageId) {
                     $this->setRootPageLanguage($languageId);
                     $this->buildSitemap($uid, $languageId);
@@ -87,7 +90,7 @@ abstract class AbstractSitemapTask extends \Metaseo\Metaseo\Scheduler\Task\Abstr
         $fullPath = PATH_site . '/' . $this->sitemapDir;
 
         if (!is_dir($fullPath)) {
-            \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($fullPath);
+            Typo3GeneralUtility::mkdir($fullPath);
         }
 
         foreach (new \DirectoryIterator($fullPath) as $file) {

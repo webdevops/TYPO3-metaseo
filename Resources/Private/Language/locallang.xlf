@@ -50,7 +50,7 @@
                 <source>Control Center</source>
             </trans-unit>
             <trans-unit id="title.seo.pagetitle.geo" xml:space="preserve">
-                <source>SEO - Geo informations</source>
+                <source>SEO - Geo information</source>
             </trans-unit>
             <trans-unit id="title.seo.pagetitle.main" xml:space="preserve">
                 <source>SEO - MetaTags</source>
@@ -109,6 +109,9 @@
             <trans-unit id="message.warning.no_domain_entries_found" xml:space="preserve">
                 <source>No domains found</source>
             </trans-unit>
+            <trans-unit id="message.warning.incomplete_data_received.message" xml:space="preserve" approved="yes">
+                <source>Incomplete data received. The action was interrupted.</source>
+            </trans-unit>
             <trans-unit id="message.error.access_denied" xml:space="preserve">
                 <source>Access to this element was denied.</source>
             </trans-unit>
@@ -143,7 +146,7 @@
                 <source>Metadata</source>
             </trans-unit>
             <trans-unit id="menu.seo.page.geo" xml:space="preserve">
-                <source>Geo informations</source>
+                <source>Geo information</source>
             </trans-unit>
             <trans-unit id="menu.seo.page.searchengines" xml:space="preserve">
                 <source>Searchengine information</source>
@@ -171,6 +174,9 @@
             </trans-unit>
             <trans-unit id="button.saverecursively" xml:space="preserve">
                 <source>Save recursively</source>
+            </trans-unit>
+            <trans-unit id="button.saverecursively.tooltip" xml:space="preserve" approved="yes">
+                <source>Recursively applies the change to all subpages with indefinite depth.</source>
             </trans-unit>
             <trans-unit id="button.cancel" xml:space="preserve">
                 <source>Cancel</source>

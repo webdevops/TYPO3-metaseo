@@ -44,7 +44,7 @@ class HttpHook
         $tsSetup = $GLOBALS['TSFE']->tmpl->setup;
         $headers = array();
 
-        // dont send any headers if headers are already sent
+        // don't send any headers if headers are already sent
         if (headers_sent()) {
             return;
         }
@@ -74,7 +74,7 @@ class HttpHook
                 // ##################################
                 // W3C P3P Tags
                 // ##################################
-                $p3pCP = null;
+                $p3pCP        = null;
                 $p3pPolicyUrl = null;
 
                 if (!empty($tsSetupSeo['p3pCP'])) {

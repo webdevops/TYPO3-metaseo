@@ -140,7 +140,7 @@ plugin.metaseo {
     # cat=plugin.metaseo.pageTitle/enable/02; type=boolean; label= Apply Tmpl-Sitetitle to prefix/suffix: This enables the addition of the template-sitetitle to the rendered page-title (in pagetitle-prefix/suffix-mode)
     pageTitle.applySitetitleToPrefixSuffix = 1
 
-    # cat=plugin.metaseo.pageTitle/enable/03; type=string; label= Sitetitle glue: String between titel and sitetitle (from template)
+    # cat=plugin.metaseo.pageTitle/enable/03; type=string; label= Sitetitle glue: String between title and sitetitle (from template)
     pageTitle.sitetitleGlue = :
 
     # cat=plugin.metaseo.pageTitle/enable/04; type=boolean; label= Sitetitle glue spacer (before): Add spacer between title and glue (from template)

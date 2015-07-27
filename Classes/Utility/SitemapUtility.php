@@ -26,6 +26,7 @@
 
 namespace Metaseo\Metaseo\Utility;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -37,7 +38,8 @@ class SitemapUtility
     const SITEMAP_TYPE_PAGE = 0;
     const SITEMAP_TYPE_FILE = 1;
 
-    const PAGE_TYPE_SITEMAP_TXT = 841131; // sitemap.txt     (EXT:metaseo), apply changes in Configuration/TypoScript/setup.txt
+    /* apply changes in Configuration/TypoScript/setup.txt */
+    const PAGE_TYPE_SITEMAP_TXT = 841131; // sitemap.txt     (EXT:metaseo)
     const PAGE_TYPE_SITEMAP_XML = 841132; // sitemap.xml     (EXT:metaseo)
     const PAGE_TYPE_ROBOTS_TXT  = 841133; // robots.txt      (EXT:metaseo)
 
@@ -75,7 +77,7 @@ class SitemapUtility
     /**
      * Insert into sitemap
      *
-     * @param   array $pageData Page informations
+     * @param   array $pageData page information
      */
     public static function index($pageData)
     {
@@ -142,7 +144,7 @@ class SitemapUtility
                 // #####################################
                 // INSERT
                 // #####################################
-                \Metaseo\Metaseo\Utility\DatabaseUtility::connection()->exec_INSERTquery(
+                DatabaseUtility::connection()->exec_INSERTquery(
                     'tx_metaseo_sitemap',
                     $pageData,
                     array_keys($pageData)
@@ -213,10 +215,15 @@ class SitemapUtility
 
         // Fetch from SetupTS (comma separated list)
         if (isset($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist'])
-            && strlen($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist']) >= 1
+            && strlen(
+                $GLOBALS['TSFE']
+                    ->tmpl
+                    ->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist']
+            ) >= 1
         ) {
-            $pageTypeBlacklist = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist'];
-            $pageTypeBlacklist = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $pageTypeBlacklist);
+            $pageTypeBlacklist = $GLOBALS['TSFE']->tmpl
+                                     ->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist'];
+            $pageTypeBlacklist = Typo3GeneralUtility::trimExplode(',', $pageTypeBlacklist);
 
             $ret = array_merge($ret, $pageTypeBlacklist);
         }
