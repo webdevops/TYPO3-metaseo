@@ -71,7 +71,6 @@ class PagetitlePart extends AbstractPart
      */
     protected $rootLine = array();
 
-
     /**
      * Add SEO-Page Title
      *
@@ -141,7 +140,6 @@ class PagetitlePart extends AbstractPart
     {
         $this->cObj       = $GLOBALS['TSFE']->cObj;
         $this->tsSetup    = $GLOBALS['TSFE']->tmpl->setup;
-        $this->pageRecord = $GLOBALS['TSFE']->page;
         $this->rootLine   = GeneralUtility::getRootLine();
 
         if (!empty($this->tsSetup['plugin.']['metaseo.'])) {
