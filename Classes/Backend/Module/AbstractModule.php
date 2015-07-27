@@ -46,6 +46,15 @@ abstract class AbstractModule extends ActionController
      */
     protected $formProtection;
 
+    // Internal, dynamic:
+    /**
+     * document template object
+     *
+     * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
+     * @todo Define visibility
+     */
+    public $doc;
+
     // ########################################################################
     // Methods
     // ########################################################################

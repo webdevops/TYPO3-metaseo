@@ -307,9 +307,9 @@ class TypoScript implements \Iterator
     /**
      * StdWrap with TypoScript Configuration
      *
-     * @param       mixed           Value for stdWrap
+     * @param  mixed   $value    Value for stdWrap
      *
-     * @return      mixed           Result of stdWrap
+     * @return mixed             Result of stdWrap
      */
     public function stdWrap($value = null)
     {
