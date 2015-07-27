@@ -32,6 +32,11 @@ namespace Metaseo\Metaseo\Utility;
 class DatabaseUtility
 {
 
+    /**
+     * relation we know of that it exists and which we can use for database vendor determination
+     */
+    const TYPO3_DEFAULT_TABLE = 'pages';
+
     ###########################################################################
     # Query functions
     ###########################################################################
@@ -383,7 +388,7 @@ class DatabaseUtility
         }
 
         $not = $negate ? ' NOT' : '';
-        $quotedValues = self::quoteArray($values, 'pages');
+        $quotedValues = self::quoteArray($values);
 
         return $field . $not . ' IN (' . implode(',', $quotedValues) . ')';
     }
@@ -421,7 +426,7 @@ class DatabaseUtility
     public static function quote($value, $table = null)
     {
         if ($table === null) {
-            $table = 'Pages';
+            $table = self::TYPO3_DEFAULT_TABLE;
         }
 
         if ($value === null) {
