@@ -241,11 +241,11 @@ f you want to activiate “real” sitemap.xml feature (eg. http://example.com/s
         'pagePath' => array(
             'type' => 'user',
             'userFunc' => 'EXT:realurl/class.tx_realurl_advanced.php:&tx_realurl_advanced->main',
-            'spaceCharacter'	=> '-',
-            'segTitleFieldList'	=> 'tx_realurl_pathsegment,alias,nav_title,title',
-            'languageGetVar'	=> 'L',
-            'expireDays'	=> 30,
-            'rootpage_id'	=> 1,
+            'spaceCharacter'    => '-',
+            'segTitleFieldList' => 'tx_realurl_pathsegment,alias,nav_title,title',
+            'languageGetVar'    => 'L',
+            'expireDays'        => 30,
+            'rootpage_id'       => 1,
         ),
 
         );
