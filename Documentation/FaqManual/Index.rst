@@ -6,7 +6,7 @@
 .. include:: ../Includes.txt
 
 
-.. _admin-manual:
+.. _faq-manual:
 
 Frequently Asked Questions (FAQ)
 ================================
