@@ -6,10 +6,10 @@
 .. include:: ../Includes.txt
 
 
-.. _admin-manual:
+.. _developer-manual:
 
 Developer Manual
-====================
+================
 
 TypoScript Setup
 ----------------

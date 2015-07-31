@@ -6,10 +6,10 @@
 .. include:: ../Includes.txt
 
 
-.. _users-manual:
+.. _backend-modules:
 
 Backend Modules
-=========
+===============
 
 SEO Page Module (Website -> SEO)
 --------------------------------
@@ -42,7 +42,7 @@ Pagetitle simulator (Slow!)      Simulates the pagetitle generation for the curr
 
 
 SEO Control Center (SEO -> Control Center)
------------------------------------------
+------------------------------------------
 
 .. figure:: ../Images/Introduction/ModuleSeoControlCenter.png
     :scale: 80%
