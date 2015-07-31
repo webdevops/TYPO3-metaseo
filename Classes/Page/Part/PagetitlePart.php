@@ -71,7 +71,6 @@ class PagetitlePart extends AbstractPart
      */
     protected $rootLine = array();
 
-
     /**
      * Add SEO-Page Title
      *
@@ -88,7 +87,7 @@ class PagetitlePart extends AbstractPart
         // ############################
 
         $pageTitleCachingEnabled = $this->checkIfPageTitleCachingEnabled();
-        if ($pageTitleCachingEnabled) {
+        if ($pageTitleCachingEnabled === true) {
             $cacheIdentification = sprintf(
                 '%s_%s_title',
                 $GLOBALS['TSFE']->id,
@@ -119,7 +118,7 @@ class PagetitlePart extends AbstractPart
             $ret = $this->generatePageTitle($title);
 
             // Cache page title (if page is not cacheable)
-            if ($pageTitleCachingEnabled) {
+            if ($pageTitleCachingEnabled === true && isset($cache) && isset($cacheIdentification)) {
                 $cache->set($cacheIdentification, $ret, array('pageId_' . $GLOBALS['TSFE']->id));
             }
         }
@@ -141,7 +140,6 @@ class PagetitlePart extends AbstractPart
     {
         $this->cObj       = $GLOBALS['TSFE']->cObj;
         $this->tsSetup    = $GLOBALS['TSFE']->tmpl->setup;
-        $this->pageRecord = $GLOBALS['TSFE']->page;
         $this->rootLine   = GeneralUtility::getRootLine();
 
         if (!empty($this->tsSetup['plugin.']['metaseo.'])) {
@@ -184,19 +182,20 @@ class PagetitlePart extends AbstractPart
      * @param    string $title Default page title (rendered by TYPO3)
      *
      * @return    string            Modified page title
+     * @todo: split up function (too long)
      */
     public function generatePageTitle($title)
     {
         // INIT
         $ret              = $title;
-        $rawTitel         = !empty($GLOBALS['TSFE']->altPageTitle) ?
+        $rawTitle         = !empty($GLOBALS['TSFE']->altPageTitle) ?
             $GLOBALS['TSFE']->altPageTitle : $GLOBALS['TSFE']->page['title'];
         $currentPid       = $GLOBALS['TSFE']->id;
         $skipPrefixSuffix = false;
         $applySitetitle   = true;
 
-        $pageTitelPrefix = false;
-        $pageTitelSuffix = false;
+        $pageTitlePrefix = false;
+        $pageTitleSuffix = false;
 
         $this->stdWrapList = array();
 
@@ -204,7 +203,7 @@ class PagetitlePart extends AbstractPart
 
         // Use browsertitle if available
         if (!empty($GLOBALS['TSFE']->page['tx_metaseo_pagetitle_rel'])) {
-            $rawTitel = $GLOBALS['TSFE']->page['tx_metaseo_pagetitle_rel'];
+            $rawTitle = $GLOBALS['TSFE']->page['tx_metaseo_pagetitle_rel'];
         }
 
         // Call hook
@@ -222,11 +221,11 @@ class PagetitlePart extends AbstractPart
 
         // Apply stdWrap before
         if (!empty($this->stdWrapList['before.'])) {
-            $rawTitel = $this->cObj->stdWrap($rawTitel, $this->stdWrapList['before.']);
+            $rawTitle = $this->cObj->stdWrap($rawTitle, $this->stdWrapList['before.']);
         }
 
         // #######################################################################
-        // RAW PAGE TITEL
+        // RAW PAGE TITLE
         // #######################################################################
         if (!empty($GLOBALS['TSFE']->page['tx_metaseo_pagetitle'])) {
             $ret = $GLOBALS['TSFE']->page['tx_metaseo_pagetitle'];
@@ -241,7 +240,7 @@ class PagetitlePart extends AbstractPart
 
 
         // #######################################################################
-        // PAGE TITEL PREFIX/SUFFIX
+        // PAGE TITLE PREFIX/SUFFIX
         // #######################################################################
         if (!$skipPrefixSuffix) {
             foreach ($this->rootLine as $page) {
@@ -251,14 +250,14 @@ class PagetitlePart extends AbstractPart
                         // Normal
                         // ###################################
                         if (!empty($page['tx_metaseo_pagetitle_prefix'])) {
-                            $pageTitelPrefix = $page['tx_metaseo_pagetitle_prefix'];
+                            $pageTitlePrefix = $page['tx_metaseo_pagetitle_prefix'];
                         }
 
                         if (!empty($page['tx_metaseo_pagetitle_suffix'])) {
-                            $pageTitelSuffix = $page['tx_metaseo_pagetitle_suffix'];
+                            $pageTitleSuffix = $page['tx_metaseo_pagetitle_suffix'];
                         }
 
-                        if ($pageTitelPrefix !== false || $pageTitelSuffix !== false) {
+                        if ($pageTitlePrefix !== false || $pageTitleSuffix !== false) {
                             // pagetitle found - break foreach
                             break 2;
                         }
@@ -266,18 +265,18 @@ class PagetitlePart extends AbstractPart
                     case 1:
                         // ###################################
                         // Skip
-                        // (don't herit from this page)
+                        // (don't inherit from this page)
                         // ###################################
                         if ((int)$page['uid'] != $currentPid) {
                             continue 2;
                         }
 
                         if (!empty($page['tx_metaseo_pagetitle_prefix'])) {
-                            $pageTitelPrefix = $page['tx_metaseo_pagetitle_prefix'];
+                            $pageTitlePrefix = $page['tx_metaseo_pagetitle_prefix'];
                         }
 
                         if (!empty($page['tx_metaseo_pagetitle_suffix'])) {
-                            $pageTitelSuffix = $page['tx_metaseo_pagetitle_suffix'];
+                            $pageTitleSuffix = $page['tx_metaseo_pagetitle_suffix'];
                         }
 
                         break 2;
@@ -293,23 +292,23 @@ class PagetitlePart extends AbstractPart
 
             if (!empty($store)) {
                 if (isset($store['pagetitle.title'])) {
-                    $rawTitel = $store['pagetitle.title'];
+                    $rawTitle = $store['pagetitle.title'];
                 }
 
                 if (isset($store['pagetitle.prefix'])) {
-                    $pageTitelPrefix = $store['pagetitle.prefix'];
+                    $pageTitlePrefix = $store['pagetitle.prefix'];
                 }
 
                 if (isset($store['pagetitle.suffix'])) {
-                    $pageTitelSuffix = $store['pagetitle.suffix'];
+                    $pageTitleSuffix = $store['pagetitle.suffix'];
                 }
 
                 if (isset($store['pagetitle.absolute'])) {
                     $ret      = $store['pagetitle.absolute'];
-                    $rawTitel = $store['pagetitle.absolute'];
+                    $rawTitle = $store['pagetitle.absolute'];
 
-                    $pageTitelPrefix = false;
-                    $pageTitelSuffix = false;
+                    $pageTitlePrefix = false;
+                    $pageTitleSuffix = false;
 
                     if (empty($this->tsSetupSeo['pageTitle.']['applySitetitleToPagetitle'])) {
                         $applySitetitle = false;
@@ -322,22 +321,22 @@ class PagetitlePart extends AbstractPart
             }
 
             // Apply prefix and suffix
-            if ($pageTitelPrefix !== false || $pageTitelSuffix !== false) {
-                $ret = $rawTitel;
+            if ($pageTitlePrefix !== false || $pageTitleSuffix !== false) {
+                $ret = $rawTitle;
 
-                if ($pageTitelPrefix !== false) {
-                    $ret = $pageTitelPrefix . ' ' . $ret;
+                if ($pageTitlePrefix !== false) {
+                    $ret = $pageTitlePrefix . ' ' . $ret;
                 }
 
-                if ($pageTitelSuffix !== false) {
-                    $ret .= ' ' . $pageTitelSuffix;
+                if ($pageTitleSuffix !== false) {
+                    $ret .= ' ' . $pageTitleSuffix;
                 }
 
                 if (!empty($this->tsSetupSeo['pageTitle.']['applySitetitleToPrefixSuffix'])) {
                     $applySitetitle = true;
                 }
             } else {
-                $ret = $rawTitel;
+                $ret = $rawTitle;
             }
         }
 
@@ -402,7 +401,7 @@ class PagetitlePart extends AbstractPart
             $sitetitlePosition = (int)$this->tsSetup['config.']['pageTitleFirst'];
         }
 
-        // add overall pagetitel from template/ts-setup
+        // add overall pagetitle from template/ts-setup
         if ($sitetitlePosition) {
             // suffix
             $ret .= $glueSpacerBefore . $pageTitleGlue . $glueSpacerAfter . $sitetitle;

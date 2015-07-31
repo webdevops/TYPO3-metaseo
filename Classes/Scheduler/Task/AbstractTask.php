@@ -81,15 +81,12 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      */
     protected function getRootPages()
     {
-        $ret = array();
-
         $query = 'SELECT uid
                     FROM pages
                    WHERE is_siteroot = 1
                      AND deleted = 0';
-        $ret   = DatabaseUtility::getColWithIndex($query);
 
-        return $ret;
+        return DatabaseUtility::getColWithIndex($query);
     }
 
 
@@ -112,6 +109,8 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 
     /**
      * Set root page language
+     *
+     * @param integer $languageId
      */
     protected function setRootPageLanguage($languageId)
     {
@@ -120,9 +119,9 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
     }
 
     /**
-     * Initalize root page (TSFE and stuff)
+     * Initialize root page (TSFE and stuff)
      *
-     * @param   integer $rootPageId $rootPageId
+     * @param integer $rootPageId $rootPageId
      */
     protected function initRootPage($rootPageId)
     {

@@ -34,6 +34,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FooterPart extends AbstractPart
 {
+    /**
+     * Content object renderer
+     *
+     * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     */
+    public $cObj;
 
     /**
      * Add Page Footer

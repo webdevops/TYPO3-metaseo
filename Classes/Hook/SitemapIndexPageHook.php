@@ -101,7 +101,7 @@ class SitemapIndexPageHook extends SitemapIndexHook
         // Index page
         $pageData = $this->generateSitemapPageData($pageUrl);
         if (!empty($pageData)) {
-            SitemapUtility::index($pageData, 'page');
+            SitemapUtility::index($pageData);
         }
     }
 

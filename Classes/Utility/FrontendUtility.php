@@ -166,7 +166,7 @@ class FrontendUtility
             return false;
         }
 
-        // dont parse if page is not cacheable
+        // don't parse if page is not cacheable
         if (!$TSFE->isStaticCacheble()) {
             return false;
         }

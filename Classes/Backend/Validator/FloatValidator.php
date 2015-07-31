@@ -33,7 +33,7 @@ class FloatValidator
 {
 
     /**
-     * Returns Javscript validation function body
+     * Returns JavaScript validation function body
      *
      * @return string
      */

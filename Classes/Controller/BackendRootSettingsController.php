@@ -68,7 +68,7 @@ class BackendRootSettingsController extends AbstractStandardModule
         // Root setting list (w/ automatic creation)
         // #################
 
-        // check which root lages have no root settings
+        // check which root pages have no root settings
         $query   = 'SELECT p.uid
                       FROM pages p
                            LEFT JOIN tx_metaseo_setting_root seosr

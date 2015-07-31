@@ -71,7 +71,7 @@ class MetaseoCommandController extends CommandController
             ConsoleUtility::writeLine('Sitemap cleared');
         } else {
             ConsoleUtility::writeErrorLine('No such root page found');
-            ConsoleUtility::teminate(1);
+            ConsoleUtility::terminate(1);
         }
     }
 
@@ -104,7 +104,7 @@ class MetaseoCommandController extends CommandController
             }
         } else {
             ConsoleUtility::writeErrorLine('No such root page found');
-            ConsoleUtility::teminate(1);
+            ConsoleUtility::terminate(1);
         }
     }
 
@@ -112,14 +112,12 @@ class MetaseoCommandController extends CommandController
     /**
      * Detect root page from id (either PID or sys_domain)
      *
-     * @param  $var
+     * @param  integer|string $var
      *
-     * @return int|mixed|null
+     * @return integer|null
      */
     protected function getRootPageIdFromId($var)
     {
-        $ret = null;
-
         if (is_numeric($var)) {
             // Passed variable is numeric
             $pageId = (int)$var;
@@ -138,20 +136,21 @@ class MetaseoCommandController extends CommandController
                 throw new \RuntimeException('MetaSEO: Page with UID "' . $pageId . '" is no valid root page');
             }
 
-            $ret = $page['uid'];
-        } else {
-            // Passed variable is domain name
-            $query = 'SELECT pid
-                        FROM sys_domain
-                       WHERE domainName = ' . DatabaseUtility::quote($var, 'sys_domain') . '
-                         AND hidden = 0';
-            $pid   = DatabaseUtility::getOne($query);
-
-            if (!empty($pid)) {
-                $ret = $pid;
-            }
+            return $page['uid'];
         }
 
-        return $ret;
+        // Passed variable is domain name
+        $query = 'SELECT pid
+                    FROM sys_domain
+                   WHERE domainName = ' . DatabaseUtility::quote($var, 'sys_domain') . '
+                     AND hidden = 0';
+        $pid   = DatabaseUtility::getOne($query);
+
+        if (empty($pid)) {
+
+            return null;
+        }
+
+        return $pid;
     }
 }

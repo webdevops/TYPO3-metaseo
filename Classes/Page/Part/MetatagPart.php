@@ -138,14 +138,12 @@ class MetatagPart extends AbstractPart
             $sysLanguageId = $this->tsSetup['config.']['sys_language_uid'];
         }
 
-        $customMetaTagList = array();
-
         // Init News extension
         $this->initExtensionSupport();
 
         if ($this->tsSetupSeo) {
             $this->collectMetaDataFromPage();
-            $customMetaTagList = $this->collectMetaDataFromConnector($customMetaTagList);
+            $customMetaTagList = $this->collectMetaDataFromConnector();
 
             // #####################################
             // Blacklists
@@ -355,10 +353,9 @@ class MetatagPart extends AbstractPart
             $conf = array();
         }
 
-        if ($disableMP) {
+        $mpOldConfValue = $GLOBALS['TSFE']->config['config']['MP_disableTypolinkClosestMPvalue'];
+        if ($disableMP === true) {
             // Disable MP usage in typolink - link to the real page instead
-            $mpOldConfValue = $GLOBALS['TSFE']->config['config']['MP_disableTypolinkClosestMPvalue'];
-
             $GLOBALS['TSFE']->config['config']['MP_disableTypolinkClosestMPvalue'] = 1;
         }
 
@@ -368,7 +365,7 @@ class MetatagPart extends AbstractPart
         // maybe baseUrlWrap is better? but breaks with realurl currently?
         $ret = GeneralUtility::fullUrl($ret);
 
-        if ($disableMP) {
+        if ($disableMP === true) {
             // Restore old MP linking configuration
             $GLOBALS['TSFE']->config['config']['MP_disableTypolinkClosestMPvalue'] = $mpOldConfValue;
         }
@@ -482,7 +479,7 @@ class MetatagPart extends AbstractPart
         if (!$linkParam) {
             // Fetch pageUrl
             if ($pageHash !== null) {
-                // Virtual plugin page, we have to use achnor or site script
+                // Virtual plugin page, we have to use anchor or site script
                 $linkParam = FrontendUtility::getCurrentUrl();
             } else {
                 $linkParam = $GLOBALS['TSFE']->id;
@@ -504,13 +501,15 @@ class MetatagPart extends AbstractPart
      * Advanced meta tags
      *
      * @param array   $metaTags          MetaTags
-     * @param array   $this              ->pageRecord          TSFE Page
+     * @param array   $pageRecord        TSFE Page
      * @param integer $sysLanguageId     Sys Language ID
      * @param array   $customMetaTagList Custom Meta Tag list
+     * @todo $pageRecord not used. Possibly a bug?
      */
     protected function advMetaTags(&$metaTags, $pageRecord, $sysLanguageId, $customMetaTagList)
     {
-        $this->pageRecordId = $this->pageRecord['uid'];
+        //todo Should this be $pageRecord instead of $this->pageRecord?
+        $pageRecordId = $this->pageRecord['uid'];
 
         $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
         $storeMeta = $connector->getStore();
@@ -527,6 +526,7 @@ class MetatagPart extends AbstractPart
 
             // Add external og-tags to adv meta tag list
             if (!empty($storeMeta['meta:og'])) {
+                //todo: $advMetaTagList not in use
                 $advMetaTagList = array_merge($advMetaTagList, $storeMeta['meta:og']);
             }
         }
@@ -541,7 +541,7 @@ class MetatagPart extends AbstractPart
         $query          = 'SELECT tag_name,
                                   tag_value
                              FROM tx_metaseo_metatag
-                            WHERE pid = ' . (int)$this->pageRecordId . '
+                            WHERE pid = ' . (int)$pageRecordId . '
                               AND sys_language_uid = ' . (int)$sysLanguageId . '
                               AND ' . $advMetaTagCondition;
         $advMetaTagList = DatabaseUtility::getList($query);
@@ -573,6 +573,8 @@ class MetatagPart extends AbstractPart
 
     /**
      * Process meta tags
+     *
+     * @param array $tags
      */
     protected function processMetaTags(&$tags)
     {
@@ -623,7 +625,7 @@ class MetatagPart extends AbstractPart
     {
         $ret = array();
 
-        $isXtml = $this->isXhtml();
+        $isXhtml = $this->isXhtml();
 
         foreach ($metaTags as $metaTag) {
             $tag = $metaTag['tag'];
@@ -634,7 +636,7 @@ class MetatagPart extends AbstractPart
                 $attributes[] = $key . '="' . htmlspecialchars($value) . '"';
             }
 
-            if ($isXtml) {
+            if ($isXhtml) {
                 $ret[] = '<' . $tag . ' ' . implode(' ', $attributes) . '/>';
             } else {
                 $ret[] = '<' . $tag . ' ' . implode(' ', $attributes) . '>';
@@ -1001,7 +1003,7 @@ class MetatagPart extends AbstractPart
     }
 
     /**
-     * Genrate crawler (eg. robots) MetaTags
+     * Generate crawler (eg. robots) MetaTags
      */
     protected function generateCrawlerMetaTags()
     {
@@ -1280,6 +1282,7 @@ class MetatagPart extends AbstractPart
         $canonicalUrl = null;
 
         if (!empty($this->pageRecord['tx_metaseo_canonicalurl'])) {
+            //todo: $canonicalUrl not in use
             $canonicalUrl = $this->pageRecord['tx_metaseo_canonicalurl'];
         } elseif (!empty($this->tsSetupSeo['canonicalUrl'])) {
             list($clUrl, $clLinkConf, $clDisableMpMode) = $this->detectCanonicalPage(
@@ -1287,7 +1290,7 @@ class MetatagPart extends AbstractPart
             );
         }
 
-        if (!empty($clUrl)) {
+        if (!empty($clUrl) && isset($clLinkConf) && isset($clDisableMpMode)) {
             $canonicalUrl = $this->generateLink($clUrl, $clLinkConf, $clDisableMpMode);
 
             if (!empty($canonicalUrl)) {
