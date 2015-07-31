@@ -69,20 +69,20 @@ Backend Modules
     :scale: 80%
     :alt: Backend Module - SEO Metatags
 
-	Backend Module "SEO Metatags"
+    Backend Module "SEO Metatags"
 
 
 .. figure:: ../Images/Introduction/ModuleSeoControlCenter.png
     :scale: 80%
     :alt: Backend Module - SEO Control Center
 
-	Backend Module "SEO Control Center"
+    Backend Module "SEO Control Center"
 
 .. figure:: ../Images/Introduction/ModuleSeoSitemap.png
     :scale: 80%
     :alt: Backend Module - SEO Sitemap
 
-	Backend Module "SEO Sitemap"
+    Backend Module "SEO Sitemap"
 
 
 Constants
@@ -92,7 +92,7 @@ Constants
     :scale: 80%
     :alt: Constants Editor - Metatags
 
-	Constants Editor of metatags
+    Constants Editor of metatags
 
 
 .. figure:: ../Images/Introduction/ConstantsPagetitle.png
@@ -113,7 +113,7 @@ Constants
     :scale: 80%
     :alt: Constants Editor - Services
 
-	Constants Editor of services settings
+    Constants Editor of services settings
 
 
 Found a bug?
