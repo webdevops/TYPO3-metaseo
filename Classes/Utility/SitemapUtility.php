@@ -79,7 +79,7 @@ class SitemapUtility
      *
      * @param   array $pageData page information
      */
-    public static function index($pageData)
+    public static function index(array $pageData)
     {
         static $cache = array();
 

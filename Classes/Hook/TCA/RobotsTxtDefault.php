@@ -63,7 +63,7 @@ class RobotsTxtDefault
      *
      * @return string
      */
-    public function main($data)
+    public function main(array $data)
     {
         // ############################
         // Init

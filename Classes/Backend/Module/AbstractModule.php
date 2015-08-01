@@ -66,7 +66,7 @@ abstract class AbstractModule extends ActionController
      *
      * @return  array
      */
-    protected function translateList($list)
+    protected function translateList(array $list)
     {
         unset($token);
         foreach ($list as &$token) {
@@ -87,11 +87,11 @@ abstract class AbstractModule extends ActionController
      * Translate key
      *
      * @param   string     $key       Translation key
-     * @param   NULL|array $arguments Arguments (vsprintf)
+     * @param   null|array $arguments Arguments (vsprintf)
      *
-     * @return  NULL|string
+     * @return  null|string
      */
-    protected function translate($key, $arguments = null)
+    protected function translate($key, array $arguments = null)
     {
         $ret = LocalizationUtility::translate($key, $this->extensionName, $arguments);
 

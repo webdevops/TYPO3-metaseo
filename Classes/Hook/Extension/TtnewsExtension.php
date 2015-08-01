@@ -38,14 +38,14 @@ class TtnewsExtension
     /**
      * Extra item marker hook for metatag fetching
      *
-     * @param   array                                     $markerArray Marker array
-     * @param   array                                     $row         Current tt_news row
-     * @param   array                                     $lConf       Local configuration
+     * @param   array          $markerArray Marker array
+     * @param   array          $row         Current tt_news row
+     * @param   array          $lConf       Local configuration
      * @param   AbstractPlugin $ttnewsObj   Pi-object from tt_news
      *
      * @return  array                Marker array (not changed)
      */
-    public function extraItemMarkerProcessor($markerArray, $row, $lConf, AbstractPlugin $ttnewsObj)
+    public function extraItemMarkerProcessor(array $markerArray, array $row, array $lConf, AbstractPlugin $ttnewsObj)
     {
         $theCode = (string)strtoupper(trim($ttnewsObj->theCode));
 

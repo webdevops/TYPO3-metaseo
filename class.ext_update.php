@@ -139,7 +139,7 @@ class ext_update
      *
      * @return  string
      */
-    protected function messageTitleFromRow($row)
+    protected function messageTitleFromRow(array $row)
     {
         $ret = array();
 
