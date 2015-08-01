@@ -62,9 +62,6 @@ class PageAjax extends AbstractAjax
      */
     protected function executeGetList()
     {
-        // Init
-        $list = array();
-
         $pid         = (int)$this->postVar['pid'];
         $depth       = (int)$this->postVar['depth'];
         $sysLanguage = (int)$this->postVar['sysLanguage'];
@@ -149,11 +146,12 @@ class PageAjax extends AbstractAjax
                 $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
                 break;
             case 'advanced':
+                /*
                 $fieldList = array_merge(
                     $fieldList,
                     array(// Maybe we need more fields later
                     )
-                );
+                );*/
 
                 $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList, true);
                 break;
