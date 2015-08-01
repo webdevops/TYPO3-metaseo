@@ -2,12 +2,12 @@
 
 ## MetaSEO 2.0
 
-- Fixed TYPO3 7.x support
+- Added TYPO3 7.x support
 - Implemented Signals
 - Implemented blacklist of PAGE typeNum in SetupTS
 - Implemented blacklist for index/noindex robots metatag
 - Implemented blacklist for canonical url
-- Implemented canonical url support for mounte pages, pointing to real page instead of mount path (disabled by default)
+- Implemented canonical url support for mounted pages, pointing to real page instead of mount path (disabled by default)
 - Implemented expiry date for sitemap entries (customizable with SetupTS or Connector)
 - Implemented pagetitle caching (if there is any USER_INT on the current page)
 - Removed own caching solution, using TYPO3 caching framework now
