@@ -21,18 +21,18 @@ Last Update time                 Publish the update time of the current page    
 Detect Language                  Publish the current TYPO3-FE-language as metatag             *enabled*
 
 Canonical Tag                    Publish canonical link if possible                           *enabled*
-                                 (TYPO3-Cache is enabled and cHash is valid)
+                                 (TYPO3-cache is enabled and cHash is valid)
                                  or if user entered canonical tag into page options.          *disabled*
 
 Canonical Tag (Strict mode)      Enable strict mode (all wrong GET-parameters will            *enabled*
                                  generate a canonical-tag to the self without GET-params).
 
-                                 eg. /index.php?id=123&foo=bar would generate a
-                                 Canonical-Tag poiting to /index.php?id=123
+                                 e.g. /index.php?id=123&foo=bar would generate a
+                                 Canonical-Tag pointing to /index.php?id=123
                                  if the cHash is wrong or caching is disabled
 
 Canonical Tag (No MP mode)       Prevent canonical links to contain mountpoint information.   *disabled*
-                                 Usefull if some pages would count as duplicate content
+                                 Useful if some pages would count as duplicate content
                                  because of mountpoints.
 
 Publish Page Expire Time         Publish expire date from the “End Date” of the page.         *enabled*
@@ -68,7 +68,7 @@ Distribution                     Distribution of your website
 
 Revisit after                    Number of days between search engine visits
 
-Geo Location                     Geo-Location of your webpage with latitude,
+Geo Location                     Geo location of your web page with latitude,
                                  longitude, region and  placename
 
 PICS-label                       Platform for Internet Content Selection
@@ -88,6 +88,7 @@ P3P Policy Url                   Link (full URL) to your P3P Policy File
 ==============================   ==========================================================   =================
 
 Some metatags also have markers which could be build in, following metatags supports markers:
+
 - Title
 - Description
 - Keywords
@@ -123,7 +124,7 @@ Index                            Should the crawler index your website?         
 Follow                           Should the crawler follow  links on your website?            *enabled*
 
 Archive                          Is the crawler allowed to archive the page                   *enabled*
-                                 (eg. google cache)
+                                 (e.g. Google cache)
 
 Snippet                          Should the crawler use the snippet/description               *enabled*
                                  in search results
@@ -195,7 +196,7 @@ Piwik Cookie Domain Name         Specifies the domain name for the tracking cook
 
                                  - http://developer.piwik.org/api-reference/tracking-javascript
 
-Piwik DoNotTrack                 Opt Out users with Mozilla's DoNotTrack                          *enabled*
+Piwik DoNotTrack                 Opt out users with Mozilla's DoNotTrack                          *enabled*
                                  browser setting
 ==============================   ==============================================================   =================
 
@@ -205,7 +206,7 @@ Social
 ==============================   ==========================================================   =================
 Constant                         Description                                                  Default
 ==============================   ==========================================================   =================
-Google+ Direct Connect           Your Google+ Profile Page ID
+Google+ Direct Connect           Your Google+ profile page ID
 
                                  see https://developers.google.com/+/web/badge/
 ==============================   ==========================================================   =================
@@ -238,7 +239,7 @@ Sitetitle position                          Position of Sitetitle (from template
                                             Possible options:                                            (0)
 
                                             Sitetitle-Pagetitle (eg. Example Company: About us)
-                                            Pagetitle-Sitle (eg. About us: Example Company)
+                                            Pagetitle-Sitetitle (eg. About us: Example Company)
 
 Sitetitle                                   Overwrite the template sitetitle with a custom one
 =========================================   ==========================================================   ======================
@@ -267,7 +268,7 @@ Limit to current language           Limit output of the sitemap to the current l
 Default change frequency            Default change frequency for sitemap cache
                                     (will be cached!)
 
-Page priority                       Default page priority if the page have no own                1
+Page priority                       Default page priority if the page has no own                 1
                                     priority set
 
                                     Page priority will be calculated by:

@@ -39,8 +39,8 @@ The following metatags are supported:
 - Rating and distribution
 - Revisit
 - Geo-location information
-- Searchengine Crawler orders
-- Google Analytics (with anonymize IP and download link tracking, asynchronous implementation since 4.0)
+- Searchengine crawler instructions
+- Google Analytics (with anonymized IP and download link tracking, asynchronous implementation since 4.0)
 - Piwik integration (asynchronous implementation since 4.0)
 - Google, MSN, Yahoo and WebOfTrust Verification
 - Google+ Direct Connect
@@ -57,7 +57,7 @@ The following pagetitle transformations are supported:
 - Prefix and suffix (inheritable)
 - Absolute pagetitle without any prefix and suffix
 - Sitetitle glue options
-- Sitetile positon
+- Sitetitle positon
 
 Screenshots
 -----------
@@ -137,5 +137,5 @@ Thanks to...
 - Thomas Mayer
 - Florian Duffner
 - Georg Tiefenbrunn
-- and for all other contributors and bug reporters
+- all other contributors and bug reporters
 - famfamfam for these cool silk icons http://www.famfamfam.com/lab/icons/silk/

@@ -22,7 +22,7 @@ General
 | **Problem:**
 |     In my TYPO3 the feature XYZ of this extension doesn't work. What's wrong?
 | **Solution:**
-|     The metaseo-Extension was carefully written. We want to deliver correct pages and extensions will the power of the TYPO3 caching system (and those extensions are the fastest). For some features (eg. sitemap, canonical-tag) we have to trust in the caching-system – it's the only way to make sure that we don't deliver wrong information to our search engines. If our extension doesn't work correct in your TYPO3 installation maybe there is something wrong – maybe the configuration, your setupTS or one of your extension.
+|     The metaseo-Extension was carefully written. We want to deliver correct pages and extensions with the power of the TYPO3 caching system (and those extensions are the fastest). For some features (eg. sitemap, canonical-tag) we have to trust in the caching-system – it's the only way to make sure that we don't deliver wrong information to our search engines. If our extension doesn't work correctly in your TYPO3 installation maybe there is something wrong – maybe the configuration, your setupTS or one of your extensions.
 
 Indexed Sitemap
 ---------------
@@ -30,7 +30,7 @@ Indexed Sitemap
 | **Problem:**
 |    The sitemap is empy.
 | **Solution:**
-|     Check if you created the “tx_metaseo_sitemap” database-table! We're using InnoDB as MySQL-Engine so you have to make sure that you have InnoDB-Support in your Hosting-Account (if not you should switch your hoster, InnoDB is a Standard-Feature in MySQL). As with 2.0.1 there is an error-message if the table doesn't exist.
+|     Check if you created the “tx_metaseo_sitemap” database-table! We're using InnoDB as MySQL-Engine so you have to make sure that you have InnoDB-support in your server or hosting account (if not you should switch your hoster, InnoDB is a standard feature in MySQL). As of 2.0.1 there is an error-message if the table doesn't exist.
 |
 | **Problem:**
 |     My sitemap is still empty, but the database is ok.
@@ -55,12 +55,12 @@ Indexed Sitemap
 | **Problem:**
 |     The sitemap is still not working! No page is indexed and the table tx_metaseo_sitemap is empty!
 | **Solution:**
-|     Double check your installation and disable all third-party extensions, make sure that no extension disables the TYPO3-cache! RealUrl (if properly configured) and TemplaVoila are working wonderfull with MetaSEO Sitemap but some old extensions might break the TYPO3 caching system and you will not notice it. Our sitemap indexer relies on the indexing system to make sure that only valid urls are stored and delivered to the search engines like google.
+|     Double check your installation and disable all third-party extensions, make sure that no extension disables the TYPO3-cache! RealUrl (if properly configured) and TemplaVoila are working wonderful with MetaSEO sitemap but some old extensions might break the TYPO3 caching system and you will not notice it. Our sitemap indexer relies on the indexing system to make sure that only valid urls are stored and delivered to search engines like google.
 |
 | **Problem:**
-|     I want to limit each sitemap to it's domain (eg. example.com for english pages, example.de for german pages). Is this possible?
+|     I want to limit each sitemap to its domain (eg. example.com for english pages, example.de for german pages). Is this possible?
 | **Solution:**
-|     Yes, just enable the “Enable language-domain support” in seo control center in your website/rootpage settings.(replaces the old extension configuration sitemap_ObeySysLanguage and TypoScript constants setting).
+|     Yes, just enable the “Enable language-domain support” in seo control center in your website/rootpage settings (replaces the old extension configuration sitemap_ObeySysLanguage and TypoScript constants setting).
 |
 | **Problem:**
 |     My tt_news entries are not indexed, what's wrong?
@@ -72,6 +72,6 @@ Others
 ------
 
 | **Problem:**
-|     I want to customize my google Analytics and/or piwik integration.
+|     I want to customize my Google Analytics and/or Piwik integration.
 | **Solution:**
-|     You can modify the code of the google analytics and piwiki integration with typoscript. Feel free to use plugin.metaseo.services.googleAnalytics.customizationCode (STDWRAP) or plugin.metaseo.services.piwik.customizationCode (STDWRAP). Also you can modify the FLUIDTEMPLATE and assign custom variables.
+|     You can modify the code of the Google Analytics and Piwik integration with TypoScript. Feel free to use plugin.metaseo.services.googleAnalytics.customizationCode (STDWRAP) or plugin.metaseo.services.piwik.customizationCode (STDWRAP). Also you can modify the FLUIDTEMPLATE and assign custom variables.
