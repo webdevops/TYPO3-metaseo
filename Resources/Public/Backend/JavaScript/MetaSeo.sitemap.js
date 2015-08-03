@@ -141,17 +141,22 @@ MetaSeo.sitemap.grid = {
                         handler: function (cmp, e) {
                             Ext.Ajax.request({
                                 url: MetaSeo.sitemap.conf.ajaxController + '&cmd=' + cmd,
-                                callback: function (options, success, response) {
-                                    if (response.responseText === 'true') {
-                                        // reload the records and the table selector
-                                        gridDs.reload();
-                                    } else {
-                                        alert('ERROR: ' + response.responseText);
-                                    }
-                                },
                                 params: {
                                     'pid': MetaSeo.sitemap.conf.pid,
                                     sessionToken: Ext.encode(MetaSeo.sitemap.conf.sessionToken)
+                                },
+                                success: function (response) {
+                                    // reload the records and the table selector
+                                    gridDs.reload();
+                                },
+                                failure: function (response) {
+                                    response = Ext.decode(response.responseText);
+                                    if (response && response.error) {
+                                        TYPO3.Flashmessage.display(TYPO3.Severity.error, '', Ext.util.Format.htmlEncode(response.error));
+                                        if (response.errorNumber) {
+                                            console.log('ERROR: MetaSEO: ' + response.error + ' ' + response.errorNumber)
+                                        }
+                                    }
                                 }
                             });
 
@@ -195,18 +200,23 @@ MetaSeo.sitemap.grid = {
                             handler: function (cmp, e) {
                                 Ext.Ajax.request({
                                     url: MetaSeo.sitemap.conf.ajaxController + '&cmd=' + cmd,
-                                    callback: function (options, success, response) {
-                                        if (response.responseText === 'true') {
-                                            // reload the records and the table selector
-                                            gridDs.reload();
-                                        } else {
-                                            alert('ERROR: ' + response.responseText);
-                                        }
-                                    },
                                     params: {
                                         'uidList': Ext.encode(uidList),
                                         'pid': MetaSeo.sitemap.conf.pid,
                                         sessionToken: Ext.encode(MetaSeo.sitemap.conf.sessionToken)
+                                    },
+                                    success: function (response) {
+                                        // reload the records and the table selector
+                                        gridDs.reload();
+                                    },
+                                    failure: function (response) {
+                                        response = Ext.decode(response.responseText);
+                                        if (response && response.error) {
+                                            TYPO3.Flashmessage.display(TYPO3.Severity.error, '', Ext.util.Format.htmlEncode(response.error));
+                                            if (response.errorNumber) {
+                                                console.log('ERROR: MetaSEO: ' + response.error + ' ' + response.errorNumber)
+                                            }
+                                        }
                                     }
                                 });
 
