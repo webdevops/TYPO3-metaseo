@@ -58,129 +58,139 @@ class PageAjax extends AbstractAjax
     /**
      * Return overview entry list for root tree
      *
-     * @return    array
+     * @return array
      */
     protected function executeGetList()
     {
-        // Init
-        $list = array();
-
         $pid         = (int)$this->postVar['pid'];
         $depth       = (int)$this->postVar['depth'];
         $sysLanguage = (int)$this->postVar['sysLanguage'];
         $listType    = (string)$this->postVar['listType'];
 
         // Store last selected language
-        $GLOBALS['BE_USER']->setAndSaveSessionData('MetaSEO.sysLanguage', $sysLanguage);
+        $this->getBackendUserAuthentication()
+            ->setAndSaveSessionData('MetaSEO.sysLanguage', $sysLanguage);
 
-        if (!empty($pid)) {
-            $page = BackendUtility::getRecord('pages', $pid);
+        if (empty($pid)) {
 
-            $fieldList = array();
-
-            switch ($listType) {
-                case 'metadata':
-                    $fieldList = array_merge(
-                        $fieldList,
-                        array(
-                            'keywords',
-                            'description',
-                            'abstract',
-                            'author',
-                            'author_email',
-                            'lastupdated',
-                        )
-                    );
-
-                    $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
-
-                    unset($row);
-                    foreach ($list as &$row) {
-                        if (!empty($row['lastupdated'])) {
-                            $row['lastupdated'] = date('Y-m-d', $row['lastupdated']);
-                        } else {
-                            $row['lastupdated'] = '';
-                        }
-                    }
-                    unset($row);
-                    break;
-                case 'geo':
-                    $fieldList = array_merge(
-                        $fieldList,
-                        array(
-                            'tx_metaseo_geo_lat',
-                            'tx_metaseo_geo_long',
-                            'tx_metaseo_geo_place',
-                            'tx_metaseo_geo_region'
-                        )
-                    );
-
-                    $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
-                    break;
-                case 'searchengines':
-                    $fieldList = array_merge(
-                        $fieldList,
-                        array(
-                            'tx_metaseo_canonicalurl',
-                            'tx_metaseo_is_exclude',
-                            'tx_metaseo_priority',
-                        )
-                    );
-
-                    $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
-                    break;
-                case 'url':
-                    $fieldList = array_merge(
-                        $fieldList,
-                        array(
-                            'title',
-                            'url_scheme',
-                            'alias',
-                            'tx_realurl_pathsegment',
-                            'tx_realurl_pathoverride',
-                            'tx_realurl_exclude',
-                        )
-                    );
-
-                    $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
-                    break;
-                case 'advanced':
-                    $fieldList = array_merge(
-                        $fieldList,
-                        array(// Maybe we need more fields later
-                        )
-                    );
-
-                    $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList, true);
-                    break;
-                case 'pagetitle':
-                    $fieldList = array_merge(
-                        $fieldList,
-                        array(
-                            'tx_metaseo_pagetitle',
-                            'tx_metaseo_pagetitle_rel',
-                            'tx_metaseo_pagetitle_prefix',
-                            'tx_metaseo_pagetitle_suffix',
-                        )
-                    );
-
-                    $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
-                    break;
-                case 'pagetitlesim':
-                    $list = $this->listPageTitleSim($page, $depth, $sysLanguage);
-                    break;
-                default:
-                    // Not defined
-                    return;
-            }
+            return $this->ajaxErrorTranslate(
+                'message.error.typo3_page_not_found',
+                '[0x4FBF3C0C]',
+                self::HTTP_STATUS_BAD_REQUEST
+            );
         }
 
-        $ret = array(
-            'results' => count($list),
-            'rows'    => array_values($list),
-        );
+        $page = BackendUtility::getRecord('pages', $pid);
 
-        return $ret;
+        $fieldList = array();
+
+        switch ($listType) {
+            case 'metadata':
+                $fieldList = array_merge(
+                    $fieldList,
+                    array(
+                        'keywords',
+                        'description',
+                        'abstract',
+                        'author',
+                        'author_email',
+                        'lastupdated',
+                    )
+                );
+
+                $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
+
+                unset($row);
+                foreach ($list as &$row) {
+                    if (!empty($row['lastupdated'])) {
+                        $row['lastupdated'] = date('Y-m-d', $row['lastupdated']);
+                    } else {
+                        $row['lastupdated'] = '';
+                    }
+                }
+                unset($row);
+                break;
+            case 'geo':
+                $fieldList = array_merge(
+                    $fieldList,
+                    array(
+                        'tx_metaseo_geo_lat',
+                        'tx_metaseo_geo_long',
+                        'tx_metaseo_geo_place',
+                        'tx_metaseo_geo_region'
+                    )
+                );
+
+                $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
+                break;
+            case 'searchengines':
+                $fieldList = array_merge(
+                    $fieldList,
+                    array(
+                        'tx_metaseo_canonicalurl',
+                        'tx_metaseo_is_exclude',
+                        'tx_metaseo_priority',
+                    )
+                );
+
+                $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
+                break;
+            case 'url':
+                $fieldList = array_merge(
+                    $fieldList,
+                    array(
+                        'title',
+                        'url_scheme',
+                        'alias',
+                        'tx_realurl_pathsegment',
+                        'tx_realurl_pathoverride',
+                        'tx_realurl_exclude',
+                    )
+                );
+
+                $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
+                break;
+            case 'advanced':
+                /*
+                $fieldList = array_merge(
+                    $fieldList,
+                    array(// Maybe we need more fields later
+                    )
+                );*/
+
+                $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList, true);
+                break;
+            case 'pagetitle':
+                $fieldList = array_merge(
+                    $fieldList,
+                    array(
+                        'tx_metaseo_pagetitle',
+                        'tx_metaseo_pagetitle_rel',
+                        'tx_metaseo_pagetitle_prefix',
+                        'tx_metaseo_pagetitle_suffix',
+                    )
+                );
+
+                $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
+                break;
+            case 'pagetitlesim':
+                $list = $this->listPageTitleSim($page, $depth, $sysLanguage);
+                break;
+            default:
+                // Not defined
+                return $this->ajaxErrorTranslate(
+                    'message.error.unknown_list_type_received',
+                    '[0x4FBF3C0D]',
+                    self::HTTP_STATUS_BAD_REQUEST
+                );
+        }
+
+        return $this->ajaxSuccess(
+            array(
+                'results' => count($list),
+                'rows'    => array_values($list),
+            )
+        );
     }
 
     /**
@@ -213,7 +223,9 @@ class PageAjax extends AbstractAjax
         foreach ($fieldList as $field) {
             $tree->addField($field, true);
         }
-        $tree->init('AND doktype IN (1,4) AND ' . $GLOBALS['BE_USER']->getPagePermsClause(1));
+        $tree->init(
+            'AND doktype IN (1,4) AND ' . $this->getBackendUserAuthentication()->getPagePermsClause(1)
+        );
 
         $tree->tree[] = array(
             'row'           => $page,
@@ -332,7 +344,6 @@ class PageAjax extends AbstractAjax
      */
     protected function listCalcDepth($pageUid, array $rootLineRaw, $depth = null)
     {
-
         if ($depth === null) {
             $depth = 1;
         }
@@ -351,7 +362,6 @@ class PageAjax extends AbstractAjax
             // recursive
             $depth = $this->listCalcDepth($pagePid, $rootLineRaw, $depth);
         }
-
 
         return $depth;
     }
@@ -484,80 +494,107 @@ class PageAjax extends AbstractAjax
     /**
      * Generate simulated title for one page
      *
-     * @return    string
+     * @return    array
      */
     protected function executeGenerateSimulatedTitle()
     {
         // Init
-        $ret = '';
-
         $pid = (int)$this->postVar['pid'];
 
-        if (!empty($pid)) {
-            $page = BackendUtility::getRecord('pages', $pid);
+        if (empty($pid)) {
 
-            if (!empty($page)) {
-                // Load TYPO3 classes
-                $this->initTsfe($page, null, $page, null);
-
-                $pagetitle = Typo3GeneralUtility::makeInstance(
-                    'Metaseo\\Metaseo\\Page\\Part\\PagetitlePart'
-                );
-                $ret       = $pagetitle->main($page['title']);
-            }
+            return $this->ajaxErrorTranslate(
+                'message.error.typo3_page_not_found',
+                '[0x4FBF3C08]',
+                self::HTTP_STATUS_BAD_REQUEST
+            );
         }
 
-        $ret = array(
-            'title' => $ret,
-        );
+        $page = BackendUtility::getRecord('pages', $pid);
 
-        return $ret;
+        if (empty($page)) {
+
+            return $this->ajaxErrorTranslate(
+                'message.error.typo3_page_not_found',
+                '[0x4FBF3C09]',
+                self::HTTP_STATUS_BAD_REQUEST
+            );
+        }
+
+        // Load TYPO3 classes
+        $this->initTsfe($page, null, $page, null);
+
+        $pagetitle = Typo3GeneralUtility::makeInstance(
+            'Metaseo\\Metaseo\\Page\\Part\\PagetitlePart'
+        );
+        $ret       = $pagetitle->main($page['title']);
+
+        return $this->ajaxSuccess(
+            array(
+                'title' => $ret,
+            )
+        );
     }
 
     /**
      * Generate simulated title for one page
      *
-     * @return    string
+     * @return array
      */
     protected function executeGenerateSimulatedUrl()
     {
         // Init
-        $ret = '';
-
         $pid = (int)$this->postVar['pid'];
 
-        if (!empty($pid)) {
-            $page = BackendUtility::getRecord('pages', $pid);
+        if (empty($pid)) {
 
-            if (!empty($page)) {
-                if (ExtensionManagementUtility::isLoaded('realurl')) {
-                    // Disable caching for url
-                    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['enableUrlDecodeCache'] = 0;
-                    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['enableUrlEncodeCache'] = 0;
-                    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['disablePathCache']     = 1;
-                }
-
-                $this->initTsfe($page, null, $page, null);
-
-                $ret = $GLOBALS['TSFE']->cObj->typolink_URL(array('parameter' => $page['uid']));
-
-                if (!empty($ret)) {
-                    $ret = GeneralUtility::fullUrl($ret);
-                }
-            }
+            return $this->ajaxErrorTranslate(
+                'message.error.typo3_page_not_found',
+                '[0x4FBF3C0A]',
+                self::HTTP_STATUS_BAD_REQUEST
+            );
         }
+
+        $page = BackendUtility::getRecord('pages', $pid);
+
+        if (empty($page)) {
+
+            return $this->ajaxErrorTranslate(
+                'message.error.typo3_page_not_found',
+                '[0x4FBF3C0B]',
+                self::HTTP_STATUS_BAD_REQUEST
+            );
+        }
+
+        if (ExtensionManagementUtility::isLoaded('realurl')) {
+            // Disable caching for url
+            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['enableUrlDecodeCache'] = 0;
+            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['enableUrlEncodeCache'] = 0;
+            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['disablePathCache']     = 1;
+        }
+
+        $this->initTsfe($page, null, $page, null);
+
+        $ret = $GLOBALS['TSFE']->cObj->typolink_URL(array('parameter' => $page['uid']));
 
         if (!empty($ret)) {
-            $ret = array(
-                'url' => $ret,
-            );
-        } else {
-            $ret = array(
-                'error' => $GLOBALS['LANG']->getLL('message.error.url_generation_failed'),
+            $ret = GeneralUtility::fullUrl($ret);
+        }
+
+        if (empty($ret)) {
+
+            return $this->ajaxErrorTranslate(
+                'message.error.url_generation_failed',
+                '[0x4FBF3C01]',
+                self::HTTP_STATUS_BAD_REQUEST
             );
         }
 
-        return $ret;
+        return $this->ajaxSuccess(
+            array(
+                'url' => $ret,
+            )
+        );
     }
 
     /**
@@ -568,8 +605,11 @@ class PageAjax extends AbstractAjax
     protected function executeUpdatePageField()
     {
         if (empty($this->postVar['pid']) || empty($this->postVar['field'])) {
-            return array(
-                'error' => $GLOBALS['LANG']->getLL('message.warning.incomplete_data_received.message'),
+
+            return $this->ajaxErrorTranslate(
+                'message.warning.incomplete_data_received.message',
+                '[0x4FBF3C02]',
+                self::HTTP_STATUS_BAD_REQUEST
             );
         }
 
@@ -582,8 +622,11 @@ class PageAjax extends AbstractAjax
         $fieldName = preg_replace('/[^-_a-zA-Z0-9:]/i', '', $fieldName);
 
         if (empty($fieldName)) {
-            return array(
-                'error' => $GLOBALS['LANG']->getLL('message.warning.incomplete_data_received.message'),
+
+            return $this->ajaxErrorTranslate(
+                'message.warning.incomplete_data_received.message',
+                '[0x4FBF3C03]',
+                self::HTTP_STATUS_BAD_REQUEST
             );
         }
 
@@ -593,46 +636,67 @@ class PageAjax extends AbstractAjax
 
 
         // check if user is able to modify pages
-        if (!$GLOBALS['BE_USER']->check('tables_modify', 'pages')) {
+        if (!$this->getBackendUserAuthentication()->check('tables_modify', 'pages')) {
             // No access
-            return array(
-                'error' => $GLOBALS['LANG']->getLL('message.error.access_denied') . ' [0x4FBF3BE2]',
+
+            return $this->ajaxErrorTranslate(
+                'message.error.access_denied',
+                '[0x4FBF3BE2]',
+                self::HTTP_STATUS_UNAUTHORIZED
             );
         }
 
         $page = BackendUtility::getRecord('pages', $pid);
 
         // check if page exists and user can edit this specific record
-        if (empty($page) || !$GLOBALS['BE_USER']->doesUserHaveAccess($page, 2)) {
+        if (empty($page) || !$this->getBackendUserAuthentication()->doesUserHaveAccess($page, 2)) {
             // No access
-            return array(
-                'error' => $GLOBALS['LANG']->getLL('message.error.access_denied') . ' [0x4FBF3BCF]',
+
+            return $this->ajaxErrorTranslate(
+                'message.error.access_denied',
+                '[0x4FBF3BCF]',
+                self::HTTP_STATUS_UNAUTHORIZED
             );
         }
 
         // check if user is able to modify the field of pages
-        if (!$GLOBALS['BE_USER']->check('non_exclude_fields', 'pages:' . $fieldName)) {
+        if (!$this->getBackendUserAuthentication()
+            ->check('non_exclude_fields', 'pages:' . $fieldName)
+        ) {
             // No access
-            return array(
-                'error' => $GLOBALS['LANG']->getLL('message.error.access_denied') . ' [0x4FBF3BD9]',
+
+            return $this->ajaxErrorTranslate(
+                'message.error.access_denied',
+                '[0x4FBF3BD9]',
+                self::HTTP_STATUS_UNAUTHORIZED
             );
         }
 
         // also check for sys language
         if (!empty($sysLanguage)) {
             // check if user is able to modify pages
-            if (!$GLOBALS['BE_USER']->check('tables_modify', 'pages_language_overlay')) {
+            if (!$this->getBackendUserAuthentication()
+                ->check('tables_modify', 'pages_language_overlay')
+            ) {
                 // No access
-                return array(
-                    'error' => $GLOBALS['LANG']->getLL('message.error.access_denied') . ' [0x4FBF3BE2]',
+
+                return $this->ajaxErrorTranslate(
+                    'message.error.access_denied',
+                    '[0x4FBF3BE2]',
+                    self::HTTP_STATUS_UNAUTHORIZED
                 );
             }
 
             // check if user is able to modify the field of pages
-            if (!$GLOBALS['BE_USER']->check('non_exclude_fields', 'pages_language_overlay:' . $fieldName)) {
+            if (!$this->getBackendUserAuthentication()
+                ->check('non_exclude_fields', 'pages_language_overlay:' . $fieldName)
+            ) {
                 // No access
-                return array(
-                    'error' => $GLOBALS['LANG']->getLL('message.error.access_denied') . ' [0x4FBF3BD9]',
+
+                return $this->ajaxErrorTranslate(
+                    'message.error.access_denied',
+                    '[0x4FBF3BD9]',
+                    self::HTTP_STATUS_UNAUTHORIZED
                 );
             }
         }
@@ -648,13 +712,12 @@ class PageAjax extends AbstractAjax
                 break;
         }
 
-
         // ############################
         // Update
         // ############################
         $ret = $this->updatePageTableField($pid, $sysLanguage, $fieldName, $fieldValue);
 
-        return $ret;
+        return $this->ajaxSuccess($ret);
     }
 
     /**
@@ -666,14 +729,16 @@ class PageAjax extends AbstractAjax
     {
 
         if (empty($this->postVar['pid']) || empty($this->postVar['field'])) {
-            return array(
-                'error' => $GLOBALS['LANG']->getLL('message.warning.incomplete_data_received.message'),
+
+            return $this->ajaxErrorTranslate(
+                'message.warning.incomplete_data_received.message',
+                '[0x4FBF3C04]',
+                self::HTTP_STATUS_BAD_REQUEST
             );
         }
 
         $pid         = $this->postVar['pid'];
         $sysLanguage = (int)$this->postVar['sysLanguage'];
-        $depth       = (int)$this->postVar['depth'];
         $fieldList   = array();
 
         $page = BackendUtility::getRecord('pages', $pid);
@@ -683,6 +748,8 @@ class PageAjax extends AbstractAjax
             $this->postVar['pid'] = $key;
             $this->executeUpdatePageField();
         }
+
+        return $this->ajaxSuccess();
     }
 
 
@@ -719,24 +786,27 @@ class PageAjax extends AbstractAjax
                                  AND sys_language_uid = ' . (int)$sysLanguage;
                 $overlayId = DatabaseUtility::getOne($query);
 
-                if (!empty($overlayId)) {
-                    // ################
-                    // UPDATE
-                    // ################
-
-                    $this->tce()->updateDB(
-                        'pages_language_overlay',
-                        (int)$overlayId,
-                        array(
-                            $fieldName => $fieldValue
-                        )
-                    );
-                } else {
+                if (empty($overlayId)) {
                     // No access
-                    return array(
-                        'error' => $GLOBALS['LANG']->getLL('message.error.no_language_overlay_found'),
+
+                    return $this->ajaxErrorTranslate(
+                        'message.error.no_language_overlay_found',
+                        '[0x4FBF3C05]',
+                        self::HTTP_STATUS_BAD_REQUEST
                     );
                 }
+
+                // ################
+                // UPDATE
+                // ################
+
+                $this->tce()->updateDB(
+                    'pages_language_overlay',
+                    (int)$overlayId,
+                    array(
+                        $fieldName => $fieldValue
+                    )
+                );
                 break;
             case 'pages':
                 // Update field in page (also logs update event and clear cache for this page)
@@ -749,15 +819,24 @@ class PageAjax extends AbstractAjax
                 );
                 break;
         }
+
+        return $this->ajaxSuccess();
     }
 
     /**
      * Load meta data
+     *
+     * @return array
      */
     protected function executeLoadAdvMetaTags()
     {
         if (empty($this->postVar['pid'])) {
-            return;
+
+            return $this->ajaxErrorTranslate(
+                'message.error.typo3_page_not_found',
+                '[0x4FBF3C0E]',
+                self::HTTP_STATUS_BAD_REQUEST
+            );
         }
 
         $ret = array();
@@ -777,16 +856,23 @@ class PageAjax extends AbstractAjax
             $ret[$row['tag_name']] = $row['tag_value'];
         }
 
-        return $ret;
+        return $this->ajaxSuccess($ret);
     }
 
     /**
      * Update page field
+     *
+     * @return array
      */
     protected function executeUpdateAdvMetaTags()
     {
         if (empty($this->postVar['pid']) || empty($this->postVar['metaTags'])) {
-            return;
+
+            return $this->ajaxErrorTranslate(
+                'message.error.typo3_page_not_found',
+                '[0x4FBF3C0F]',
+                self::HTTP_STATUS_BAD_REQUEST
+            );
         }
 
         $pid         = (int)$this->postVar['pid'];
@@ -816,14 +902,14 @@ class PageAjax extends AbstractAjax
             }
         }
 
-        return 1;
+        return $this->ajaxSuccess();
     }
 
     /**
      * Clear all meta tags for one page
      *
      * @param integer      $pid         PID
-     * @param integer|NULL $sysLanguage System language id
+     * @param integer|null $sysLanguage system language id
      */
     protected function clearMetaTags($pid, $sysLanguage)
     {
@@ -844,7 +930,8 @@ class PageAjax extends AbstractAjax
     {
         $tstamp   = time();
         $crdate   = time();
-        $cruserId = $GLOBALS['BE_USER']->user['uid'];
+        //TODO: Field user is internal!
+        $cruserId = $this->getBackendUserAuthentication()->user['uid'];
 
         $subTagName = '';
 

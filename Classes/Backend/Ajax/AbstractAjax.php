@@ -26,6 +26,7 @@
 
 namespace Metaseo\Metaseo\Backend\Ajax;
 
+use Exception;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -33,6 +34,40 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 abstract class AbstractAjax
 {
+    /**
+     * Json status indicators
+     */
+    const JSON_SUCCESS      = 'success';
+    const JSON_ERROR        = 'error';
+    const JSON_ERROR_NUMBER = 'errorNumber';
+
+    /**
+     * Http Status Codes for Ajax
+     *
+     * @link https://dev.twitter.com/overview/api/response-codes
+     */
+    const HTTP_STATUS_BAD_REQUEST           = 400;
+    const HTTP_STATUS_UNAUTHORIZED          = 401;
+    const HTTP_STATUS_FORBIDDEN             = 403;
+    const HTTP_STATUS_NOT_FOUND             = 404;
+    const HTTP_STATUS_NOT_ACCEPTABLE        = 406;
+    const HTTP_STATUS_INTERNAL_SERVER_ERROR = 500;
+    const HTTP_STATUS_SERVICE_UNAVAILABLE   = 503;
+
+    /**
+     * @var array key/value pairs of Http Status Codes
+     */
+    protected $httpStatus = array(
+        self::HTTP_STATUS_BAD_REQUEST           => 'Bad Request',
+        self::HTTP_STATUS_UNAUTHORIZED          => 'Unauthorized',
+        self::HTTP_STATUS_FORBIDDEN             => 'Forbidden',
+        self::HTTP_STATUS_NOT_FOUND             => 'Not Found',
+        self::HTTP_STATUS_NOT_ACCEPTABLE        => 'Not Acceptable',
+        self::HTTP_STATUS_INTERNAL_SERVER_ERROR => 'Internal Server Error',
+        self::HTTP_STATUS_SERVICE_UNAVAILABLE   => 'Service Unavailable',
+    );
+
+
     // ########################################################################
     // Attributes
     // ########################################################################
@@ -88,38 +123,92 @@ abstract class AbstractAjax
      */
     public function main()
     {
-        $ret = null;
+        $ajaxMethodName = $this->extractAjaxMethodName();
 
-        // Try to find method
-        $function = '';
-        if (!empty($_GET['cmd'])) {
-            // GET-param
-            $function = (string)$_GET['cmd'];
-
-            // security
-            $function = strtolower(trim($function));
-            $function = preg_replace('[^a-z]', '', $function);
-        }
-
-        // Call function
-        if (!empty($function)) {
-            $method = 'execute' . $function;
-            $call   = array($this, $method);
-
-            if (is_callable($call)) {
-                $this->fetchParams();
-
-                $this->init();
-                if ($this->checkSessionToken()) {
-                    $ret = $this->$method();
-                }
-            }
-        }
+        $ret = $this->callAjaxMethod($ajaxMethodName);
 
         // Output json data
         header('Content-type: application/json;charset=UTF-8');
         echo json_encode($ret);
         exit;
+    }
+
+    /**
+     * @return string
+     */
+    protected function extractAjaxMethodName()
+    {
+        // Try to find method
+        $ajaxMethodName = '';
+        if (!empty($_GET['cmd'])) {
+            // GET-param
+            $ajaxMethodName = (string)$_GET['cmd'];
+
+            // security
+            $ajaxMethodName = strtolower(trim($ajaxMethodName));
+            $ajaxMethodName = preg_replace('[^a-z]', '', $ajaxMethodName);
+        }
+
+        return $ajaxMethodName;
+    }
+
+    /**
+     * @param string $ajaxMethodName
+     *
+     * @return array
+     */
+    protected function callAjaxMethod($ajaxMethodName)
+    {
+        //check if empty
+        if (empty($ajaxMethodName)) {
+
+            return $this->ajaxErrorTranslate(
+                'message.warning.ajax_method_name_not_exist.message',
+                '[0x4FBF3C00]',
+                self::HTTP_STATUS_BAD_REQUEST
+            );
+        }
+
+        $methodName = 'execute' . $ajaxMethodName;
+        $call       = array($this, $methodName);
+
+        //check if not callable
+        if (!is_callable($call)) {
+
+            return $this->ajaxErrorTranslate(
+                'message.warning.ajax_method_name_not_exist.message',
+                '[0x4FBF3C07]',
+                self::HTTP_STATUS_BAD_REQUEST
+            );
+        }
+
+        //init
+        $this->fetchParams();
+        $this->init();
+
+        if (!$this->checkSessionToken()) {
+
+            return $this->ajaxErrorTranslate(
+                'message.error.access_denied',
+                '[0x4FBF3C06]',
+                self::HTTP_STATUS_UNAUTHORIZED
+            );
+        }
+
+        // Call function
+        try {
+            $ajaxArray = $this->$methodName();
+        } catch (Exception $e) {
+            //todo: log exception?
+
+            return $this->ajaxErrorTranslate(
+                'message.error.internal_server_error',
+                '[0x4FBF3C07]',
+                self::HTTP_STATUS_INTERNAL_SERVER_ERROR
+            );
+        }
+
+        return $ajaxArray;
     }
 
     /**
@@ -167,7 +256,7 @@ abstract class AbstractAjax
     protected function init()
     {
         // Include ajax local lang
-        $GLOBALS['LANG']->includeLLFile('EXT:metaseo/Resources/Private/Language/locallang.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:metaseo/Resources/Private/Language/locallang.xlf');
 
         $this->objectManager = GeneralUtility::makeInstance(
             'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
@@ -243,5 +332,83 @@ abstract class AbstractAjax
     protected function isFieldInTcaTable($table, $field)
     {
         return isset($GLOBALS['TCA'][$table]['columns'][$field]);
+    }
+
+    /**
+     * @param string $messageKey
+     * @param string $errorNumber
+     * @param int    $httpStatus
+     *
+     * @return array
+     */
+    protected function ajaxErrorTranslate($messageKey = '', $errorNumber = '', $httpStatus = 400)
+    {
+        return $this->ajaxError(
+            $this->translate($messageKey),
+            $errorNumber,
+            $httpStatus
+        );
+    }
+
+    /**
+     * @param string $errorMessage
+     * @param string $errorNumber
+     * @param int    $httpStatus
+     *
+     * @return array
+     */
+    protected function ajaxError($errorMessage = '', $errorNumber = '', $httpStatus = 400)
+    {
+        $httpStatus = (int)$httpStatus;
+        header('HTTP/1.0 ' . $httpStatus . ' ' . $this->httpStatus[$httpStatus]);
+
+        $responseArray = array(
+            self::JSON_ERROR => $errorMessage
+        );
+
+        if (!empty($errorNumber)) {
+            $responseArray[self::JSON_ERROR_NUMBER] = $errorNumber;
+        }
+
+        return $responseArray;
+    }
+
+    protected function ajaxSuccess(array $data = array())
+    {
+        $data[self::JSON_SUCCESS] = true;
+
+        return $data;
+    }
+
+    /**
+     * Translate a key to the current chosen language
+     *
+     * @param $messageKey string
+     *
+     * @return string
+     */
+    protected function translate($messageKey)
+    {
+        return $this
+            ->getLanguageService()
+            ->getLL($messageKey);
+    }
+
+    /**
+     * Get the TYPO3 CMS LanguageService
+     *
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
+    }
+
+    /**
+     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     */
+    protected function getBackendUserAuthentication()
+    {
+        return $GLOBALS['BE_USER'];
     }
 }
