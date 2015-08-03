@@ -158,7 +158,12 @@ class SitemapAjax extends AbstractAjax
         $uidList = DatabaseUtility::connection()->cleanIntArray($uidList);
 
         if (empty($uidList) || empty($rootPid)) {
-            return $this->ajaxError();
+
+            return $this->ajaxErrorTranslate(
+                'message.warning.incomplete_data_received.message',
+                '[0x4FBF3C10]',
+                self::HTTP_STATUS_BAD_REQUEST
+            );
         }
 
         $where   = array();
@@ -187,7 +192,12 @@ class SitemapAjax extends AbstractAjax
         $uidList = DatabaseUtility::connection()->cleanIntArray($uidList);
 
         if (empty($uidList) || empty($rootPid)) {
-            return $this->ajaxError();
+
+            return $this->ajaxErrorTranslate(
+                'message.warning.incomplete_data_received.message',
+                '[0x4FBF3C12]',
+                self::HTTP_STATUS_BAD_REQUEST
+            );
         }
 
         $where   = array();
@@ -217,7 +227,12 @@ class SitemapAjax extends AbstractAjax
         $uidList = DatabaseUtility::connection()->cleanIntArray($uidList);
 
         if (empty($uidList) || empty($rootPid)) {
-            return $this->ajaxError();
+
+            return $this->ajaxErrorTranslate(
+                'message.warning.incomplete_data_received.message',
+                '[0x4FBF3C11]',
+                self::HTTP_STATUS_BAD_REQUEST
+            );
         }
 
         $where   = array();
@@ -242,7 +257,12 @@ class SitemapAjax extends AbstractAjax
         $rootPid = (int)$this->postVar['pid'];
 
         if (empty($rootPid)) {
-            return $this->ajaxError();
+
+            return $this->ajaxErrorTranslate(
+                'message.warning.incomplete_data_received.message',
+                '[0x4FBF3C12]',
+                self::HTTP_STATUS_BAD_REQUEST
+            );
         }
 
         $where   = array();

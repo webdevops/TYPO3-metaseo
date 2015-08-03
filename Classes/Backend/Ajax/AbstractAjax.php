@@ -159,11 +159,14 @@ abstract class AbstractAjax
      */
     protected function callAjaxMethod($ajaxMethodName)
     {
-
         //check if empty
         if (empty($ajaxMethodName)) {
 
-            return $this->ajaxError();
+            return $this->ajaxErrorTranslate(
+                'message.warning.ajax_method_name_not_exist.message',
+                '[0x4FBF3C00]',
+                self::HTTP_STATUS_BAD_REQUEST
+            );
         }
 
         $methodName = 'execute' . $ajaxMethodName;
@@ -172,7 +175,11 @@ abstract class AbstractAjax
         //check if not callable
         if (!is_callable($call)) {
 
-            return $this->ajaxError();
+            return $this->ajaxErrorTranslate(
+                'message.warning.ajax_method_name_not_exist.message',
+                '[0x4FBF3C07]',
+                self::HTTP_STATUS_BAD_REQUEST
+            );
         }
 
         //init
@@ -181,7 +188,11 @@ abstract class AbstractAjax
 
         if (!$this->checkSessionToken()) {
 
-            return $this->ajaxError();
+            return $this->ajaxErrorTranslate(
+                'message.error.access_denied',
+                '[0x4FBF3C06]',
+                self::HTTP_STATUS_UNAUTHORIZED
+            );
         }
 
         // Call function
@@ -190,7 +201,11 @@ abstract class AbstractAjax
         } catch (Exception $e) {
             //todo: log exception?
 
-            return $this->ajaxError();
+            return $this->ajaxErrorTranslate(
+                'message.error.internal_server_error',
+                '[0x4FBF3C07]',
+                self::HTTP_STATUS_INTERNAL_SERVER_ERROR
+            );
         }
 
         return $ajaxArray;

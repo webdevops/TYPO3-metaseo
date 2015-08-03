@@ -72,7 +72,12 @@ class PageAjax extends AbstractAjax
             ->setAndSaveSessionData('MetaSEO.sysLanguage', $sysLanguage);
 
         if (empty($pid)) {
-            return $this->ajaxError();
+
+            return $this->ajaxErrorTranslate(
+                'message.error.typo3_page_not_found',
+                '[0x4FBF3C0C]',
+                self::HTTP_STATUS_BAD_REQUEST
+            );
         }
 
         $page = BackendUtility::getRecord('pages', $pid);
@@ -173,7 +178,11 @@ class PageAjax extends AbstractAjax
                 break;
             default:
                 // Not defined
-                return $this->ajaxError();
+                return $this->ajaxErrorTranslate(
+                    'message.error.unknown_list_type_received',
+                    '[0x4FBF3C0D]',
+                    self::HTTP_STATUS_BAD_REQUEST
+                );
         }
 
         return $this->ajaxSuccess(
@@ -494,14 +503,22 @@ class PageAjax extends AbstractAjax
 
         if (empty($pid)) {
 
-            return $this->ajaxError();
+            return $this->ajaxErrorTranslate(
+                'message.error.typo3_page_not_found',
+                '[0x4FBF3C08]',
+                self::HTTP_STATUS_BAD_REQUEST
+            );
         }
 
         $page = BackendUtility::getRecord('pages', $pid);
 
         if (empty($page)) {
 
-            return $this->ajaxError();
+            return $this->ajaxErrorTranslate(
+                'message.error.typo3_page_not_found',
+                '[0x4FBF3C09]',
+                self::HTTP_STATUS_BAD_REQUEST
+            );
         }
 
         // Load TYPO3 classes
@@ -531,14 +548,22 @@ class PageAjax extends AbstractAjax
 
         if (empty($pid)) {
 
-            return $this->ajaxError();
+            return $this->ajaxErrorTranslate(
+                'message.error.typo3_page_not_found',
+                '[0x4FBF3C0A]',
+                self::HTTP_STATUS_BAD_REQUEST
+            );
         }
 
         $page = BackendUtility::getRecord('pages', $pid);
 
         if (empty($page)) {
 
-            return $this->ajaxError();
+            return $this->ajaxErrorTranslate(
+                'message.error.typo3_page_not_found',
+                '[0x4FBF3C0B]',
+                self::HTTP_STATUS_BAD_REQUEST
+            );
         }
 
         if (ExtensionManagementUtility::isLoaded('realurl')) {
@@ -559,7 +584,9 @@ class PageAjax extends AbstractAjax
         if (empty($ret)) {
 
             return $this->ajaxErrorTranslate(
-                'message.error.url_generation_failed'
+                'message.error.url_generation_failed',
+                '[0x4FBF3C01]',
+                self::HTTP_STATUS_BAD_REQUEST
             );
         }
 
@@ -580,7 +607,9 @@ class PageAjax extends AbstractAjax
         if (empty($this->postVar['pid']) || empty($this->postVar['field'])) {
 
             return $this->ajaxErrorTranslate(
-                'message.warning.incomplete_data_received.message'
+                'message.warning.incomplete_data_received.message',
+                '[0x4FBF3C02]',
+                self::HTTP_STATUS_BAD_REQUEST
             );
         }
 
@@ -595,7 +624,9 @@ class PageAjax extends AbstractAjax
         if (empty($fieldName)) {
 
             return $this->ajaxErrorTranslate(
-                'message.warning.incomplete_data_received.message'
+                'message.warning.incomplete_data_received.message',
+                '[0x4FBF3C03]',
+                self::HTTP_STATUS_BAD_REQUEST
             );
         }
 
@@ -610,7 +641,8 @@ class PageAjax extends AbstractAjax
 
             return $this->ajaxErrorTranslate(
                 'message.error.access_denied',
-                '[0x4FBF3BE2]'
+                '[0x4FBF3BE2]',
+                self::HTTP_STATUS_UNAUTHORIZED
             );
         }
 
@@ -622,7 +654,8 @@ class PageAjax extends AbstractAjax
 
             return $this->ajaxErrorTranslate(
                 'message.error.access_denied',
-                '[0x4FBF3BCF]'
+                '[0x4FBF3BCF]',
+                self::HTTP_STATUS_UNAUTHORIZED
             );
         }
 
@@ -634,7 +667,8 @@ class PageAjax extends AbstractAjax
 
             return $this->ajaxErrorTranslate(
                 'message.error.access_denied',
-                '[0x4FBF3BD9]'
+                '[0x4FBF3BD9]',
+                self::HTTP_STATUS_UNAUTHORIZED
             );
         }
 
@@ -648,7 +682,8 @@ class PageAjax extends AbstractAjax
 
                 return $this->ajaxErrorTranslate(
                     'message.error.access_denied',
-                    '[0x4FBF3BE2]'
+                    '[0x4FBF3BE2]',
+                    self::HTTP_STATUS_UNAUTHORIZED
                 );
             }
 
@@ -660,7 +695,8 @@ class PageAjax extends AbstractAjax
 
                 return $this->ajaxErrorTranslate(
                     'message.error.access_denied',
-                    '[0x4FBF3BD9]'
+                    '[0x4FBF3BD9]',
+                    self::HTTP_STATUS_UNAUTHORIZED
                 );
             }
         }
@@ -695,7 +731,9 @@ class PageAjax extends AbstractAjax
         if (empty($this->postVar['pid']) || empty($this->postVar['field'])) {
 
             return $this->ajaxErrorTranslate(
-                'message.warning.incomplete_data_received.message'
+                'message.warning.incomplete_data_received.message',
+                '[0x4FBF3C04]',
+                self::HTTP_STATUS_BAD_REQUEST
             );
         }
 
@@ -752,7 +790,9 @@ class PageAjax extends AbstractAjax
                     // No access
 
                     return $this->ajaxErrorTranslate(
-                        'message.error.no_language_overlay_found'
+                        'message.error.no_language_overlay_found',
+                        '[0x4FBF3C05]',
+                        self::HTTP_STATUS_BAD_REQUEST
                     );
                 }
 
@@ -791,7 +831,12 @@ class PageAjax extends AbstractAjax
     protected function executeLoadAdvMetaTags()
     {
         if (empty($this->postVar['pid'])) {
-            return $this->ajaxError();
+
+            return $this->ajaxErrorTranslate(
+                'message.error.typo3_page_not_found',
+                '[0x4FBF3C0E]',
+                self::HTTP_STATUS_BAD_REQUEST
+            );
         }
 
         $ret = array();
@@ -822,7 +867,12 @@ class PageAjax extends AbstractAjax
     protected function executeUpdateAdvMetaTags()
     {
         if (empty($this->postVar['pid']) || empty($this->postVar['metaTags'])) {
-            return $this->ajaxError();
+
+            return $this->ajaxErrorTranslate(
+                'message.error.typo3_page_not_found',
+                '[0x4FBF3C0F]',
+                self::HTTP_STATUS_BAD_REQUEST
+            );
         }
 
         $pid         = (int)$this->postVar['pid'];
