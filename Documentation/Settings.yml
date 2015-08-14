@@ -8,6 +8,9 @@ conf.py:
   project: MetaSEO
   version: 1.0
   release: 1.0.0
+  html_theme_options:
+      github_repository: mblaschke/TYPO3-metaseo
+      github_branch: develop
   latex_documents:
   - - Index
     - metaseo_tqseo_import.tex
