@@ -139,9 +139,9 @@ YDir                             Should the crawler use the YahooDirectory to   
 
 Services
 --------
-==============================   ==============================================================   =================
-Constant                         Description                                                      Default
-==============================   ==============================================================   =================
+==============================   ===============================================================   =================
+Constant                         Description                                                       Default
+==============================   ===============================================================   =================
 Crawler Verification             Verification code for Google, MSN and Yahoo
                                  webmaster tools and Web of trust
 
@@ -159,10 +159,10 @@ GA Cookie Domain Name            If you want to limit the current google analyti
                                  - single domain (eg. “example.com”)
                                  - subdomain (eg. “.example.com”)
 
-GA Anonymize IP                  Anonymize the last part of the IP                                *disabled*
+GA Anonymize IP                  Anonymize the last part of the IP                                 *disabled*
                                  (may be required in some countries)
 
-GA Track Downloads               Try to track downloads with google analytics.                    *disabled*
+GA Track Downloads               Try to track downloads with google analytics.                     *disabled*
 
                                  See res/ga-track-download.js for more details
 
@@ -185,7 +185,7 @@ Piwik Download & Click Domain    Specifies which domains are internal domains:
 
                                  For more information visit:
 
-                                 - http://developer.piwik.org/api-reference/tracking-javascript
+                                 - https://developer.piwik.org/api-reference/tracking-javascript
 
 Piwik Cookie Domain Name         Specifies the domain name for the tracking cookie:
 
@@ -194,11 +194,11 @@ Piwik Cookie Domain Name         Specifies the domain name for the tracking cook
 
                                  For more information visit:
 
-                                 - http://developer.piwik.org/api-reference/tracking-javascript
+                                 - https://developer.piwik.org/api-reference/tracking-javascript
 
-Piwik DoNotTrack                 Opt out users with Mozilla's DoNotTrack                          *enabled*
+Piwik DoNotTrack                 Opt out users with Mozilla's DoNotTrack                           *enabled*
                                  browser setting
-==============================   ==============================================================   =================
+==============================   ===============================================================   =================
 
 
 Social

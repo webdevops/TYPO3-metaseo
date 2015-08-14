@@ -5,8 +5,8 @@
 ![License GPL3](https://img.shields.io/badge/license-GPL3-blue.svg?style=flat)
 
 
-[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/mblaschke/typo3-metaseo.svg)](http://isitmaintained.com/project/mblaschke/typo3-metaseo "Average time to resolve an issue")
-[![Percentage of issues still open](http://isitmaintained.com/badge/open/mblaschke/typo3-metaseo.svg)](http://isitmaintained.com/project/mblaschke/typo3-metaseo "Percentage of issues still open")
+[![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/mblaschke/typo3-metaseo.svg)](https://isitmaintained.com/project/mblaschke/typo3-metaseo "Average time to resolve an issue")
+[![Percentage of issues still open](https://isitmaintained.com/badge/open/mblaschke/typo3-metaseo.svg)](https://isitmaintained.com/project/mblaschke/typo3-metaseo "Percentage of issues still open")
 
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/19914ab4-1f0f-4be0-9215-410fba880af2/big.png)](https://insight.sensiolabs.com/projects/19914ab4-1f0f-4be0-9215-410fba880af2)
@@ -15,7 +15,7 @@
 This extension provides an indexed google/xml-sitemap, enhanced metatag-support and pagetitle-manipulations for TYPO3 CMS.
 It's a replacement for the "metatag"-extension and the successor of "tq_seo".
 
-* Manual:     http://docs.typo3.org/typo3cms/extensions/metaseo/
+* Manual:     https://docs.typo3.org/typo3cms/extensions/metaseo/
 * Git:        https://github.com/mblaschke/TYPO3-metaseo
 * Support:    https://github.com/mblaschke/TYPO3-metaseo/issues
 
@@ -42,7 +42,7 @@ MetaSEO (stable) is available **from TYPO3 TER** and also available with compose
 
     {
         "repositories": [
-            { "type": "composer", "url": "http://composer.typo3.org/" }
+            { "type": "composer", "url": "https://composer.typo3.org/" }
         ],
         .......
         "require": {
@@ -55,7 +55,7 @@ Or (unstable, don't blame me for bugs - but feel free to report bugs) directly *
 
     {
         "repositories": [
-            { "type": "composer", "url": "http://composer.typo3.org/" },
+            { "type": "composer", "url": "https://composer.typo3.org/" },
             { "type": "vcs", "url": "https://github.com/mblaschke/TYPO3-metaseo.git" },
         ],
         .......
