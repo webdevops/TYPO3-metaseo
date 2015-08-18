@@ -13,8 +13,8 @@ conf.py:
       github_branch: develop
   latex_documents:
   - - Index
-    - metaseo_tqseo_import.tex
-    - MetaSEO Import from tq_seo
+    - metaseo.tex
+    - MetaSEO
     - Markus Blaschke
     - manual
   latex_elements:
