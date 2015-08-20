@@ -87,7 +87,13 @@ $tempColumns = array(
                     'type'         => 'popup',
                     'title'        => 'Link',
                     'icon'         => 'link_popup.gif',
-                    'script'       => 'browse_links.php?mode=wizard&act=url',
+                    'module' => array(
+                        'name' => 'wizard_element_browser',
+                        'urlParameters' => array(
+                            'mode' => 'wizard',
+                            'act' => 'url'
+                        )
+                    ),
                     'params'       => array(
                         'blindLinkOptions' => 'mail',
                     ),
