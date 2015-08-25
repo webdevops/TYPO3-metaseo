@@ -46,15 +46,6 @@ abstract class AbstractModule extends ActionController
      */
     protected $formProtection;
 
-    // Internal, dynamic:
-    /**
-     * document template object
-     *
-     * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-     * @todo Define visibility
-     */
-    public $doc;
-
     // ########################################################################
     // Methods
     // ########################################################################
@@ -124,8 +115,8 @@ abstract class AbstractModule extends ActionController
      *
      * @return  string
      */
-    protected function ajaxControllerUrl($ajaxCall)
-    {
-        return $this->doc->backPath . 'ajax.php?ajaxID=' . urlencode($ajaxCall);
-    }
+//    protected function ajaxControllerUrl($ajaxCall)
+//    {
+//        return $this->doc->backPath . 'ajax.php?ajaxID=' . urlencode($ajaxCall);
+//    }
 }
