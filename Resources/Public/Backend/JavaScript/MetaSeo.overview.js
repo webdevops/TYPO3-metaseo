@@ -301,8 +301,10 @@ MetaSeo.overview.grid = {
                                         grid.getStore().load();
                                     };
 
+                                    var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.overview.conf.ajaxController] + '&cmd=updatePageFieldRecursively';
+
                                     Ext.Ajax.request({
-                                        url: MetaSeo.overview.conf.ajaxController + '&cmd=updatePageFieldRecursively',
+                                        url: ajaxUrl,
                                         params: {
                                             pid             : Ext.encode(pid),
                                             field           : Ext.encode(fieldName),
@@ -337,8 +339,10 @@ MetaSeo.overview.grid = {
                                         grid.getStore().load();
                                     };
 
+                                    var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.overview.conf.ajaxController] + '&cmd=updatePageField';
+
                                     Ext.Ajax.request({
-                                        url: MetaSeo.overview.conf.ajaxController + '&cmd=updatePageField',
+                                        url: ajaxUrl,
                                         params: {
                                             pid: Ext.encode(pid),
                                             field: Ext.encode(fieldName),
@@ -460,11 +464,13 @@ MetaSeo.overview.grid = {
                 break;
         }
 
-        var gridDs = new Ext.data.Store({
+        var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.overview.conf.ajaxController] + '&cmd=getList';
+
+        return new Ext.data.Store({
             storeId: 'MetaSeoOverviewRecordsStore',
             autoLoad: true,
             remoteSort: true,
-            url: MetaSeo.overview.conf.ajaxController + '&cmd=getList',
+            url: ajaxUrl,
             reader: new Ext.data.JsonReader({
                     totalProperty: 'results',
                     root: 'rows'
@@ -495,8 +501,6 @@ MetaSeo.overview.grid = {
                 }
             }
         });
-
-        return gridDs;
     },
 
 
@@ -911,8 +915,10 @@ MetaSeo.overview.grid = {
                                 }
                             };
 
+                            var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.overview.conf.ajaxController] + '&cmd=generateSimulatedUrl';
+
                             Ext.Ajax.request({
-                                url: MetaSeo.overview.conf.ajaxController + '&cmd=generateSimulatedUrl',
+                                url: ajaxUrl,
                                 params: {
                                     pid: Ext.encode(record.get('uid')),
                                     sessionToken: Ext.encode(MetaSeo.overview.conf.sessionToken)
@@ -997,8 +1003,10 @@ MetaSeo.overview.grid = {
                             }
                         };
 
+                        var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.overview.conf.ajaxController] + '&cmd=generateSimulatedTitle';
+
                         Ext.Ajax.request({
-                            url: MetaSeo.overview.conf.ajaxController + '&cmd=generateSimulatedTitle',
+                            url: ajaxUrl,
                             params: {
                                 pid: Ext.encode(record.get('uid')),
                                 sessionToken: Ext.encode(MetaSeo.overview.conf.sessionToken)

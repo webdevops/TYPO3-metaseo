@@ -37,11 +37,14 @@ MetaSeo.sitemap.grid = {
         /****************************************************
          * grid storage
          ****************************************************/
+
+        var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.sitemap.conf.ajaxController] + '&cmd=getList';
+
         var gridDs = new Ext.data.Store({
             storeId: 'MetaSeoSitemapRecordsStore',
             autoLoad: true,
             remoteSort: true,
-            url: MetaSeo.sitemap.conf.ajaxController + '&cmd=getList',
+            url: ajaxUrl,
             reader: new Ext.data.JsonReader({
                     totalProperty: 'results',
                     root: 'rows'
@@ -121,7 +124,7 @@ MetaSeo.sitemap.grid = {
         };
 
         var function_delete_all = function (ob) {
-            var cmd = "deleteAll";
+            var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.sitemap.conf.ajaxController] + '&cmd=deleteAll';
 
             var frmConfirm = new Ext.Window({
                 xtype: 'form',
@@ -140,7 +143,7 @@ MetaSeo.sitemap.grid = {
                         text: MetaSeo.sitemap.conf.lang.buttonYes,
                         handler: function (cmp, e) {
                             Ext.Ajax.request({
-                                url: MetaSeo.sitemap.conf.ajaxController + '&cmd=' + cmd,
+                                url: ajaxUrl,
                                 params: {
                                     'pid': MetaSeo.sitemap.conf.pid,
                                     sessionToken: Ext.encode(MetaSeo.sitemap.conf.sessionToken)
@@ -176,6 +179,7 @@ MetaSeo.sitemap.grid = {
 
         var rowAction = function (ob, cmd, confirmTitle, confirmText) {
             var recList = grid.getSelectionModel().getSelections();
+            var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.sitemap.conf.ajaxController] + '&cmd=' + cmd;
 
             if (recList.length >= 1) {
                 var uidList = [];
@@ -199,7 +203,7 @@ MetaSeo.sitemap.grid = {
                             text: MetaSeo.sitemap.conf.lang.buttonYes,
                             handler: function (cmp, e) {
                                 Ext.Ajax.request({
-                                    url: MetaSeo.sitemap.conf.ajaxController + '&cmd=' + cmd,
+                                    url: ajaxUrl,
                                     params: {
                                         'uidList': Ext.encode(uidList),
                                         'pid': MetaSeo.sitemap.conf.pid,

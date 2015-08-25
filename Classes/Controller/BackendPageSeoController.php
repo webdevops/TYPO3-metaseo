@@ -149,7 +149,7 @@ class BackendPageSeoController extends AbstractStandardModule
 
         $metaSeoConf = array(
             'sessionToken'     => $this->sessionToken('metaseo_metaseo_backend_ajax_pageajax'),
-            'ajaxController'   => $this->ajaxControllerUrl('tx_metaseo_backend_ajax::page'),
+            'ajaxController'   => 'tx_metaseo_backend_ajax::page',
             'pid'              => (int)$pageId,
             'renderTo'         => 'tx-metaseo-sitemap-grid',
             'pagingSize'       => 50,
