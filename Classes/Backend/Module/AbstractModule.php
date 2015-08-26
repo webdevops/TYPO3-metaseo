@@ -107,16 +107,4 @@ abstract class AbstractModule extends ActionController
 
         return $token;
     }
-
-    /**
-     * Ajax controller url
-     *
-     * @param   string $ajaxCall Ajax Call
-     *
-     * @return  string
-     */
-//    protected function ajaxControllerUrl($ajaxCall)
-//    {
-//        return $this->doc->backPath . 'ajax.php?ajaxID=' . urlencode($ajaxCall);
-//    }
 }
