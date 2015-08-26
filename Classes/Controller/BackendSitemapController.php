@@ -264,7 +264,7 @@ class BackendSitemapController extends AbstractStandardModule
 
         $metaSeoConf = array(
             'sessionToken'          => $this->sessionToken('metaseo_metaseo_backend_ajax_sitemapajax'),
-            'ajaxController'        => $this->ajaxControllerUrl('tx_metaseo_backend_ajax::sitemap'),
+            'ajaxController'        => 'tx_metaseo_backend_ajax::sitemap',
             'pid'                   => (int)$rootPid,
             'renderTo'              => 'tx-metaseo-sitemap-grid',
             'pagingSize'            => 50,
