@@ -61,6 +61,17 @@ MetaSeo.overview.grid = {
         var me = this;
 
         /****************************************************
+         * check if we got a page
+         ****************************************************/
+        if (!('conf' in MetaSeo.overview)) {
+            return;
+        }
+
+        if (!('listType' in MetaSeo.overview.conf)) {
+            return;
+        }
+
+        /****************************************************
          * settings
          ****************************************************/
         switch (MetaSeo.overview.conf.listType) {
