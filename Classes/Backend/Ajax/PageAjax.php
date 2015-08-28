@@ -158,7 +158,7 @@ class PageAjax extends AbstractAjax
                     )
                 );*/
 
-                $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList, true);
+                $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
                 break;
             case 'pagetitle':
                 $fieldList = array_merge(
@@ -200,11 +200,10 @@ class PageAjax extends AbstractAjax
      * @param   integer $depth             Depth
      * @param   integer $sysLanguage       System language
      * @param   array   $fieldList         Field list
-     * @param   boolean $enableAdvMetaTags Enable adv. meta tags
      *
      * @return  array
      */
-    protected function listDefaultTree(array $page, $depth, $sysLanguage, array $fieldList, $enableAdvMetaTags = false)
+    protected function listDefaultTree(array $page, $depth, $sysLanguage, array $fieldList)
     {
         $rootPid = $page['uid'];
 
@@ -377,11 +376,6 @@ class PageAjax extends AbstractAjax
      */
     protected function listPageTitleSim(array $page, $depth, $sysLanguage)
     {
-        // Init
-        $list = array();
-
-        $pid = $page['uid'];
-
         $fieldList = array(
             'title',
             'tx_metaseo_pagetitle',
@@ -453,9 +447,6 @@ class PageAjax extends AbstractAjax
         array $rootlineFull = null,
         $sysLanguage = null
     ) {
-        static $cacheTSFE = array();
-        static $lastTsSetupPid = null;
-
         $pageUid = (int)$page['uid'];
 
         if ($rootLine === null) {
