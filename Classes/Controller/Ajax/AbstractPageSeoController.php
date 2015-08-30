@@ -25,20 +25,28 @@
  */
 
 
-namespace Metaseo\Metaseo\Backend\Ajax;
+namespace Metaseo\Metaseo\Controller\Ajax;
 
+use Metaseo\Metaseo\Exception\Ajax\AjaxException;
+use Metaseo\Metaseo\Controller\AbstractAjaxController;
+use Metaseo\Metaseo\Controller\Ajax\PageSeo\AdvancedController;
+use Metaseo\Metaseo\Controller\Ajax\PageSeo\GeoController;
+use Metaseo\Metaseo\Controller\Ajax\PageSeo\MetaDataController;
+use Metaseo\Metaseo\Controller\Ajax\PageSeo\PageTitleController;
+use Metaseo\Metaseo\Controller\Ajax\PageSeo\PageTitleSimController;
+use Metaseo\Metaseo\Controller\Ajax\PageSeo\SearchEnginesController;
+use Metaseo\Metaseo\Controller\Ajax\PageSeo\UrlController;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 use Metaseo\Metaseo\Utility\FrontendUtility;
-use Metaseo\Metaseo\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
 
 /**
  * TYPO3 Backend ajax module page
  */
-class PageAjax extends AbstractAjax
+abstract class AbstractPageSeoController extends AbstractAjaxController implements PageSeoInterface
 {
+    const LIST_TYPE = 'undefined';
+    const AJAX_PREFIX = 'tx_metaseo_controller_ajax_pageseo_';
 
     // ########################################################################
     // Attributes
@@ -49,23 +57,49 @@ class PageAjax extends AbstractAjax
      *
      * @var    array
      */
-    protected $templatePidList = array();
+    protected $templatePidList;
+
+    /**
+     * @var array
+     */
+    protected $fieldList;
 
     // ########################################################################
     // Methods
     // ########################################################################
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->templatePidList = array();
+        $this->initFieldList();
+    }
+
+    abstract protected function initFieldList();
+
     /**
-     * Return overview entry list for root tree
-     *
+     * @inheritDoc
+     */
+    public function indexAction()
+    {
+        try {
+            $this->init();
+            $ret = $this->executeIndex();
+        } catch (AjaxException $ajaxException) {
+            return $this->ajaxErrorHandler($ajaxException);
+        }
+
+        return $this->ajaxSuccess($ret);
+    }
+
+    /**
      * @return array
      */
-    protected function executeGetList()
+    protected function executeIndex()
     {
         $pid         = (int)$this->postVar['pid'];
         $depth       = (int)$this->postVar['depth'];
         $sysLanguage = (int)$this->postVar['sysLanguage'];
-        $listType    = (string)$this->postVar['listType'];
 
         // Store last selected language
         $this->getBackendUserAuthentication()
@@ -82,115 +116,28 @@ class PageAjax extends AbstractAjax
 
         $page = BackendUtility::getRecord('pages', $pid);
 
-        $fieldList = array();
+        $list = $this->getIndex($page, $depth, $sysLanguage);
 
-        switch ($listType) {
-            case 'metadata':
-                $fieldList = array_merge(
-                    $fieldList,
-                    array(
-                        'keywords',
-                        'description',
-                        'abstract',
-                        'author',
-                        'author_email',
-                        'lastupdated',
-                    )
-                );
-
-                $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
-
-                unset($row);
-                foreach ($list as &$row) {
-                    if (!empty($row['lastupdated'])) {
-                        $row['lastupdated'] = date('Y-m-d', $row['lastupdated']);
-                    } else {
-                        $row['lastupdated'] = '';
-                    }
-                }
-                unset($row);
-                break;
-            case 'geo':
-                $fieldList = array_merge(
-                    $fieldList,
-                    array(
-                        'tx_metaseo_geo_lat',
-                        'tx_metaseo_geo_long',
-                        'tx_metaseo_geo_place',
-                        'tx_metaseo_geo_region'
-                    )
-                );
-
-                $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
-                break;
-            case 'searchengines':
-                $fieldList = array_merge(
-                    $fieldList,
-                    array(
-                        'tx_metaseo_canonicalurl',
-                        'tx_metaseo_is_exclude',
-                        'tx_metaseo_priority',
-                    )
-                );
-
-                $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
-                break;
-            case 'url':
-                $fieldList = array_merge(
-                    $fieldList,
-                    array(
-                        'title',
-                        'url_scheme',
-                        'alias',
-                        'tx_realurl_pathsegment',
-                        'tx_realurl_pathoverride',
-                        'tx_realurl_exclude',
-                    )
-                );
-
-                $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
-                break;
-            case 'advanced':
-                /*
-                $fieldList = array_merge(
-                    $fieldList,
-                    array(// Maybe we need more fields later
-                    )
-                );*/
-
-                $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList, true);
-                break;
-            case 'pagetitle':
-                $fieldList = array_merge(
-                    $fieldList,
-                    array(
-                        'tx_metaseo_pagetitle',
-                        'tx_metaseo_pagetitle_rel',
-                        'tx_metaseo_pagetitle_prefix',
-                        'tx_metaseo_pagetitle_suffix',
-                    )
-                );
-
-                $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
-                break;
-            case 'pagetitlesim':
-                $list = $this->listPageTitleSim($page, $depth, $sysLanguage);
-                break;
-            default:
-                // Not defined
-                return $this->ajaxErrorTranslate(
-                    'message.error.unknown_list_type_received',
-                    '[0x4FBF3C0D]',
-                    self::HTTP_STATUS_BAD_REQUEST
-                );
-        }
-
-        return $this->ajaxSuccess(
-            array(
-                'results' => count($list),
-                'rows'    => array_values($list),
-            )
+        return array(
+            'results' => count($list),
+            'rows'    => array_values($list),
         );
+    }
+
+    /**
+     * Return default tree
+     *
+     * This function is made for list manipulation in subclasses (method template design pattern)
+     *
+     * @param   array   $page              Root page
+     * @param   integer $depth             Depth
+     * @param   integer $sysLanguage       System language
+     *
+     * @return  array
+     */
+    protected function getIndex(array $page, $depth, $sysLanguage)
+    {
+        return $this->index($page, $depth, $sysLanguage, $this->fieldList);
     }
 
     /**
@@ -200,11 +147,10 @@ class PageAjax extends AbstractAjax
      * @param   integer $depth             Depth
      * @param   integer $sysLanguage       System language
      * @param   array   $fieldList         Field list
-     * @param   boolean $enableAdvMetaTags Enable adv. meta tags
      *
      * @return  array
      */
-    protected function listDefaultTree(array $page, $depth, $sysLanguage, array $fieldList, $enableAdvMetaTags = false)
+    protected function index(array $page, $depth, $sysLanguage, $fieldList = array())
     {
         $rootPid = $page['uid'];
 
@@ -233,7 +179,6 @@ class PageAjax extends AbstractAjax
         );
 
         $tree->getTree($rootPid, $depth, '');
-
 
         // Build tree list
         foreach ($tree->tree as $row) {
@@ -367,75 +312,6 @@ class PageAjax extends AbstractAjax
     }
 
     /**
-     * Return simulated page title
-     *
-     * @param   array   $page        Root page
-     * @param   integer $depth       Depth
-     * @param   integer $sysLanguage Sys language
-     *
-     * @return  array
-     */
-    protected function listPageTitleSim(array $page, $depth, $sysLanguage)
-    {
-        // Init
-        $list = array();
-
-        $pid = $page['uid'];
-
-        $fieldList = array(
-            'title',
-            'tx_metaseo_pagetitle',
-            'tx_metaseo_pagetitle_rel',
-            'tx_metaseo_pagetitle_prefix',
-            'tx_metaseo_pagetitle_suffix',
-        );
-
-        $list = $this->listDefaultTree($page, $depth, $sysLanguage, $fieldList);
-
-        $uidList = array_keys($list);
-
-        if (!empty($uidList)) {
-            // Check which pages have templates (for caching and faster building)
-            $this->templatePidList = array();
-
-            $query   = 'SELECT pid
-                          FROM sys_template
-                         WHERE pid IN (' . implode(',', $uidList) . ')
-                           AND deleted = 0
-                           AND hidden = 0';
-            $pidList = DatabaseUtility::getCol($query);
-            foreach ($pidList as $pid) {
-                $this->templatePidList[$pid] = $pid;
-            }
-
-            // Build simulated title
-            foreach ($list as &$row) {
-                $row['title_simulated'] = $this->simulateTitle($row, $sysLanguage);
-            }
-        }
-
-        return $list;
-    }
-
-    /**
-     * Generate simulated page title
-     *
-     * @param   array   $page        Page
-     * @param   integer $sysLanguage System language
-     *
-     * @return  string
-     */
-    protected function simulateTitle(array $page, $sysLanguage)
-    {
-        $this->initTsfe($page, null, $page, null, $sysLanguage);
-
-        $pagetitle = $this->objectManager->get('Metaseo\\Metaseo\\Page\\Part\\PagetitlePart');
-        $ret       = $pagetitle->main($page['title']);
-
-        return $ret;
-    }
-
-    /**
      * Init TSFE (for simulated pagetitle)
      *
      * @param   array        $page         Page
@@ -453,9 +329,6 @@ class PageAjax extends AbstractAjax
         array $rootlineFull = null,
         $sysLanguage = null
     ) {
-        static $cacheTSFE = array();
-        static $lastTsSetupPid = null;
-
         $pageUid = (int)$page['uid'];
 
         if ($rootLine === null) {
@@ -492,117 +365,25 @@ class PageAjax extends AbstractAjax
     }
 
     /**
-     * Generate simulated title for one page
-     *
-     * @return    array
+     * @inheritDoc
      */
-    protected function executeGenerateSimulatedTitle()
+    public function updateAction()
     {
-        // Init
-        $pid = (int)$this->postVar['pid'];
+        try {
+            $this->init();
+            $ret = $this->executeUpdate();
 
-        if (empty($pid)) {
-
-            return $this->ajaxErrorTranslate(
-                'message.error.typo3_page_not_found',
-                '[0x4FBF3C08]',
-                self::HTTP_STATUS_BAD_REQUEST
-            );
+        } catch (AjaxException $ajaxException) {
+            return $this->ajaxErrorHandler($ajaxException);
         }
 
-        $page = BackendUtility::getRecord('pages', $pid);
-
-        if (empty($page)) {
-
-            return $this->ajaxErrorTranslate(
-                'message.error.typo3_page_not_found',
-                '[0x4FBF3C09]',
-                self::HTTP_STATUS_BAD_REQUEST
-            );
-        }
-
-        // Load TYPO3 classes
-        $this->initTsfe($page, null, $page, null);
-
-        $pagetitle = Typo3GeneralUtility::makeInstance(
-            'Metaseo\\Metaseo\\Page\\Part\\PagetitlePart'
-        );
-        $ret       = $pagetitle->main($page['title']);
-
-        return $this->ajaxSuccess(
-            array(
-                'title' => $ret,
-            )
-        );
+        return $this->ajaxSuccess($ret);
     }
 
     /**
-     * Generate simulated title for one page
-     *
      * @return array
      */
-    protected function executeGenerateSimulatedUrl()
-    {
-        // Init
-        $pid = (int)$this->postVar['pid'];
-
-        if (empty($pid)) {
-
-            return $this->ajaxErrorTranslate(
-                'message.error.typo3_page_not_found',
-                '[0x4FBF3C0A]',
-                self::HTTP_STATUS_BAD_REQUEST
-            );
-        }
-
-        $page = BackendUtility::getRecord('pages', $pid);
-
-        if (empty($page)) {
-
-            return $this->ajaxErrorTranslate(
-                'message.error.typo3_page_not_found',
-                '[0x4FBF3C0B]',
-                self::HTTP_STATUS_BAD_REQUEST
-            );
-        }
-
-        if (ExtensionManagementUtility::isLoaded('realurl')) {
-            // Disable caching for url
-            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['enableUrlDecodeCache'] = 0;
-            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['enableUrlEncodeCache'] = 0;
-            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['disablePathCache']     = 1;
-        }
-
-        $this->initTsfe($page, null, $page, null);
-
-        $ret = $GLOBALS['TSFE']->cObj->typolink_URL(array('parameter' => $page['uid']));
-
-        if (!empty($ret)) {
-            $ret = GeneralUtility::fullUrl($ret);
-        }
-
-        if (empty($ret)) {
-
-            return $this->ajaxErrorTranslate(
-                'message.error.url_generation_failed',
-                '[0x4FBF3C01]',
-                self::HTTP_STATUS_BAD_REQUEST
-            );
-        }
-
-        return $this->ajaxSuccess(
-            array(
-                'url' => $ret,
-            )
-        );
-    }
-
-    /**
-     * Update page field
-     *
-     * @return array
-     */
-    protected function executeUpdatePageField()
+    protected function executeUpdate()
     {
         if (empty($this->postVar['pid']) || empty($this->postVar['field'])) {
 
@@ -618,8 +399,14 @@ class PageAjax extends AbstractAjax
         $fieldValue  = (string)$this->postVar['value'];
         $sysLanguage = (int)$this->postVar['sysLanguage'];
 
-        // validate field name
-        $fieldName = preg_replace('/[^-_a-zA-Z0-9:]/i', '', $fieldName);
+        // validate field name: must match exactly to list of known field names
+        if (!in_array($fieldName, array_merge($this->fieldList, array('title')))) {
+            return $this->ajaxErrorTranslate(
+                'message.warning.incomplete_data_received.message',
+                '[0x4FBF3C23]',
+                self::HTTP_STATUS_BAD_REQUEST
+            );
+        }
 
         if (empty($fieldName)) {
 
@@ -715,19 +502,30 @@ class PageAjax extends AbstractAjax
         // ############################
         // Update
         // ############################
-        $ret = $this->updatePageTableField($pid, $sysLanguage, $fieldName, $fieldValue);
+
+        return $this->updatePageTableField($pid, $sysLanguage, $fieldName, $fieldValue);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function updateRecursiveAction()
+    {
+        try {
+            $this->init();
+            $ret = $this->executeUpdateRecursive();
+        } catch (AjaxException $ajaxException) {
+            return $this->ajaxErrorHandler($ajaxException);
+        }
 
         return $this->ajaxSuccess($ret);
     }
 
     /**
-     * Update page field recursively.
-     *
      * @return array
      */
-    protected function executeUpdatePageFieldRecursively()
+    protected function executeUpdateRecursive()
     {
-
         if (empty($this->postVar['pid']) || empty($this->postVar['field'])) {
 
             return $this->ajaxErrorTranslate(
@@ -739,17 +537,20 @@ class PageAjax extends AbstractAjax
 
         $pid         = $this->postVar['pid'];
         $sysLanguage = (int)$this->postVar['sysLanguage'];
-        $fieldList   = array();
 
         $page = BackendUtility::getRecord('pages', $pid);
-        $list = $this->listDefaultTree($page, 999, $sysLanguage, $fieldList);
+        $list = $this->index($page, 999, $sysLanguage, array());
 
+        $count = 0;
         foreach ($list as $key => $page) {
             $this->postVar['pid'] = $key;
-            $this->executeUpdatePageField();
+            $this->executeUpdate();
+            $count++;
         }
 
-        return $this->ajaxSuccess();
+        return array(
+            'updateCount' => $count,  //not in use yet
+        );
     }
 
 
@@ -820,145 +621,37 @@ class PageAjax extends AbstractAjax
                 break;
         }
 
-        return $this->ajaxSuccess();
+        return array();
     }
 
     /**
-     * Load meta data
+     * @inheritDoc
+     */
+    protected function getAjaxPrefix()
+    {
+        return self::AJAX_PREFIX;
+    }
+
+    /**
+     * Returns array of classes which contain Ajax controllers with <ajaxPrefix> => <className)
+     *
+     * @todo replace class concatenation with e.g. 'UrlController::class' as of PHP 5.5  (renders $namespace obsolete)
      *
      * @return array
      */
-    protected function executeLoadAdvMetaTags()
+    public static function getBackendAjaxClassNames()
     {
-        if (empty($this->postVar['pid'])) {
+        $nameSpace = __NAMESPACE__ . '\\PageSeo';
+        $ajaxPrefix = self::AJAX_PREFIX;
 
-            return $this->ajaxErrorTranslate(
-                'message.error.typo3_page_not_found',
-                '[0x4FBF3C0E]',
-                self::HTTP_STATUS_BAD_REQUEST
-            );
-        }
-
-        $ret = array();
-
-        $pid         = (int)$this->postVar['pid'];
-        $sysLanguage = (int)$this->postVar['sysLanguage'];
-
-
-        // check uid of pages language overlay
-        $query   = 'SELECT tag_name,
-                           tag_value
-                      FROM tx_metaseo_metatag
-                     WHERE pid = ' . (int)$pid . '
-                       AND sys_language_uid = ' . (int)$sysLanguage;
-        $rowList = DatabaseUtility::getAll($query);
-        foreach ($rowList as $row) {
-            $ret[$row['tag_name']] = $row['tag_value'];
-        }
-
-        return $this->ajaxSuccess($ret);
-    }
-
-    /**
-     * Update page field
-     *
-     * @return array
-     */
-    protected function executeUpdateAdvMetaTags()
-    {
-        if (empty($this->postVar['pid']) || empty($this->postVar['metaTags'])) {
-
-            return $this->ajaxErrorTranslate(
-                'message.error.typo3_page_not_found',
-                '[0x4FBF3C0F]',
-                self::HTTP_STATUS_BAD_REQUEST
-            );
-        }
-
-        $pid         = (int)$this->postVar['pid'];
-        $metaTagList = (array)$this->postVar['metaTags'];
-        $sysLanguage = (int)$this->postVar['sysLanguage'];
-
-
-        $this->clearMetaTags($pid, $sysLanguage);
-        $metaTagGroup = 2;
-        foreach ($metaTagList as $metaTagName => $metaTagValue) {
-            if (is_scalar($metaTagValue)) {
-                $metaTagValue = trim($metaTagValue);
-
-                if (strlen($metaTagValue) > 0) {
-                    $this->updateMetaTag($pid, $sysLanguage, $metaTagName, $metaTagValue);
-                }
-            } elseif (is_array($metaTagValue)) {
-                foreach ($metaTagValue as $subTagName => $subTagValue) {
-                    $this->updateMetaTag(
-                        $pid,
-                        $sysLanguage,
-                        array($metaTagName, $subTagName),
-                        $subTagValue,
-                        $metaTagGroup++
-                    );
-                }
-            }
-        }
-
-        return $this->ajaxSuccess();
-    }
-
-    /**
-     * Clear all meta tags for one page
-     *
-     * @param integer      $pid         PID
-     * @param integer|null $sysLanguage system language id
-     */
-    protected function clearMetaTags($pid, $sysLanguage)
-    {
-        $query = 'DELETE FROM tx_metaseo_metatag
-                        WHERE pid = ' . (int)$pid . '
-                          AND sys_language_uid = ' . (int)$sysLanguage;
-        DatabaseUtility::exec($query);
-    }
-
-    /**
-     * @param integer      $pid         PID
-     * @param integer|NULL $sysLanguage System language id
-     * @param string|array $metaTag     MetaTag name
-     * @param string       $value       MetaTag value
-     * @param integer      $tagGroup    MetaTag group
-     */
-    protected function updateMetaTag($pid, $sysLanguage, $metaTag, $value, $tagGroup = null)
-    {
-        $tstamp   = time();
-        $crdate   = time();
-        //TODO: Field user is internal!
-        $cruserId = $this->getBackendUserAuthentication()->user['uid'];
-
-        $subTagName = '';
-
-        if (is_array($metaTag)) {
-            list($metaTag, $subTagName) = $metaTag;
-        }
-
-        if ($tagGroup === null) {
-            $tagGroup = 1;
-        }
-
-        $query = 'INSERT INTO tx_metaseo_metatag
-                              (pid, tstamp, crdate, cruser_id, sys_language_uid,
-                                  tag_name, tag_subname, tag_value, tag_group)
-                       VALUES (
-                             ' . (int)$pid . ',
-                             ' . (int)$tstamp . ',
-                             ' . (int)$crdate . ',
-                             ' . (int)$cruserId . ',
-                             ' . (int)$sysLanguage . ',
-                             ' . DatabaseUtility::quote($metaTag) . ',
-                             ' . DatabaseUtility::quote($subTagName) . ',
-                             ' . DatabaseUtility::quote($value) . ',
-                             ' . (int)$tagGroup . '
-                       ) ON DUPLICATE KEY UPDATE
-                               tstamp    = VALUES(tstamp),
-                               tag_value = VALUES(tag_value)';
-        DatabaseUtility::execInsert($query);
+        return array(
+            //$ajaxPrefix . AdvancedController::LIST_TYPE      => $nameSpace . '\\' . 'AdvancedController',//unused
+            $ajaxPrefix . GeoController::LIST_TYPE           => $nameSpace . '\\' . 'GeoController',
+            $ajaxPrefix . MetaDataController::LIST_TYPE      => $nameSpace . '\\' . 'MetaDataController',
+            $ajaxPrefix . PageTitleController::LIST_TYPE     => $nameSpace . '\\' . 'PageTitleController',
+            $ajaxPrefix . PageTitleSimController::LIST_TYPE  => $nameSpace . '\\' . 'PageTitleSimController',
+            $ajaxPrefix . SearchEnginesController::LIST_TYPE => $nameSpace . '\\' . 'SearchEnginesController',
+            $ajaxPrefix . UrlController::LIST_TYPE           => $nameSpace . '\\' . 'UrlController',
+        );
     }
 }
