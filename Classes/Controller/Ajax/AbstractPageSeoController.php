@@ -25,8 +25,9 @@
  */
 
 
-namespace Metaseo\Metaseo\Backend\Ajax;
+namespace Metaseo\Metaseo\Controller\Ajax;
 
+use Metaseo\Metaseo\Controller\AbstractAjaxController;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 use Metaseo\Metaseo\Utility\FrontendUtility;
 use Metaseo\Metaseo\Utility\GeneralUtility;
@@ -37,7 +38,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
 /**
  * TYPO3 Backend ajax module page
  */
-class PageAjax extends AbstractAjax
+class AbstractPageSeoController extends AbstractAjaxController
 {
 
     // ########################################################################

@@ -24,7 +24,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-namespace Metaseo\Metaseo\Backend\Ajax;
+namespace Metaseo\Metaseo\Controller;
 
 use Exception;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * TYPO3 Backend ajax module base
  */
-abstract class AbstractAjax
+abstract class AbstractAjaxController
 {
     /**
      * Json status indicators

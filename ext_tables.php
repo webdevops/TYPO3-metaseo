@@ -84,12 +84,12 @@ if (TYPO3_MODE == 'BE') {
     // AJAX
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
         'tx_metaseo_backend_ajax::sitemap',
-        'Metaseo\\Metaseo\\Backend\\Ajax\SitemapAjax->main'
+        'Metaseo\\Metaseo\\Controller\\Ajax\\SitemapController->main'
     );
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
         'tx_metaseo_backend_ajax::page',
-        'Metaseo\\Metaseo\\Backend\\Ajax\PageAjax->main'
+        'Metaseo\\Metaseo\\Controller\\Ajax\\AbstractPageSeoController->main'
     );
 }
 

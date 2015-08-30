@@ -24,15 +24,16 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-namespace Metaseo\Metaseo\Backend\Ajax;
+namespace Metaseo\Metaseo\Controller\Ajax;
 
+use Metaseo\Metaseo\Controller\AbstractAjaxController;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 use Metaseo\Metaseo\Utility\SitemapUtility;
 
 /**
  * TYPO3 Backend ajax module sitemap
  */
-class SitemapAjax extends AbstractAjax
+class SitemapController extends AbstractAjaxController
 {
 
     /**
