@@ -312,7 +312,7 @@ MetaSeo.overview.grid = {
                                         grid.getStore().load();
                                     };
 
-                                    var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.overview.conf.ajaxController] + '&cmd=updatePageFieldRecursively';
+                                    var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.overview.conf.ajaxController + '::updateRecursive'];
 
                                     Ext.Ajax.request({
                                         url: ajaxUrl,
@@ -350,7 +350,7 @@ MetaSeo.overview.grid = {
                                         grid.getStore().load();
                                     };
 
-                                    var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.overview.conf.ajaxController] + '&cmd=updatePageField';
+                                    var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.overview.conf.ajaxController + '::update'];
 
                                     Ext.Ajax.request({
                                         url: ajaxUrl,
@@ -475,7 +475,7 @@ MetaSeo.overview.grid = {
                 break;
         }
 
-        var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.overview.conf.ajaxController] + '&cmd=getList';
+        var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.overview.conf.ajaxController + '::index'];
 
         return new Ext.data.Store({
             storeId: 'MetaSeoOverviewRecordsStore',
@@ -926,7 +926,7 @@ MetaSeo.overview.grid = {
                                 }
                             };
 
-                            var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.overview.conf.ajaxController] + '&cmd=generateSimulatedUrl';
+                            var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.overview.conf.ajaxController + '::simulate'];
 
                             Ext.Ajax.request({
                                 url: ajaxUrl,
@@ -1013,8 +1013,7 @@ MetaSeo.overview.grid = {
                                 TYPO3.Flashmessage.display(TYPO3.Severity.information, '', Ext.util.Format.htmlEncode(response.title));
                             }
                         };
-
-                        var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.overview.conf.ajaxController] + '&cmd=generateSimulatedTitle';
+                        var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.overview.conf.ajaxController + '::simulate'];
 
                         Ext.Ajax.request({
                             url: ajaxUrl,

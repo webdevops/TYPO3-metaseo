@@ -27,6 +27,7 @@
 namespace Metaseo\Metaseo\Controller\Ajax;
 
 use Metaseo\Metaseo\Controller\AbstractAjaxController;
+use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 use Metaseo\Metaseo\Utility\SitemapUtility;
 
@@ -35,13 +36,32 @@ use Metaseo\Metaseo\Utility\SitemapUtility;
  */
 class SitemapController extends AbstractAjaxController
 {
+    const AJAX_PREFIX = 'tx_metaseo_controller_ajax_sitemap';
+
+    /**
+     * @return array
+     *
+     * @throws AjaxException
+     */
+    public function indexAction()
+    {
+        try {
+            $this->init();
+            $ret = $this->executeIndex();
+
+        } catch (AjaxException $ajaxException) {
+            return $this->ajaxErrorHandler($ajaxException);
+        }
+
+        return $this->ajaxSuccess($ret);
+    }
 
     /**
      * Return sitemap entry list for root tree
      *
      * @return    array
      */
-    protected function executeGetList()
+    protected function executeIndex()
     {
         // Init
         $rootPid      = (int)$this->postVar['pid'];
@@ -138,18 +158,34 @@ class SitemapController extends AbstractAjaxController
                   LIMIT ' . (int)$offset . ', ' . (int)$itemsPerPage;
         $list  = DatabaseUtility::getAll($query);
 
-        return $this->ajaxSuccess(
-            array(
+        return array(
             'results' => $itemCount,
             'rows'    => $list,
-            )
         );
+    }
+
+    /**
+     * @return array
+     *
+     * @throws AjaxException
+     */
+    public function blacklistAction()
+    {
+        try {
+            $this->init();
+            $ret = $this->executeBlacklist();
+
+        } catch (AjaxException $ajaxException) {
+            return $this->ajaxErrorHandler($ajaxException);
+        }
+
+        return $this->ajaxSuccess($ret);
     }
 
     /*
      * Blacklist sitemap entries
      *
-     * @return    boolean
+     * @return    array
      */
     protected function executeBlacklist()
     {
@@ -177,13 +213,31 @@ class SitemapController extends AbstractAjaxController
                    WHERE ' . $where;
         DatabaseUtility::exec($query);
 
-        return $this->ajaxSuccess();
+        return array();
+    }
+
+    /**
+     * @return array
+     *
+     * @throws AjaxException
+     */
+    public function whitelistAction()
+    {
+        try {
+            $this->init();
+            $ret = $this->executeWhitelist();
+
+        } catch (AjaxException $ajaxException) {
+            return $this->ajaxErrorHandler($ajaxException);
+        }
+
+        return $this->ajaxSuccess($ret);
     }
 
     /*
      * Whitelist sitemap entries
      *
-     * @return    boolean
+     * @return    array
      */
     protected function executeWhitelist()
     {
@@ -211,14 +265,31 @@ class SitemapController extends AbstractAjaxController
                    WHERE ' . $where;
         DatabaseUtility::exec($query);
 
-        return $this->ajaxSuccess();
+        return array();
     }
 
+    /**
+     * @return array
+     *
+     * @throws AjaxException
+     */
+    public function deleteAction()
+    {
+        try {
+            $this->init();
+            $ret = $this->executeDelete();
+
+        } catch (AjaxException $ajaxException) {
+            return $this->ajaxErrorHandler($ajaxException);
+        }
+
+        return $this->ajaxSuccess($ret);
+    }
 
     /**
      * Delete sitemap entries
      *
-     * @return    boolean
+     * @return    array
      */
     protected function executeDelete()
     {
@@ -245,13 +316,31 @@ class SitemapController extends AbstractAjaxController
                          WHERE ' . $where;
         DatabaseUtility::exec($query);
 
-        return $this->ajaxSuccess();
+        return array();
+    }
+
+    /**
+     * @return array
+     *
+     * @throws AjaxException
+     */
+    public function deleteAllAction()
+    {
+        try {
+            $this->init();
+            $ret = $this->executeDeleteAll();
+
+        } catch (AjaxException $ajaxException) {
+            return $this->ajaxErrorHandler($ajaxException);
+        }
+
+        return $this->ajaxSuccess($ret);
     }
 
     /**
      * Delete all sitemap entries
      *
-     * @return    boolean
+     * @return    array
      */
     protected function executeDeleteAll()
     {
@@ -274,6 +363,26 @@ class SitemapController extends AbstractAjaxController
                          WHERE ' . $where;
         DatabaseUtility::exec($query);
 
-        return $this->ajaxSuccess();
+        return array();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getAjaxPrefix()
+    {
+        return self::AJAX_PREFIX;
+    }
+
+    /**
+     * Returns array of classes which contain Ajax controllers with <ajaxPrefix> => <className)
+     *
+     * @return array
+     */
+    public static function getBackendAjaxClassNames()
+    {
+        return array(
+            self::AJAX_PREFIX => __CLASS__,
+        );
     }
 }

@@ -27,6 +27,7 @@
 namespace Metaseo\Metaseo\Controller;
 
 use Metaseo\Metaseo\Backend\Module\AbstractStandardModule;
+use Metaseo\Metaseo\Controller\Ajax\SitemapController;
 use Metaseo\Metaseo\Utility\BackendUtility;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 use Metaseo\Metaseo\Utility\SitemapUtility;
@@ -263,8 +264,8 @@ class BackendSitemapController extends AbstractStandardModule
         // ###############################
 
         $metaSeoConf = array(
-            'sessionToken'          => $this->sessionToken('metaseo_metaseo_backend_ajax_sitemapajax'),
-            'ajaxController'        => 'tx_metaseo_backend_ajax::sitemap',
+            'sessionToken'          => $this->sessionToken(SitemapController::AJAX_PREFIX),
+            'ajaxController'        => SitemapController::AJAX_PREFIX,
             'pid'                   => (int)$rootPid,
             'renderTo'              => 'tx-metaseo-sitemap-grid',
             'pagingSize'            => 50,

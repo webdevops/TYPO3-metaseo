@@ -81,15 +81,15 @@ if (TYPO3_MODE == 'BE') {
         )
     );
 
+    // ############################################################################
+    // REGISTER AJAX CONTROLLERS
+    // ############################################################################
     // AJAX
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
-        'tx_metaseo_backend_ajax::sitemap',
-        'Metaseo\\Metaseo\\Controller\\Ajax\\SitemapController->main'
+    \Metaseo\Metaseo\Utility\ExtensionManagementUtility::registerAjaxClasses(
+        \Metaseo\Metaseo\Controller\Ajax\AbstractPageSeoController::getBackendAjaxClassNames()
     );
-
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
-        'tx_metaseo_backend_ajax::page',
-        'Metaseo\\Metaseo\\Controller\\Ajax\\AbstractPageSeoController->main'
+    \Metaseo\Metaseo\Utility\ExtensionManagementUtility::registerAjaxClasses(
+        \Metaseo\Metaseo\Controller\Ajax\SitemapController::getBackendAjaxClassNames()
     );
 }
 

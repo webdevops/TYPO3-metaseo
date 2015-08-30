@@ -26,6 +26,7 @@
 
 namespace Metaseo\Metaseo\Controller;
 
+use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use Exception;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -34,6 +35,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 abstract class AbstractAjaxController
 {
+    const HTTP_CONTENT_TYPE_JSON = 'Content-type: application/json;charset=UTF-8';
+
     /**
      * Json status indicators
      */
@@ -114,101 +117,20 @@ abstract class AbstractAjaxController
      */
     protected $formProtection;
 
+    /**
+     * to be used for unit tests ONLY!
+     *
+     * @var boolean
+     */
+    protected $returnAsArray;
+
     // ########################################################################
     // Methods
     // ########################################################################
 
-    /**
-     * Execute ajax call
-     */
-    public function main()
+    public function __construct()
     {
-        $ajaxMethodName = $this->extractAjaxMethodName();
-
-        $ret = $this->callAjaxMethod($ajaxMethodName);
-
-        // Output json data
-        header('Content-type: application/json;charset=UTF-8');
-        echo json_encode($ret);
-        exit;
-    }
-
-    /**
-     * @return string
-     */
-    protected function extractAjaxMethodName()
-    {
-        // Try to find method
-        $ajaxMethodName = '';
-        if (!empty($_GET['cmd'])) {
-            // GET-param
-            $ajaxMethodName = (string)$_GET['cmd'];
-
-            // security
-            $ajaxMethodName = strtolower(trim($ajaxMethodName));
-            $ajaxMethodName = preg_replace('[^a-z]', '', $ajaxMethodName);
-        }
-
-        return $ajaxMethodName;
-    }
-
-    /**
-     * @param string $ajaxMethodName
-     *
-     * @return array
-     */
-    protected function callAjaxMethod($ajaxMethodName)
-    {
-        //check if empty
-        if (empty($ajaxMethodName)) {
-
-            return $this->ajaxErrorTranslate(
-                'message.warning.ajax_method_name_not_exist.message',
-                '[0x4FBF3C00]',
-                self::HTTP_STATUS_BAD_REQUEST
-            );
-        }
-
-        $methodName = 'execute' . $ajaxMethodName;
-        $call       = array($this, $methodName);
-
-        //check if not callable
-        if (!is_callable($call)) {
-
-            return $this->ajaxErrorTranslate(
-                'message.warning.ajax_method_name_not_exist.message',
-                '[0x4FBF3C07]',
-                self::HTTP_STATUS_BAD_REQUEST
-            );
-        }
-
-        //init
-        $this->fetchParams();
-        $this->init();
-
-        if (!$this->checkSessionToken()) {
-
-            return $this->ajaxErrorTranslate(
-                'message.error.access_denied',
-                '[0x4FBF3C06]',
-                self::HTTP_STATUS_UNAUTHORIZED
-            );
-        }
-
-        // Call function
-        try {
-            $ajaxArray = $this->$methodName();
-        } catch (Exception $e) {
-            //todo: log exception?
-
-            return $this->ajaxErrorTranslate(
-                'message.error.internal_server_error',
-                '[0x4FBF3C07]',
-                self::HTTP_STATUS_INTERNAL_SERVER_ERROR
-            );
-        }
-
-        return $ajaxArray;
+        $this->returnAsArray = false;
     }
 
     /**
@@ -255,6 +177,8 @@ abstract class AbstractAjaxController
      */
     protected function init()
     {
+        $this->fetchParams();
+
         // Include ajax local lang
         $this->getLanguageService()->includeLLFile('EXT:metaseo/Resources/Private/Language/locallang.xlf');
 
@@ -264,31 +188,39 @@ abstract class AbstractAjaxController
 
         // Init form protection instance
         $this->formProtection = $this->objectManager->get('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection');
+        $this->checkSessionToken();
     }
 
     /**
      * Check session token
      *
-     * @return    boolean
+     * @todo Assumed TYPO3's CSRF protection is safe, this function can be removed.
+     * @see ExtensionManagementUtility
+     *
+     * @return array
      */
     protected function checkSessionToken()
     {
+        $sessionToken = $this->sessionToken($this->getAjaxPrefix());
 
-        if (empty($this->postVar['sessionToken'])) {
-            // No session token exists
-            return false;
+        if (empty($this->postVar['sessionToken']) // No session token exists
+            || $this->postVar['sessionToken'] != $sessionToken //session token is wrong
+        ) {
+
+            return $this->ajaxErrorTranslate(
+                'message.error.access_denied',
+                '[0x4FBF3C06]',
+                self::HTTP_STATUS_UNAUTHORIZED
+            );
         }
 
-        $className = strtolower(str_replace('\\', '_', get_class($this)));
-
-        $sessionToken = $this->sessionToken($className);
-
-        if ($this->postVar['sessionToken'] === $sessionToken) {
-            return true;
-        }
-
-        return false;
+        return array();
     }
+
+    /**
+     * @return string
+     */
+    abstract protected function getAjaxPrefix();
 
     /**
      * Create session token
@@ -324,10 +256,10 @@ abstract class AbstractAjaxController
     /**
      * Check if field is in table (TCA)
      *
-     * @param   string $table Table
-     * @param   string $field Field
+     * @param string $table Table
+     * @param string $field Field
      *
-     * @return  boolean
+     * @return boolean
      */
     protected function isFieldInTcaTable($table, $field)
     {
@@ -339,7 +271,9 @@ abstract class AbstractAjaxController
      * @param string $errorNumber
      * @param int    $httpStatus
      *
-     * @return array
+     * @return array ... this will never happen. Just keeps the IDE calm when using it in return statements
+     *
+     * @throws AjaxException
      */
     protected function ajaxErrorTranslate($messageKey = '', $errorNumber = '', $httpStatus = 400)
     {
@@ -355,29 +289,72 @@ abstract class AbstractAjaxController
      * @param string $errorNumber
      * @param int    $httpStatus
      *
-     * @return array
+     * @return array ... this will never happen. Just keeps the IDE calm when using it in return statements
+     *
+     * @throws AjaxException
      */
     protected function ajaxError($errorMessage = '', $errorNumber = '', $httpStatus = 400)
     {
         $httpStatus = (int)$httpStatus;
+
+        throw new AjaxException($errorMessage, $errorNumber, $httpStatus);
+    }
+
+
+    /**
+     * @param AjaxException $ajaxException
+     *
+     * @return array
+     *
+     * @throws AjaxException
+     */
+    protected function ajaxErrorHandler(AjaxException $ajaxException)
+    {
+        $httpStatus = $ajaxException->getHttpStatus();
         header('HTTP/1.0 ' . $httpStatus . ' ' . $this->httpStatus[$httpStatus]);
 
         $responseArray = array(
-            self::JSON_ERROR => $errorMessage
+            self::JSON_ERROR => $ajaxException->getMessage()
         );
 
-        if (!empty($errorNumber)) {
-            $responseArray[self::JSON_ERROR_NUMBER] = $errorNumber;
+        $errorCode = (string) $ajaxException->getCode();
+        if (!empty($errorCode)) {
+            $responseArray[self::JSON_ERROR_NUMBER] = $ajaxException->getCode();
         }
 
-        return $responseArray;
+        if ($this->returnAsArray) {
+            //to be used for unit tests ONLY!
+            throw $ajaxException;
+        }
+
+        return $this->renderExit($responseArray);
     }
 
+    /**
+     * @param array $data
+     *
+     * @return array
+     */
     protected function ajaxSuccess(array $data = array())
     {
         $data[self::JSON_SUCCESS] = true;
 
-        return $data;
+        return $this->renderExit($data);
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return array
+     */
+    protected function renderExit(array $data)
+    {
+        if ($this->returnAsArray === true) {
+            return $data;
+        }
+        header(self::HTTP_CONTENT_TYPE_JSON);
+        echo json_encode($data);
+        exit;
     }
 
     /**
@@ -410,5 +387,19 @@ abstract class AbstractAjaxController
     protected function getBackendUserAuthentication()
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * to be used for unit tests ONLY!
+     *
+     * @param boolean $returnAsArray
+     *
+     * @return $this
+     */
+    public function setReturnAsArray($returnAsArray = true)
+    {
+        $this->returnAsArray = $returnAsArray;
+
+        return $this;
     }
 }

@@ -38,7 +38,7 @@ MetaSeo.sitemap.grid = {
          * grid storage
          ****************************************************/
 
-        var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.sitemap.conf.ajaxController] + '&cmd=getList';
+        var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.sitemap.conf.ajaxController + '::index'];
 
         var gridDs = new Ext.data.Store({
             storeId: 'MetaSeoSitemapRecordsStore',
@@ -124,7 +124,7 @@ MetaSeo.sitemap.grid = {
         };
 
         var function_delete_all = function (ob) {
-            var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.sitemap.conf.ajaxController] + '&cmd=deleteAll';
+            var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.sitemap.conf.ajaxController + '::deleteAll'];
 
             var frmConfirm = new Ext.Window({
                 xtype: 'form',
@@ -179,7 +179,7 @@ MetaSeo.sitemap.grid = {
 
         var rowAction = function (ob, cmd, confirmTitle, confirmText) {
             var recList = grid.getSelectionModel().getSelections();
-            var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.sitemap.conf.ajaxController] + '&cmd=' + cmd;
+            var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.sitemap.conf.ajaxController + '::' + cmd];
 
             if (recList.length >= 1) {
                 var uidList = [];
