@@ -27,7 +27,9 @@
 namespace Metaseo\Metaseo\Controller;
 
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
+use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * TYPO3 Backend ajax module base
@@ -181,12 +183,19 @@ abstract class AbstractAjaxController
         // Include ajax local lang
         $this->getLanguageService()->includeLLFile('EXT:metaseo/Resources/Private/Language/locallang.xlf');
 
-        $this->objectManager = GeneralUtility::makeInstance(
-            'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
-        );
+        if (!isset($this->objectManager)) {
+            $this->objectManager = GeneralUtility::makeInstance(
+                'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
+            );
+        }
 
         // Init form protection instance
-        $this->formProtection = $this->objectManager->get('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection');
+        if (!isset($this->formProtection)) {
+            $this->formProtection = $this
+                ->objectManager
+                ->get('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection');
+        }
+
         $this->checkSessionToken();
     }
 
@@ -277,7 +286,9 @@ abstract class AbstractAjaxController
     protected function ajaxExceptionHandler(AjaxException $ajaxException)
     {
         $httpStatus = $ajaxException->getHttpStatus();
-        header('HTTP/1.0 ' . $httpStatus . ' ' . $this->httpStatus[$httpStatus]);
+        if (!headers_sent()) {
+            header('HTTP/1.0 ' . $httpStatus . ' ' . $this->httpStatus[$httpStatus]);
+        }
 
         $responseArray = array(
             self::JSON_ERROR => $ajaxException->getMessage()
@@ -318,7 +329,9 @@ abstract class AbstractAjaxController
         if ($this->returnAsArray === true) {
             return $data;
         }
-        header(self::HTTP_CONTENT_TYPE_JSON);
+        if (!headers_sent()) {
+            header(self::HTTP_CONTENT_TYPE_JSON);
+        }
         echo json_encode($data);
         exit;
     }
@@ -365,6 +378,30 @@ abstract class AbstractAjaxController
     public function setReturnAsArray($returnAsArray = true)
     {
         $this->returnAsArray = $returnAsArray;
+
+        return $this;
+    }
+
+    /**
+     * @param ObjectManager $objectManager
+     *
+     * @return $this
+     */
+    public function setObjectManager(ObjectManager $objectManager)
+    {
+        $this->objectManager = $objectManager;
+
+        return $this;
+    }
+
+    /**
+     * @param BackendFormProtection $formProtection
+     *
+     * @return $this
+     */
+    public function setFormProtection(BackendFormProtection $formProtection)
+    {
+        $this->formProtection = $formProtection;
 
         return $this;
     }
