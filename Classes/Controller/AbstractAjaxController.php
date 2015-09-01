@@ -27,7 +27,6 @@
 namespace Metaseo\Metaseo\Controller;
 
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
-use Exception;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -198,6 +197,8 @@ abstract class AbstractAjaxController
      * @see ExtensionManagementUtility
      *
      * @return array
+     *
+     * @throws AjaxException
      */
     protected function checkSessionToken()
     {
@@ -207,8 +208,8 @@ abstract class AbstractAjaxController
             || $this->postVar['sessionToken'] != $sessionToken //session token is wrong
         ) {
 
-            return $this->ajaxErrorTranslate(
-                'message.error.access_denied',
+            throw new AjaxException(
+                $this->translate('message.error.access_denied'),
                 '[0x4FBF3C06]',
                 self::HTTP_STATUS_UNAUTHORIZED
             );
@@ -267,48 +268,13 @@ abstract class AbstractAjaxController
     }
 
     /**
-     * @param string $messageKey
-     * @param string $errorNumber
-     * @param int    $httpStatus
-     *
-     * @return array ... this will never happen. Just keeps the IDE calm when using it in return statements
-     *
-     * @throws AjaxException
-     */
-    protected function ajaxErrorTranslate($messageKey = '', $errorNumber = '', $httpStatus = 400)
-    {
-        return $this->ajaxError(
-            $this->translate($messageKey),
-            $errorNumber,
-            $httpStatus
-        );
-    }
-
-    /**
-     * @param string $errorMessage
-     * @param string $errorNumber
-     * @param int    $httpStatus
-     *
-     * @return array ... this will never happen. Just keeps the IDE calm when using it in return statements
-     *
-     * @throws AjaxException
-     */
-    protected function ajaxError($errorMessage = '', $errorNumber = '', $httpStatus = 400)
-    {
-        $httpStatus = (int)$httpStatus;
-
-        throw new AjaxException($errorMessage, $errorNumber, $httpStatus);
-    }
-
-
-    /**
      * @param AjaxException $ajaxException
      *
      * @return array
      *
      * @throws AjaxException
      */
-    protected function ajaxErrorHandler(AjaxException $ajaxException)
+    protected function ajaxExceptionHandler(AjaxException $ajaxException)
     {
         $httpStatus = $ajaxException->getHttpStatus();
         header('HTTP/1.0 ' . $httpStatus . ' ' . $this->httpStatus[$httpStatus]);
