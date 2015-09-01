@@ -50,7 +50,7 @@ class SitemapController extends AbstractAjaxController
             $ret = $this->executeIndex();
 
         } catch (AjaxException $ajaxException) {
-            return $this->ajaxErrorHandler($ajaxException);
+            return $this->ajaxExceptionHandler($ajaxException);
         }
 
         return $this->ajaxSuccess($ret);
@@ -176,7 +176,7 @@ class SitemapController extends AbstractAjaxController
             $ret = $this->executeBlacklist();
 
         } catch (AjaxException $ajaxException) {
-            return $this->ajaxErrorHandler($ajaxException);
+            return $this->ajaxExceptionHandler($ajaxException);
         }
 
         return $this->ajaxSuccess($ret);
@@ -185,7 +185,9 @@ class SitemapController extends AbstractAjaxController
     /*
      * Blacklist sitemap entries
      *
-     * @return    array
+     * @return array
+     *
+     * @throws AjaxException
      */
     protected function executeBlacklist()
     {
@@ -196,8 +198,8 @@ class SitemapController extends AbstractAjaxController
 
         if (empty($uidList) || empty($rootPid)) {
 
-            return $this->ajaxErrorTranslate(
-                'message.warning.incomplete_data_received.message',
+            throw new AjaxException(
+                $this->translate('message.warning.incomplete_data_received.message'),
                 '[0x4FBF3C10]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
@@ -228,7 +230,7 @@ class SitemapController extends AbstractAjaxController
             $ret = $this->executeWhitelist();
 
         } catch (AjaxException $ajaxException) {
-            return $this->ajaxErrorHandler($ajaxException);
+            return $this->ajaxExceptionHandler($ajaxException);
         }
 
         return $this->ajaxSuccess($ret);
@@ -237,7 +239,9 @@ class SitemapController extends AbstractAjaxController
     /*
      * Whitelist sitemap entries
      *
-     * @return    array
+     * @return array
+     *
+     * @throws AjaxException
      */
     protected function executeWhitelist()
     {
@@ -248,8 +252,8 @@ class SitemapController extends AbstractAjaxController
 
         if (empty($uidList) || empty($rootPid)) {
 
-            return $this->ajaxErrorTranslate(
-                'message.warning.incomplete_data_received.message',
+            throw new AjaxException(
+                $this->translate('message.warning.incomplete_data_received.message'),
                 '[0x4FBF3C12]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
@@ -280,7 +284,7 @@ class SitemapController extends AbstractAjaxController
             $ret = $this->executeDelete();
 
         } catch (AjaxException $ajaxException) {
-            return $this->ajaxErrorHandler($ajaxException);
+            return $this->ajaxExceptionHandler($ajaxException);
         }
 
         return $this->ajaxSuccess($ret);
@@ -289,7 +293,9 @@ class SitemapController extends AbstractAjaxController
     /**
      * Delete sitemap entries
      *
-     * @return    array
+     * @return array
+     *
+     * @throws AjaxException
      */
     protected function executeDelete()
     {
@@ -300,8 +306,8 @@ class SitemapController extends AbstractAjaxController
 
         if (empty($uidList) || empty($rootPid)) {
 
-            return $this->ajaxErrorTranslate(
-                'message.warning.incomplete_data_received.message',
+            throw new AjaxException(
+                $this->translate('message.warning.incomplete_data_received.message'),
                 '[0x4FBF3C11]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
@@ -331,7 +337,7 @@ class SitemapController extends AbstractAjaxController
             $ret = $this->executeDeleteAll();
 
         } catch (AjaxException $ajaxException) {
-            return $this->ajaxErrorHandler($ajaxException);
+            return $this->ajaxExceptionHandler($ajaxException);
         }
 
         return $this->ajaxSuccess($ret);
@@ -340,7 +346,9 @@ class SitemapController extends AbstractAjaxController
     /**
      * Delete all sitemap entries
      *
-     * @return    array
+     * @return array
+     *
+     * @throws AjaxException
      */
     protected function executeDeleteAll()
     {
@@ -348,8 +356,8 @@ class SitemapController extends AbstractAjaxController
 
         if (empty($rootPid)) {
 
-            return $this->ajaxErrorTranslate(
-                'message.warning.incomplete_data_received.message',
+            throw new AjaxException(
+                $this->translate('message.warning.incomplete_data_received.message'),
                 '[0x4FBF3C12]',
                 self::HTTP_STATUS_BAD_REQUEST
             );

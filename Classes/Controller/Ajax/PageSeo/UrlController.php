@@ -26,9 +26,9 @@
 
 namespace Metaseo\Metaseo\Controller\Ajax\PageSeo;
 
-use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use Metaseo\Metaseo\Controller\Ajax\AbstractPageSeoController;
 use Metaseo\Metaseo\Controller\Ajax\PageSeoSimulateInterface;
+use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use Metaseo\Metaseo\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -61,7 +61,7 @@ class UrlController extends AbstractPageSeoController implements PageSeoSimulate
             $this->init();
             $ret = $this->executeSimulate();
         } catch (AjaxException $ajaxException) {
-            return $this->ajaxErrorHandler($ajaxException);
+            return $this->ajaxExceptionHandler($ajaxException);
         }
 
         return $this->ajaxSuccess($ret);
@@ -69,6 +69,8 @@ class UrlController extends AbstractPageSeoController implements PageSeoSimulate
 
     /**
      * @return array
+     *
+     * @throws AjaxException
      */
     public function executeSimulate()
     {
@@ -76,8 +78,8 @@ class UrlController extends AbstractPageSeoController implements PageSeoSimulate
 
         if (empty($pid)) {
 
-            return $this->ajaxErrorTranslate(
-                'message.error.typo3_page_not_found',
+            throw new AjaxException(
+                $this->translate('message.error.typo3_page_not_found'),
                 '[0x4FBF3C0A]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
@@ -87,8 +89,8 @@ class UrlController extends AbstractPageSeoController implements PageSeoSimulate
 
         if (empty($page)) {
 
-            return $this->ajaxErrorTranslate(
-                'message.error.typo3_page_not_found',
+            throw new AjaxException(
+                $this->translate('message.error.typo3_page_not_found'),
                 '[0x4FBF3C0B]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
@@ -111,8 +113,8 @@ class UrlController extends AbstractPageSeoController implements PageSeoSimulate
 
         if (empty($ret)) {
 
-            return $this->ajaxErrorTranslate(
-                'message.error.url_generation_failed',
+            throw new AjaxException(
+                $this->translate('message.error.url_generation_failed'),
                 '[0x4FBF3C01]',
                 self::HTTP_STATUS_BAD_REQUEST
             );

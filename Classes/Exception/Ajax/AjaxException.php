@@ -46,16 +46,16 @@ class AjaxException extends Exception
     protected $httpStatus;
 
     /**
-     * @param string $message
-     * @param string $code
-     * @param int    $httpStatus
+     * @param string $message    The error message
+     * @param string $code       Custom alphanumeric error code
+     * @param int    $httpStatus http status code, e.g. 500 for internal server error.
      */
     public function __construct($message = '', $code = '', $httpStatus = 500)
     {
         parent::__construct();
-        $this->message = $message;
-        $this->code = $code;
-        $this->httpStatus = $httpStatus;
+        $this->message    = (string) $message;
+        $this->code       = (string) $code;
+        $this->httpStatus = (int)    $httpStatus;
     }
 
     public function getHttpStatus()

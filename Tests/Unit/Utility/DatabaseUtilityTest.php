@@ -24,7 +24,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-namespace Tests\Unit\Utility;
+namespace Metaseo\Metaseo\Tests\Unit\Utility;
 
 
 use Metaseo\Metaseo\Utility\DatabaseUtility;

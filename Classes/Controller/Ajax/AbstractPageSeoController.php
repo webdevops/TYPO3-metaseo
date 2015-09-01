@@ -27,15 +27,14 @@
 
 namespace Metaseo\Metaseo\Controller\Ajax;
 
-use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use Metaseo\Metaseo\Controller\AbstractAjaxController;
-use Metaseo\Metaseo\Controller\Ajax\PageSeo\AdvancedController;
 use Metaseo\Metaseo\Controller\Ajax\PageSeo\GeoController;
 use Metaseo\Metaseo\Controller\Ajax\PageSeo\MetaDataController;
 use Metaseo\Metaseo\Controller\Ajax\PageSeo\PageTitleController;
 use Metaseo\Metaseo\Controller\Ajax\PageSeo\PageTitleSimController;
 use Metaseo\Metaseo\Controller\Ajax\PageSeo\SearchEnginesController;
 use Metaseo\Metaseo\Controller\Ajax\PageSeo\UrlController;
+use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 use Metaseo\Metaseo\Utility\FrontendUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -86,7 +85,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
             $this->init();
             $ret = $this->executeIndex();
         } catch (AjaxException $ajaxException) {
-            return $this->ajaxErrorHandler($ajaxException);
+            return $this->ajaxExceptionHandler($ajaxException);
         }
 
         return $this->ajaxSuccess($ret);
@@ -94,6 +93,8 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
 
     /**
      * @return array
+     *
+     * @throws AjaxException
      */
     protected function executeIndex()
     {
@@ -107,8 +108,8 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
 
         if (empty($pid)) {
 
-            return $this->ajaxErrorTranslate(
-                'message.error.typo3_page_not_found',
+            throw new AjaxException(
+                $this->translate('message.error.typo3_page_not_found'),
                 '[0x4FBF3C0C]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
@@ -374,7 +375,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
             $ret = $this->executeUpdate();
 
         } catch (AjaxException $ajaxException) {
-            return $this->ajaxErrorHandler($ajaxException);
+            return $this->ajaxExceptionHandler($ajaxException);
         }
 
         return $this->ajaxSuccess($ret);
@@ -382,13 +383,15 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
 
     /**
      * @return array
+     *
+     * @throws AjaxException
      */
     protected function executeUpdate()
     {
         if (empty($this->postVar['pid']) || empty($this->postVar['field'])) {
 
-            return $this->ajaxErrorTranslate(
-                'message.warning.incomplete_data_received.message',
+            throw new AjaxException(
+                $this->translate('message.warning.incomplete_data_received.message'),
                 '[0x4FBF3C02]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
@@ -401,8 +404,8 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
 
         // validate field name: must match exactly to list of known field names
         if (!in_array($fieldName, array_merge($this->fieldList, array('title')))) {
-            return $this->ajaxErrorTranslate(
-                'message.warning.incomplete_data_received.message',
+            throw new AjaxException(
+                $this->translate('message.warning.incomplete_data_received.message'),
                 '[0x4FBF3C23]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
@@ -410,8 +413,8 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
 
         if (empty($fieldName)) {
 
-            return $this->ajaxErrorTranslate(
-                'message.warning.incomplete_data_received.message',
+            throw new AjaxException(
+                $this->translate('message.warning.incomplete_data_received.message'),
                 '[0x4FBF3C03]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
@@ -426,8 +429,8 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         if (!$this->getBackendUserAuthentication()->check('tables_modify', 'pages')) {
             // No access
 
-            return $this->ajaxErrorTranslate(
-                'message.error.access_denied',
+            throw new AjaxException(
+                $this->translate('message.error.access_denied'),
                 '[0x4FBF3BE2]',
                 self::HTTP_STATUS_UNAUTHORIZED
             );
@@ -439,8 +442,8 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         if (empty($page) || !$this->getBackendUserAuthentication()->doesUserHaveAccess($page, 2)) {
             // No access
 
-            return $this->ajaxErrorTranslate(
-                'message.error.access_denied',
+            throw new AjaxException(
+                $this->translate('message.error.access_denied'),
                 '[0x4FBF3BCF]',
                 self::HTTP_STATUS_UNAUTHORIZED
             );
@@ -452,8 +455,8 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         ) {
             // No access
 
-            return $this->ajaxErrorTranslate(
-                'message.error.access_denied',
+            throw new AjaxException(
+                $this->translate('message.error.access_denied'),
                 '[0x4FBF3BD9]',
                 self::HTTP_STATUS_UNAUTHORIZED
             );
@@ -467,8 +470,8 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
             ) {
                 // No access
 
-                return $this->ajaxErrorTranslate(
-                    'message.error.access_denied',
+                throw new AjaxException(
+                    $this->translate('message.error.access_denied'),
                     '[0x4FBF3BE2]',
                     self::HTTP_STATUS_UNAUTHORIZED
                 );
@@ -480,8 +483,8 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
             ) {
                 // No access
 
-                return $this->ajaxErrorTranslate(
-                    'message.error.access_denied',
+                throw new AjaxException(
+                    $this->translate('message.error.access_denied'),
                     '[0x4FBF3BD9]',
                     self::HTTP_STATUS_UNAUTHORIZED
                 );
@@ -515,7 +518,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
             $this->init();
             $ret = $this->executeUpdateRecursive();
         } catch (AjaxException $ajaxException) {
-            return $this->ajaxErrorHandler($ajaxException);
+            return $this->ajaxExceptionHandler($ajaxException);
         }
 
         return $this->ajaxSuccess($ret);
@@ -523,13 +526,15 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
 
     /**
      * @return array
+     *
+     * @throws AjaxException
      */
     protected function executeUpdateRecursive()
     {
         if (empty($this->postVar['pid']) || empty($this->postVar['field'])) {
 
-            return $this->ajaxErrorTranslate(
-                'message.warning.incomplete_data_received.message',
+            throw new AjaxException(
+                $this->translate('message.warning.incomplete_data_received.message'),
                 '[0x4FBF3C04]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
@@ -563,6 +568,8 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
      * @param string       $fieldValue  Field value
      *
      * @return array
+     *
+     * @throws AjaxException
      */
     protected function updatePageTableField($pid, $sysLanguage, $fieldName, $fieldValue)
     {
@@ -590,8 +597,8 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
                 if (empty($overlayId)) {
                     // No access
 
-                    return $this->ajaxErrorTranslate(
-                        'message.error.no_language_overlay_found',
+                    throw new AjaxException(
+                        $this->translate('message.error.no_language_overlay_found'),
                         '[0x4FBF3C05]',
                         self::HTTP_STATUS_BAD_REQUEST
                     );

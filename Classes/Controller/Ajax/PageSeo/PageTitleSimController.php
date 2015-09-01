@@ -26,9 +26,9 @@
 
 namespace Metaseo\Metaseo\Controller\Ajax\PageSeo;
 
-use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use Metaseo\Metaseo\Controller\Ajax\AbstractPageSeoController;
 use Metaseo\Metaseo\Controller\Ajax\PageSeoSimulateInterface;
+use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
@@ -110,7 +110,7 @@ class PageTitleSimController extends AbstractPageSeoController implements PageSe
             $this->init();
             $ret = $this->executeSimulate();
         } catch (AjaxException $ajaxException) {
-            return $this->ajaxErrorHandler($ajaxException);
+            return $this->ajaxExceptionHandler($ajaxException);
         }
 
         return $this->ajaxSuccess($ret);
@@ -118,6 +118,8 @@ class PageTitleSimController extends AbstractPageSeoController implements PageSe
 
     /**
      * @return array
+     *
+     * @throws AjaxException
      */
     protected function executeSimulate()
     {
@@ -125,8 +127,8 @@ class PageTitleSimController extends AbstractPageSeoController implements PageSe
 
         if (empty($pid)) {
 
-            return $this->ajaxErrorTranslate(
-                'message.error.typo3_page_not_found',
+            throw new AjaxException(
+                $this->translate('message.error.typo3_page_not_found'),
                 '[0x4FBF3C08]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
@@ -136,8 +138,8 @@ class PageTitleSimController extends AbstractPageSeoController implements PageSe
 
         if (empty($page)) {
 
-            return $this->ajaxErrorTranslate(
-                'message.error.typo3_page_not_found',
+            throw new AjaxException(
+                $this->translate('message.error.typo3_page_not_found'),
                 '[0x4FBF3C09]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
