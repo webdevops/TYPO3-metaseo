@@ -51,7 +51,7 @@ class AdvancedController extends AbstractPageSeoController implements PageSeoInt
         if (empty($this->postVar['pid'])) {
 
             throw new AjaxException(
-                $this->translate('message.error.typo3_page_not_found'),
+                'message.error.typo3_page_not_found',
                 '[0x4FBF3C0E]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
@@ -88,7 +88,7 @@ class AdvancedController extends AbstractPageSeoController implements PageSeoInt
         if (empty($this->postVar['pid']) || empty($this->postVar['metaTags'])) {
 
             throw new AjaxException(
-                $this->translate('message.error.typo3_page_not_found'),
+                'message.error.typo3_page_not_found',
                 '[0x4FBF3C0F]',
                 self::HTTP_STATUS_BAD_REQUEST
             );

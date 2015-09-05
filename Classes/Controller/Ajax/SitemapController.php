@@ -26,6 +26,7 @@
 
 namespace Metaseo\Metaseo\Controller\Ajax;
 
+use Exception;
 use Metaseo\Metaseo\Controller\AbstractAjaxController;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
@@ -49,7 +50,7 @@ class SitemapController extends AbstractAjaxController
         try {
             $this->init();
             $ajaxObj->setContent($this->executeIndex());
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->ajaxExceptionHandler($exception, $ajaxObj);
         }
 
@@ -175,7 +176,7 @@ class SitemapController extends AbstractAjaxController
         try {
             $this->init();
             $ajaxObj->setContent($this->executeBlacklist());
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->ajaxExceptionHandler($exception, $ajaxObj);
         }
 
@@ -200,7 +201,7 @@ class SitemapController extends AbstractAjaxController
         if (empty($uidList) || empty($rootPid)) {
 
             throw new AjaxException(
-                $this->translate('message.warning.incomplete_data_received.message'),
+                'message.warning.incomplete_data_received.message',
                 '[0x4FBF3C10]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
@@ -229,7 +230,7 @@ class SitemapController extends AbstractAjaxController
         try {
             $this->init();
             $ajaxObj->setContent($this->executeWhitelist());
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->ajaxExceptionHandler($exception, $ajaxObj);
         }
 
@@ -254,7 +255,7 @@ class SitemapController extends AbstractAjaxController
         if (empty($uidList) || empty($rootPid)) {
 
             throw new AjaxException(
-                $this->translate('message.warning.incomplete_data_received.message'),
+                'message.warning.incomplete_data_received.message',
                 '[0x4FBF3C12]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
@@ -283,7 +284,7 @@ class SitemapController extends AbstractAjaxController
         try {
             $this->init();
             $ajaxObj->setContent($this->executeDelete());
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->ajaxExceptionHandler($exception, $ajaxObj);
         }
 
@@ -308,7 +309,7 @@ class SitemapController extends AbstractAjaxController
         if (empty($uidList) || empty($rootPid)) {
 
             throw new AjaxException(
-                $this->translate('message.warning.incomplete_data_received.message'),
+                'message.warning.incomplete_data_received.message',
                 '[0x4FBF3C11]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
@@ -336,7 +337,7 @@ class SitemapController extends AbstractAjaxController
         try {
             $this->init();
             $ajaxObj->setContent($this->executeDeleteAll());
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->ajaxExceptionHandler($exception, $ajaxObj);
         }
 
@@ -358,7 +359,7 @@ class SitemapController extends AbstractAjaxController
         if (empty($rootPid)) {
 
             throw new AjaxException(
-                $this->translate('message.warning.incomplete_data_received.message'),
+                'message.warning.incomplete_data_received.message',
                 '[0x4FBF3C12]',
                 self::HTTP_STATUS_BAD_REQUEST
             );

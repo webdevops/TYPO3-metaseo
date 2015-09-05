@@ -96,25 +96,11 @@ abstract class AbstractAjaxController
     protected $sortDir;
 
     /**
-     * TCE
-     *
-     * @var \TYPO3\CMS\Core\DataHandling\DataHandler
-     */
-    protected $tce;
-
-    /**
      * TYPO3 Object manager
      *
      * @var \TYPO3\CMS\Extbase\Object\ObjectManager
      */
     protected $objectManager;
-
-    /**
-     * to be used for unit tests ONLY!
-     *
-     * @var boolean
-     */
-    protected $returnAsArray;
 
     // ########################################################################
     // Methods
@@ -123,7 +109,6 @@ abstract class AbstractAjaxController
     public function __construct()
     {
         $this->postVar = array();
-        $this->returnAsArray = false;
     }
 
     /**
@@ -188,36 +173,6 @@ abstract class AbstractAjaxController
     abstract protected function getAjaxPrefix();
 
     /**
-     * Create an (cached) instance of t3lib_TCEmain
-     *
-     * @return \TYPO3\CMS\Core\DataHandling\DataHandler
-     */
-    protected function getTce()
-    {
-
-        if (!isset($this->tce)) {
-            /** @var \TYPO3\CMS\Core\DataHandling\DataHandler tce */
-            $this->tce = $this->objectManager->get('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
-            $this->tce->start(null, null);
-        }
-
-        return $this->tce;
-    }
-
-    /**
-     * Check if field is in table (TCA)
-     *
-     * @param string $table Table
-     * @param string $field Field
-     *
-     * @return boolean
-     */
-    protected function isFieldInTcaTable($table, $field)
-    {
-        return isset($GLOBALS['TCA'][$table]['columns'][$field]);
-    }
-
-    /**
      * Returns a json formatted error response with http error status specified in the Exception
      * The message is created with $ajaxObj->setContent instead of setError because $ajaxObj->setError
      * always sets http status 500 and does not respect content format.
@@ -229,17 +184,16 @@ abstract class AbstractAjaxController
      */
     protected function ajaxExceptionHandler(Exception $exception, AjaxRequestHandler &$ajaxObj)
     {
-        $responseArray = array(
-            self::JSON_ERROR => $exception->getMessage()
-        );
-
+        $responseArray = array();
         if ($exception instanceof AjaxException) {
+            $responseArray[self::JSON_ERROR] = $this->translate($exception->getMessage());
             $this->sendHttpHeader($exception->getHttpStatus());
             $errorCode = $exception->getCode();
             if (!empty($errorCode)) {
                 $responseArray[self::JSON_ERROR_NUMBER] = $exception->getCode();
             }
         } else {
+            $responseArray[self::JSON_ERROR] = $exception->getMessage();
             $this->sendHttpHeader(self::HTTP_STATUS_INTERNAL_SERVER_ERROR);
         }
         $ajaxObj->setContent($responseArray);

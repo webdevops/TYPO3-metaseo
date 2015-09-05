@@ -27,15 +27,11 @@
 
 namespace Metaseo\Metaseo\Controller\Ajax;
 
+use Exception;
 use Metaseo\Metaseo\Controller\AbstractAjaxController;
-use Metaseo\Metaseo\Controller\Ajax\PageSeo\GeoController;
-use Metaseo\Metaseo\Controller\Ajax\PageSeo\MetaDataController;
-use Metaseo\Metaseo\Controller\Ajax\PageSeo\PageTitleController;
-use Metaseo\Metaseo\Controller\Ajax\PageSeo\PageTitleSimController;
-use Metaseo\Metaseo\Controller\Ajax\PageSeo\SearchEnginesController;
-use Metaseo\Metaseo\Controller\Ajax\PageSeo\UrlController;
+use Metaseo\Metaseo\Controller\Ajax\PageSeo as PageSeo;
+use Metaseo\Metaseo\Dao\PageSeoDao;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
-use Metaseo\Metaseo\Utility\DatabaseUtility;
 use Metaseo\Metaseo\Utility\FrontendUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\AjaxRequestHandler;
@@ -64,6 +60,11 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
      */
     protected $fieldList;
 
+    /**
+     * @var PageSeoDao
+     */
+    protected $pageSeoDao;
+
     // ########################################################################
     // Methods
     // ########################################################################
@@ -73,6 +74,23 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         parent::__construct();
         $this->templatePidList = array();
         $this->initFieldList();
+    }
+
+    protected function init()
+    {
+        parent::init();
+        if (!isset($this->pageSeoDao)) {
+            /** @var \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler */
+            $dataHandler = $this->objectManager->get('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+            /** @var \TYPO3\CMS\Backend\Tree\View\PageTreeView $pageTreeView */
+            $pageTreeView = $this->objectManager->get('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
+            /** @var \Metaseo\Metaseo\Dao\PageSeoDao $pageSeoDao */
+            //$pageSeoDao = GeneralUtility::makeInstance('Metaseo\\Metaseo\\Dao\\PageSeoDao');
+            $pageSeoDao = new PageSeoDao;
+            $this->pageSeoDao = $pageSeoDao
+                ->setDataHandler($dataHandler)
+                ->setPageTreeView($pageTreeView);
+        }
     }
 
     abstract protected function initFieldList();
@@ -85,7 +103,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         try {
             $this->init();
             $ajaxObj->setContent($this->executeIndex());
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->ajaxExceptionHandler($exception, $ajaxObj);
         }
 
@@ -111,7 +129,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         if (empty($pid)) {
 
             throw new AjaxException(
-                $this->translate('message.error.typo3_page_not_found'),
+                'message.error.typo3_page_not_found',
                 '[0x4FBF3C0C]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
@@ -140,178 +158,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
      */
     protected function getIndex(array $page, $depth, $sysLanguage)
     {
-        return $this->index($page, $depth, $sysLanguage, $this->fieldList);
-    }
-
-    /**
-     * Return default tree
-     *
-     * @param   array   $page              Root page
-     * @param   integer $depth             Depth
-     * @param   integer $sysLanguage       System language
-     * @param   array   $fieldList         Field list
-     *
-     * @return  array
-     */
-    protected function index(array $page, $depth, $sysLanguage, $fieldList = array())
-    {
-        $rootPid = $page['uid'];
-
-        $list = array();
-
-        $fieldList[] = 'pid';
-        $pageIdList  = array();
-
-        // ###########################
-        // Build tree
-        // ############################
-
-        // Init tree
-        /** @var \TYPO3\CMS\Backend\Tree\View\PageTreeView $tree */
-        $tree = $this->objectManager->get('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
-        foreach ($fieldList as $field) {
-            $tree->addField($field, true);
-        }
-        $tree->init(
-            'AND doktype IN (1,4) AND ' . $this->getBackendUserAuthentication()->getPagePermsClause(1)
-        );
-
-        $tree->tree[] = array(
-            'row'           => $page,
-            'invertedDepth' => 0,
-        );
-
-        $tree->getTree($rootPid, $depth, '');
-
-        // Build tree list
-        foreach ($tree->tree as $row) {
-            $tmp               = $row['row'];
-            $list[$tmp['uid']] = $tmp;
-
-            $pageIdList[$tmp['uid']] = $tmp['uid'];
-        }
-
-        // Calc depth
-        $rootLineRaw = array();
-        foreach ($list as $row) {
-            $rootLineRaw[$row['uid']] = $row['pid'];
-        }
-
-        $rootLineRaw[$rootPid] = null;
-
-        // overlay status "current"
-        $defaultOverlayStatus = 0;
-        if (!empty($sysLanguage)) {
-            // overlay status "only available from base"
-            $defaultOverlayStatus = 2;
-        }
-
-        unset($row);
-        foreach ($list as &$row) {
-            // Set field as main fields
-            foreach ($fieldList as $fieldName) {
-                $row['_overlay'][$fieldName] = $defaultOverlayStatus;
-                $row['_base'][$fieldName]    = $row[$fieldName];
-            }
-
-            $row['_depth'] = $this->listCalcDepth($row['uid'], $rootLineRaw);
-        }
-        unset($row);
-
-        // ############################
-        // Language overlay
-        // ############################
-
-        if (!empty($sysLanguage) && !empty($pageIdList)) {
-            // Fetch all overlay rows for current page list
-            $overlayFieldList = array();
-            foreach ($fieldList as $fieldName) {
-                if ($this->isFieldInTcaTable('pages_language_overlay', $fieldName)) {
-                    $overlayFieldList[$fieldName] = $fieldName;
-                }
-            }
-
-            // Build list of fields which we need to query
-            $queryFieldList = array(
-                'uid',
-                'pid',
-                'title',
-            );
-            $queryFieldList = array_merge($queryFieldList, $overlayFieldList);
-
-            $res = DatabaseUtility::connection()->exec_SELECTquery(
-                implode(',', $queryFieldList),
-                'pages_language_overlay',
-                'pid IN(' . implode(',', $pageIdList) . ') AND sys_language_uid = ' . (int)$sysLanguage
-            );
-
-            // update all overlay status field to "from base"
-            unset($row);
-            foreach ($list as &$row) {
-                foreach ($overlayFieldList as $fieldName) {
-                    $row['_overlay'][$fieldName] = 0;
-                }
-            }
-            unset($row);
-
-            while ($overlayRow = DatabaseUtility::connection()->sql_fetch_assoc($res)) {
-                $pageOriginalId = $overlayRow['pid'];
-
-                // Don't use uid and pid
-                unset($overlayRow['uid'], $overlayRow['pid']);
-
-                // inject title
-                $fieldName = 'title';
-                if (!empty($overlayRow[$fieldName])) {
-                    $list[$pageOriginalId][$fieldName] = $overlayRow[$fieldName];
-                }
-
-                // inject all other fields
-                foreach ($fieldList as $fieldName) {
-                    if (!empty($overlayRow[$fieldName])) {
-                        $list[$pageOriginalId][$fieldName] = $overlayRow[$fieldName];
-
-                        // update overlay status field to "from overlay"
-                        $list[$pageOriginalId]['_overlay'][$fieldName] = 1;
-                    }
-                }
-            }
-        }
-
-        return $list;
-    }
-
-    /**
-     * Calculate the depth of a page
-     *
-     * @param  integer $pageUid     Page UID
-     * @param  array   $rootLineRaw Root line (raw list)
-     * @param  integer $depth       Current depth
-     *
-     * @return integer
-     */
-    protected function listCalcDepth($pageUid, array $rootLineRaw, $depth = null)
-    {
-        if ($depth === null) {
-            $depth = 1;
-        }
-
-        if (empty($rootLineRaw[$pageUid])) {
-            // found root page
-            return $depth;
-        }
-
-        // we must be at least in the first depth
-        ++$depth;
-
-        $pagePid = $rootLineRaw[$pageUid];
-
-        if (!empty($pagePid)) {
-            // recursive
-            $depth = $this->listCalcDepth($pagePid, $rootLineRaw, $depth);
-        }
-
-        return $depth;
+        return $this->pageSeoDao->index($page, $depth, $sysLanguage, $this->fieldList);
     }
 
     /**
@@ -375,7 +222,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         try {
             $this->init();
             $ajaxObj->setContent($this->executeUpdate());
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->ajaxExceptionHandler($exception, $ajaxObj);
         }
 
@@ -393,7 +240,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         if (empty($this->postVar['pid']) || empty($this->postVar['field'])) {
 
             throw new AjaxException(
-                $this->translate('message.warning.incomplete_data_received.message'),
+                'message.warning.incomplete_data_received.message',
                 '[0x4FBF3C02]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
@@ -407,7 +254,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         // validate field name: must match exactly to list of known field names
         if (!in_array($fieldName, array_merge($this->fieldList, array('title')))) {
             throw new AjaxException(
-                $this->translate('message.warning.incomplete_data_received.message'),
+                'message.warning.incomplete_data_received.message',
                 '[0x4FBF3C23]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
@@ -416,7 +263,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         if (empty($fieldName)) {
 
             throw new AjaxException(
-                $this->translate('message.warning.incomplete_data_received.message'),
+                'message.warning.incomplete_data_received.message',
                 '[0x4FBF3C03]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
@@ -432,7 +279,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
             // No access
 
             throw new AjaxException(
-                $this->translate('message.error.access_denied'),
+                'message.error.access_denied',
                 '[0x4FBF3BE2]',
                 self::HTTP_STATUS_UNAUTHORIZED
             );
@@ -445,7 +292,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
             // No access
 
             throw new AjaxException(
-                $this->translate('message.error.access_denied'),
+                'message.error.access_denied',
                 '[0x4FBF3BCF]',
                 self::HTTP_STATUS_UNAUTHORIZED
             );
@@ -458,7 +305,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
             // No access
 
             throw new AjaxException(
-                $this->translate('message.error.access_denied'),
+                'message.error.access_denied',
                 '[0x4FBF3BD9]',
                 self::HTTP_STATUS_UNAUTHORIZED
             );
@@ -473,7 +320,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
                 // No access
 
                 throw new AjaxException(
-                    $this->translate('message.error.access_denied'),
+                    'message.error.access_denied',
                     '[0x4FBF3BE2]',
                     self::HTTP_STATUS_UNAUTHORIZED
                 );
@@ -486,7 +333,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
                 // No access
 
                 throw new AjaxException(
-                    $this->translate('message.error.access_denied'),
+                    'message.error.access_denied',
                     '[0x4FBF3BD9]',
                     self::HTTP_STATUS_UNAUTHORIZED
                 );
@@ -508,7 +355,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         // Update
         // ############################
 
-        return $this->updatePageTableField($pid, $sysLanguage, $fieldName, $fieldValue);
+        return $this->pageSeoDao->updatePageTableField($pid, $sysLanguage, $fieldName, $fieldValue);
     }
 
     /**
@@ -519,7 +366,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         try {
             $this->init();
             $ajaxObj->setContent($this->executeUpdateRecursive());
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->ajaxExceptionHandler($exception, $ajaxObj);
         }
 
@@ -537,7 +384,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         if (empty($this->postVar['pid']) || empty($this->postVar['field'])) {
 
             throw new AjaxException(
-                $this->translate('message.warning.incomplete_data_received.message'),
+                'message.warning.incomplete_data_received.message',
                 '[0x4FBF3C04]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
@@ -547,7 +394,8 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         $sysLanguage = (int)$this->postVar['sysLanguage'];
 
         $page = BackendUtility::getRecord('pages', $pid);
-        $list = $this->index($page, 999, $sysLanguage, array());
+
+        $list = $this->pageSeoDao->index($page, 999, $sysLanguage, array());
 
         $count = 0;
         foreach ($list as $key => $page) {
@@ -561,85 +409,24 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         );
     }
 
-
-    /**
-     * Update field in page table
-     *
-     * @param integer      $pid         PID
-     * @param integer|NULL $sysLanguage System language id
-     * @param string       $fieldName   Field name
-     * @param string       $fieldValue  Field value
-     *
-     * @return array
-     *
-     * @throws AjaxException
-     */
-    protected function updatePageTableField($pid, $sysLanguage, $fieldName, $fieldValue)
-    {
-        $tableName = 'pages';
-
-        if (!empty($sysLanguage)) {
-            // check if field is in overlay
-            if ($this->isFieldInTcaTable('pages_language_overlay', $fieldName)) {
-                // Field is in pages language overlay
-                $tableName = 'pages_language_overlay';
-            }
-        }
-
-        switch ($tableName) {
-            case 'pages_language_overlay':
-                // Update field in pages overlay (also logs update event and clear cache for this page)
-
-                // check uid of pages language overlay
-                $query     = 'SELECT uid
-                                FROM pages_language_overlay
-                               WHERE pid = ' . (int)$pid . '
-                                 AND sys_language_uid = ' . (int)$sysLanguage;
-                $overlayId = DatabaseUtility::getOne($query);
-
-                if (empty($overlayId)) {
-                    // No access
-
-                    throw new AjaxException(
-                        $this->translate('message.error.no_language_overlay_found'),
-                        '[0x4FBF3C05]',
-                        self::HTTP_STATUS_BAD_REQUEST
-                    );
-                }
-
-                // ################
-                // UPDATE
-                // ################
-
-                $this->getTce()->updateDB(
-                    'pages_language_overlay',
-                    (int)$overlayId,
-                    array(
-                        $fieldName => $fieldValue
-                    )
-                );
-                break;
-            case 'pages':
-                // Update field in page (also logs update event and clear cache for this page)
-                $this->getTce()->updateDB(
-                    'pages',
-                    (int)$pid,
-                    array(
-                        $fieldName => $fieldValue
-                    )
-                );
-                break;
-        }
-
-        return array();
-    }
-
     /**
      * @inheritDoc
      */
     protected function getAjaxPrefix()
     {
         return self::AJAX_PREFIX;
+    }
+
+    /**
+     * @param PageSeoDao $pageSeoDao
+     *
+     * @return AbstractPageSeoController
+     */
+    public function setPageSeoDao(PageSeoDao $pageSeoDao)
+    {
+        $this->pageSeoDao = $pageSeoDao;
+
+        return $this;
     }
 
     /**
@@ -655,13 +442,14 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         $ajaxPrefix = self::AJAX_PREFIX;
 
         return array(
-            //$ajaxPrefix . AdvancedController::LIST_TYPE      => $nameSpace . '\\' . 'AdvancedController',//unused
-            $ajaxPrefix . GeoController::LIST_TYPE           => $nameSpace . '\\' . 'GeoController',
-            $ajaxPrefix . MetaDataController::LIST_TYPE      => $nameSpace . '\\' . 'MetaDataController',
-            $ajaxPrefix . PageTitleController::LIST_TYPE     => $nameSpace . '\\' . 'PageTitleController',
-            $ajaxPrefix . PageTitleSimController::LIST_TYPE  => $nameSpace . '\\' . 'PageTitleSimController',
-            $ajaxPrefix . SearchEnginesController::LIST_TYPE => $nameSpace . '\\' . 'SearchEnginesController',
-            $ajaxPrefix . UrlController::LIST_TYPE           => $nameSpace . '\\' . 'UrlController',
+            //$ajaxPrefix . PageSeo\AdvancedController::LIST_TYPE
+            //  => $nameSpace . '\\' . 'AdvancedController',//unused
+            $ajaxPrefix . PageSeo\GeoController::LIST_TYPE           => $nameSpace . '\\' . 'GeoController',
+            $ajaxPrefix . PageSeo\MetaDataController::LIST_TYPE      => $nameSpace . '\\' . 'MetaDataController',
+            $ajaxPrefix . PageSeo\PageTitleController::LIST_TYPE     => $nameSpace . '\\' . 'PageTitleController',
+            $ajaxPrefix . PageSeo\PageTitleSimController::LIST_TYPE  => $nameSpace . '\\' . 'PageTitleSimController',
+            $ajaxPrefix . PageSeo\SearchEnginesController::LIST_TYPE => $nameSpace . '\\' . 'SearchEnginesController',
+            $ajaxPrefix . PageSeo\UrlController::LIST_TYPE           => $nameSpace . '\\' . 'UrlController',
         );
     }
 }

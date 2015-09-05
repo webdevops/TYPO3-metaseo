@@ -81,7 +81,7 @@ class UrlController extends AbstractPageSeoController implements PageSeoSimulate
         if (empty($pid)) {
 
             throw new AjaxException(
-                $this->translate('message.error.typo3_page_not_found'),
+                'message.error.typo3_page_not_found',
                 '[0x4FBF3C0A]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
@@ -92,7 +92,7 @@ class UrlController extends AbstractPageSeoController implements PageSeoSimulate
         if (empty($page)) {
 
             throw new AjaxException(
-                $this->translate('message.error.typo3_page_not_found'),
+                'message.error.typo3_page_not_found',
                 '[0x4FBF3C0B]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
@@ -116,7 +116,7 @@ class UrlController extends AbstractPageSeoController implements PageSeoSimulate
         if (empty($ret)) {
 
             throw new AjaxException(
-                $this->translate('message.error.url_generation_failed'),
+                'message.error.url_generation_failed',
                 '[0x4FBF3C01]',
                 self::HTTP_STATUS_BAD_REQUEST
             );

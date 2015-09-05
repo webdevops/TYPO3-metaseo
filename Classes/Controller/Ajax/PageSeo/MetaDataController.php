@@ -50,7 +50,7 @@ class MetaDataController extends AbstractPageSeoController implements PageSeoInt
      */
     protected function getIndex(array $page, $depth, $sysLanguage)
     {
-        $list = $this->index($page, $depth, $sysLanguage, $this->fieldList);
+        $list = $this->pageSeoDao->index($page, $depth, $sysLanguage, $this->fieldList);
 
         unset($row);
         foreach ($list as &$row) {

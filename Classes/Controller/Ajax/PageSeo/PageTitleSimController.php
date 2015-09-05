@@ -57,7 +57,7 @@ class PageTitleSimController extends AbstractPageSeoController implements PageSe
      */
     protected function getIndex(array $page, $depth, $sysLanguage)
     {
-        $list = $this->index($page, $depth, $sysLanguage, $this->fieldList);
+        $list = $this->pageSeoDao->index($page, $depth, $sysLanguage, $this->fieldList);
 
         $uidList = array_keys($list);
 
@@ -130,7 +130,7 @@ class PageTitleSimController extends AbstractPageSeoController implements PageSe
         if (empty($pid)) {
 
             throw new AjaxException(
-                $this->translate('message.error.typo3_page_not_found'),
+                'message.error.typo3_page_not_found',
                 '[0x4FBF3C08]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
@@ -141,7 +141,7 @@ class PageTitleSimController extends AbstractPageSeoController implements PageSe
         if (empty($page)) {
 
             throw new AjaxException(
-                $this->translate('message.error.typo3_page_not_found'),
+                'message.error.typo3_page_not_found',
                 '[0x4FBF3C09]',
                 self::HTTP_STATUS_BAD_REQUEST
             );
