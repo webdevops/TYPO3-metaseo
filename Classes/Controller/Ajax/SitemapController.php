@@ -30,6 +30,7 @@ use Metaseo\Metaseo\Controller\AbstractAjaxController;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 use Metaseo\Metaseo\Utility\SitemapUtility;
+use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 
 /**
  * TYPO3 Backend ajax module sitemap
@@ -43,17 +44,17 @@ class SitemapController extends AbstractAjaxController
      *
      * @throws AjaxException
      */
-    public function indexAction()
+    public function indexAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
     {
         try {
             $this->init();
-            $ret = $this->executeIndex();
-
-        } catch (AjaxException $ajaxException) {
-            return $this->ajaxExceptionHandler($ajaxException);
+            $ajaxObj->setContent($this->executeIndex());
+        } catch (\Exception $exception) {
+            $this->ajaxExceptionHandler($exception, $ajaxObj);
         }
 
-        return $this->ajaxSuccess($ret);
+        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
+        $ajaxObj->render();
     }
 
     /**
@@ -169,17 +170,17 @@ class SitemapController extends AbstractAjaxController
      *
      * @throws AjaxException
      */
-    public function blacklistAction()
+    public function blacklistAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
     {
         try {
             $this->init();
-            $ret = $this->executeBlacklist();
-
-        } catch (AjaxException $ajaxException) {
-            return $this->ajaxExceptionHandler($ajaxException);
+            $ajaxObj->setContent($this->executeBlacklist());
+        } catch (\Exception $exception) {
+            $this->ajaxExceptionHandler($exception, $ajaxObj);
         }
 
-        return $this->ajaxSuccess($ret);
+        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
+        $ajaxObj->render();
     }
 
     /*
@@ -223,17 +224,17 @@ class SitemapController extends AbstractAjaxController
      *
      * @throws AjaxException
      */
-    public function whitelistAction()
+    public function whitelistAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
     {
         try {
             $this->init();
-            $ret = $this->executeWhitelist();
-
-        } catch (AjaxException $ajaxException) {
-            return $this->ajaxExceptionHandler($ajaxException);
+            $ajaxObj->setContent($this->executeWhitelist());
+        } catch (\Exception $exception) {
+            $this->ajaxExceptionHandler($exception, $ajaxObj);
         }
 
-        return $this->ajaxSuccess($ret);
+        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
+        $ajaxObj->render();
     }
 
     /*
@@ -277,17 +278,17 @@ class SitemapController extends AbstractAjaxController
      *
      * @throws AjaxException
      */
-    public function deleteAction()
+    public function deleteAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
     {
         try {
             $this->init();
-            $ret = $this->executeDelete();
-
-        } catch (AjaxException $ajaxException) {
-            return $this->ajaxExceptionHandler($ajaxException);
+            $ajaxObj->setContent($this->executeDelete());
+        } catch (\Exception $exception) {
+            $this->ajaxExceptionHandler($exception, $ajaxObj);
         }
 
-        return $this->ajaxSuccess($ret);
+        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
+        $ajaxObj->render();
     }
 
     /**
@@ -330,17 +331,17 @@ class SitemapController extends AbstractAjaxController
      *
      * @throws AjaxException
      */
-    public function deleteAllAction()
+    public function deleteAllAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
     {
         try {
             $this->init();
-            $ret = $this->executeDeleteAll();
-
-        } catch (AjaxException $ajaxException) {
-            return $this->ajaxExceptionHandler($ajaxException);
+            $ajaxObj->setContent($this->executeDeleteAll());
+        } catch (\Exception $exception) {
+            $this->ajaxExceptionHandler($exception, $ajaxObj);
         }
 
-        return $this->ajaxSuccess($ret);
+        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
+        $ajaxObj->render();
     }
 
     /**

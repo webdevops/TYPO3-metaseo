@@ -31,6 +31,7 @@ use Metaseo\Metaseo\Controller\Ajax\PageSeoSimulateInterface;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use Metaseo\Metaseo\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 class UrlController extends AbstractPageSeoController implements PageSeoSimulateInterface
@@ -55,16 +56,17 @@ class UrlController extends AbstractPageSeoController implements PageSeoSimulate
     /**
      * @inheritDoc
      */
-    public function simulateAction()
+    public function simulateAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
     {
         try {
             $this->init();
-            $ret = $this->executeSimulate();
-        } catch (AjaxException $ajaxException) {
-            return $this->ajaxExceptionHandler($ajaxException);
+            $ajaxObj->setContent($this->executeSimulate());
+        } catch (\Exception $exception) {
+            $this->ajaxExceptionHandler($exception, $ajaxObj);
         }
 
-        return $this->ajaxSuccess($ret);
+        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
+        $ajaxObj->render();
     }
 
     /**

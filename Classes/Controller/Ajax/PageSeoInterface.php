@@ -26,35 +26,44 @@
 
 namespace Metaseo\Metaseo\Controller\Ajax;
 
+use TYPO3\CMS\Core\Http\AjaxRequestHandler;
+
 interface PageSeoInterface
 {
     /**
      * Executes an AJAX request which displays the data (usually as a list)
      *
-     * @return array
+     * @param array $params Array of parameters from the AJAX interface, currently unused (as of 6.2.14)
+     *                      becomes available starting with 7.4.0 (c048cede,
+     *                      https://forge.typo3.org/issues/68186)
+     * @param AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
+     *
+     * @return void
      */
-    public function indexAction();
+    public function indexAction($params = array(), AjaxRequestHandler &$ajaxObj = null);
 
     /**
      * Executes an AJAX request which updates the data in the database
      *
-     * @return array
+     * @param array $params Array of parameters from the AJAX interface, currently unused (as of 6.2.14)
+     *                      becomes available starting with 7.4.0 (c048cede,
+     *                      https://forge.typo3.org/issues/68186)
+     * @param AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
+     *
+     * @return void
      */
-    public function updateAction();
+    public function updateAction($params = array(), AjaxRequestHandler &$ajaxObj = null);
+
 
     /**
      * Executes an AJAX request which updates the data in the database recursively
      *
-     * @return array
-     */
-    public function updateRecursiveAction();
-
-    /**
-     * Enables testing mode for easier data retrieval (for use in unit tests)
+     * @param array $params Array of parameters from the AJAX interface, currently unused (as of 6.2.14)
+     *                      becomes available starting with 7.4.0 (c048cede,
+     *                      https://forge.typo3.org/issues/68186)
+     * @param AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
      *
-     * @param boolean $returnAsArray If set to true, testing mode is enabled.
-     *
-     * @return self
+     * @return void
      */
-    public function setReturnAsArray($returnAsArray = true);
+    public function updateRecursiveAction($params = array(), AjaxRequestHandler &$ajaxObj = null);
 }

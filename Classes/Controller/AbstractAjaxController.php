@@ -26,8 +26,9 @@
 
 namespace Metaseo\Metaseo\Controller;
 
+use Exception;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
-use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
+use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 
@@ -36,12 +37,11 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
  */
 abstract class AbstractAjaxController
 {
-    const HTTP_CONTENT_TYPE_JSON = 'Content-type: application/json;charset=UTF-8';
+    const CONTENT_FORMAT_JSON = 'json';
 
     /**
      * Json status indicators
      */
-    const JSON_SUCCESS      = 'success';
     const JSON_ERROR        = 'error';
     const JSON_ERROR_NUMBER = 'errorNumber';
 
@@ -81,7 +81,7 @@ abstract class AbstractAjaxController
      *
      * @var array
      */
-    protected $postVar = array();
+    protected $postVar;
 
     /**
      * Sorting field
@@ -99,7 +99,6 @@ abstract class AbstractAjaxController
      * TCE
      *
      * @var \TYPO3\CMS\Core\DataHandling\DataHandler
-     * @inject
      */
     protected $tce;
 
@@ -109,14 +108,6 @@ abstract class AbstractAjaxController
      * @var \TYPO3\CMS\Extbase\Object\ObjectManager
      */
     protected $objectManager;
-
-    /**
-     * Backend Form Protection object
-     *
-     * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection
-     * @inject
-     */
-    protected $formProtection;
 
     /**
      * to be used for unit tests ONLY!
@@ -131,6 +122,7 @@ abstract class AbstractAjaxController
 
     public function __construct()
     {
+        $this->postVar = array();
         $this->returnAsArray = false;
     }
 
@@ -188,43 +180,6 @@ abstract class AbstractAjaxController
                 'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
             );
         }
-
-        // Init form protection instance
-        if (!isset($this->formProtection)) {
-            $this->formProtection = $this
-                ->objectManager
-                ->get('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection');
-        }
-
-        $this->checkSessionToken();
-    }
-
-    /**
-     * Check session token
-     *
-     * @todo Assumed TYPO3's CSRF protection is safe, this function can be removed.
-     * @see ExtensionManagementUtility
-     *
-     * @return array
-     *
-     * @throws AjaxException
-     */
-    protected function checkSessionToken()
-    {
-        $sessionToken = $this->sessionToken($this->getAjaxPrefix());
-
-        if (empty($this->postVar['sessionToken']) // No session token exists
-            || $this->postVar['sessionToken'] != $sessionToken //session token is wrong
-        ) {
-
-            throw new AjaxException(
-                $this->translate('message.error.access_denied'),
-                '[0x4FBF3C06]',
-                self::HTTP_STATUS_UNAUTHORIZED
-            );
-        }
-
-        return array();
     }
 
     /**
@@ -233,28 +188,14 @@ abstract class AbstractAjaxController
     abstract protected function getAjaxPrefix();
 
     /**
-     * Create session token
-     *
-     * @param   string $formName Form name/Session token name
-     *
-     * @return  string
-     */
-    protected function sessionToken($formName)
-    {
-        $token = $this->formProtection->generateToken($formName);
-
-        return $token;
-    }
-
-    /**
      * Create an (cached) instance of t3lib_TCEmain
      *
      * @return \TYPO3\CMS\Core\DataHandling\DataHandler
      */
-    protected function tce()
+    protected function getTce()
     {
 
-        if ($this->tce === null) {
+        if (!isset($this->tce)) {
             /** @var \TYPO3\CMS\Core\DataHandling\DataHandler tce */
             $this->tce = $this->objectManager->get('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
             $this->tce->start(null, null);
@@ -277,63 +218,41 @@ abstract class AbstractAjaxController
     }
 
     /**
-     * @param AjaxException $ajaxException
+     * Returns a json formatted error response with http error status specified in the Exception
+     * The message is created with $ajaxObj->setContent instead of setError because $ajaxObj->setError
+     * always sets http status 500 and does not respect content format.
      *
-     * @return array
+     * @param Exception $exception
+     * @param AjaxRequestHandler $ajaxObj
      *
-     * @throws AjaxException
+     * @return void
      */
-    protected function ajaxExceptionHandler(AjaxException $ajaxException)
+    protected function ajaxExceptionHandler(Exception $exception, AjaxRequestHandler &$ajaxObj)
     {
-        $httpStatus = $ajaxException->getHttpStatus();
+        $responseArray = array(
+            self::JSON_ERROR => $exception->getMessage()
+        );
+
+        if ($exception instanceof AjaxException) {
+            $this->sendHttpHeader($exception->getHttpStatus());
+            $errorCode = $exception->getCode();
+            if (!empty($errorCode)) {
+                $responseArray[self::JSON_ERROR_NUMBER] = $exception->getCode();
+            }
+        } else {
+            $this->sendHttpHeader(self::HTTP_STATUS_INTERNAL_SERVER_ERROR);
+        }
+        $ajaxObj->setContent($responseArray);
+    }
+
+    /**
+     * @param $httpStatus
+     */
+    protected function sendHttpHeader($httpStatus)
+    {
         if (!headers_sent()) {
             header('HTTP/1.0 ' . $httpStatus . ' ' . $this->httpStatus[$httpStatus]);
         }
-
-        $responseArray = array(
-            self::JSON_ERROR => $ajaxException->getMessage()
-        );
-
-        $errorCode = (string) $ajaxException->getCode();
-        if (!empty($errorCode)) {
-            $responseArray[self::JSON_ERROR_NUMBER] = $ajaxException->getCode();
-        }
-
-        if ($this->returnAsArray) {
-            //to be used for unit tests ONLY!
-            throw $ajaxException;
-        }
-
-        return $this->renderExit($responseArray);
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return array
-     */
-    protected function ajaxSuccess(array $data = array())
-    {
-        $data[self::JSON_SUCCESS] = true;
-
-        return $this->renderExit($data);
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return array
-     */
-    protected function renderExit(array $data)
-    {
-        if ($this->returnAsArray === true) {
-            return $data;
-        }
-        if (!headers_sent()) {
-            header(self::HTTP_CONTENT_TYPE_JSON);
-        }
-        echo json_encode($data);
-        exit;
     }
 
     /**
@@ -369,20 +288,6 @@ abstract class AbstractAjaxController
     }
 
     /**
-     * to be used for unit tests ONLY!
-     *
-     * @param boolean $returnAsArray
-     *
-     * @return $this
-     */
-    public function setReturnAsArray($returnAsArray = true)
-    {
-        $this->returnAsArray = $returnAsArray;
-
-        return $this;
-    }
-
-    /**
      * @param ObjectManager $objectManager
      *
      * @return $this
@@ -390,18 +295,6 @@ abstract class AbstractAjaxController
     public function setObjectManager(ObjectManager $objectManager)
     {
         $this->objectManager = $objectManager;
-
-        return $this;
-    }
-
-    /**
-     * @param BackendFormProtection $formProtection
-     *
-     * @return $this
-     */
-    public function setFormProtection(BackendFormProtection $formProtection)
-    {
-        $this->formProtection = $formProtection;
 
         return $this;
     }
