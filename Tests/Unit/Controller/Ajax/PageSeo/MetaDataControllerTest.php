@@ -26,56 +26,83 @@
 
 namespace Metaseo\Metaseo\Tests\Unit\Controller\Ajax\PageSeo;
 
-use Metaseo\Metaseo\Controller\AbstractAjaxController;
 use Metaseo\Metaseo\Controller\Ajax\PageSeo\MetaDataController;
-use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 class MetaDataControllerTest extends UnitTestCase
 {
     /**
-     * @expectedException \TYPO3\CMS\Core\Error\Exception
+     * @test
      */
-    public function testMissingBackendSession()
-    {
-        $this->setGlobals();
-        $subject = new MetaDataController();
-        $subject
-            ->setReturnAsArray()
-            ->indexAction();
-    }
-
-    /**
-     * @expectedException \Metaseo\Metaseo\Exception\Ajax\AjaxException
-     */
-    public function testIndexMissingSessionToken()
+    public function testIndex()
     {
         $this->setGlobals();
         $this->loginBackendUser();
+        $ajaxRequestHandler = $this->getAjaxRequestHandlerMock();
+        $ajaxRequestHandler
+            ->expects($this->exactly(1))
+            ->method('setContentFormat');
+        $ajaxRequestHandler
+            ->expects($this->exactly(1))
+            ->method('setContent');
+
         $subject = new MetaDataController();
-        try {
-            $subject
-                ->setObjectManager($this->getObjectManagerMock())
-                ->setFormProtection($this->getFormProtectionMock());
+        $subject
+            ->setObjectManager($this->getObjectManagerMock());
+        $subject
+            ->indexAction(array(), $ajaxRequestHandler);
+    }
 
-            /*
-             @todo We use 'exit' in the code which is a bad idea when dealing with unit test.
-            $subject
-                ->indexAction();
-            $this->assertTrue($this->hasOutput());
-            $jsonOutput = $this->getActualOutput();
-            $jsonArray = json_decode($jsonOutput);
-            $this->assertArrayHasKey('error', $jsonArray);
-            */
+    /**
+     * @test
+     */
+    public function testUpdate()
+    {
+        $this->setGlobals();
+        $this->loginBackendUser();
+        $ajaxRequestHandler = $this->getAjaxRequestHandlerMock();
+        $ajaxRequestHandler
+            ->expects($this->exactly(1))
+            ->method('setContentFormat');
+        $ajaxRequestHandler
+            ->expects($this->exactly(1))
+            ->method('setContent');
 
-            $subject
-                ->setReturnAsArray(true) //passes exception through for testing
-                ->indexAction();
-        } catch (AjaxException $ajaxException) {
-            $this->assertEquals('[0x4FBF3C06]', $ajaxException->getCode());
-            $this->assertEquals(AbstractAjaxController::HTTP_STATUS_UNAUTHORIZED, $ajaxException->getHttpStatus());
-            throw $ajaxException;
-        }
+        $subject = new MetaDataController();
+        $subject
+            ->setObjectManager($this->getObjectManagerMock());
+        $subject
+            ->updateAction(array(), $ajaxRequestHandler);
+    }
+
+    /**
+     * @test
+     */
+    public function testUpdateRecursive()
+    {
+        $this->setGlobals();
+        $this->loginBackendUser();
+        $ajaxRequestHandler = $this->getAjaxRequestHandlerMock();
+        $ajaxRequestHandler
+            ->expects($this->exactly(1))
+            ->method('setContentFormat');
+        $ajaxRequestHandler
+            ->expects($this->exactly(1))
+            ->method('setContent');
+
+        $subject = new MetaDataController();
+        $subject
+            ->setObjectManager($this->getObjectManagerMock());
+        $subject
+            ->updateRecursiveAction(array(), $ajaxRequestHandler);
+    }
+
+    protected function getAjaxRequestHandlerMock()
+    {
+        return $this
+            ->getMockBuilder('TYPO3\CMS\Core\Http\AjaxRequestHandler')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     /**

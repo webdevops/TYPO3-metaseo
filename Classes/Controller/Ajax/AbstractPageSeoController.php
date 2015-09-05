@@ -38,6 +38,7 @@ use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 use Metaseo\Metaseo\Utility\FrontendUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 
 /**
  * TYPO3 Backend ajax module page
@@ -79,16 +80,17 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
     /**
      * @inheritDoc
      */
-    public function indexAction()
+    public function indexAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
     {
         try {
             $this->init();
-            $ret = $this->executeIndex();
-        } catch (AjaxException $ajaxException) {
-            return $this->ajaxExceptionHandler($ajaxException);
+            $ajaxObj->setContent($this->executeIndex());
+        } catch (\Exception $exception) {
+            $this->ajaxExceptionHandler($exception, $ajaxObj);
         }
 
-        return $this->ajaxSuccess($ret);
+        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
+        $ajaxObj->render();
     }
 
     /**
@@ -368,17 +370,17 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
     /**
      * @inheritDoc
      */
-    public function updateAction()
+    public function updateAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
     {
         try {
             $this->init();
-            $ret = $this->executeUpdate();
-
-        } catch (AjaxException $ajaxException) {
-            return $this->ajaxExceptionHandler($ajaxException);
+            $ajaxObj->setContent($this->executeUpdate());
+        } catch (\Exception $exception) {
+            $this->ajaxExceptionHandler($exception, $ajaxObj);
         }
 
-        return $this->ajaxSuccess($ret);
+        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
+        $ajaxObj->render();
     }
 
     /**
@@ -512,16 +514,17 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
     /**
      * @inheritDoc
      */
-    public function updateRecursiveAction()
+    public function updateRecursiveAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
     {
         try {
             $this->init();
-            $ret = $this->executeUpdateRecursive();
-        } catch (AjaxException $ajaxException) {
-            return $this->ajaxExceptionHandler($ajaxException);
+            $ajaxObj->setContent($this->executeUpdateRecursive());
+        } catch (\Exception $exception) {
+            $this->ajaxExceptionHandler($exception, $ajaxObj);
         }
 
-        return $this->ajaxSuccess($ret);
+        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
+        $ajaxObj->render();
     }
 
     /**

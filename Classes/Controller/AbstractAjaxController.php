@@ -26,7 +26,9 @@
 
 namespace Metaseo\Metaseo\Controller;
 
+use Exception;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
+use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 
@@ -35,12 +37,11 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
  */
 abstract class AbstractAjaxController
 {
-    const HTTP_CONTENT_TYPE_JSON = 'Content-type: application/json;charset=UTF-8';
+    const CONTENT_FORMAT_JSON = 'json';
 
     /**
      * Json status indicators
      */
-    const JSON_SUCCESS      = 'success';
     const JSON_ERROR        = 'error';
     const JSON_ERROR_NUMBER = 'errorNumber';
 
@@ -217,63 +218,41 @@ abstract class AbstractAjaxController
     }
 
     /**
-     * @param AjaxException $ajaxException
+     * Returns a json formatted error response with http error status specified in the Exception
+     * The message is created with $ajaxObj->setContent instead of setError because $ajaxObj->setError
+     * always sets http status 500 and does not respect content format.
      *
-     * @return array
+     * @param Exception $exception
+     * @param AjaxRequestHandler $ajaxObj
      *
-     * @throws AjaxException
+     * @return void
      */
-    protected function ajaxExceptionHandler(AjaxException $ajaxException)
+    protected function ajaxExceptionHandler(Exception $exception, AjaxRequestHandler &$ajaxObj)
     {
-        $httpStatus = $ajaxException->getHttpStatus();
+        $responseArray = array(
+            self::JSON_ERROR => $exception->getMessage()
+        );
+
+        if ($exception instanceof AjaxException) {
+            $this->sendHttpHeader($exception->getHttpStatus());
+            $errorCode = $exception->getCode();
+            if (!empty($errorCode)) {
+                $responseArray[self::JSON_ERROR_NUMBER] = $exception->getCode();
+            }
+        } else {
+            $this->sendHttpHeader(self::HTTP_STATUS_INTERNAL_SERVER_ERROR);
+        }
+        $ajaxObj->setContent($responseArray);
+    }
+
+    /**
+     * @param $httpStatus
+     */
+    protected function sendHttpHeader($httpStatus)
+    {
         if (!headers_sent()) {
             header('HTTP/1.0 ' . $httpStatus . ' ' . $this->httpStatus[$httpStatus]);
         }
-
-        $responseArray = array(
-            self::JSON_ERROR => $ajaxException->getMessage()
-        );
-
-        $errorCode = (string) $ajaxException->getCode();
-        if (!empty($errorCode)) {
-            $responseArray[self::JSON_ERROR_NUMBER] = $ajaxException->getCode();
-        }
-
-        if ($this->returnAsArray) {
-            //to be used for unit tests ONLY!
-            throw $ajaxException;
-        }
-
-        return $this->renderExit($responseArray);
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return array
-     */
-    protected function ajaxSuccess(array $data = array())
-    {
-        $data[self::JSON_SUCCESS] = true;
-
-        return $this->renderExit($data);
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return array
-     */
-    protected function renderExit(array $data)
-    {
-        if ($this->returnAsArray === true) {
-            return $data;
-        }
-        if (!headers_sent()) {
-            header(self::HTTP_CONTENT_TYPE_JSON);
-        }
-        echo json_encode($data);
-        exit;
     }
 
     /**
@@ -306,20 +285,6 @@ abstract class AbstractAjaxController
     protected function getBackendUserAuthentication()
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * to be used for unit tests ONLY!
-     *
-     * @param boolean $returnAsArray
-     *
-     * @return $this
-     */
-    public function setReturnAsArray($returnAsArray = true)
-    {
-        $this->returnAsArray = $returnAsArray;
-
-        return $this;
     }
 
     /**
