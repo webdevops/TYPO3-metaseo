@@ -608,7 +608,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
                 // UPDATE
                 // ################
 
-                $this->tce()->updateDB(
+                $this->getTce()->updateDB(
                     'pages_language_overlay',
                     (int)$overlayId,
                     array(
@@ -618,7 +618,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
                 break;
             case 'pages':
                 // Update field in page (also logs update event and clear cache for this page)
-                $this->tce()->updateDB(
+                $this->getTce()->updateDB(
                     'pages',
                     (int)$pid,
                     array(

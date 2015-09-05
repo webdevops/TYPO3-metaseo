@@ -27,7 +27,6 @@
 namespace Metaseo\Metaseo\Controller;
 
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
-use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 
@@ -81,7 +80,7 @@ abstract class AbstractAjaxController
      *
      * @var array
      */
-    protected $postVar = array();
+    protected $postVar;
 
     /**
      * Sorting field
@@ -99,7 +98,6 @@ abstract class AbstractAjaxController
      * TCE
      *
      * @var \TYPO3\CMS\Core\DataHandling\DataHandler
-     * @inject
      */
     protected $tce;
 
@@ -109,14 +107,6 @@ abstract class AbstractAjaxController
      * @var \TYPO3\CMS\Extbase\Object\ObjectManager
      */
     protected $objectManager;
-
-    /**
-     * Backend Form Protection object
-     *
-     * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection
-     * @inject
-     */
-    protected $formProtection;
 
     /**
      * to be used for unit tests ONLY!
@@ -131,6 +121,7 @@ abstract class AbstractAjaxController
 
     public function __construct()
     {
+        $this->postVar = array();
         $this->returnAsArray = false;
     }
 
@@ -188,43 +179,6 @@ abstract class AbstractAjaxController
                 'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
             );
         }
-
-        // Init form protection instance
-        if (!isset($this->formProtection)) {
-            $this->formProtection = $this
-                ->objectManager
-                ->get('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection');
-        }
-
-        $this->checkSessionToken();
-    }
-
-    /**
-     * Check session token
-     *
-     * @todo Assumed TYPO3's CSRF protection is safe, this function can be removed.
-     * @see ExtensionManagementUtility
-     *
-     * @return array
-     *
-     * @throws AjaxException
-     */
-    protected function checkSessionToken()
-    {
-        $sessionToken = $this->sessionToken($this->getAjaxPrefix());
-
-        if (empty($this->postVar['sessionToken']) // No session token exists
-            || $this->postVar['sessionToken'] != $sessionToken //session token is wrong
-        ) {
-
-            throw new AjaxException(
-                $this->translate('message.error.access_denied'),
-                '[0x4FBF3C06]',
-                self::HTTP_STATUS_UNAUTHORIZED
-            );
-        }
-
-        return array();
     }
 
     /**
@@ -233,28 +187,14 @@ abstract class AbstractAjaxController
     abstract protected function getAjaxPrefix();
 
     /**
-     * Create session token
-     *
-     * @param   string $formName Form name/Session token name
-     *
-     * @return  string
-     */
-    protected function sessionToken($formName)
-    {
-        $token = $this->formProtection->generateToken($formName);
-
-        return $token;
-    }
-
-    /**
      * Create an (cached) instance of t3lib_TCEmain
      *
      * @return \TYPO3\CMS\Core\DataHandling\DataHandler
      */
-    protected function tce()
+    protected function getTce()
     {
 
-        if ($this->tce === null) {
+        if (!isset($this->tce)) {
             /** @var \TYPO3\CMS\Core\DataHandling\DataHandler tce */
             $this->tce = $this->objectManager->get('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
             $this->tce->start(null, null);
@@ -390,18 +330,6 @@ abstract class AbstractAjaxController
     public function setObjectManager(ObjectManager $objectManager)
     {
         $this->objectManager = $objectManager;
-
-        return $this;
-    }
-
-    /**
-     * @param BackendFormProtection $formProtection
-     *
-     * @return $this
-     */
-    public function setFormProtection(BackendFormProtection $formProtection)
-    {
-        $this->formProtection = $formProtection;
 
         return $this;
     }

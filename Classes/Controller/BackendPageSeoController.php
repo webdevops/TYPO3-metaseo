@@ -200,7 +200,6 @@ class BackendPageSeoController extends AbstractStandardModule
         }
 
         $metaSeoConf = array(
-            'sessionToken'     => $this->sessionToken(AbstractPageSeoController::AJAX_PREFIX),
             'ajaxController'   => $ajaxController,
             'pid'              => (int)$pageId,
             'renderTo'         => 'tx-metaseo-sitemap-grid',

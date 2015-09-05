@@ -77,8 +77,7 @@ MetaSeo.sitemap.grid = {
                 criteriaPageUid: Ext.encode(MetaSeo.sitemap.conf.criteriaPageUid),
                 criteriaPageLanguage: Ext.encode(MetaSeo.sitemap.conf.criteriaPageLanguage),
                 criteriaPageDepth: Ext.encode(MetaSeo.sitemap.conf.criteriaPageDepth),
-                criteriaIsBlacklisted: Ext.encode(MetaSeo.sitemap.conf.criteriaIsBlacklisted),
-                sessionToken: Ext.encode(MetaSeo.sitemap.conf.sessionToken)
+                criteriaIsBlacklisted: Ext.encode(MetaSeo.sitemap.conf.criteriaIsBlacklisted)
             },
             listeners: {
                 beforeload: function () {
@@ -145,8 +144,7 @@ MetaSeo.sitemap.grid = {
                             Ext.Ajax.request({
                                 url: ajaxUrl,
                                 params: {
-                                    'pid': MetaSeo.sitemap.conf.pid,
-                                    sessionToken: Ext.encode(MetaSeo.sitemap.conf.sessionToken)
+                                    'pid': MetaSeo.sitemap.conf.pid
                                 },
                                 success: function (response) {
                                     // reload the records and the table selector
@@ -206,8 +204,7 @@ MetaSeo.sitemap.grid = {
                                     url: ajaxUrl,
                                     params: {
                                         'uidList': Ext.encode(uidList),
-                                        'pid': MetaSeo.sitemap.conf.pid,
-                                        sessionToken: Ext.encode(MetaSeo.sitemap.conf.sessionToken)
+                                        'pid': MetaSeo.sitemap.conf.pid
                                     },
                                     success: function (response) {
                                         // reload the records and the table selector

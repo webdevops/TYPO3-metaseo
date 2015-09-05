@@ -321,8 +321,7 @@ MetaSeo.overview.grid = {
                                             field           : Ext.encode(fieldName),
                                             value           : Ext.encode(fieldValue),
                                             sysLanguage     : Ext.encode( MetaSeo.overview.conf.sysLanguage ),
-                                            mode            : Ext.encode( MetaSeo.overview.conf.listType ),
-                                            sessionToken    : Ext.encode( MetaSeo.overview.conf.sessionToken )
+                                            mode            : Ext.encode( MetaSeo.overview.conf.listType )
                                         },
                                         success: callbackFinish,
                                         failure: callbackFinish
@@ -359,8 +358,7 @@ MetaSeo.overview.grid = {
                                             field: Ext.encode(fieldName),
                                             value: Ext.encode(fieldValue),
                                             sysLanguage: Ext.encode(MetaSeo.overview.conf.sysLanguage),
-                                            mode: Ext.encode(MetaSeo.overview.conf.listType),
-                                            sessionToken: Ext.encode(MetaSeo.overview.conf.sessionToken)
+                                            mode: Ext.encode(MetaSeo.overview.conf.listType)
                                         },
                                         success: callbackFinish,
                                         failure: callbackFinish
@@ -499,7 +497,6 @@ MetaSeo.overview.grid = {
                 sortField: Ext.encode(MetaSeo.overview.conf.sortField),
                 depth: Ext.encode(MetaSeo.overview.conf.depth),
                 listType: Ext.encode(MetaSeo.overview.conf.listType),
-                sessionToken: Ext.encode(MetaSeo.overview.conf.sessionToken),
                 sysLanguage: Ext.encode(MetaSeo.overview.conf.sysLanguage)
             },
             listeners: {
@@ -931,8 +928,7 @@ MetaSeo.overview.grid = {
                             Ext.Ajax.request({
                                 url: ajaxUrl,
                                 params: {
-                                    pid: Ext.encode(record.get('uid')),
-                                    sessionToken: Ext.encode(MetaSeo.overview.conf.sessionToken)
+                                    pid: Ext.encode(record.get('uid'))
                                 },
                                 success: callbackFinish,
                                 failure: callbackFinish
@@ -1018,8 +1014,7 @@ MetaSeo.overview.grid = {
                         Ext.Ajax.request({
                             url: ajaxUrl,
                             params: {
-                                pid: Ext.encode(record.get('uid')),
-                                sessionToken: Ext.encode(MetaSeo.overview.conf.sessionToken)
+                                pid: Ext.encode(record.get('uid'))
                             },
                             success: callbackFinish,
                             failure: callbackFinish
