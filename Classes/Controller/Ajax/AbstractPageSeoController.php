@@ -24,7 +24,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-
 namespace Metaseo\Metaseo\Controller\Ajax;
 
 use Exception;
@@ -32,8 +31,6 @@ use Metaseo\Metaseo\Controller\AbstractAjaxController;
 use Metaseo\Metaseo\Controller\Ajax\PageSeo as PageSeo;
 use Metaseo\Metaseo\Dao\PageSeoDao;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
-use Metaseo\Metaseo\Utility\FrontendUtility;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 
 /**
@@ -135,7 +132,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
             );
         }
 
-        $page = BackendUtility::getRecord('pages', $pid);
+        $page = $this->pageSeoDao->getPageById($pid);
 
         $list = $this->getIndex($page, $depth, $sysLanguage);
 
@@ -159,59 +156,6 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
     protected function getIndex(array $page, $depth, $sysLanguage)
     {
         return $this->pageSeoDao->index($page, $depth, $sysLanguage, $this->fieldList);
-    }
-
-    /**
-     * Init TSFE (for simulated pagetitle)
-     *
-     * @param   array        $page         Page
-     * @param   null|array   $rootLine     Rootline
-     * @param   null|array   $pageData     Page data (recursive generated)
-     * @param   null|array   $rootlineFull Rootline full
-     * @param   null|integer $sysLanguage  System language
-     *
-     * @return  void
-     */
-    protected function initTsfe(
-        array $page,
-        array $rootLine = null,
-        array $pageData = null,
-        array $rootlineFull = null,
-        $sysLanguage = null
-    ) {
-        $pageUid = (int)$page['uid'];
-
-        if ($rootLine === null) {
-            $sysPageObj = $this->objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
-            $rootLine   = $sysPageObj->getRootLine($pageUid);
-
-            // save full rootline, we need it in TSFE
-            $rootlineFull = $rootLine;
-        }
-
-        // check if current page has a ts-setup-template
-        // if not, we go down the tree to the parent page
-        if (count($rootLine) >= 2 && !empty($this->templatePidList) && empty($this->templatePidList[$pageUid])) {
-            // go to parent page in rootline
-            reset($rootLine);
-            next($rootLine);
-            $prevPage = current($rootLine);
-
-            // strip current page from rootline
-            reset($rootLine);
-            $currPageIndex = key($rootLine);
-            unset($rootLine[$currPageIndex]);
-
-            FrontendUtility::init(
-                $prevPage['uid'],
-                $rootLine,
-                $pageData,
-                $rootlineFull,
-                $sysLanguage
-            );
-        }
-
-        FrontendUtility::init($page['uid'], $rootLine, $pageData, $rootlineFull, $sysLanguage);
     }
 
     /**
@@ -285,7 +229,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
             );
         }
 
-        $page = BackendUtility::getRecord('pages', $pid);
+        $page = $this->pageSeoDao->getPageById($pid);
 
         // check if page exists and user can edit this specific record
         if (empty($page) || !$this->getBackendUserAuthentication()->doesUserHaveAccess($page, 2)) {
@@ -393,7 +337,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         $pid         = $this->postVar['pid'];
         $sysLanguage = (int)$this->postVar['sysLanguage'];
 
-        $page = BackendUtility::getRecord('pages', $pid);
+        $page = $this->pageSeoDao->getPageById($pid);
 
         $list = $this->pageSeoDao->index($page, 999, $sysLanguage, array());
 

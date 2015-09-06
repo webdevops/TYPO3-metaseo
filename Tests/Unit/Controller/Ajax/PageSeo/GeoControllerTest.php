@@ -29,15 +29,15 @@ namespace Metaseo\Metaseo\Tests\Unit\Controller\Ajax\PageSeo;
 use Metaseo\Metaseo\Tests\Unit\Controller\Ajax\AbstractPageSeoControllerTest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class MetaDataControllerTest extends AbstractPageSeoControllerTest
+class GeoControllerTest extends AbstractPageSeoControllerTest
 {
     /**
-     * @return \Metaseo\Metaseo\Controller\Ajax\PageSeo\MetaDataController
+     * @return \Metaseo\Metaseo\Controller\Ajax\PageSeo\GeoController
      */
     protected function getSubject()
     {
-        /** @var \Metaseo\Metaseo\Controller\Ajax\PageSeo\MetaDataController $subject */
-        $subject = GeneralUtility::makeInstance('Metaseo\\Metaseo\\Controller\\Ajax\\PageSeo\\MetaDataController');
+        /** @var \Metaseo\Metaseo\Controller\Ajax\PageSeo\GeoController $subject */
+        $subject = GeneralUtility::makeInstance('Metaseo\\Metaseo\\Controller\\Ajax\\PageSeo\\GeoController');
         $subject
             ->setObjectManager($this->getObjectManagerMock())
             ->setPageSeoDao(

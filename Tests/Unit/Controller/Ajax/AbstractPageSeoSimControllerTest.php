@@ -24,25 +24,31 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-namespace Metaseo\Metaseo\Tests\Unit\Controller\Ajax\PageSeo;
+namespace Metaseo\Metaseo\Tests\Unit\Controller\Ajax;
 
-use Metaseo\Metaseo\Tests\Unit\Controller\Ajax\AbstractPageSeoControllerTest;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Exception;
 
-class MetaDataControllerTest extends AbstractPageSeoControllerTest
+abstract class AbstractPageSeoSimControllerTest extends AbstractPageSeoControllerTest
 {
     /**
-     * @return \Metaseo\Metaseo\Controller\Ajax\PageSeo\MetaDataController
+     * @test
+     */
+    public function testSimulate()
+    {
+        $this->expectedDaoMethod = 'updatePageTableField';
+        $subject = $this->getSubject();
+        $subject->simulateAction(array(), $this->getAjaxRequestHandlerMock());
+    }
+
+    /**
+     * @return \Metaseo\Metaseo\Controller\Ajax\PageSeoSimulateInterface
+     *
+     * @throws Exception
      */
     protected function getSubject()
     {
-        /** @var \Metaseo\Metaseo\Controller\Ajax\PageSeo\MetaDataController $subject */
-        $subject = GeneralUtility::makeInstance('Metaseo\\Metaseo\\Controller\\Ajax\\PageSeo\\MetaDataController');
-        $subject
-            ->setObjectManager($this->getObjectManagerMock())
-            ->setPageSeoDao(
-                $this->getPageSeoDaoMock()
-            );
-        return $subject;
+        //there's no way to overwrite an abstract function with an abstract function just to specialize type hints.
+        //see https://bugs.php.net/bug.php?id=36601
+        throw new Exception('You need to overwrite this function!');
     }
 }

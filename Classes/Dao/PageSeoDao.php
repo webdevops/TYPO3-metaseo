@@ -30,6 +30,7 @@ use Metaseo\Metaseo\Controller\AbstractAjaxController;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 class PageSeoDao extends Dao
 {
@@ -279,6 +280,51 @@ class PageSeoDao extends Dao
         }
 
         return array();
+    }
+
+    /**
+     * @param integer[] array of page IDs to be checked for templates
+     *
+     * @return array of PIDs which have a template which is not deleted or hidden.
+     */
+    public function checkForTemplateByUidList($uidList)
+    {
+        $query   = 'SELECT pid
+                          FROM sys_template
+                         WHERE pid IN (' . implode(',', $uidList) . ')
+                           AND deleted = 0
+                           AND hidden = 0';
+        return DatabaseUtility::getCol($query);
+    }
+
+    /**
+     * @param $pid
+     *
+     * @return array|NULL
+     */
+    public function getPageById($pid)
+    {
+        return $this->getRecord('pages', $pid);
+    }
+
+    /**
+     * Gets record with uid = $uid from $table
+     * You can set $field to a list of fields (default is '*')
+     * Additional WHERE clauses can be added by $where (fx. ' AND blabla = 1')
+     * Will automatically check if records has been deleted and if so, not return anything.
+     * $table must be found in $GLOBALS['TCA']
+     *
+     * @param string $table Table name present in $GLOBALS['TCA']
+     * @param int $uid UID of record
+     * @param string $fields List of fields to select
+     * @param string $where Additional WHERE clause, eg. " AND blablabla = 0
+     * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
+     *
+     * @return array|NULL Returns the row if found, otherwise NULL
+     */
+    protected function getRecord($table, $uid, $fields = '*', $where = '', $useDeleteClause = true)
+    {
+        return BackendUtility::getRecord($table, $uid, $fields, $where, $useDeleteClause);
     }
 
     /**

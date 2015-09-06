@@ -26,18 +26,18 @@
 
 namespace Metaseo\Metaseo\Tests\Unit\Controller\Ajax\PageSeo;
 
-use Metaseo\Metaseo\Tests\Unit\Controller\Ajax\AbstractPageSeoControllerTest;
+use Metaseo\Metaseo\Tests\Unit\Controller\Ajax\AbstractPageSeoSimControllerTest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class MetaDataControllerTest extends AbstractPageSeoControllerTest
+class UrlControllerTest extends AbstractPageSeoSimControllerTest
 {
     /**
-     * @return \Metaseo\Metaseo\Controller\Ajax\PageSeo\MetaDataController
+     * @return \Metaseo\Metaseo\Controller\Ajax\PageSeo\UrlController
      */
     protected function getSubject()
     {
-        /** @var \Metaseo\Metaseo\Controller\Ajax\PageSeo\MetaDataController $subject */
-        $subject = GeneralUtility::makeInstance('Metaseo\\Metaseo\\Controller\\Ajax\\PageSeo\\MetaDataController');
+        /** @var \Metaseo\Metaseo\Controller\Ajax\PageSeo\UrlController $subject */
+        $subject = GeneralUtility::makeInstance('Metaseo\\Metaseo\\Controller\\Ajax\\PageSeo\\UrlController');
         $subject
             ->setObjectManager($this->getObjectManagerMock())
             ->setPageSeoDao(

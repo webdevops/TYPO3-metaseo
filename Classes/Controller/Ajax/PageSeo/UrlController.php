@@ -26,15 +26,14 @@
 
 namespace Metaseo\Metaseo\Controller\Ajax\PageSeo;
 
-use Metaseo\Metaseo\Controller\Ajax\AbstractPageSeoController;
+use Metaseo\Metaseo\Controller\Ajax\AbstractPageSeoSimController;
 use Metaseo\Metaseo\Controller\Ajax\PageSeoSimulateInterface;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use Metaseo\Metaseo\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
-class UrlController extends AbstractPageSeoController implements PageSeoSimulateInterface
+class UrlController extends AbstractPageSeoSimController implements PageSeoSimulateInterface
 {
     const LIST_TYPE = 'url';
 
@@ -56,25 +55,7 @@ class UrlController extends AbstractPageSeoController implements PageSeoSimulate
     /**
      * @inheritDoc
      */
-    public function simulateAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
-    {
-        try {
-            $this->init();
-            $ajaxObj->setContent($this->executeSimulate());
-        } catch (\Exception $exception) {
-            $this->ajaxExceptionHandler($exception, $ajaxObj);
-        }
-
-        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
-        $ajaxObj->render();
-    }
-
-    /**
-     * @return array
-     *
-     * @throws AjaxException
-     */
-    public function executeSimulate()
+    protected function executeSimulate()
     {
         $pid = (int)$this->postVar['pid'];
 
@@ -105,7 +86,7 @@ class UrlController extends AbstractPageSeoController implements PageSeoSimulate
             $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['disablePathCache']     = 1;
         }
 
-        $this->initTsfe($page, null, $page, null);
+        $this->frontendUtility->initTsfe($page, null, $page, null);
 
         $ret = $GLOBALS['TSFE']->cObj->typolink_URL(array('parameter' => $page['uid']));
 
