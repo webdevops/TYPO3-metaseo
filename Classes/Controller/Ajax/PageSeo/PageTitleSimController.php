@@ -28,6 +28,7 @@ namespace Metaseo\Metaseo\Controller\Ajax\PageSeo;
 
 use Metaseo\Metaseo\Controller\Ajax\AbstractPageSeoSimController;
 use Metaseo\Metaseo\Controller\Ajax\PageSeoSimulateInterface;
+use Metaseo\Metaseo\DependencyInjection\Utility\HttpUtility;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
@@ -107,7 +108,7 @@ class PageTitleSimController extends AbstractPageSeoSimController implements Pag
             throw new AjaxException(
                 'message.error.typo3_page_not_found',
                 '[0x4FBF3C08]',
-                self::HTTP_STATUS_BAD_REQUEST
+                HttpUtility::HTTP_STATUS_BAD_REQUEST
             );
         }
 
@@ -118,7 +119,7 @@ class PageTitleSimController extends AbstractPageSeoSimController implements Pag
             throw new AjaxException(
                 'message.error.typo3_page_not_found',
                 '[0x4FBF3C09]',
-                self::HTTP_STATUS_BAD_REQUEST
+                HttpUtility::HTTP_STATUS_BAD_REQUEST
             );
         }
 

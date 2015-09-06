@@ -26,7 +26,7 @@
 
 namespace Metaseo\Metaseo\Dao;
 
-use Metaseo\Metaseo\Controller\AbstractAjaxController;
+use Metaseo\Metaseo\DependencyInjection\Utility\HttpUtility;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
@@ -251,7 +251,7 @@ class PageSeoDao extends Dao
                     throw new AjaxException(
                         'message.error.no_language_overlay_found',
                         '[0x4FBF3C05]',
-                        AbstractAjaxController::HTTP_STATUS_BAD_REQUEST
+                        HttpUtility::HTTP_STATUS_BAD_REQUEST
                     );
                 }
 

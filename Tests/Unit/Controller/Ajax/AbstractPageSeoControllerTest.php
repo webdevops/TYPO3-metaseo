@@ -104,7 +104,11 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
             array(
                 'Metaseo\\Metaseo\\Page\\Part\\PagetitlePart',
                 $this->getPageTitlePartMock()
-            )
+            ),
+            array(
+                'Metaseo\\Metaseo\\DependencyInjection\\Utility\\HttpUtility',
+                $this->getHttpUtilityMock()
+            ),
         );
         $objectManager = $this
             ->getMockBuilder('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')
@@ -223,5 +227,13 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
     protected function getFrontendUtilityMock()
     {
         return $this->getMock('Metaseo\\Metaseo\\DependencyInjection\\Utility\\FrontendUtility');
+    }
+
+    /**
+     * @return \Metaseo\Metaseo\DependencyInjection\Utility\HttpUtility
+     */
+    protected function getHttpUtilityMock()
+    {
+        return $this->getMock('Metaseo\\Metaseo\\DependencyInjection\\Utility\\HttpUtility');
     }
 }

@@ -30,6 +30,7 @@ use Exception;
 use Metaseo\Metaseo\Controller\AbstractAjaxController;
 use Metaseo\Metaseo\Controller\Ajax\PageSeo as PageSeo;
 use Metaseo\Metaseo\Dao\PageSeoDao;
+use Metaseo\Metaseo\DependencyInjection\Utility\HttpUtility;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 
@@ -128,7 +129,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
             throw new AjaxException(
                 'message.error.typo3_page_not_found',
                 '[0x4FBF3C0C]',
-                self::HTTP_STATUS_BAD_REQUEST
+                HttpUtility::HTTP_STATUS_BAD_REQUEST
             );
         }
 
@@ -186,7 +187,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
             throw new AjaxException(
                 'message.warning.incomplete_data_received.message',
                 '[0x4FBF3C02]',
-                self::HTTP_STATUS_BAD_REQUEST
+                HttpUtility::HTTP_STATUS_BAD_REQUEST
             );
         }
 
@@ -200,7 +201,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
             throw new AjaxException(
                 'message.warning.incomplete_data_received.message',
                 '[0x4FBF3C23]',
-                self::HTTP_STATUS_BAD_REQUEST
+                HttpUtility::HTTP_STATUS_BAD_REQUEST
             );
         }
 
@@ -209,7 +210,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
             throw new AjaxException(
                 'message.warning.incomplete_data_received.message',
                 '[0x4FBF3C03]',
-                self::HTTP_STATUS_BAD_REQUEST
+                HttpUtility::HTTP_STATUS_BAD_REQUEST
             );
         }
 
@@ -225,7 +226,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
             throw new AjaxException(
                 'message.error.access_denied',
                 '[0x4FBF3BE2]',
-                self::HTTP_STATUS_UNAUTHORIZED
+                HttpUtility::HTTP_STATUS_UNAUTHORIZED
             );
         }
 
@@ -238,7 +239,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
             throw new AjaxException(
                 'message.error.access_denied',
                 '[0x4FBF3BCF]',
-                self::HTTP_STATUS_UNAUTHORIZED
+                HttpUtility::HTTP_STATUS_UNAUTHORIZED
             );
         }
 
@@ -251,7 +252,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
             throw new AjaxException(
                 'message.error.access_denied',
                 '[0x4FBF3BD9]',
-                self::HTTP_STATUS_UNAUTHORIZED
+                HttpUtility::HTTP_STATUS_UNAUTHORIZED
             );
         }
 
@@ -266,7 +267,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
                 throw new AjaxException(
                     'message.error.access_denied',
                     '[0x4FBF3BE2]',
-                    self::HTTP_STATUS_UNAUTHORIZED
+                    HttpUtility::HTTP_STATUS_UNAUTHORIZED
                 );
             }
 
@@ -279,7 +280,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
                 throw new AjaxException(
                     'message.error.access_denied',
                     '[0x4FBF3BD9]',
-                    self::HTTP_STATUS_UNAUTHORIZED
+                    HttpUtility::HTTP_STATUS_UNAUTHORIZED
                 );
             }
         }
@@ -330,7 +331,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
             throw new AjaxException(
                 'message.warning.incomplete_data_received.message',
                 '[0x4FBF3C04]',
-                self::HTTP_STATUS_BAD_REQUEST
+                HttpUtility::HTTP_STATUS_BAD_REQUEST
             );
         }
 

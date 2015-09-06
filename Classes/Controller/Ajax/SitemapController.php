@@ -28,6 +28,7 @@ namespace Metaseo\Metaseo\Controller\Ajax;
 
 use Exception;
 use Metaseo\Metaseo\Controller\AbstractAjaxController;
+use Metaseo\Metaseo\DependencyInjection\Utility\HttpUtility;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 use Metaseo\Metaseo\Utility\SitemapUtility;
@@ -199,7 +200,7 @@ class SitemapController extends AbstractAjaxController implements SitemapInterfa
             throw new AjaxException(
                 'message.warning.incomplete_data_received.message',
                 '[0x4FBF3C10]',
-                self::HTTP_STATUS_BAD_REQUEST
+                HttpUtility::HTTP_STATUS_BAD_REQUEST
             );
         }
 
@@ -251,7 +252,7 @@ class SitemapController extends AbstractAjaxController implements SitemapInterfa
             throw new AjaxException(
                 'message.warning.incomplete_data_received.message',
                 '[0x4FBF3C12]',
-                self::HTTP_STATUS_BAD_REQUEST
+                HttpUtility::HTTP_STATUS_BAD_REQUEST
             );
         }
 
@@ -303,7 +304,7 @@ class SitemapController extends AbstractAjaxController implements SitemapInterfa
             throw new AjaxException(
                 'message.warning.incomplete_data_received.message',
                 '[0x4FBF3C11]',
-                self::HTTP_STATUS_BAD_REQUEST
+                HttpUtility::HTTP_STATUS_BAD_REQUEST
             );
         }
 
@@ -351,7 +352,7 @@ class SitemapController extends AbstractAjaxController implements SitemapInterfa
             throw new AjaxException(
                 'message.warning.incomplete_data_received.message',
                 '[0x4FBF3C12]',
-                self::HTTP_STATUS_BAD_REQUEST
+                HttpUtility::HTTP_STATUS_BAD_REQUEST
             );
         }
 

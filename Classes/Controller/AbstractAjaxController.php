@@ -27,6 +27,7 @@
 namespace Metaseo\Metaseo\Controller;
 
 use Exception;
+use Metaseo\Metaseo\DependencyInjection\Utility\HttpUtility;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -44,33 +45,6 @@ abstract class AbstractAjaxController
      */
     const JSON_ERROR        = 'error';
     const JSON_ERROR_NUMBER = 'errorNumber';
-
-    /**
-     * Http Status Codes for Ajax
-     *
-     * @link https://dev.twitter.com/overview/api/response-codes
-     */
-    const HTTP_STATUS_BAD_REQUEST           = 400;
-    const HTTP_STATUS_UNAUTHORIZED          = 401;
-    const HTTP_STATUS_FORBIDDEN             = 403;
-    const HTTP_STATUS_NOT_FOUND             = 404;
-    const HTTP_STATUS_NOT_ACCEPTABLE        = 406;
-    const HTTP_STATUS_INTERNAL_SERVER_ERROR = 500;
-    const HTTP_STATUS_SERVICE_UNAVAILABLE   = 503;
-
-    /**
-     * @var array key/value pairs of Http Status Codes
-     */
-    protected $httpStatus = array(
-        self::HTTP_STATUS_BAD_REQUEST           => 'Bad Request',
-        self::HTTP_STATUS_UNAUTHORIZED          => 'Unauthorized',
-        self::HTTP_STATUS_FORBIDDEN             => 'Forbidden',
-        self::HTTP_STATUS_NOT_FOUND             => 'Not Found',
-        self::HTTP_STATUS_NOT_ACCEPTABLE        => 'Not Acceptable',
-        self::HTTP_STATUS_INTERNAL_SERVER_ERROR => 'Internal Server Error',
-        self::HTTP_STATUS_SERVICE_UNAVAILABLE   => 'Service Unavailable',
-    );
-
 
     // ########################################################################
     // Attributes
@@ -187,26 +161,16 @@ abstract class AbstractAjaxController
         $responseArray = array();
         if ($exception instanceof AjaxException) {
             $responseArray[self::JSON_ERROR] = $this->translate($exception->getMessage());
-            $this->sendHttpHeader($exception->getHttpStatus());
+            $this->getHttpUtility()->sendHttpHeader($exception->getHttpStatus());
             $errorCode = $exception->getCode();
             if (!empty($errorCode)) {
                 $responseArray[self::JSON_ERROR_NUMBER] = $exception->getCode();
             }
         } else {
             $responseArray[self::JSON_ERROR] = $exception->getMessage();
-            $this->sendHttpHeader(self::HTTP_STATUS_INTERNAL_SERVER_ERROR);
+            $this->getHttpUtility()->sendHttpHeader(HttpUtility::HTTP_STATUS_INTERNAL_SERVER_ERROR);
         }
         $ajaxObj->setContent($responseArray);
-    }
-
-    /**
-     * @param $httpStatus
-     */
-    protected function sendHttpHeader($httpStatus)
-    {
-        if (!headers_sent()) {
-            header('HTTP/1.0 ' . $httpStatus . ' ' . $this->httpStatus[$httpStatus]);
-        }
     }
 
     /**
@@ -239,6 +203,14 @@ abstract class AbstractAjaxController
     protected function getBackendUserAuthentication()
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * @return HttpUtility
+     */
+    protected function getHttpUtility()
+    {
+        return $this->objectManager->get('Metaseo\\Metaseo\\DependencyInjection\\Utility\\HttpUtility');
     }
 
     /**
