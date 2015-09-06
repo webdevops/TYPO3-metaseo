@@ -64,7 +64,7 @@ class PageTitleSimController extends AbstractPageSeoSimController implements Pag
             // Check which pages have templates (for caching and faster building)
             $this->templatePidList = array();
 
-            $pidList = $this->getPageSeoDao()->checkForTemplateByUidList($uidList);
+            $pidList = $this->getTemplateDao()->checkForTemplateByUidList($uidList);
             foreach ($pidList as $pid) {
                 $this->templatePidList[$pid] = $pid;
             }
@@ -133,5 +133,13 @@ class PageTitleSimController extends AbstractPageSeoSimController implements Pag
         return array(
             'title' => $pagetitle->main($page['title']),
         );
+    }
+
+    /**
+     * @return \Metaseo\Metaseo\Dao\TemplateDao
+     */
+    protected function getTemplateDao()
+    {
+        return $this->objectManager->get('Metaseo\\Metaseo\\Dao\\TemplateDao');
     }
 }

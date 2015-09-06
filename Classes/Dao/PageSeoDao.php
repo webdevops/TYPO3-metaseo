@@ -282,20 +282,6 @@ class PageSeoDao extends Dao
         return array();
     }
 
-    /**
-     * @param integer[] array of page IDs to be checked for templates
-     *
-     * @return array of PIDs which have a template which is not deleted or hidden.
-     */
-    public function checkForTemplateByUidList($uidList)
-    {
-        $query   = 'SELECT pid
-                          FROM sys_template
-                         WHERE pid IN (' . implode(',', $uidList) . ')
-                           AND deleted = 0
-                           AND hidden = 0';
-        return DatabaseUtility::getCol($query);
-    }
 
     /**
      * @param $pid

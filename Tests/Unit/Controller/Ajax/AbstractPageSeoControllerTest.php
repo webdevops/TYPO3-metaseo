@@ -110,12 +110,16 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
                 $this->getHttpUtilityMock()
             ),
             array(
+                'TYPO3\\CMS\\Frontend\\Page\\PageRepository',
+                $this->getPageRepositoryMock()
+            ),
+            array(
                 'Metaseo\\Metaseo\\Dao\\PageSeoDao',
                 $this->getPageSeoDaoMock()
             ),
             array(
-                'TYPO3\\CMS\\Frontend\\Page\\PageRepository',
-                $this->getPageRepositoryMock()
+                'Metaseo\\Metaseo\\Dao\\TemplateDao',
+                $this->getTemplateDaoMock()
             ),
         );
         $objectManager = $this
@@ -157,6 +161,17 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
             ->expects($this->any())
             ->method('getPageById')
             ->will($this->returnValue(array('uid' => 1)));
+        return $mock;
+    }
+
+    /**
+     * @return \Metaseo\Metaseo\Dao\PageSeoDao
+     */
+    protected function getTemplateDaoMock()
+    {
+        $mock = $this
+            ->getMockBuilder('Metaseo\\Metaseo\\Dao\\TemplateDao')
+            ->getMock();
         $mock
             ->expects($this->any())
             ->method('checkForTemplateByUidList')
