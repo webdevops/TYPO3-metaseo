@@ -89,8 +89,15 @@ class FrontendUtility implements SingletonInterface
         MetaseoFrontendUtility::init($page['uid'], $rootLine, $pageData, $rootlineFull, $sysLanguage);
     }
 
+    /**
+     * @param PageRepository $pageRepository
+     *
+     * @return $this
+     */
     public function setPageRepository(PageRepository $pageRepository)
     {
         $this->pageRepository = $pageRepository;
+
+        return $this;
     }
 }

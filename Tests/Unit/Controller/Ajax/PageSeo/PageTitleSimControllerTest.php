@@ -26,10 +26,10 @@
 
 namespace Metaseo\Metaseo\Tests\Unit\Controller\Ajax\PageSeo;
 
-use Metaseo\Metaseo\Tests\Unit\Controller\Ajax\AbstractPageSeoSimControllerTest;
+use Metaseo\Metaseo\Tests\Unit\Controller\Ajax\AbstractPageSeoControllerTest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class PageTitleSimControllerTest extends AbstractPageSeoSimControllerTest
+class PageTitleSimControllerTest extends AbstractPageSeoControllerTest
 {
     /**
      * @return \Metaseo\Metaseo\Controller\Ajax\PageSeo\PageTitleSimController
