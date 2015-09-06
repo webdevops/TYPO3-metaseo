@@ -88,7 +88,7 @@ class PageTitleSimController extends AbstractPageSeoSimController implements Pag
      */
     protected function simulateTitle(array $page, $sysLanguage)
     {
-        $this->frontendUtility->initTsfe($page, null, $page, null, $sysLanguage);
+        $this->getFrontendUtility()->initTsfe($page, null, $page, null, $sysLanguage);
 
         $pagetitle = $this->objectManager->get('Metaseo\\Metaseo\\Page\\Part\\PagetitlePart');
         $ret       = $pagetitle->main($page['title']);
@@ -124,7 +124,7 @@ class PageTitleSimController extends AbstractPageSeoSimController implements Pag
         }
 
         // Load TYPO3 classes
-        $this->frontendUtility->initTsfe($page, null, $page, null);
+        $this->getFrontendUtility()->initTsfe($page, null, $page, null);
 
         $pagetitle = Typo3GeneralUtility::makeInstance(
             'Metaseo\\Metaseo\\Page\\Part\\PagetitlePart'

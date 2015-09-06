@@ -87,7 +87,7 @@ class UrlController extends AbstractPageSeoSimController implements PageSeoSimul
             $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['disablePathCache']     = 1;
         }
 
-        $this->frontendUtility->initTsfe($page, null, $page, null);
+        $this->getFrontendUtility()->initTsfe($page, null, $page, null);
 
         $ret = $GLOBALS['TSFE']->cObj->typolink_URL(array('parameter' => $page['uid']));
 

@@ -344,7 +344,9 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
      */
     protected function getPageSeoDao()
     {
-        return $this->objectManager->get('Metaseo\\Metaseo\\Dao\\PageSeoDao')
+        return $this
+            ->objectManager
+            ->get('Metaseo\\Metaseo\\Dao\\PageSeoDao')
             ->setDataHandler($this->getDataHandler())
             ->setPageTreeView($this->getPageTreeView());
     }
@@ -363,6 +365,25 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
     protected function getPageTreeView()
     {
         return $this->objectManager->get('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
+    }
+
+    /**
+     * @return \Metaseo\Metaseo\DependencyInjection\Utility\FrontendUtility
+     */
+    protected function getFrontendUtility()
+    {
+        return $this
+            ->objectManager
+            ->get('Metaseo\\Metaseo\\DependencyInjection\\Utility\\FrontendUtility')
+            ->setPageRepository($this->getPageRepository());
+    }
+
+    /**
+     * @return \TYPO3\CMS\Frontend\Page\PageRepository
+     */
+    protected function getPageRepository()
+    {
+        return $this->objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
     }
 
     /**

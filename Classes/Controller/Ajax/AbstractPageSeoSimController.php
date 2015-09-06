@@ -31,25 +31,6 @@ use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 abstract class AbstractPageSeoSimController extends AbstractPageSeoController implements PageSeoSimulateInterface
 {
     /**
-     * @var \Metaseo\Metaseo\DependencyInjection\Utility\FrontendUtility
-     */
-    protected $frontendUtility;
-
-    protected function init()
-    {
-        parent::init();
-        if (!isset($this->frontendUtility)) {
-            $frontendUtility = $this->objectManager->get(
-                'Metaseo\\Metaseo\\DependencyInjection\Utility\\FrontendUtility'
-            );
-            $frontendUtility->setPageRepository(
-                $this->objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository')
-            );
-            $this->frontendUtility = $frontendUtility;
-        }
-    }
-
-    /**
      * @inheritDoc
      */
     public function simulateAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
