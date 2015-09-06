@@ -56,7 +56,7 @@ class PageTitleSimController extends AbstractPageSeoSimController implements Pag
      */
     protected function getIndex(array $page, $depth, $sysLanguage)
     {
-        $list = $this->pageSeoDao->index($page, $depth, $sysLanguage, $this->fieldList);
+        $list = $this->getPageSeoDao()->index($page, $depth, $sysLanguage, $this->fieldList);
 
         $uidList = array_keys($list);
 
@@ -64,7 +64,7 @@ class PageTitleSimController extends AbstractPageSeoSimController implements Pag
             // Check which pages have templates (for caching and faster building)
             $this->templatePidList = array();
 
-            $pidList = $this->pageSeoDao->checkForTemplateByUidList($uidList);
+            $pidList = $this->getPageSeoDao()->checkForTemplateByUidList($uidList);
             foreach ($pidList as $pid) {
                 $this->templatePidList[$pid] = $pid;
             }

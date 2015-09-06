@@ -38,11 +38,7 @@ class SearchEnginesControllerTest extends AbstractPageSeoControllerTest
     {
         /** @var \Metaseo\Metaseo\Controller\Ajax\PageSeo\GeoController $subject */
         $subject = GeneralUtility::makeInstance('Metaseo\\Metaseo\\Controller\\Ajax\\PageSeo\\SearchEnginesController');
-        $subject
-            ->setObjectManager($this->getObjectManagerMock())
-            ->setPageSeoDao(
-                $this->getPageSeoDaoMock()
-            );
+        $subject->setObjectManager($this->getObjectManagerMock());
         return $subject;
     }
 }

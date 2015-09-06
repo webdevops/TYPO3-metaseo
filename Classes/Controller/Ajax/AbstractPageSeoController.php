@@ -29,7 +29,6 @@ namespace Metaseo\Metaseo\Controller\Ajax;
 use Exception;
 use Metaseo\Metaseo\Controller\AbstractAjaxController;
 use Metaseo\Metaseo\Controller\Ajax\PageSeo as PageSeo;
-use Metaseo\Metaseo\Dao\PageSeoDao;
 use Metaseo\Metaseo\DependencyInjection\Utility\HttpUtility;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use TYPO3\CMS\Core\Http\AjaxRequestHandler;
@@ -58,11 +57,6 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
      */
     protected $fieldList;
 
-    /**
-     * @var PageSeoDao
-     */
-    protected $pageSeoDao;
-
     // ########################################################################
     // Methods
     // ########################################################################
@@ -72,23 +66,6 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         parent::__construct();
         $this->templatePidList = array();
         $this->initFieldList();
-    }
-
-    protected function init()
-    {
-        parent::init();
-        if (!isset($this->pageSeoDao)) {
-            /** @var \TYPO3\CMS\Core\DataHandling\DataHandler $dataHandler */
-            $dataHandler = $this->objectManager->get('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
-            /** @var \TYPO3\CMS\Backend\Tree\View\PageTreeView $pageTreeView */
-            $pageTreeView = $this->objectManager->get('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
-            /** @var \Metaseo\Metaseo\Dao\PageSeoDao $pageSeoDao */
-            //$pageSeoDao = GeneralUtility::makeInstance('Metaseo\\Metaseo\\Dao\\PageSeoDao');
-            $pageSeoDao = new PageSeoDao;
-            $this->pageSeoDao = $pageSeoDao
-                ->setDataHandler($dataHandler)
-                ->setPageTreeView($pageTreeView);
-        }
     }
 
     abstract protected function initFieldList();
@@ -133,7 +110,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
             );
         }
 
-        $page = $this->pageSeoDao->getPageById($pid);
+        $page = $this->getPageSeoDao()->getPageById($pid);
 
         $list = $this->getIndex($page, $depth, $sysLanguage);
 
@@ -156,7 +133,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
      */
     protected function getIndex(array $page, $depth, $sysLanguage)
     {
-        return $this->pageSeoDao->index($page, $depth, $sysLanguage, $this->fieldList);
+        return $this->getPageSeoDao()->index($page, $depth, $sysLanguage, $this->fieldList);
     }
 
     /**
@@ -230,7 +207,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
             );
         }
 
-        $page = $this->pageSeoDao->getPageById($pid);
+        $page = $this->getPageSeoDao()->getPageById($pid);
 
         // check if page exists and user can edit this specific record
         if (empty($page) || !$this->getBackendUserAuthentication()->doesUserHaveAccess($page, 2)) {
@@ -300,7 +277,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         // Update
         // ############################
 
-        return $this->pageSeoDao->updatePageTableField($pid, $sysLanguage, $fieldName, $fieldValue);
+        return $this->getPageSeoDao()->updatePageTableField($pid, $sysLanguage, $fieldName, $fieldValue);
     }
 
     /**
@@ -338,9 +315,9 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         $pid         = $this->postVar['pid'];
         $sysLanguage = (int)$this->postVar['sysLanguage'];
 
-        $page = $this->pageSeoDao->getPageById($pid);
+        $page = $this->getPageSeoDao()->getPageById($pid);
 
-        $list = $this->pageSeoDao->index($page, 999, $sysLanguage, array());
+        $list = $this->getPageSeoDao()->index($page, 999, $sysLanguage, array());
 
         $count = 0;
         foreach ($list as $key => $page) {
@@ -363,15 +340,29 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
     }
 
     /**
-     * @param PageSeoDao $pageSeoDao
-     *
-     * @return AbstractPageSeoController
+     * @return \Metaseo\Metaseo\Dao\PageSeoDao
      */
-    public function setPageSeoDao(PageSeoDao $pageSeoDao)
+    protected function getPageSeoDao()
     {
-        $this->pageSeoDao = $pageSeoDao;
+        return $this->objectManager->get('Metaseo\\Metaseo\\Dao\\PageSeoDao')
+            ->setDataHandler($this->getDataHandler())
+            ->setPageTreeView($this->getPageTreeView());
+    }
 
-        return $this;
+    /**
+     * @return \TYPO3\CMS\Core\DataHandling\DataHandler
+     */
+    protected function getDataHandler()
+    {
+        return $this->objectManager->get('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+    }
+
+    /**
+     * @return \TYPO3\CMS\Backend\Tree\View\PageTreeView
+     */
+    protected function getPageTreeView()
+    {
+        return $this->objectManager->get('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
     }
 
     /**

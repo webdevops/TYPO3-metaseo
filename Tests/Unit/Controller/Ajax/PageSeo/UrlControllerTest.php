@@ -38,11 +38,7 @@ class UrlControllerTest extends AbstractPageSeoSimControllerTest
     {
         /** @var \Metaseo\Metaseo\Controller\Ajax\PageSeo\UrlController $subject */
         $subject = GeneralUtility::makeInstance('Metaseo\\Metaseo\\Controller\\Ajax\\PageSeo\\UrlController');
-        $subject
-            ->setObjectManager($this->getObjectManagerMock())
-            ->setPageSeoDao(
-                $this->getPageSeoDaoMock()
-            );
+        $subject->setObjectManager($this->getObjectManagerMock());
         return $subject;
     }
 }

@@ -38,11 +38,7 @@ class MetaDataControllerTest extends AbstractPageSeoControllerTest
     {
         /** @var \Metaseo\Metaseo\Controller\Ajax\PageSeo\MetaDataController $subject */
         $subject = GeneralUtility::makeInstance('Metaseo\\Metaseo\\Controller\\Ajax\\PageSeo\\MetaDataController');
-        $subject
-            ->setObjectManager($this->getObjectManagerMock())
-            ->setPageSeoDao(
-                $this->getPageSeoDaoMock()
-            );
+        $subject->setObjectManager($this->getObjectManagerMock());
         return $subject;
     }
 }

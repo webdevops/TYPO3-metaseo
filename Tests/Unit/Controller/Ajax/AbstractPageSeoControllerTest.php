@@ -109,6 +109,14 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
                 'Metaseo\\Metaseo\\DependencyInjection\\Utility\\HttpUtility',
                 $this->getHttpUtilityMock()
             ),
+            array(
+                'Metaseo\\Metaseo\\Dao\\PageSeoDao',
+                $this->getPageSeoDaoMock()
+            ),
+            array(
+                'TYPO3\\CMS\\Frontend\\Page\\PageRepository',
+                $this->getPageRepositoryMock()
+            ),
         );
         $objectManager = $this
             ->getMockBuilder('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')
