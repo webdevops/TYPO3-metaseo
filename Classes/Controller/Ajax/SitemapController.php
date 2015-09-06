@@ -36,14 +36,12 @@ use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 /**
  * TYPO3 Backend ajax module sitemap
  */
-class SitemapController extends AbstractAjaxController
+class SitemapController extends AbstractAjaxController implements SitemapInterface
 {
     const AJAX_PREFIX = 'tx_metaseo_controller_ajax_sitemap';
 
     /**
-     * @return array
-     *
-     * @throws AjaxException
+     * @inheritDoc
      */
     public function indexAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
     {
@@ -167,9 +165,7 @@ class SitemapController extends AbstractAjaxController
     }
 
     /**
-     * @return array
-     *
-     * @throws AjaxException
+     * @inheritDoc
      */
     public function blacklistAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
     {
@@ -221,9 +217,7 @@ class SitemapController extends AbstractAjaxController
     }
 
     /**
-     * @return array
-     *
-     * @throws AjaxException
+     * @inheritDoc
      */
     public function whitelistAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
     {
@@ -275,9 +269,7 @@ class SitemapController extends AbstractAjaxController
     }
 
     /**
-     * @return array
-     *
-     * @throws AjaxException
+     * @inheritDoc
      */
     public function deleteAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
     {
@@ -328,9 +320,7 @@ class SitemapController extends AbstractAjaxController
     }
 
     /**
-     * @return array
-     *
-     * @throws AjaxException
+     * @inheritDoc
      */
     public function deleteAllAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
     {
