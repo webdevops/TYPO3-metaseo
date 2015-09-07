@@ -153,7 +153,7 @@ MetaSeo.sitemap.grid = {
                                 failure: function (response) {
                                     response = Ext.decode(response.responseText);
                                     if (response && response.error) {
-                                        TYPO3.Flashmessage.display(TYPO3.Severity.error, '', Ext.util.Format.htmlEncode(response.error));
+                                        MetaSeo.flashMessage(MetaSeo.Severity.error, '', Ext.util.Format.htmlEncode(response.error));
                                         if (response.errorNumber) {
                                             console.log('ERROR: MetaSEO: ' + response.error + ' ' + response.errorNumber)
                                         }
@@ -213,7 +213,7 @@ MetaSeo.sitemap.grid = {
                                     failure: function (response) {
                                         response = Ext.decode(response.responseText);
                                         if (response && response.error) {
-                                            TYPO3.Flashmessage.display(TYPO3.Severity.error, '', Ext.util.Format.htmlEncode(response.error));
+                                            MetaSeo.flashMessage(MetaSeo.Severity.error, '', Ext.util.Format.htmlEncode(response.error));
                                             if (response.errorNumber) {
                                                 console.log('ERROR: MetaSEO: ' + response.error + ' ' + response.errorNumber)
                                             }
