@@ -24,43 +24,25 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-namespace Metaseo\Metaseo\Controller\Ajax\PageSeo;
+namespace Metaseo\Metaseo\Dao;
 
-use Metaseo\Metaseo\Controller\Ajax\AbstractPageSeoController;
+use Metaseo\Metaseo\Utility\DatabaseUtility;
+use TYPO3\CMS\Core\SingletonInterface;
 
-class MetaDataController extends AbstractPageSeoController
+class TemplateDao implements SingletonInterface
 {
-    const LIST_TYPE = 'metadata';
-
-    protected function initFieldList()
-    {
-        $this->fieldList = array(
-            'keywords',
-            'description',
-            'abstract',
-            'author',
-            'author_email',
-            'lastupdated',
-        );
-    }
-
     /**
-     * @inheritDoc
+     * @param integer[] array of page IDs to be checked for templates
+     *
+     * @return array of PIDs which have a template which is not deleted or hidden.
      */
-    protected function getIndex(array $page, $depth, $sysLanguage)
+    public function checkForTemplateByUidList($uidList)
     {
-        $list = $this->getPageSeoDao()->index($page, $depth, $sysLanguage, $this->fieldList);
-
-        unset($row);
-        foreach ($list as &$row) {
-            if (!empty($row['lastupdated'])) {
-                $row['lastupdated'] = date('Y-m-d', $row['lastupdated']);
-            } else {
-                $row['lastupdated'] = '';
-            }
-        }
-        unset($row);
-
-        return $list;
+        $query   = 'SELECT pid
+                          FROM sys_template
+                         WHERE pid IN (' . implode(',', $uidList) . ')
+                           AND deleted = 0
+                           AND hidden = 0';
+        return DatabaseUtility::getCol($query);
     }
 }

@@ -27,11 +27,11 @@
 namespace Metaseo\Metaseo\Controller\Ajax\PageSeo;
 
 use Metaseo\Metaseo\Controller\Ajax\AbstractPageSeoController;
-use Metaseo\Metaseo\Controller\Ajax\PageSeoInterface;
+use Metaseo\Metaseo\DependencyInjection\Utility\HttpUtility;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 
-class AdvancedController extends AbstractPageSeoController implements PageSeoInterface
+class AdvancedController extends AbstractPageSeoController
 {
     const LIST_TYPE = 'advanced';
 
@@ -51,9 +51,9 @@ class AdvancedController extends AbstractPageSeoController implements PageSeoInt
         if (empty($this->postVar['pid'])) {
 
             throw new AjaxException(
-                $this->translate('message.error.typo3_page_not_found'),
+                'message.error.typo3_page_not_found',
                 '[0x4FBF3C0E]',
-                self::HTTP_STATUS_BAD_REQUEST
+                HttpUtility::HTTP_STATUS_BAD_REQUEST
             );
         }
 
@@ -88,9 +88,9 @@ class AdvancedController extends AbstractPageSeoController implements PageSeoInt
         if (empty($this->postVar['pid']) || empty($this->postVar['metaTags'])) {
 
             throw new AjaxException(
-                $this->translate('message.error.typo3_page_not_found'),
+                'message.error.typo3_page_not_found',
                 '[0x4FBF3C0F]',
-                self::HTTP_STATUS_BAD_REQUEST
+                HttpUtility::HTTP_STATUS_BAD_REQUEST
             );
         }
 

@@ -26,132 +26,24 @@
 
 namespace Metaseo\Metaseo\Tests\Unit\Controller\Ajax\PageSeo;
 
-use Metaseo\Metaseo\Controller\Ajax\PageSeo\MetaDataController;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Metaseo\Metaseo\Tests\Unit\Controller\Ajax\AbstractPageSeoControllerTest;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class MetaDataControllerTest extends UnitTestCase
+class MetaDataControllerTest extends AbstractPageSeoControllerTest
 {
     /**
-     * @test
+     * @return \Metaseo\Metaseo\Controller\Ajax\PageSeo\MetaDataController
      */
-    public function testIndex()
+    protected function getSubject()
     {
-        $this->setGlobals();
-        $this->loginBackendUser();
-        $ajaxRequestHandler = $this->getAjaxRequestHandlerMock();
-        $ajaxRequestHandler
-            ->expects($this->exactly(1))
-            ->method('setContentFormat');
-        $ajaxRequestHandler
-            ->expects($this->exactly(1))
-            ->method('setContent');
-
-        $subject = new MetaDataController();
-        $subject
-            ->setObjectManager($this->getObjectManagerMock());
-        $subject
-            ->indexAction(array(), $ajaxRequestHandler);
+        /** @var \Metaseo\Metaseo\Controller\Ajax\PageSeo\MetaDataController $subject */
+        $subject = GeneralUtility::makeInstance('Metaseo\\Metaseo\\Controller\\Ajax\\PageSeo\\MetaDataController');
+        $subject->setObjectManager($this->getObjectManagerMock());
+        return $subject;
     }
 
-    /**
-     * @test
-     */
-    public function testUpdate()
+    protected function getUpdateField()
     {
-        $this->setGlobals();
-        $this->loginBackendUser();
-        $ajaxRequestHandler = $this->getAjaxRequestHandlerMock();
-        $ajaxRequestHandler
-            ->expects($this->exactly(1))
-            ->method('setContentFormat');
-        $ajaxRequestHandler
-            ->expects($this->exactly(1))
-            ->method('setContent');
-
-        $subject = new MetaDataController();
-        $subject
-            ->setObjectManager($this->getObjectManagerMock());
-        $subject
-            ->updateAction(array(), $ajaxRequestHandler);
-    }
-
-    /**
-     * @test
-     */
-    public function testUpdateRecursive()
-    {
-        $this->setGlobals();
-        $this->loginBackendUser();
-        $ajaxRequestHandler = $this->getAjaxRequestHandlerMock();
-        $ajaxRequestHandler
-            ->expects($this->exactly(1))
-            ->method('setContentFormat');
-        $ajaxRequestHandler
-            ->expects($this->exactly(1))
-            ->method('setContent');
-
-        $subject = new MetaDataController();
-        $subject
-            ->setObjectManager($this->getObjectManagerMock());
-        $subject
-            ->updateRecursiveAction(array(), $ajaxRequestHandler);
-    }
-
-    protected function getAjaxRequestHandlerMock()
-    {
-        return $this
-            ->getMockBuilder('TYPO3\CMS\Core\Http\AjaxRequestHandler')
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    /**
-     * @return \TYPO3\CMS\Extbase\Object\ObjectManager
-     */
-    protected function getObjectManagerMock()
-    {
-        return $this
-            ->getMockBuilder('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')
-            ->getMock();
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\FormProtection\BackendFormProtection
-     */
-    protected function getFormProtectionMock()
-    {
-        return $this
-            ->getMockBuilder('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection')
-            ->getMock();
-    }
-
-    protected function loginBackendUser()
-    {
-        $GLOBALS['BE_USER'] = $this->getMock(
-            'TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication',
-            array(),
-            array(),
-            '',
-            false
-        );
-        $GLOBALS['BE_USER']->user = array('uid' => $this->getUniqueId());
-        $GLOBALS['TYPO3_DB'] = $this->getMock(
-            'TYPO3\\CMS\\Core\\Database\\DatabaseConnection',
-            array(),
-            array(),
-            '',
-            false
-        );
-    }
-
-    protected function setGlobals()
-    {
-        $GLOBALS['LANG'] = $this
-            ->getMockBuilder('TYPO3\\CMS\\Lang\\LanguageService')
-            ->getMock();
-        $GLOBALS['TYPO3_DB'] = $this
-            ->getMockBuilder('TYPO3\\CMS\\Core\\Database\\DatabaseConnection')
-            ->setConstructorArgs(array())
-            ->getMock();
+        return 'keywords';
     }
 }

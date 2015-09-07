@@ -27,9 +27,8 @@
 namespace Metaseo\Metaseo\Controller\Ajax\PageSeo;
 
 use Metaseo\Metaseo\Controller\Ajax\AbstractPageSeoController;
-use Metaseo\Metaseo\Controller\Ajax\PageSeoInterface;
 
-class SearchEnginesController extends AbstractPageSeoController implements PageSeoInterface
+class SearchEnginesController extends AbstractPageSeoController
 {
     const LIST_TYPE = 'searchengines';
 

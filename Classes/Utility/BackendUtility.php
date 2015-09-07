@@ -26,9 +26,6 @@
 
 namespace Metaseo\Metaseo\Utility;
 
-//use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility; //for code in comments. don't remove.
-//use TYPO3\CMS\Backend\Routing\UriBuilder; //for code in comments. don't remove.
-
 /**
  * Backend utility
  */
@@ -79,43 +76,4 @@ class BackendUtility
 
         return $cache;
     }
-
-    //    /**
-    //     * Returns the Ajax URL for a given AjaxID including a CSRF token.
-    //     *
-    //     * This function is mostly copied from the core, because it should not be used directly. Usable at ~7.4+
-    //     * You need to test it at first usage in this project and eventually use the latest version from the core.
-    //     * See #147 to learn about TYPO3's deprecation concept and our refactoring concept.
-    //     *
-    //     * Ajax URLs of all registered backend Ajax handlers are automatically published
-    //     * to JavaScript inline settings: TYPO3.settings.ajaxUrls['ajaxId']
-    //     *
-    //     * @param string $ajaxIdentifier Identifier of the AJAX callback
-    //     * @param array $urlParameters URL parameters that should be added as key value pairs
-    //     * @param bool $returnAbsoluteUrl If set to TRUE, the URL returned will be absolute,
-    //     *                                $backPathOverride will be ignored in this case
-    //     *
-    //     * @return string Calculated URL
-    //     * @internal
-    //     */
-    //    public static function getAjaxUrl(
-    //        $ajaxIdentifier,
-    //        array $urlParameters = array(),
-    //        $returnAbsoluteUrl = false
-    //    ) {
-    //        return self::getUriBuilder()
-    //            ->buildUriFromAjaxId(
-    //                $ajaxIdentifier,
-    //                $urlParameters,
-    //                $returnAbsoluteUrl ? UriBuilder::ABSOLUTE_URL : UriBuilder::ABSOLUTE_PATH
-    //            );
-    //    }
-
-    //    /**
-    //     * @return UriBuilder
-    //     */
-    //    public static function getUriBuilder()
-    //    {
-    //        return Typo3GeneralUtility::makeInstance('\\TYPO3\\CMS\\Backend\\Routing\\UriBuilder');
-    //    }
 }

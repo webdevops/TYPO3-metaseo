@@ -24,43 +24,26 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-namespace Metaseo\Metaseo\Controller\Ajax\PageSeo;
+namespace Metaseo\Metaseo\Tests\Unit\Controller\Ajax\PageSeo;
 
-use Metaseo\Metaseo\Controller\Ajax\AbstractPageSeoController;
+use Metaseo\Metaseo\Tests\Unit\Controller\Ajax\AbstractPageSeoControllerTest;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class MetaDataController extends AbstractPageSeoController
+class SearchEnginesControllerTest extends AbstractPageSeoControllerTest
 {
-    const LIST_TYPE = 'metadata';
-
-    protected function initFieldList()
+    /**
+     * @return \Metaseo\Metaseo\Controller\Ajax\PageSeo\GeoController
+     */
+    protected function getSubject()
     {
-        $this->fieldList = array(
-            'keywords',
-            'description',
-            'abstract',
-            'author',
-            'author_email',
-            'lastupdated',
-        );
+        /** @var \Metaseo\Metaseo\Controller\Ajax\PageSeo\GeoController $subject */
+        $subject = GeneralUtility::makeInstance('Metaseo\\Metaseo\\Controller\\Ajax\\PageSeo\\SearchEnginesController');
+        $subject->setObjectManager($this->getObjectManagerMock());
+        return $subject;
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function getIndex(array $page, $depth, $sysLanguage)
+    protected function getUpdateField()
     {
-        $list = $this->getPageSeoDao()->index($page, $depth, $sysLanguage, $this->fieldList);
-
-        unset($row);
-        foreach ($list as &$row) {
-            if (!empty($row['lastupdated'])) {
-                $row['lastupdated'] = date('Y-m-d', $row['lastupdated']);
-            } else {
-                $row['lastupdated'] = '';
-            }
-        }
-        unset($row);
-
-        return $list;
+        return 'tx_metaseo_is_exclude';
     }
 }

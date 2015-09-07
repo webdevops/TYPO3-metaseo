@@ -26,15 +26,13 @@
 
 namespace Metaseo\Metaseo\Controller\Ajax\PageSeo;
 
-use Metaseo\Metaseo\Controller\Ajax\AbstractPageSeoController;
-use Metaseo\Metaseo\Controller\Ajax\PageSeoSimulateInterface;
+use Metaseo\Metaseo\Controller\Ajax\AbstractPageSeoSimController;
+use Metaseo\Metaseo\DependencyInjection\Utility\HttpUtility;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use Metaseo\Metaseo\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
-class UrlController extends AbstractPageSeoController implements PageSeoSimulateInterface
+class UrlController extends AbstractPageSeoSimController
 {
     const LIST_TYPE = 'url';
 
@@ -56,45 +54,27 @@ class UrlController extends AbstractPageSeoController implements PageSeoSimulate
     /**
      * @inheritDoc
      */
-    public function simulateAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
-    {
-        try {
-            $this->init();
-            $ajaxObj->setContent($this->executeSimulate());
-        } catch (\Exception $exception) {
-            $this->ajaxExceptionHandler($exception, $ajaxObj);
-        }
-
-        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
-        $ajaxObj->render();
-    }
-
-    /**
-     * @return array
-     *
-     * @throws AjaxException
-     */
-    public function executeSimulate()
+    protected function executeSimulate()
     {
         $pid = (int)$this->postVar['pid'];
 
         if (empty($pid)) {
 
             throw new AjaxException(
-                $this->translate('message.error.typo3_page_not_found'),
+                'message.error.typo3_page_not_found',
                 '[0x4FBF3C0A]',
-                self::HTTP_STATUS_BAD_REQUEST
+                HttpUtility::HTTP_STATUS_BAD_REQUEST
             );
         }
 
-        $page = BackendUtility::getRecord('pages', $pid);
+        $page = $this->getPageSeoDao()->getPageById($pid);
 
         if (empty($page)) {
 
             throw new AjaxException(
-                $this->translate('message.error.typo3_page_not_found'),
+                'message.error.typo3_page_not_found',
                 '[0x4FBF3C0B]',
-                self::HTTP_STATUS_BAD_REQUEST
+                HttpUtility::HTTP_STATUS_BAD_REQUEST
             );
         }
 
@@ -105,9 +85,9 @@ class UrlController extends AbstractPageSeoController implements PageSeoSimulate
             $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['disablePathCache']     = 1;
         }
 
-        $this->initTsfe($page, null, $page, null);
+        $this->getFrontendUtility()->initTsfe($page, null, $page, null);
 
-        $ret = $GLOBALS['TSFE']->cObj->typolink_URL(array('parameter' => $page['uid']));
+        $ret = $this->getFrontendUtility()->getTypoLinkUrl(array('parameter' => $page['uid']));
 
         if (!empty($ret)) {
             $ret = GeneralUtility::fullUrl($ret);
@@ -116,9 +96,9 @@ class UrlController extends AbstractPageSeoController implements PageSeoSimulate
         if (empty($ret)) {
 
             throw new AjaxException(
-                $this->translate('message.error.url_generation_failed'),
+                'message.error.url_generation_failed',
                 '[0x4FBF3C01]',
-                self::HTTP_STATUS_BAD_REQUEST
+                HttpUtility::HTTP_STATUS_BAD_REQUEST
             );
         }
 

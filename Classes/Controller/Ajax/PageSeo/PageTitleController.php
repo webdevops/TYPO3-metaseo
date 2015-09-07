@@ -26,10 +26,12 @@
 
 namespace Metaseo\Metaseo\Controller\Ajax\PageSeo;
 
-use Metaseo\Metaseo\Controller\Ajax\AbstractPageSeoController;
-use Metaseo\Metaseo\Controller\Ajax\PageSeoInterface;
+use Metaseo\Metaseo\Controller\Ajax\AbstractPageSeoSimController;
+use Metaseo\Metaseo\DependencyInjection\Utility\HttpUtility;
+use Metaseo\Metaseo\Exception\Ajax\AjaxException;
+use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
 
-class PageTitleController extends AbstractPageSeoController implements PageSeoInterface
+class PageTitleController extends AbstractPageSeoSimController
 {
     const LIST_TYPE = 'pagetitle';
 
@@ -43,6 +45,45 @@ class PageTitleController extends AbstractPageSeoController implements PageSeoIn
             'tx_metaseo_pagetitle_rel',
             'tx_metaseo_pagetitle_prefix',
             'tx_metaseo_pagetitle_suffix',
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function executeSimulate()
+    {
+        $pid = (int)$this->postVar['pid'];
+
+        if (empty($pid)) {
+
+            throw new AjaxException(
+                'message.error.typo3_page_not_found',
+                '[0x4FBF3C08]',
+                HttpUtility::HTTP_STATUS_BAD_REQUEST
+            );
+        }
+
+        $page = $this->getPageSeoDao()->getPageById($pid);
+
+        if (empty($page)) {
+
+            throw new AjaxException(
+                'message.error.typo3_page_not_found',
+                '[0x4FBF3C09]',
+                HttpUtility::HTTP_STATUS_BAD_REQUEST
+            );
+        }
+
+        // Load TYPO3 classes
+        $this->getFrontendUtility()->initTsfe($page, null, $page, null);
+
+        $pagetitle = Typo3GeneralUtility::makeInstance(
+            'Metaseo\\Metaseo\\Page\\Part\\PagetitlePart'
+        );
+
+        return array(
+            'title' => $pagetitle->main($page['title']),
         );
     }
 }

@@ -24,43 +24,31 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-namespace Metaseo\Metaseo\Controller\Ajax\PageSeo;
+namespace Metaseo\Metaseo\Tests\Unit\Controller\Ajax;
 
-use Metaseo\Metaseo\Controller\Ajax\AbstractPageSeoController;
+use Exception;
 
-class MetaDataController extends AbstractPageSeoController
+abstract class AbstractPageSeoSimControllerTest extends AbstractPageSeoControllerTest
 {
-    const LIST_TYPE = 'metadata';
-
-    protected function initFieldList()
+    /**
+     * @test
+     */
+    public function testSimulate()
     {
-        $this->fieldList = array(
-            'keywords',
-            'description',
-            'abstract',
-            'author',
-            'author_email',
-            'lastupdated',
-        );
+        $this->expectedDaoMethod = 'getPageById';
+        $subject = $this->getSubject();
+        $subject->simulateAction(array(), $this->getAjaxRequestHandlerMock());
     }
 
     /**
-     * @inheritDoc
+     * @return \Metaseo\Metaseo\Controller\Ajax\PageSeoSimulateInterface
+     *
+     * @throws Exception
      */
-    protected function getIndex(array $page, $depth, $sysLanguage)
+    protected function getSubject()
     {
-        $list = $this->getPageSeoDao()->index($page, $depth, $sysLanguage, $this->fieldList);
-
-        unset($row);
-        foreach ($list as &$row) {
-            if (!empty($row['lastupdated'])) {
-                $row['lastupdated'] = date('Y-m-d', $row['lastupdated']);
-            } else {
-                $row['lastupdated'] = '';
-            }
-        }
-        unset($row);
-
-        return $list;
+        //there's no way to overwrite an abstract function with an abstract function just to specialize type hints.
+        //see https://bugs.php.net/bug.php?id=36601
+        throw new Exception('You need to overwrite this function!');
     }
 }

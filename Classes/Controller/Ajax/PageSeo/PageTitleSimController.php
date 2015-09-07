@@ -27,14 +27,8 @@
 namespace Metaseo\Metaseo\Controller\Ajax\PageSeo;
 
 use Metaseo\Metaseo\Controller\Ajax\AbstractPageSeoController;
-use Metaseo\Metaseo\Controller\Ajax\PageSeoSimulateInterface;
-use Metaseo\Metaseo\Exception\Ajax\AjaxException;
-use Metaseo\Metaseo\Utility\DatabaseUtility;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
-use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
 
-class PageTitleSimController extends AbstractPageSeoController implements PageSeoSimulateInterface
+class PageTitleSimController extends AbstractPageSeoController
 {
     const LIST_TYPE = 'pagetitlesim';
 
@@ -57,7 +51,7 @@ class PageTitleSimController extends AbstractPageSeoController implements PageSe
      */
     protected function getIndex(array $page, $depth, $sysLanguage)
     {
-        $list = $this->index($page, $depth, $sysLanguage, $this->fieldList);
+        $list = $this->getPageSeoDao()->index($page, $depth, $sysLanguage, $this->fieldList);
 
         $uidList = array_keys($list);
 
@@ -65,12 +59,7 @@ class PageTitleSimController extends AbstractPageSeoController implements PageSe
             // Check which pages have templates (for caching and faster building)
             $this->templatePidList = array();
 
-            $query   = 'SELECT pid
-                          FROM sys_template
-                         WHERE pid IN (' . implode(',', $uidList) . ')
-                           AND deleted = 0
-                           AND hidden = 0';
-            $pidList = DatabaseUtility::getCol($query);
+            $pidList = $this->getTemplateDao()->checkForTemplateByUidList($uidList);
             foreach ($pidList as $pid) {
                 $this->templatePidList[$pid] = $pid;
             }
@@ -94,7 +83,7 @@ class PageTitleSimController extends AbstractPageSeoController implements PageSe
      */
     protected function simulateTitle(array $page, $sysLanguage)
     {
-        $this->initTsfe($page, null, $page, null, $sysLanguage);
+        $this->getFrontendUtility()->initTsfe($page, null, $page, null, $sysLanguage);
 
         $pagetitle = $this->objectManager->get('Metaseo\\Metaseo\\Page\\Part\\PagetitlePart');
         $ret       = $pagetitle->main($page['title']);
@@ -103,59 +92,10 @@ class PageTitleSimController extends AbstractPageSeoController implements PageSe
     }
 
     /**
-     * @inheritDoc
+     * @return \Metaseo\Metaseo\Dao\TemplateDao
      */
-    public function simulateAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
+    protected function getTemplateDao()
     {
-        try {
-            $this->init();
-            $ajaxObj->setContent($this->executeSimulate());
-        } catch (\Exception $exception) {
-            $this->ajaxExceptionHandler($exception, $ajaxObj);
-        }
-
-        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
-        $ajaxObj->render();
-    }
-
-    /**
-     * @return array
-     *
-     * @throws AjaxException
-     */
-    protected function executeSimulate()
-    {
-        $pid = (int)$this->postVar['pid'];
-
-        if (empty($pid)) {
-
-            throw new AjaxException(
-                $this->translate('message.error.typo3_page_not_found'),
-                '[0x4FBF3C08]',
-                self::HTTP_STATUS_BAD_REQUEST
-            );
-        }
-
-        $page = BackendUtility::getRecord('pages', $pid);
-
-        if (empty($page)) {
-
-            throw new AjaxException(
-                $this->translate('message.error.typo3_page_not_found'),
-                '[0x4FBF3C09]',
-                self::HTTP_STATUS_BAD_REQUEST
-            );
-        }
-
-        // Load TYPO3 classes
-        $this->initTsfe($page, null, $page, null);
-
-        $pagetitle = Typo3GeneralUtility::makeInstance(
-            'Metaseo\\Metaseo\\Page\\Part\\PagetitlePart'
-        );
-
-        return array(
-            'title' => $pagetitle->main($page['title']),
-        );
+        return $this->objectManager->get('Metaseo\\Metaseo\\Dao\\TemplateDao');
     }
 }

@@ -24,43 +24,32 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-namespace Metaseo\Metaseo\Controller\Ajax\PageSeo;
+namespace Metaseo\Metaseo\Controller\Ajax;
 
-use Metaseo\Metaseo\Controller\Ajax\AbstractPageSeoController;
+use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 
-class MetaDataController extends AbstractPageSeoController
+abstract class AbstractPageSeoSimController extends AbstractPageSeoController implements PageSeoSimulateInterface
 {
-    const LIST_TYPE = 'metadata';
-
-    protected function initFieldList()
-    {
-        $this->fieldList = array(
-            'keywords',
-            'description',
-            'abstract',
-            'author',
-            'author_email',
-            'lastupdated',
-        );
-    }
-
     /**
      * @inheritDoc
      */
-    protected function getIndex(array $page, $depth, $sysLanguage)
+    public function simulateAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
     {
-        $list = $this->getPageSeoDao()->index($page, $depth, $sysLanguage, $this->fieldList);
-
-        unset($row);
-        foreach ($list as &$row) {
-            if (!empty($row['lastupdated'])) {
-                $row['lastupdated'] = date('Y-m-d', $row['lastupdated']);
-            } else {
-                $row['lastupdated'] = '';
-            }
+        try {
+            $this->init();
+            $ajaxObj->setContent($this->executeSimulate());
+        } catch (\Exception $exception) {
+            $this->ajaxExceptionHandler($exception, $ajaxObj);
         }
-        unset($row);
 
-        return $list;
+        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
+        $ajaxObj->render();
     }
+
+    /**
+     * @return array
+     *
+     * @throws \Metaseo\Metaseo\Exception\Ajax\AjaxException
+     */
+    abstract protected function executeSimulate();
 }
