@@ -41,4 +41,9 @@ class PageTitleSimControllerTest extends AbstractPageSeoControllerTest
         $subject->setObjectManager($this->getObjectManagerMock());
         return $subject;
     }
+
+    protected function getUpdateField()
+    {
+        return 'title';
+    }
 }

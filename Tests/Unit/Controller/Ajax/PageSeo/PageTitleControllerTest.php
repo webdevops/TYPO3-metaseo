@@ -41,4 +41,9 @@ class PageTitleControllerTest extends AbstractPageSeoSimControllerTest
         $subject->setObjectManager($this->getObjectManagerMock());
         return $subject;
     }
+
+    protected function getUpdateField()
+    {
+        return 'tx_metaseo_pagetitle_prefix';
+    }
 }

@@ -347,8 +347,8 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         return $this
             ->objectManager
             ->get('Metaseo\\Metaseo\\Dao\\PageSeoDao')
-            ->setDataHandler($this->getDataHandler())
-            ->setPageTreeView($this->getPageTreeView());
+            ->setPageTreeView($this->getPageTreeView())
+            ->setDataHandler($this->getDataHandler());
     }
 
     /**

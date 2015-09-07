@@ -90,6 +90,24 @@ class FrontendUtility implements SingletonInterface
     }
 
     /**
+     * @param array $conf
+     *
+     * @return string
+     */
+    public function getTypoLinkUrl(array $conf)
+    {
+        return $this->getTSFE()->cObj->typolink_URL($conf);
+    }
+
+    /**
+     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     */
+    protected function getTSFE()
+    {
+        return $GLOBALS['TSFE'];
+    }
+
+    /**
      * @param PageRepository $pageRepository
      *
      * @return $this

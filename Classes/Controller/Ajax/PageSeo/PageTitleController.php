@@ -29,7 +29,6 @@ namespace Metaseo\Metaseo\Controller\Ajax\PageSeo;
 use Metaseo\Metaseo\Controller\Ajax\AbstractPageSeoSimController;
 use Metaseo\Metaseo\DependencyInjection\Utility\HttpUtility;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
 
 class PageTitleController extends AbstractPageSeoSimController
@@ -65,7 +64,7 @@ class PageTitleController extends AbstractPageSeoSimController
             );
         }
 
-        $page = BackendUtility::getRecord('pages', $pid);
+        $page = $this->getPageSeoDao()->getPageById($pid);
 
         if (empty($page)) {
 

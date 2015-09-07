@@ -41,4 +41,12 @@ class UrlControllerTest extends AbstractPageSeoSimControllerTest
         $subject->setObjectManager($this->getObjectManagerMock());
         return $subject;
     }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getUpdateField()
+    {
+        return 'title';
+    }
 }

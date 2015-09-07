@@ -30,7 +30,6 @@ use Metaseo\Metaseo\Controller\Ajax\AbstractPageSeoSimController;
 use Metaseo\Metaseo\DependencyInjection\Utility\HttpUtility;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use Metaseo\Metaseo\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 class UrlController extends AbstractPageSeoSimController
@@ -68,7 +67,7 @@ class UrlController extends AbstractPageSeoSimController
             );
         }
 
-        $page = BackendUtility::getRecord('pages', $pid);
+        $page = $this->getPageSeoDao()->getPageById($pid);
 
         if (empty($page)) {
 
@@ -88,7 +87,7 @@ class UrlController extends AbstractPageSeoSimController
 
         $this->getFrontendUtility()->initTsfe($page, null, $page, null);
 
-        $ret = $GLOBALS['TSFE']->cObj->typolink_URL(array('parameter' => $page['uid']));
+        $ret = $this->getFrontendUtility()->getTypoLinkUrl(array('parameter' => $page['uid']));
 
         if (!empty($ret)) {
             $ret = GeneralUtility::fullUrl($ret);

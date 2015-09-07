@@ -41,4 +41,9 @@ class SearchEnginesControllerTest extends AbstractPageSeoControllerTest
         $subject->setObjectManager($this->getObjectManagerMock());
         return $subject;
     }
+
+    protected function getUpdateField()
+    {
+        return 'tx_metaseo_is_exclude';
+    }
 }

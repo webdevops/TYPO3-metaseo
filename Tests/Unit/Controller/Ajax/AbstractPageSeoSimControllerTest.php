@@ -35,7 +35,7 @@ abstract class AbstractPageSeoSimControllerTest extends AbstractPageSeoControlle
      */
     public function testSimulate()
     {
-        $this->expectedDaoMethod = 'updatePageTableField';
+        $this->expectedDaoMethod = 'getPageById';
         $subject = $this->getSubject();
         $subject->simulateAction(array(), $this->getAjaxRequestHandlerMock());
     }
