@@ -306,7 +306,7 @@ MetaSeo.overview.grid = {
                                         var response = Ext.decode(response.responseText);
 
                                         if ( response && response.error ) {
-                                            TYPO3.Flashmessage.display(TYPO3.Severity.error, '', Ext.util.Format.htmlEncode(response.error) );
+                                            MetaSeo.flashMessage(MetaSeo.Severity.error, '', Ext.util.Format.htmlEncode(response.error) );
                                         }
 
                                         grid.getStore().load();
@@ -343,7 +343,7 @@ MetaSeo.overview.grid = {
                                         response = Ext.decode(response.responseText);
 
                                         if (response && response.error) {
-                                            TYPO3.Flashmessage.display(TYPO3.Severity.error, '', Ext.util.Format.htmlEncode(response.error));
+                                            MetaSeo.flashMessage(MetaSeo.Severity.error, '', Ext.util.Format.htmlEncode(response.error));
                                         }
 
                                         grid.getStore().load();
@@ -915,11 +915,11 @@ MetaSeo.overview.grid = {
                                 me.grid.loadMask.hide();
 
                                 if (response && response.error) {
-                                    TYPO3.Flashmessage.display(TYPO3.Severity.error, '', Ext.util.Format.htmlEncode(response.error));
+                                    MetaSeo.flashMessage(MetaSeo.Severity.error, '', Ext.util.Format.htmlEncode(response.error));
                                 }
 
                                 if (response && response.url) {
-                                    TYPO3.Flashmessage.display(TYPO3.Severity.information, '', Ext.util.Format.htmlEncode(response.url));
+                                    MetaSeo.flashMessage(MetaSeo.Severity.info, '', Ext.util.Format.htmlEncode(response.url));
                                 }
                             };
 
@@ -1002,11 +1002,11 @@ MetaSeo.overview.grid = {
                             me.grid.loadMask.hide();
 
                             if (response && response.error) {
-                                TYPO3.Flashmessage.display(TYPO3.Severity.error, '', Ext.util.Format.htmlEncode(response.error));
+                                MetaSeo.flashMessage(MetaSeo.Severity.error, '', Ext.util.Format.htmlEncode(response.error));
                             }
 
                             if (response && response.title) {
-                                TYPO3.Flashmessage.display(TYPO3.Severity.information, '', Ext.util.Format.htmlEncode(response.title));
+                                MetaSeo.flashMessage(MetaSeo.Severity.info, '', Ext.util.Format.htmlEncode(response.title));
                             }
                         };
                         var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.overview.conf.ajaxController + '::simulate'];
