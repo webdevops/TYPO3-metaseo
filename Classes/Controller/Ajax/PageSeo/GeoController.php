@@ -27,9 +27,8 @@
 namespace Metaseo\Metaseo\Controller\Ajax\PageSeo;
 
 use Metaseo\Metaseo\Controller\Ajax\AbstractPageSeoController;
-use Metaseo\Metaseo\Controller\Ajax\PageSeoInterface;
 
-class GeoController extends AbstractPageSeoController implements PageSeoInterface
+class GeoController extends AbstractPageSeoController
 {
     const LIST_TYPE = 'geo';
 

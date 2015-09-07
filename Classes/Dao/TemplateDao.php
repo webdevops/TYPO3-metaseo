@@ -27,8 +27,9 @@
 namespace Metaseo\Metaseo\Dao;
 
 use Metaseo\Metaseo\Utility\DatabaseUtility;
+use TYPO3\CMS\Core\SingletonInterface;
 
-class TemplateDao
+class TemplateDao implements SingletonInterface
 {
     /**
      * @param integer[] array of page IDs to be checked for templates

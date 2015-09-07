@@ -27,13 +27,12 @@
 namespace Metaseo\Metaseo\Controller\Ajax\PageSeo;
 
 use Metaseo\Metaseo\Controller\Ajax\AbstractPageSeoSimController;
-use Metaseo\Metaseo\Controller\Ajax\PageSeoSimulateInterface;
 use Metaseo\Metaseo\DependencyInjection\Utility\HttpUtility;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
 
-class PageTitleController extends AbstractPageSeoSimController implements PageSeoSimulateInterface
+class PageTitleController extends AbstractPageSeoSimController
 {
     const LIST_TYPE = 'pagetitle';
 

@@ -27,14 +27,13 @@
 namespace Metaseo\Metaseo\Controller\Ajax\PageSeo;
 
 use Metaseo\Metaseo\Controller\Ajax\AbstractPageSeoSimController;
-use Metaseo\Metaseo\Controller\Ajax\PageSeoSimulateInterface;
 use Metaseo\Metaseo\DependencyInjection\Utility\HttpUtility;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use Metaseo\Metaseo\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
-class UrlController extends AbstractPageSeoSimController implements PageSeoSimulateInterface
+class UrlController extends AbstractPageSeoSimController
 {
     const LIST_TYPE = 'url';
 
