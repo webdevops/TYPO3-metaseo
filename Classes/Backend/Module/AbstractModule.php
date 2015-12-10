@@ -42,13 +42,26 @@ abstract class AbstractModule extends ActionController
      * Backend Form Protection object
      *
      * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection
-     * @inject
      */
     protected $formProtection;
 
     // ########################################################################
     // Methods
     // ########################################################################
+
+    /**
+     * Initializes the controller before invoking an action method.
+     *
+     * Override this method to solve tasks which all actions have in
+     * common.
+     *
+     * @return void
+     * @api
+     */
+    protected function initializeAction()
+    {
+        $this->formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
+    }
 
     /**
      * Translate list
