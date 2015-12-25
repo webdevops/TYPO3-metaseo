@@ -163,4 +163,10 @@ plugin.metaseo {
 
     # cat=plugin.metaseo.sitemap/page/04; type=int+; label= Default expiration: Sitemap entry expiration in days
     sitemap.expiration = 60
+
+    # cat=plugin.metaseo.sitemap/index/01; type=boolean; label= Index not static cacheable pages: Allow to index not static cacheable pages
+    sitemap.index.allowNoStaticCachable = 0
+
+    # cat=plugin.metaseo.sitemap/index/01; type=boolean; label= Index no_cache pages: Allow to index no_cache pages
+    sitemap.index.allowNoCache = 0
 }

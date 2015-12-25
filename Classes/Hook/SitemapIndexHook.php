@@ -262,7 +262,13 @@ abstract class SitemapIndexHook implements SingletonInterface
         // Basic checks
         // ############################
 
-        if (!FrontendUtility::isCacheable()) {
+        $cacheConf = array(
+            'allowNoStaticCachable' => (bool)$this->conf['sitemap.']['index.']['allowNoStaticCachable'],
+            'allowNoCache'          => (bool)$this->conf['sitemap.']['index.']['allowNoCache']
+        );
+
+
+        if (!FrontendUtility::isCacheable($cacheConf)) {
             return false;
         }
 
