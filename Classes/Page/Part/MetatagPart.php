@@ -1335,7 +1335,6 @@ class MetatagPart extends AbstractPart
                 // Content object (eg. TEXT)
                 $ogTagValue = $this->cObj->cObjGetSingle(
                     $tsSetupSeoOg[$ogTagName],
-                    $tsSetupSeoOg[$ogTagName],
                     $tsSetupSeoOg[$ogTagName . '.']
                 );
             }
