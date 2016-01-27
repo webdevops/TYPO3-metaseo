@@ -79,7 +79,7 @@ class SitemapUtility
      *
      * @param   array $pageData page information
      */
-    public static function index($pageData)
+    public static function index(array $pageData)
     {
         static $cache = array();
 
@@ -249,10 +249,10 @@ class SitemapUtility
         $query = 'SELECT ts.*
                     FROM tx_metaseo_sitemap ts
                             INNER JOIN pages p
-                              ON	p.uid = ts.page_uid
-                                AND	p.deleted = 0
-                                AND	p.hidden = 0
-                                AND	p.tx_metaseo_is_exclude = 0
+                              ON    p.uid = ts.page_uid
+                                AND p.deleted = 0
+                                AND p.hidden = 0
+                                AND p.tx_metaseo_is_exclude = 0
                                 AND ' . DatabaseUtility::conditionNotIn('p.doktype', self::getDoktypeBlacklist()) . '
                    WHERE ts.page_rootpid = ' . (int)$rootPid . '
                      AND ts.is_blacklisted = 0';

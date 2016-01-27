@@ -27,6 +27,13 @@
 namespace Metaseo\Metaseo\Controller;
 
 use Metaseo\Metaseo\Backend\Module\AbstractStandardModule;
+use Metaseo\Metaseo\Controller\Ajax\AbstractPageSeoController;
+use Metaseo\Metaseo\Controller\Ajax\PageSeo\GeoController;
+use Metaseo\Metaseo\Controller\Ajax\PageSeo\MetaDataController;
+use Metaseo\Metaseo\Controller\Ajax\PageSeo\PageTitleController;
+use Metaseo\Metaseo\Controller\Ajax\PageSeo\PageTitleSimController;
+use Metaseo\Metaseo\Controller\Ajax\PageSeo\SearchEnginesController;
+use Metaseo\Metaseo\Controller\Ajax\PageSeo\UrlController;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
@@ -52,7 +59,47 @@ class BackendPageSeoController extends AbstractStandardModule
      */
     public function mainAction()
     {
-        $this->handleSubAction('metadata');
+        $this->handleSubAction(MetaDataController::LIST_TYPE);
+    }
+
+    /**
+     * Geo action
+     */
+    public function geoAction()
+    {
+        $this->handleSubAction(GeoController::LIST_TYPE);
+    }
+
+    /**
+     * searchengines action
+     */
+    public function searchenginesAction()
+    {
+        $this->handleSubAction(SearchEnginesController::LIST_TYPE);
+    }
+
+    /**
+     * url action
+     */
+    public function urlAction()
+    {
+        $this->handleSubAction(UrlController::LIST_TYPE);
+    }
+
+    /**
+     * pagetitle action
+     */
+    public function pagetitleAction()
+    {
+        $this->handleSubAction(PageTitleController::LIST_TYPE);
+    }
+
+    /**
+     * pagetitlesim action
+     */
+    public function pagetitlesimAction()
+    {
+        $this->handleSubAction(PageTitleSimController::LIST_TYPE);
     }
 
     /**
@@ -146,10 +193,14 @@ class BackendPageSeoController extends AbstractStandardModule
 
         $realUrlAvailable = ExtensionManagementUtility::isLoaded('realurl');
 
+        $ajaxController = AbstractPageSeoController::AJAX_PREFIX . $listType;
+
+        if (!array_key_exists($ajaxController, AbstractPageSeoController::getBackendAjaxClassNames())) {
+            throw new \RuntimeException('Ajax controller with this name was not registered by MetaSEO.');
+        }
 
         $metaSeoConf = array(
-            'sessionToken'     => $this->sessionToken('metaseo_metaseo_backend_ajax_pageajax'),
-            'ajaxController'   => $this->ajaxControllerUrl('tx_metaseo_backend_ajax::page'),
+            'ajaxController'   => $ajaxController,
             'pid'              => (int)$pageId,
             'renderTo'         => 'tx-metaseo-sitemap-grid',
             'pagingSize'       => 50,
@@ -238,45 +289,5 @@ class BackendPageSeoController extends AbstractStandardModule
             MetaSeo.overview.conf.lang = ' . json_encode($metaSeoLang) . ';
         '
         );
-    }
-
-    /**
-     * Geo action
-     */
-    public function geoAction()
-    {
-        $this->handleSubAction('geo');
-    }
-
-    /**
-     * searchengines action
-     */
-    public function searchenginesAction()
-    {
-        $this->handleSubAction('searchengines');
-    }
-
-    /**
-     * url action
-     */
-    public function urlAction()
-    {
-        $this->handleSubAction('url');
-    }
-
-    /**
-     * pagetitle action
-     */
-    public function pagetitleAction()
-    {
-        $this->handleSubAction('pagetitle');
-    }
-
-    /**
-     * pagetitle action
-     */
-    public function pagetitlesimAction()
-    {
-        $this->handleSubAction('pagetitlesim');
     }
 }

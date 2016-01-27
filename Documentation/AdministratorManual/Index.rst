@@ -22,35 +22,35 @@ Installation
 Indexed Sitemap
 ---------------
 
-The sitemap will automatically collect all cacheable sites and provides a xml- and plaintext-output – that's why it is “indexed”.
+The sitemap will automatically collect all cacheable sites and provides a XML- and plaintext-output – that's why it is “indexed”.
 
 The XML-Sitemap (eg. for Google) is available with: index.php?type=841132
 The TXT-Sitemap is available with: index.php?type=841131
 
-If you have more than one tree in your TYPO3 you will have to add the root-PID to your Sitemap, eg:
+If you have more than one tree in your TYPO3 you will have to add the root-PID to your Sitemap, e.g.:
 
 - Tree #1 with PID 123: index.php?id=123&type=841132
 - Tree #2 with PID 234: index.php?id=234&type=841132
 
-If you have also enabled “sitemap_ObeySysLanguage” in the extension configuration  you also have to add the language-id for your Sitemap - eg. for seperated language-domain eg. example.com (only english sites) and example.de (only german sites).
+If you have also enabled “sitemap_ObeySysLanguage” in the extension configuration you also have to add the language-id for your Sitemap - eg. for separated language-domain e.g. example.com (only english pages) and example.de (only german pages).
 
 The sitemap will index ALL cacheable pages with full extension support (like tt_news and all other “clean” extensions).
-If your extension doesn't use cHash or use no_cache the outwill WILL NOT included in the sitemap (and also will not be indexed by index_search).
+If your extension doesn't use cHash or use no_cache the output WILL NOT be included in the sitemap (and also will not be indexed by index_search).
 
-Also the sitemap indexes all generated “typolink” (BETA).
+The sitemap indexes all generate “typolinks” (BETA).
 
 **Warning:**
-The MetaSEO Sitemap relies on the TYPO3 caching system. If any extension (or configuration – eg. RealURL configuration) break the caching system and makes TSFE non-cacheable (TSFE->no_cache) the sites will NOT INDEXED!
-Make sure no extension will set no_cache and the cHash of your link is valid. This is the only way to get only valid URLs into your sitemap.
+The MetaSEO Sitemap relies on the TYPO3 caching system. If an extension (or configuration – e.g. RealURL configuration) breaks the caching system and makes TSFE non-cacheable (TSFE->no_cache) the sites will NOT be INDEXED!
+Make sure no extension will set no_cache and the cHash of your link is valid. This is the only way to get just valid URLs into your sitemap.
 
-This sitemap supports both, pibase- and extbase-Extensions without problems. However the developer must take care of the cHash-handling.
+This sitemap supports both, pibase and extbase extensions without problems. However the developer must take care of the cHash-handling.
 
 Robots.txt
 ----------
-The robots.txt can be gerated with type 841133, eg.:
+The robots.txt can be generated with type 841133, e.g.:
 index.php?type=841133
 
-If possible and enabled the robots.txt buidler will automatically add the link to the sitemap generator or the static sitemap files (will require TYPO3 Scheduler task to generate the static sitemap).
+If possible and enabled the robots.txt builder will automatically add the link to the sitemap generator or the static sitemap files (will require TYPO3 scheduler task to generate the static sitemap).
 
 Scheduler Tasks
 ---------------
@@ -77,7 +77,7 @@ MetaSEO sitemap.txt builder                     This task builds a real sitemap.
                                                 {LANG} is the language id (only active if language
                                                 domains are active).
 
-                                                Hint: These files are already gziped.
+                                                Hint: These files are already gzipped.
 
 MetaSEO sitemap.xml builder                     This task builds a real sitemap.xml files in the                  One run per day
                                                 upload directory.
@@ -102,14 +102,14 @@ MetaSEO sitemap.xml builder                     This task builds a real sitemap.
                                                 The index will refer to all page sitemaps so you only
                                                 have to reference to the sitemap index.
 
-                                                Hint: These files are already gziped.
+                                                Hint: These files are already gzipped.
 =============================================   ===============================================================   ======================
 
 
 RealURL Configuration
 ---------------------
 
-f you want to activiate “real” sitemap.xml feature (eg. http://example.com/sitemap.xml), configure realurl like this:
+If you want to activate a “real” sitemap.xml feature (eg. http://example.com/sitemap.xml), configure realurl like this:
 
 ::
 
@@ -241,11 +241,11 @@ f you want to activiate “real” sitemap.xml feature (eg. http://example.com/s
         'pagePath' => array(
             'type' => 'user',
             'userFunc' => 'EXT:realurl/class.tx_realurl_advanced.php:&tx_realurl_advanced->main',
-            'spaceCharacter'	=> '-',
-            'segTitleFieldList'	=> 'tx_realurl_pathsegment,alias,nav_title,title',
-            'languageGetVar'	=> 'L',
-            'expireDays'	=> 30,
-            'rootpage_id'	=> 1,
+            'spaceCharacter'    => '-',
+            'segTitleFieldList' => 'tx_realurl_pathsegment,alias,nav_title,title',
+            'languageGetVar'    => 'L',
+            'expireDays'        => 30,
+            'rootpage_id'       => 1,
         ),
 
         );

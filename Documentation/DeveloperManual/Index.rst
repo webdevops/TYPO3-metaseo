@@ -6,10 +6,10 @@
 .. include:: ../Includes.txt
 
 
-.. _admin-manual:
+.. _developer-manual:
 
 Developer Manual
-====================
+================
 
 TypoScript Setup
 ----------------
@@ -60,7 +60,7 @@ plugin.metaseo.pageTitle.caching                Enables caching of page title.  
                                                 If you use USER_INTs and one USER plugin changes page
                                                 title (eg. via Connector) than this is not working
                                                 because the output of the USER plugin is cached and
-                                                the Connctor not called again with the second hit.
+                                                the Connector not called again with the second hit.
                                                 The caching fixes that issue.
 
 plugin.metaseo.pageTitle.stdWrap.before         Manipulation of the raw page title                           *stdWrap*
@@ -85,10 +85,10 @@ You can add additional javascript code to the default Google Analytics and/or Pi
 ==========================================================   ==========================================================   ======================
 TypoScript Node                                              Description                                                  Type
 ==========================================================   ==========================================================   ======================
-plugin.metaseo.services.googleAnalytics.customizationCode    Customization Code for Google Analytics                      TS-Content Object
+plugin.metaseo.services.googleAnalytics.customizationCode    Customization code for Google Analytics                      TS-Content Object
                                                                                                                           (*TEXT*, *COA*, ...)
 
-plugin.metaseo.services.piwik.customizationCode              Customization Code for Piwik                                 TS-Content Object
+plugin.metaseo.services.piwik.customizationCode              Customization code for Piwik                                 TS-Content Object
                                                                                                                           (*TEXT*, *COA*, ...)
 ==========================================================   ==========================================================   ======================
 
@@ -124,8 +124,8 @@ plugin.metaseo.services.piwik.template                       Template rendering 
 
 It's quite easy, for more information read:
 
-- http://docs.typo3.org/typo3cms/TyposcriptReference/ContentObjects/Fluidtemplate/Index.html
-- http://typo3.org/documentation/article/the-fluidtemplate-cobject
+- https://docs.typo3.org/typo3cms/TyposcriptReference/ContentObjects/Fluidtemplate/Index.html
+- https://typo3.org/documentation/article/the-fluidtemplate-cobject
 
 Example for your own Google Analytics Template:
 
@@ -147,7 +147,7 @@ Sitemap
 ==========================================================   ==========================================================   ======================
 TypoScript Node                                              Description                                                  Type
 ==========================================================   ==========================================================   ======================
-plugin.metaseo.sitemap.index.blacklist                       List of Regular Expression for blacklisting URLs whil        List
+plugin.metaseo.sitemap.index.blacklist                       List of Regular Expression for blacklisting URLs while       List
                                                              indexing, eg.
 
                                                              10 = /typo3/

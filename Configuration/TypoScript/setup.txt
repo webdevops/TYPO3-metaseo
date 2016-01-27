@@ -406,6 +406,9 @@ plugin.metaseo {
             # Blacklist for SetupTS PAGE object typeNums
             pageTypeBlacklist =
 
+            allowNoStaticCachable = {$plugin.metaseo.sitemap.index.allowNoStaticCachable}
+            allowNoCache = {$plugin.metaseo.sitemap.index.allowNoCache}
+
             # Whitelist of allowed file extensions
             fileExtension {
                 # PDF

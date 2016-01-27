@@ -112,6 +112,18 @@
             <trans-unit id="message.warning.incomplete_data_received.message" xml:space="preserve" approved="yes">
                 <source>Incomplete data received. The action was interrupted.</source>
             </trans-unit>
+            <trans-unit id="message.warning.ajax_method_name_not_exist.message" xml:space="preserve" approved="yes">
+                <source>The requested ajax method name does not exist. The action was interrupted.</source>
+            </trans-unit>
+            <trans-unit id="message.error.internal_server_error" xml:space="preserve" approved="yes">
+                <source>Internal Server Error. The action was interrupted.</source>
+            </trans-unit>
+            <trans-unit id="message.error.typo3_page_not_found" xml:space="preserve" approved="yes">
+                <source>The requested TYPO3 page could not be found. The action was interrupted.</source>
+            </trans-unit>
+            <trans-unit id="message.error.unknown_list_type_received" xml:space="preserve" approved="yes">
+                <source>Unknown list type received. The action was interrupted.</source>
+            </trans-unit>
             <trans-unit id="message.error.access_denied" xml:space="preserve">
                 <source>Access to this element was denied.</source>
             </trans-unit>

@@ -39,8 +39,8 @@ The following metatags are supported:
 - Rating and distribution
 - Revisit
 - Geo-location information
-- Searchengine Crawler orders
-- Google Analytics (with anonymize IP and download link tracking, asynchronous implementation since 4.0)
+- Searchengine crawler instructions
+- Google Analytics (with anonymized IP and download link tracking, asynchronous implementation since 4.0)
 - Piwik integration (asynchronous implementation since 4.0)
 - Google, MSN, Yahoo and WebOfTrust Verification
 - Google+ Direct Connect
@@ -57,7 +57,7 @@ The following pagetitle transformations are supported:
 - Prefix and suffix (inheritable)
 - Absolute pagetitle without any prefix and suffix
 - Sitetitle glue options
-- Sitetile positon
+- Sitetitle positon
 
 Screenshots
 -----------
@@ -69,20 +69,20 @@ Backend Modules
     :scale: 80%
     :alt: Backend Module - SEO Metatags
 
-	Backend Module "SEO Metatags"
+    Backend Module "SEO Metatags"
 
 
 .. figure:: ../Images/Introduction/ModuleSeoControlCenter.png
     :scale: 80%
     :alt: Backend Module - SEO Control Center
 
-	Backend Module "SEO Control Center"
+    Backend Module "SEO Control Center"
 
 .. figure:: ../Images/Introduction/ModuleSeoSitemap.png
     :scale: 80%
     :alt: Backend Module - SEO Sitemap
 
-	Backend Module "SEO Sitemap"
+    Backend Module "SEO Sitemap"
 
 
 Constants
@@ -92,7 +92,7 @@ Constants
     :scale: 80%
     :alt: Constants Editor - Metatags
 
-	Constants Editor of metatags
+    Constants Editor of metatags
 
 
 .. figure:: ../Images/Introduction/ConstantsPagetitle.png
@@ -113,7 +113,7 @@ Constants
     :scale: 80%
     :alt: Constants Editor - Services
 
-	Constants Editor of services settings
+    Constants Editor of services settings
 
 
 Found a bug?
@@ -137,5 +137,6 @@ Thanks to...
 - Thomas Mayer
 - Florian Duffner
 - Georg Tiefenbrunn
-- and for all other contributors and bug reporters
+- Arne-Kolja Bachstein
+- all other contributors and bug reporters
 - famfamfam for these cool silk icons http://www.famfamfam.com/lab/icons/silk/

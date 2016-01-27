@@ -148,7 +148,7 @@ class FrontendUtility
      *
      * @return bool
      */
-    public static function checkPageForBlacklist($blacklist)
+    public static function checkPageForBlacklist(array $blacklist)
     {
         return GeneralUtility::checkUrlForBlacklisting(self::getCurrentUrl(), $blacklist);
     }
@@ -156,9 +156,10 @@ class FrontendUtility
     /**
      * Check if frontend page is cacheable
      *
+     * @param array|null $conf Configuration
      * @return bool
      */
-    public static function isCacheable()
+    public static function isCacheable($conf = null)
     {
         $TSFE = self::getTsfe();
 
@@ -167,12 +168,12 @@ class FrontendUtility
         }
 
         // don't parse if page is not cacheable
-        if (!$TSFE->isStaticCacheble()) {
+        if (empty($conf['allowNoStaticCachable']) && !$TSFE->isStaticCacheble()) {
             return false;
         }
 
         // Skip no_cache-pages
-        if (!empty($TSFE->no_cache)) {
+        if (empty($conf['allowNoCache']) && !empty($TSFE->no_cache)) {
             return false;
         }
 

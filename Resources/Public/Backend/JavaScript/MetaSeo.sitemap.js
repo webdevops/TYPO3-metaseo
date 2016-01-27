@@ -37,11 +37,14 @@ MetaSeo.sitemap.grid = {
         /****************************************************
          * grid storage
          ****************************************************/
+
+        var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.sitemap.conf.ajaxController + '::index'];
+
         var gridDs = new Ext.data.Store({
             storeId: 'MetaSeoSitemapRecordsStore',
             autoLoad: true,
             remoteSort: true,
-            url: MetaSeo.sitemap.conf.ajaxController + '&cmd=getList',
+            url: ajaxUrl,
             reader: new Ext.data.JsonReader({
                     totalProperty: 'results',
                     root: 'rows'
@@ -74,8 +77,7 @@ MetaSeo.sitemap.grid = {
                 criteriaPageUid: Ext.encode(MetaSeo.sitemap.conf.criteriaPageUid),
                 criteriaPageLanguage: Ext.encode(MetaSeo.sitemap.conf.criteriaPageLanguage),
                 criteriaPageDepth: Ext.encode(MetaSeo.sitemap.conf.criteriaPageDepth),
-                criteriaIsBlacklisted: Ext.encode(MetaSeo.sitemap.conf.criteriaIsBlacklisted),
-                sessionToken: Ext.encode(MetaSeo.sitemap.conf.sessionToken)
+                criteriaIsBlacklisted: Ext.encode(MetaSeo.sitemap.conf.criteriaIsBlacklisted)
             },
             listeners: {
                 beforeload: function () {
@@ -121,7 +123,7 @@ MetaSeo.sitemap.grid = {
         };
 
         var function_delete_all = function (ob) {
-            var cmd = "deleteAll";
+            var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.sitemap.conf.ajaxController + '::deleteAll'];
 
             var frmConfirm = new Ext.Window({
                 xtype: 'form',
@@ -140,18 +142,22 @@ MetaSeo.sitemap.grid = {
                         text: MetaSeo.sitemap.conf.lang.buttonYes,
                         handler: function (cmp, e) {
                             Ext.Ajax.request({
-                                url: MetaSeo.sitemap.conf.ajaxController + '&cmd=' + cmd,
-                                callback: function (options, success, response) {
-                                    if (response.responseText === 'true') {
-                                        // reload the records and the table selector
-                                        gridDs.reload();
-                                    } else {
-                                        alert('ERROR: ' + response.responseText);
-                                    }
-                                },
+                                url: ajaxUrl,
                                 params: {
-                                    'pid': MetaSeo.sitemap.conf.pid,
-                                    sessionToken: Ext.encode(MetaSeo.sitemap.conf.sessionToken)
+                                    'pid': MetaSeo.sitemap.conf.pid
+                                },
+                                success: function (response) {
+                                    // reload the records and the table selector
+                                    gridDs.reload();
+                                },
+                                failure: function (response) {
+                                    response = Ext.decode(response.responseText);
+                                    if (response && response.error) {
+                                        MetaSeo.flashMessage(MetaSeo.Severity.error, '', Ext.util.Format.htmlEncode(response.error));
+                                        if (response.errorNumber) {
+                                            console.log('ERROR: MetaSEO: ' + response.error + ' ' + response.errorNumber)
+                                        }
+                                    }
                                 }
                             });
 
@@ -171,6 +177,7 @@ MetaSeo.sitemap.grid = {
 
         var rowAction = function (ob, cmd, confirmTitle, confirmText) {
             var recList = grid.getSelectionModel().getSelections();
+            var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.sitemap.conf.ajaxController + '::' + cmd];
 
             if (recList.length >= 1) {
                 var uidList = [];
@@ -194,19 +201,23 @@ MetaSeo.sitemap.grid = {
                             text: MetaSeo.sitemap.conf.lang.buttonYes,
                             handler: function (cmp, e) {
                                 Ext.Ajax.request({
-                                    url: MetaSeo.sitemap.conf.ajaxController + '&cmd=' + cmd,
-                                    callback: function (options, success, response) {
-                                        if (response.responseText === 'true') {
-                                            // reload the records and the table selector
-                                            gridDs.reload();
-                                        } else {
-                                            alert('ERROR: ' + response.responseText);
-                                        }
-                                    },
+                                    url: ajaxUrl,
                                     params: {
                                         'uidList': Ext.encode(uidList),
-                                        'pid': MetaSeo.sitemap.conf.pid,
-                                        sessionToken: Ext.encode(MetaSeo.sitemap.conf.sessionToken)
+                                        'pid': MetaSeo.sitemap.conf.pid
+                                    },
+                                    success: function (response) {
+                                        // reload the records and the table selector
+                                        gridDs.reload();
+                                    },
+                                    failure: function (response) {
+                                        response = Ext.decode(response.responseText);
+                                        if (response && response.error) {
+                                            MetaSeo.flashMessage(MetaSeo.Severity.error, '', Ext.util.Format.htmlEncode(response.error));
+                                            if (response.errorNumber) {
+                                                console.log('ERROR: MetaSEO: ' + response.error + ' ' + response.errorNumber)
+                                            }
+                                        }
                                     }
                                 });
 

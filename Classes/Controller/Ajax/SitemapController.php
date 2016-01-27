@@ -24,23 +24,45 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-namespace Metaseo\Metaseo\Backend\Ajax;
+namespace Metaseo\Metaseo\Controller\Ajax;
 
+use Exception;
+use Metaseo\Metaseo\Controller\AbstractAjaxController;
+use Metaseo\Metaseo\DependencyInjection\Utility\HttpUtility;
+use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 use Metaseo\Metaseo\Utility\SitemapUtility;
+use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 
 /**
  * TYPO3 Backend ajax module sitemap
  */
-class SitemapAjax extends AbstractAjax
+class SitemapController extends AbstractAjaxController implements SitemapInterface
 {
+    const AJAX_PREFIX = 'tx_metaseo_controller_ajax_sitemap';
+
+    /**
+     * @inheritDoc
+     */
+    public function indexAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
+    {
+        try {
+            $this->init();
+            $ajaxObj->setContent($this->executeIndex());
+        } catch (Exception $exception) {
+            $this->ajaxExceptionHandler($exception, $ajaxObj);
+        }
+
+        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
+        $ajaxObj->render();
+    }
 
     /**
      * Return sitemap entry list for root tree
      *
      * @return    array
      */
-    protected function executeGetList()
+    protected function executeIndex()
     {
         // Init
         $rootPid      = (int)$this->postVar['pid'];
@@ -137,18 +159,34 @@ class SitemapAjax extends AbstractAjax
                   LIMIT ' . (int)$offset . ', ' . (int)$itemsPerPage;
         $list  = DatabaseUtility::getAll($query);
 
-        $ret = array(
+        return array(
             'results' => $itemCount,
             'rows'    => $list,
         );
+    }
 
-        return $ret;
+    /**
+     * @inheritDoc
+     */
+    public function blacklistAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
+    {
+        try {
+            $this->init();
+            $ajaxObj->setContent($this->executeBlacklist());
+        } catch (Exception $exception) {
+            $this->ajaxExceptionHandler($exception, $ajaxObj);
+        }
+
+        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
+        $ajaxObj->render();
     }
 
     /*
      * Blacklist sitemap entries
      *
-     * @return    boolean
+     * @return array
+     *
+     * @throws AjaxException
      */
     protected function executeBlacklist()
     {
@@ -158,7 +196,12 @@ class SitemapAjax extends AbstractAjax
         $uidList = DatabaseUtility::connection()->cleanIntArray($uidList);
 
         if (empty($uidList) || empty($rootPid)) {
-            return false;
+
+            throw new AjaxException(
+                'message.warning.incomplete_data_received.message',
+                '[0x4FBF3C10]',
+                HttpUtility::HTTP_STATUS_BAD_REQUEST
+            );
         }
 
         $where   = array();
@@ -171,13 +214,31 @@ class SitemapAjax extends AbstractAjax
                    WHERE ' . $where;
         DatabaseUtility::exec($query);
 
-        return true;
+        return array();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function whitelistAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
+    {
+        try {
+            $this->init();
+            $ajaxObj->setContent($this->executeWhitelist());
+        } catch (Exception $exception) {
+            $this->ajaxExceptionHandler($exception, $ajaxObj);
+        }
+
+        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
+        $ajaxObj->render();
     }
 
     /*
      * Whitelist sitemap entries
      *
-     * @return    boolean
+     * @return array
+     *
+     * @throws AjaxException
      */
     protected function executeWhitelist()
     {
@@ -187,7 +248,12 @@ class SitemapAjax extends AbstractAjax
         $uidList = DatabaseUtility::connection()->cleanIntArray($uidList);
 
         if (empty($uidList) || empty($rootPid)) {
-            return false;
+
+            throw new AjaxException(
+                'message.warning.incomplete_data_received.message',
+                '[0x4FBF3C12]',
+                HttpUtility::HTTP_STATUS_BAD_REQUEST
+            );
         }
 
         $where   = array();
@@ -200,14 +266,31 @@ class SitemapAjax extends AbstractAjax
                    WHERE ' . $where;
         DatabaseUtility::exec($query);
 
-        return true;
+        return array();
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function deleteAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
+    {
+        try {
+            $this->init();
+            $ajaxObj->setContent($this->executeDelete());
+        } catch (Exception $exception) {
+            $this->ajaxExceptionHandler($exception, $ajaxObj);
+        }
+
+        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
+        $ajaxObj->render();
+    }
 
     /**
      * Delete sitemap entries
      *
-     * @return    boolean
+     * @return array
+     *
+     * @throws AjaxException
      */
     protected function executeDelete()
     {
@@ -217,7 +300,12 @@ class SitemapAjax extends AbstractAjax
         $uidList = DatabaseUtility::connection()->cleanIntArray($uidList);
 
         if (empty($uidList) || empty($rootPid)) {
-            return false;
+
+            throw new AjaxException(
+                'message.warning.incomplete_data_received.message',
+                '[0x4FBF3C11]',
+                HttpUtility::HTTP_STATUS_BAD_REQUEST
+            );
         }
 
         $where   = array();
@@ -229,20 +317,43 @@ class SitemapAjax extends AbstractAjax
                          WHERE ' . $where;
         DatabaseUtility::exec($query);
 
-        return true;
+        return array();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function deleteAllAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
+    {
+        try {
+            $this->init();
+            $ajaxObj->setContent($this->executeDeleteAll());
+        } catch (Exception $exception) {
+            $this->ajaxExceptionHandler($exception, $ajaxObj);
+        }
+
+        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
+        $ajaxObj->render();
     }
 
     /**
      * Delete all sitemap entries
      *
-     * @return    boolean
+     * @return array
+     *
+     * @throws AjaxException
      */
     protected function executeDeleteAll()
     {
         $rootPid = (int)$this->postVar['pid'];
 
         if (empty($rootPid)) {
-            return false;
+
+            throw new AjaxException(
+                'message.warning.incomplete_data_received.message',
+                '[0x4FBF3C12]',
+                HttpUtility::HTTP_STATUS_BAD_REQUEST
+            );
         }
 
         $where   = array();
@@ -253,6 +364,26 @@ class SitemapAjax extends AbstractAjax
                          WHERE ' . $where;
         DatabaseUtility::exec($query);
 
-        return true;
+        return array();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getAjaxPrefix()
+    {
+        return self::AJAX_PREFIX;
+    }
+
+    /**
+     * Returns array of classes which contain Ajax controllers with <ajaxPrefix> => <className)
+     *
+     * @return array
+     */
+    public static function getBackendAjaxClassNames()
+    {
+        return array(
+            self::AJAX_PREFIX => __CLASS__,
+        );
     }
 }

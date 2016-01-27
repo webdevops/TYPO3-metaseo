@@ -3,8 +3,24 @@
   "type": "typo3-cms-extension",
   "description": "SEO extension for TYPO3",
   "homepage": "https://github.com/mblaschke/TYPO3-metaseo",
+  "support": {
+    "issues": "https://github.com/mblaschke/TYPO3-metaseo/issues"
+  },
   "license": ["GPL-3.0+"],
   "keywords": ["TYPO3 CMS"],
-  "version": "2.0.0"
+  "version": "2.0.0",
+  "autoload": {
+    "psr-4": {
+      "Metaseo\\Metaseo\\": "Classes/"
+    }
+  },
+  "require": {
+    "php": ">=5.3.0",
+    "typo3/cms-core": "~6.2.14|>=7.6.0,<8.0"
+  },
+  "replace": {
+    "metaseo": "self.version",
+    "typo3-ter/metaseo": "self.version"
+  }
 }
 

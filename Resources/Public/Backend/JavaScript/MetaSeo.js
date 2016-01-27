@@ -69,5 +69,109 @@ MetaSeo = {
         search = search.toUpperCase();
         pos = value.toUpperCase().indexOf(search);
         return pos >= 0;
+    },
+
+    /**
+     * Severities for compatibility layer (compatible to old constants)
+     */
+    Severity: {
+        notice: -2,
+        info: -1,
+        success: 0,
+        warning: 1,
+        error: 2
+    },
+
+    /**
+     * Compatibility layer for Deprecation #62893 (7.0) and #66047 (7.2)
+     * To be removed when support for versions older than 7 LTS is discontinued.
+     *
+     * This compatibility layer goes for the latest and greatest revision
+     * and contains support for older infrastructure.
+     *
+     * @copyright    Thomas Mayer (2bis10 IT-Services UG (haftungsbeschraenkt)) <thomas.mayer@2bis10.de>
+     */
+    flashMessage: function(severity, title, message) {
+        var duration = 3;
+        var sev;
+        if ((typeof top) === 'object') {
+            if ('TYPO3' in top) {
+                if ('Notification' in top.TYPO3) {
+                    switch (severity) {
+                        case this.Severity.notice:
+                            top.TYPO3.Notification.notice(title, message, duration);
+                            break;
+                        case this.Severity.success:
+                            top.TYPO3.Notification.success(title, message, duration);
+                            break;
+                        case this.Severity.warning:
+                            top.TYPO3.Notification.warning(title, message, duration);
+                            break;
+                        case this.Severity.error:
+                            top.TYPO3.Notification.error(title, message, duration);
+                            break;
+                        case this.Severity.info:
+                        default:
+                            top.TYPO3.Notification.info(title, message, duration);
+                    }
+                    return;
+                }
+                if ('Flashmessage' in top.TYPO3) {
+                    switch (severity) {
+                        case this.Severity.notice:
+                            sev = top.TYPO3.Severity.notice;
+                            break;
+                        case this.Severity.success:
+                            if ('success' in top.TYPO3.Severity) {
+                                sev = top.TYPO3.Severity.success;
+                            } else {
+                                sev = top.TYPO3.Severity.ok;
+                            }
+                            break;
+                        case this.Severity.warning:
+                            sev = top.TYPO3.Severity.warning;
+                            break;
+                        case this.Severity.error:
+                            sev = top.TYPO3.Severity.error;
+                            break;
+                        case this.Severity.info:
+                        default:
+                            if ('info' in TYPO3.Severity) {
+                                sev = top.TYPO3.Severity.info;
+                            } else {
+                                sev = top.TYPO3.Severity.information;
+                            }
+                    }
+                    top.TYPO3.Flashmessage.display(sev, title, message, duration);
+                    return;
+                }
+            }
+        }
+        switch (severity) {
+            case this.Severity.notice:
+                sev = TYPO3.Severity.notice;
+                break;
+            case this.Severity.success:
+                if ('success' in TYPO3.Severity) {
+                    sev = TYPO3.Severity.success;
+                } else {
+                    sev = TYPO3.Severity.ok;
+                }
+                break;
+            case this.Severity.warning:
+                sev = TYPO3.Severity.warning;
+                break;
+            case this.Severity.error:
+                sev = TYPO3.Severity.error;
+                break;
+            case this.Severity.info:
+            default:
+                if ('info' in TYPO3.Severity) {
+                    sev = TYPO3.Severity.info;
+                } else {
+                    sev = TYPO3.Severity.information;
+                }
+        }
+        TYPO3.Flashmessage.display(sev, title, message, duration);
     }
 };

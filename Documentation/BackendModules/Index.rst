@@ -6,10 +6,10 @@
 .. include:: ../Includes.txt
 
 
-.. _users-manual:
+.. _backend-modules:
 
 Backend Modules
-=========
+===============
 
 SEO Page Module (Website -> SEO)
 --------------------------------
@@ -18,7 +18,7 @@ SEO Page Module (Website -> SEO)
     :scale: 80%
     :alt: Backend Module - SEO Metatags
 
-The SEO page module provies an overview for all seo relevant information (including possibility to edit this information on click).
+The SEO page module provides an overview for all seo relevant information (including possibility to edit this information on click).
 
 ==============================   ==========================================================
 Module                           Description
@@ -42,7 +42,7 @@ Pagetitle simulator (Slow!)      Simulates the pagetitle generation for the curr
 
 
 SEO Control Center (SEO -> Control Center)
------------------------------------------
+------------------------------------------
 
 .. figure:: ../Images/Introduction/ModuleSeoControlCenter.png
     :scale: 80%

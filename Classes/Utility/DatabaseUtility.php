@@ -401,7 +401,7 @@ class DatabaseUtility
      *
      * @return  array
      */
-    public static function quoteArray($valueList, $table = null)
+    public static function quoteArray(array $valueList, $table = null)
     {
         $ret = array();
         foreach ($valueList as $k => $v) {
@@ -443,7 +443,7 @@ class DatabaseUtility
      *
      * @return string
      */
-    public static function buildCondition($where)
+    public static function buildCondition(array $where)
     {
         $ret = ' ';
 

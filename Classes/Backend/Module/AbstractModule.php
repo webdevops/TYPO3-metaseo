@@ -42,22 +42,26 @@ abstract class AbstractModule extends ActionController
      * Backend Form Protection object
      *
      * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection
-     * @inject
      */
     protected $formProtection;
-
-    // Internal, dynamic:
-    /**
-     * document template object
-     *
-     * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
-     * @todo Define visibility
-     */
-    public $doc;
 
     // ########################################################################
     // Methods
     // ########################################################################
+
+    /**
+     * Initializes the controller before invoking an action method.
+     *
+     * Override this method to solve tasks which all actions have in
+     * common.
+     *
+     * @return void
+     * @api
+     */
+    protected function initializeAction()
+    {
+        $this->formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
+    }
 
     /**
      * Translate list
@@ -66,7 +70,7 @@ abstract class AbstractModule extends ActionController
      *
      * @return  array
      */
-    protected function translateList($list)
+    protected function translateList(array $list)
     {
         unset($token);
         foreach ($list as &$token) {
@@ -87,11 +91,11 @@ abstract class AbstractModule extends ActionController
      * Translate key
      *
      * @param   string     $key       Translation key
-     * @param   NULL|array $arguments Arguments (vsprintf)
+     * @param   null|array $arguments Arguments (vsprintf)
      *
-     * @return  NULL|string
+     * @return  null|string
      */
-    protected function translate($key, $arguments = null)
+    protected function translate($key, array $arguments = null)
     {
         $ret = LocalizationUtility::translate($key, $this->extensionName, $arguments);
 
@@ -115,17 +119,5 @@ abstract class AbstractModule extends ActionController
         $token = $this->formProtection->generateToken($formName);
 
         return $token;
-    }
-
-    /**
-     * Ajax controller url
-     *
-     * @param   string $ajaxCall Ajax Call
-     *
-     * @return  string
-     */
-    protected function ajaxControllerUrl($ajaxCall)
-    {
-        return $this->doc->backPath . 'ajax.php?ajaxID=' . urlencode($ajaxCall);
     }
 }

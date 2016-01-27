@@ -61,6 +61,17 @@ MetaSeo.overview.grid = {
         var me = this;
 
         /****************************************************
+         * check if we got a page
+         ****************************************************/
+        if (!('conf' in MetaSeo.overview)) {
+            return;
+        }
+
+        if (!('listType' in MetaSeo.overview.conf)) {
+            return;
+        }
+
+        /****************************************************
          * settings
          ****************************************************/
         switch (MetaSeo.overview.conf.listType) {
@@ -295,21 +306,22 @@ MetaSeo.overview.grid = {
                                         var response = Ext.decode(response.responseText);
 
                                         if ( response && response.error ) {
-                                            TYPO3.Flashmessage.display(TYPO3.Severity.error, '', Ext.util.Format.htmlEncode(response.error) );
+                                            MetaSeo.flashMessage(MetaSeo.Severity.error, '', Ext.util.Format.htmlEncode(response.error) );
                                         }
 
                                         grid.getStore().load();
                                     };
 
+                                    var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.overview.conf.ajaxController + '::updateRecursive'];
+
                                     Ext.Ajax.request({
-                                        url: MetaSeo.overview.conf.ajaxController + '&cmd=updatePageFieldRecursively',
+                                        url: ajaxUrl,
                                         params: {
                                             pid             : Ext.encode(pid),
                                             field           : Ext.encode(fieldName),
                                             value           : Ext.encode(fieldValue),
                                             sysLanguage     : Ext.encode( MetaSeo.overview.conf.sysLanguage ),
-                                            mode            : Ext.encode( MetaSeo.overview.conf.listType ),
-                                            sessionToken    : Ext.encode( MetaSeo.overview.conf.sessionToken )
+                                            mode            : Ext.encode( MetaSeo.overview.conf.listType )
                                         },
                                         success: callbackFinish,
                                         failure: callbackFinish
@@ -331,21 +343,22 @@ MetaSeo.overview.grid = {
                                         response = Ext.decode(response.responseText);
 
                                         if (response && response.error) {
-                                            TYPO3.Flashmessage.display(TYPO3.Severity.error, '', Ext.util.Format.htmlEncode(response.error));
+                                            MetaSeo.flashMessage(MetaSeo.Severity.error, '', Ext.util.Format.htmlEncode(response.error));
                                         }
 
                                         grid.getStore().load();
                                     };
 
+                                    var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.overview.conf.ajaxController + '::update'];
+
                                     Ext.Ajax.request({
-                                        url: MetaSeo.overview.conf.ajaxController + '&cmd=updatePageField',
+                                        url: ajaxUrl,
                                         params: {
                                             pid: Ext.encode(pid),
                                             field: Ext.encode(fieldName),
                                             value: Ext.encode(fieldValue),
                                             sysLanguage: Ext.encode(MetaSeo.overview.conf.sysLanguage),
-                                            mode: Ext.encode(MetaSeo.overview.conf.listType),
-                                            sessionToken: Ext.encode(MetaSeo.overview.conf.sessionToken)
+                                            mode: Ext.encode(MetaSeo.overview.conf.listType)
                                         },
                                         success: callbackFinish,
                                         failure: callbackFinish
@@ -460,11 +473,13 @@ MetaSeo.overview.grid = {
                 break;
         }
 
-        var gridDs = new Ext.data.Store({
+        var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.overview.conf.ajaxController + '::index'];
+
+        return new Ext.data.Store({
             storeId: 'MetaSeoOverviewRecordsStore',
             autoLoad: true,
             remoteSort: true,
-            url: MetaSeo.overview.conf.ajaxController + '&cmd=getList',
+            url: ajaxUrl,
             reader: new Ext.data.JsonReader({
                     totalProperty: 'results',
                     root: 'rows'
@@ -482,7 +497,6 @@ MetaSeo.overview.grid = {
                 sortField: Ext.encode(MetaSeo.overview.conf.sortField),
                 depth: Ext.encode(MetaSeo.overview.conf.depth),
                 listType: Ext.encode(MetaSeo.overview.conf.listType),
-                sessionToken: Ext.encode(MetaSeo.overview.conf.sessionToken),
                 sysLanguage: Ext.encode(MetaSeo.overview.conf.sysLanguage)
             },
             listeners: {
@@ -495,8 +509,6 @@ MetaSeo.overview.grid = {
                 }
             }
         });
-
-        return gridDs;
     },
 
 
@@ -903,19 +915,20 @@ MetaSeo.overview.grid = {
                                 me.grid.loadMask.hide();
 
                                 if (response && response.error) {
-                                    TYPO3.Flashmessage.display(TYPO3.Severity.error, '', Ext.util.Format.htmlEncode(response.error));
+                                    MetaSeo.flashMessage(MetaSeo.Severity.error, '', Ext.util.Format.htmlEncode(response.error));
                                 }
 
                                 if (response && response.url) {
-                                    TYPO3.Flashmessage.display(TYPO3.Severity.information, '', Ext.util.Format.htmlEncode(response.url));
+                                    MetaSeo.flashMessage(MetaSeo.Severity.info, '', Ext.util.Format.htmlEncode(response.url));
                                 }
                             };
 
+                            var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.overview.conf.ajaxController + '::simulate'];
+
                             Ext.Ajax.request({
-                                url: MetaSeo.overview.conf.ajaxController + '&cmd=generateSimulatedUrl',
+                                url: ajaxUrl,
                                 params: {
-                                    pid: Ext.encode(record.get('uid')),
-                                    sessionToken: Ext.encode(MetaSeo.overview.conf.sessionToken)
+                                    pid: Ext.encode(record.get('uid'))
                                 },
                                 success: callbackFinish,
                                 failure: callbackFinish
@@ -989,19 +1002,19 @@ MetaSeo.overview.grid = {
                             me.grid.loadMask.hide();
 
                             if (response && response.error) {
-                                TYPO3.Flashmessage.display(TYPO3.Severity.error, '', Ext.util.Format.htmlEncode(response.error));
+                                MetaSeo.flashMessage(MetaSeo.Severity.error, '', Ext.util.Format.htmlEncode(response.error));
                             }
 
                             if (response && response.title) {
-                                TYPO3.Flashmessage.display(TYPO3.Severity.information, '', Ext.util.Format.htmlEncode(response.title));
+                                MetaSeo.flashMessage(MetaSeo.Severity.info, '', Ext.util.Format.htmlEncode(response.title));
                             }
                         };
+                        var ajaxUrl = TYPO3.settings.ajaxUrls[MetaSeo.overview.conf.ajaxController + '::simulate'];
 
                         Ext.Ajax.request({
-                            url: MetaSeo.overview.conf.ajaxController + '&cmd=generateSimulatedTitle',
+                            url: ajaxUrl,
                             params: {
-                                pid: Ext.encode(record.get('uid')),
-                                sessionToken: Ext.encode(MetaSeo.overview.conf.sessionToken)
+                                pid: Ext.encode(record.get('uid'))
                             },
                             success: callbackFinish,
                             failure: callbackFinish

@@ -80,6 +80,17 @@ if (TYPO3_MODE == 'BE') {
             'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/ModuleSitemap/locallang.xlf',
         )
     );
+
+    // ############################################################################
+    // REGISTER AJAX CONTROLLERS
+    // ############################################################################
+    // AJAX
+    \Metaseo\Metaseo\Utility\ExtensionManagementUtility::registerAjaxClasses(
+        \Metaseo\Metaseo\Controller\Ajax\AbstractPageSeoController::getBackendAjaxClassNames()
+    );
+    \Metaseo\Metaseo\Utility\ExtensionManagementUtility::registerAjaxClasses(
+        \Metaseo\Metaseo\Controller\Ajax\SitemapController::getBackendAjaxClassNames()
+    );
 }
 
 // ############################################################################
