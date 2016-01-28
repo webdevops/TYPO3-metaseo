@@ -378,7 +378,7 @@ class MetatagPart extends AbstractPart
      *
      * @param    array $tsConfig TypoScript config setup
      *
-     * @return   string            Page Id or url
+     * @return   null|array of (linkParam, linkConf, linkMpMode)
      */
     protected function detectCanonicalPage(array $tsConfig = array())
     {
@@ -1296,7 +1296,7 @@ class MetatagPart extends AbstractPart
      */
     protected function generateCanonicalUrl()
     {
-        //User has specified a canonical URL in the backend
+        //User has specified a canonical URL in the page properties
         if (!empty($this->pageRecord['tx_metaseo_canonicalurl'])) {
             return $this->pageRecord['tx_metaseo_canonicalurl'];
         }
