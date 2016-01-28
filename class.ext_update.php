@@ -37,7 +37,7 @@ class ext_update
 {
 
     // ########################################################################
-    // Attributs
+    // Attributes
     // ########################################################################
 
     /**
@@ -74,7 +74,7 @@ class ext_update
 
     /**
      * Called by the extension manager to determine if the update menu entry
-     * should by showed.
+     * should be shown.
      *
      * @return bool
      */
