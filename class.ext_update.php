@@ -54,9 +54,23 @@ class ext_update
      */
     protected $clearCache = false;
 
+
+    /**
+     * @var \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected $databaseConnection;
+
     // ########################################################################
     // Methods
     // ########################################################################
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->databaseConnection = $GLOBALS['TYPO3_DB'];
+    }
 
     /**
      * Main update function called by the extension manager.
@@ -89,6 +103,23 @@ class ext_update
      */
     protected function processUpdates()
     {
+        // migration priorty->priority with v2.0.0
+        $this->renameDatabaseTableField(
+            'tx_metaseo_setting_root',
+            'sitemap_priorty',
+            'sitemap_priority'
+        );
+        $this->renameDatabaseTableField(
+            'tx_metaseo_setting_root',
+            'sitemap_priorty_depth_multiplier',
+            'sitemap_priority_depth_multiplier'
+        );
+        $this->renameDatabaseTableField(
+            'tx_metaseo_setting_root',
+            'sitemap_priorty_depth_modificator',
+            'sitemap_priority_depth_modificator'
+        );
+
         $this->processClearCache();
     }
 
@@ -174,5 +205,46 @@ class ext_update
         }
 
         return $output;
+    }
+
+
+    /**
+     * Renames a tabled field and does some plausibility checks.
+     *
+     * @param  string $table
+     * @param  string $oldFieldName
+     * @param  string $newFieldName
+     * @return int
+     */
+    protected function renameDatabaseTableField($table, $oldFieldName, $newFieldName)
+    {
+        $title = 'Renaming "' . $table . ':' . $oldFieldName . '" to "' . $table . ':' . $newFieldName . '": ';
+
+        $currentTableFields = $this->databaseConnection->admin_get_fields($table);
+
+        if ($currentTableFields[$newFieldName]) {
+            $message = 'Field ' . $table . ':' . $newFieldName . ' already existing.';
+            $status = FlashMessage::OK;
+        } else {
+            if (!$currentTableFields[$oldFieldName]) {
+                $message = 'Field ' . $table . ':' . $oldFieldName . ' not existing';
+                $status = FlashMessage::ERROR;
+            } else {
+                $sql = 'ALTER TABLE ' . $table . ' CHANGE COLUMN ' . $oldFieldName . ' ' . $newFieldName . ' ' .
+                    $currentTableFields[$oldFieldName]['Type'];
+
+                if ($this->databaseConnection->admin_query($sql) === false) {
+                    $message = ' SQL ERROR: ' . $this->databaseConnection->sql_error();
+                    $status = FlashMessage::ERROR;
+                } else {
+                    $message = 'OK!';
+                    $status = FlashMessage::OK;
+                }
+            }
+        }
+
+        $this->addMessage($status, $title, $message);
+
+        return $status;
     }
 }
