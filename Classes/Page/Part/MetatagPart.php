@@ -504,12 +504,10 @@ class MetatagPart extends AbstractPart
      * @param array   $pageRecord        TSFE Page
      * @param integer $sysLanguageId     Sys Language ID
      * @param array   $customMetaTagList Custom Meta Tag list
-     * @todo $pageRecord not used. Possibly a bug?
      */
     protected function advMetaTags(array &$metaTags, array $pageRecord, $sysLanguageId, array $customMetaTagList)
     {
-        //todo Should this be $pageRecord instead of $this->pageRecord?
-        $pageRecordId = $this->pageRecord['uid'];
+        $pageRecordId = $pageRecord['uid'];
 
         $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
         $storeMeta = $connector->getStore();
