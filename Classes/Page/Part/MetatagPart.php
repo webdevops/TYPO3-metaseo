@@ -1277,18 +1277,7 @@ class MetatagPart extends AbstractPart
      */
     protected function generateCanonicalUrlMetaTags()
     {
-        $canonicalUrl = null;
-
-        if (!empty($this->pageRecord['tx_metaseo_canonicalurl'])) {
-            $canonicalUrl = $this->pageRecord['tx_metaseo_canonicalurl'];
-        } elseif (!empty($this->tsSetupSeo['canonicalUrl'])) {
-            list($clUrl, $clLinkConf, $clDisableMpMode) = $this->detectCanonicalPage(
-                $this->tsSetupSeo['canonicalUrl.']
-            );
-            if (!empty($clUrl) && isset($clLinkConf) && isset($clDisableMpMode)) {
-                $canonicalUrl = $this->generateLink($clUrl, $clLinkConf, $clDisableMpMode);
-            }
-        }
+        $canonicalUrl = $this->generateCanonicalUrl();
 
         if (!empty($canonicalUrl)) {
             $this->metaTagList['link.rel.canonical'] = array(
@@ -1299,6 +1288,30 @@ class MetatagPart extends AbstractPart
                 ),
             );
         }
+    }
+
+    /**
+     * Generate CanonicalUrl for this page
+     * @return null|string
+     */
+    protected function generateCanonicalUrl()
+    {
+        //User has specified a canonical URL in the backend
+        if (!empty($this->pageRecord['tx_metaseo_canonicalurl'])) {
+            return $this->pageRecord['tx_metaseo_canonicalurl'];
+        }
+
+        //Fallback to global settings to generate Url
+        if (!empty($this->tsSetupSeo['canonicalUrl'])) {
+            list($clUrl, $clLinkConf, $clDisableMpMode) = $this->detectCanonicalPage(
+                $this->tsSetupSeo['canonicalUrl.']
+            );
+            if (!empty($clUrl) && isset($clLinkConf) && isset($clDisableMpMode)) {
+                return $this->generateLink($clUrl, $clLinkConf, $clDisableMpMode);
+            }
+        }
+
+        return null;
     }
 
     /**
