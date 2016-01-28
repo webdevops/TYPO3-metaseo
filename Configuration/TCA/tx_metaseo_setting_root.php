@@ -56,9 +56,9 @@ return array(
                 ),
             ),
         ),
-        'sitemap_priorty'                   => array(
+        'sitemap_priority'                   => array(
             'label'  => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:'
-                . 'tx_metaseo_setting_root.sitemap_priorty',
+                . 'tx_metaseo_setting_root.sitemap_priority',
             'config' => array(
                 'type' => 'input',
                 'size' => '6',
@@ -66,9 +66,9 @@ return array(
                 'eval' => 'tx_metaseo_backend_validation_float',
             ),
         ),
-        'sitemap_priorty_depth_multiplier'  => array(
+        'sitemap_priority_depth_multiplier'  => array(
             'label'  => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:'
-                . 'tx_metaseo_setting_root.sitemap_priorty_depth_multiplier',
+                . 'tx_metaseo_setting_root.sitemap_priority_depth_multiplier',
             'config' => array(
                 'type' => 'input',
                 'size' => '6',
@@ -76,9 +76,9 @@ return array(
                 'eval' => 'tx_metaseo_backend_validation_float',
             ),
         ),
-        'sitemap_priorty_depth_modificator' => array(
+        'sitemap_priority_depth_modificator' => array(
             'label'  => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:'
-                . 'tx_metaseo_setting_root.sitemap_priorty_depth_modificator',
+                . 'tx_metaseo_setting_root.sitemap_priority_depth_modificator',
             'config' => array(
                 'type' => 'input',
                 'size' => '6',
@@ -132,8 +132,8 @@ return array(
         '0' => array(
             'showitem'       => '--div--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:'
                 . 'tx_metaseo_setting_root.tab.sitemap,is_sitemap;;pallette_sitemap,is_sitemap_language_lock,'
-                . 'sitemap_page_limit,sitemap_priorty,sitemap_priorty_depth_multiplier,'
-                . 'sitemap_priorty_depth_modificator,--div--;LLL:EXT:'
+                . 'sitemap_page_limit,sitemap_priority,sitemap_priority_depth_multiplier,'
+                . 'sitemap_priority_depth_modificator,--div--;LLL:EXT:'
                 . 'metaseo/Resources/Private/Language/TCA/locallang.xlf:tx_metaseo_setting_root.tab.robotstxt,'
                 . 'is_robotstxt;;pallette_robotstxt',
             'canNotCollapse' => '1'

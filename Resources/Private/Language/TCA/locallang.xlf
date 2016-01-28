@@ -121,13 +121,13 @@
             <trans-unit id="tx_metaseo_setting_root.sitemap_page_limit" xml:space="preserve">
                 <source>Sitemap.xml entry page limit (keep empty to use default of 1000)</source>
             </trans-unit>
-            <trans-unit id="tx_metaseo_setting_root.sitemap_priorty" xml:space="preserve">
+            <trans-unit id="tx_metaseo_setting_root.sitemap_priority" xml:space="preserve">
                 <source>Priority (if page have no priority) (default:1)</source>
             </trans-unit>
-            <trans-unit id="tx_metaseo_setting_root.sitemap_priorty_depth_multiplier" xml:space="preserve">
+            <trans-unit id="tx_metaseo_setting_root.sitemap_priority_depth_multiplier" xml:space="preserve">
                 <source>Priority depth multiplier (default:1)</source>
             </trans-unit>
-            <trans-unit id="tx_metaseo_setting_root.sitemap_priorty_depth_modificator" xml:space="preserve">
+            <trans-unit id="tx_metaseo_setting_root.sitemap_priority_depth_modificator" xml:space="preserve">
                 <source>Priority depth modificator (default:1)</source>
             </trans-unit>
             <trans-unit id="tx_metaseo_setting_root.is_robotstxt" xml:space="preserve">
