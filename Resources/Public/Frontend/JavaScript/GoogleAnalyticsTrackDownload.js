@@ -1,6 +1,6 @@
-function tqSeoGa_AddTracker(type, obj) {
+function metaSeoGa_AddTracker(type, obj) {
     var callback = function (e) {
-        tqSeoGa_TrackLink(e, obj);
+        metaSeoGa_TrackLink(e, obj);
     };
 
     if (obj.addEventListener) {
@@ -10,7 +10,7 @@ function tqSeoGa_AddTracker(type, obj) {
     }
 }
 
-function tqSeoGa_TrackLink(e, target) {
+function metaSeoGa_TrackLink(e, target) {
     try {
         if (target && target.hostname) {
             var linkLocation = String(target);
@@ -42,7 +42,7 @@ function tqSeoGa_TrackLink(e, target) {
 
         if (currentHost == link.hostname) {
             if (linkLocation.match(/\.(doc|docx|xls|xlsx|ppt|pptx|odt|ods|pdf|zip|tar|gz|txt|vsd|vxd|rar|exe|wma|mov|avi|ogg|ogm|mkv|wmv|mp3|webm)$/)) {
-                tqSeoGa_AddTracker("download", link);
+                metaSeoGa_AddTracker("download", link);
             }
         }
     }
