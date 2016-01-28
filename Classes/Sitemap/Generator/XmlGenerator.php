@@ -136,13 +136,13 @@ class XmlGenerator extends AbstractGenerator
         $ret .= ' xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9';
         $ret .= ' http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
 
-        $pagePriorityDefaultValue     = (float)GeneralUtility::getRootSettingValue('sitemap_priorty', 0);
+        $pagePriorityDefaultValue     = (float)GeneralUtility::getRootSettingValue('sitemap_priority', 0);
         $pagePriorityDepthMultiplier  = (float)GeneralUtility::getRootSettingValue(
-            'sitemap_priorty_depth_multiplier',
+            'sitemap_priority_depth_multiplier',
             0
         );
         $pagePriorityDepthModificator = (float)GeneralUtility::getRootSettingValue(
-            'sitemap_priorty_depth_modificator',
+            'sitemap_priority_depth_modificator',
             0
         );
 

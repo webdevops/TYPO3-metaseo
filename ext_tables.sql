@@ -72,9 +72,9 @@ CREATE TABLE tx_metaseo_setting_root (
     is_sitemap_typolink_indexer int(1) DEFAULT '1' NOT NULL,
     is_sitemap_language_lock int(1) DEFAULT '0' NOT NULL,
     sitemap_page_limit int(11) DEFAULT '0' NOT NULL,
-    sitemap_priorty float DEFAULT '1' NOT NULL,
-    sitemap_priorty_depth_multiplier float DEFAULT '1' NOT NULL,
-    sitemap_priorty_depth_modificator float DEFAULT '1' NOT NULL,
+    sitemap_priority float DEFAULT '1' NOT NULL,
+    sitemap_priority_depth_multiplier float DEFAULT '1' NOT NULL,
+    sitemap_priority_depth_modificator float DEFAULT '1' NOT NULL,
 
     is_robotstxt int(1) DEFAULT '1' NOT NULL,
     is_robotstxt_sitemap_static int(1) DEFAULT '0' NOT NULL,

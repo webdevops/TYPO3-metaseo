@@ -160,15 +160,15 @@
                 <source>Sitemap.xml entry page limit (keep empty to use default of 1000)</source>
                 <target>Sitemap.xml Einträge pro Seite (Leer für Standard von 1000 Einträgen)</target>
             </trans-unit>
-            <trans-unit id="tx_metaseo_setting_root.sitemap_priorty" xml:space="preserve" approved="yes">
+            <trans-unit id="tx_metaseo_setting_root.sitemap_priority" xml:space="preserve" approved="yes">
                 <source>Priority (if page have no priority) (default:1)</source>
                 <target>Priorität (wenn bei Seite nicht gesetzt) (Standard:1)</target>
             </trans-unit>
-            <trans-unit id="tx_metaseo_setting_root.sitemap_priorty_depth_multiplier" xml:space="preserve" approved="yes">
+            <trans-unit id="tx_metaseo_setting_root.sitemap_priority_depth_multiplier" xml:space="preserve" approved="yes">
                 <source>Priority depth multiplier (default:1)</source>
                 <target>Priorität Seitentiefe Multiplikator (Standard:1)</target>
             </trans-unit>
-            <trans-unit id="tx_metaseo_setting_root.sitemap_priorty_depth_modificator" xml:space="preserve" approved="yes">
+            <trans-unit id="tx_metaseo_setting_root.sitemap_priority_depth_modificator" xml:space="preserve" approved="yes">
                 <source>Priority depth modificator (default:1)</source>
                 <target>Priorität Seitentiefe Modifikator (Standard:1)</target>
             </trans-unit>
