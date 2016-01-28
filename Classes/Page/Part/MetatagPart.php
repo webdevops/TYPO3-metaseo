@@ -1280,26 +1280,24 @@ class MetatagPart extends AbstractPart
         $canonicalUrl = null;
 
         if (!empty($this->pageRecord['tx_metaseo_canonicalurl'])) {
-            //todo: $canonicalUrl not in use
             $canonicalUrl = $this->pageRecord['tx_metaseo_canonicalurl'];
         } elseif (!empty($this->tsSetupSeo['canonicalUrl'])) {
             list($clUrl, $clLinkConf, $clDisableMpMode) = $this->detectCanonicalPage(
                 $this->tsSetupSeo['canonicalUrl.']
             );
+            if (!empty($clUrl) && isset($clLinkConf) && isset($clDisableMpMode)) {
+                $canonicalUrl = $this->generateLink($clUrl, $clLinkConf, $clDisableMpMode);
+            }
         }
 
-        if (!empty($clUrl) && isset($clLinkConf) && isset($clDisableMpMode)) {
-            $canonicalUrl = $this->generateLink($clUrl, $clLinkConf, $clDisableMpMode);
-
-            if (!empty($canonicalUrl)) {
-                $this->metaTagList['link.rel.canonical'] = array(
-                    'tag'        => 'link',
-                    'attributes' => array(
-                        'rel'  => 'canonical',
-                        'href' => $canonicalUrl,
-                    ),
-                );
-            }
+        if (!empty($canonicalUrl)) {
+            $this->metaTagList['link.rel.canonical'] = array(
+                'tag'        => 'link',
+                'attributes' => array(
+                    'rel'  => 'canonical',
+                    'href' => $canonicalUrl,
+                ),
+            );
         }
     }
 
