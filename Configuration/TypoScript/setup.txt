@@ -117,6 +117,7 @@ plugin.metaseo {
         # canonical tag generator settings
         canonicalUrl = {$plugin.metaseo.metaTags.canonicalUrl}
         canonicalUrl {
+            fallbackProtocol = {$plugin.metaseo.metaTags.canonicalUrl.fallbackProtocol}
             strict = {$plugin.metaseo.metaTags.canonicalUrl.strict}
             noMP = {$plugin.metaseo.metaTags.canonicalUrl.noMP}
 

@@ -1279,7 +1279,7 @@ class MetatagPart extends AbstractPart
     {
         $canonicalUrl = $this->generateCanonicalUrl();
 
-        if (!empty($canonicalUrl)) {
+        if (!is_null($canonicalUrl)) {
             $this->metaTagList['link.rel.canonical'] = array(
                 'tag'        => 'link',
                 'attributes' => array(
@@ -1292,7 +1292,8 @@ class MetatagPart extends AbstractPart
 
     /**
      * Generate CanonicalUrl for this page
-     * @return null|string
+     *
+     * @return null|string   Url or null if Url is empty
      */
     protected function generateCanonicalUrl()
     {
@@ -1307,8 +1308,74 @@ class MetatagPart extends AbstractPart
                 $this->tsSetupSeo['canonicalUrl.']
             );
             if (!empty($clUrl) && isset($clLinkConf) && isset($clDisableMpMode)) {
-                return $this->generateLink($clUrl, $clLinkConf, $clDisableMpMode);
+                $url = $this->generateLink($clUrl, $clLinkConf, $clDisableMpMode);
+                return $this->setFallbackProtocol(
+                    $this->pageRecord['url_scheme'], //page properties protocol selection
+                    $this->tsSetupSeo['canonicalUrl.']['fallbackProtocol'],
+                    $url
+                );
             }
+        }
+
+        return null;
+    }
+
+    /**
+     * Replaces protocol in URL with a fallback protocol
+     * Missing or unknown protocol will not be replaced
+     *
+     * @param string $pagePropertiesProtocol protocol from page properties
+     * @param string $canonicalFallbackProtocol fallback protocol to go for if protocol in page properties is undefined
+     * @param string $url
+     *
+     * @return string|null
+     */
+    protected function setFallbackProtocol($pagePropertiesProtocol, $canonicalFallbackProtocol, $url)
+    {
+        $url = ltrim($url);
+        if (empty($url)) {
+            return null;
+        }
+
+        if (empty($canonicalFallbackProtocol)) {
+            // Fallback not defined
+            return $url;
+        }
+
+        if (!empty($pagePropertiesProtocol)) {
+            // Protocol is well-defined via page properties (default is '0' with type string).
+            // User cannot request with wrong protocol. Canonical URL cannot be wrong.
+            return $url;
+        }
+
+        //get length of protocol substring
+        $protocolLength = $this->getProtocolLength($url);
+        if (is_null($protocolLength)) {
+            //unknown protocol
+            return $url;
+        }
+
+        //replace protocol prefix
+        return substr_replace($url, $canonicalFallbackProtocol . '://', 0, $protocolLength);
+    }
+
+    /**
+     * Case-insensitive detection of the protocol used in an Url. Returns protocol length if found.
+     *
+     * @param $url
+     *
+     * @return int|null length of protocol or null for unknown protocol
+     */
+    protected function getProtocolLength($url)
+    {
+        if (substr_compare($url, 'http://', 0, 7, true) === 0) {
+            return 7;
+        }
+        if (substr_compare($url, 'https://', 0, 8, true) === 0) {
+            return 8;
+        }
+        if (substr_compare($url, '//', 0, 2, false) === 0) {
+            return 2;
         }
 
         return null;

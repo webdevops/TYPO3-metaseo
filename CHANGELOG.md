@@ -14,6 +14,8 @@
 - Fixed many bugs and issues
 - Fixed coding style (added .editorconfig)
 - Refactored whole extension
+- Added protocol selection for canonical Urls in case protocol is undefined in page properties
+  (via plugin.metaseo.metaTags.canonicalUrl.fallbackProtocol)
 
 ## Beta features
 
