@@ -1238,7 +1238,7 @@ class MetatagPart extends AbstractPart
             }
         }
 
-        // Root (First page in rootline)
+        // Start (first page in rootline -> root page)
         if (!empty($rootPageUrl)) {
             $this->metaTagList['link.rel.start'] = array(
                 'tag'        => 'link',
@@ -1249,24 +1249,24 @@ class MetatagPart extends AbstractPart
             );
         }
 
-        // Next (Next page in rootline)
-        if (!empty($nextPageUrl)) {
-            $this->metaTagList['link.rel.next'] = array(
-                'tag'        => 'link',
-                'attributes' => array(
-                    'rel'  => 'next',
-                    'href' => $nextPageUrl,
-                ),
-            );
-        }
-
-        // Prev (Previous page in rootline)
+        // Prev (previous page in rootline)
         if (!empty($prevPageUrl)) {
             $this->metaTagList['link.rel.prev'] = array(
                 'tag'        => 'link',
                 'attributes' => array(
                     'rel'  => 'prev',
                     'href' => $prevPageUrl,
+                ),
+            );
+        }
+
+        // Next (next page in rootline)
+        if (!empty($nextPageUrl)) {
+            $this->metaTagList['link.rel.next'] = array(
+                'tag'        => 'link',
+                'attributes' => array(
+                    'rel'  => 'next',
+                    'href' => $nextPageUrl,
                 ),
             );
         }
