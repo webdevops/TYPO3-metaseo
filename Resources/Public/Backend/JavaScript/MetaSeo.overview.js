@@ -526,26 +526,32 @@ MetaSeo.overview.grid = {
 
             var currentLanguage = Ext.getCmp('sysLanguage').getRawValue();
 
-            if (overlayStatus == 2) {
-                qtip = '<b>' + String.format(MetaSeo.overview.conf.lang.value_only_base, currentLanguage) + '</b>:<br>' + qtip;
-            } else if (overlayStatus == 1) {
-                qtip = '<b>' + String.format(MetaSeo.overview.conf.lang.value_from_overlay, currentLanguage) + '</b>:<br>' + qtip;
-            } else {
-                qtip = '<b>' + String.format(MetaSeo.overview.conf.lang.value_from_base, currentLanguage) + '</b>:<br>' + qtip;
+            switch (overlayStatus) {
+                case 1:
+                    qtip = '<b>' + String.format(MetaSeo.overview.conf.lang.value_from_overlay, currentLanguage) + '</b>:<br>' + qtip;
+                    break;
+                case 2:
+                    qtip = '<b>' + String.format(MetaSeo.overview.conf.lang.value_only_base, currentLanguage) + '</b>:<br>' + qtip;
+                    break;
+                default:
+                    qtip = '<b>' + String.format(MetaSeo.overview.conf.lang.value_from_base, currentLanguage) + '</b>:<br>' + qtip;
             }
 
-            var html = me._fieldRendererCallback(value, qtip, 23, true);
+            var overlayClass = '';
 
             // check for overlay
-            if (overlayStatus == 2) {
-                html = '<div class="metaseo-info-only-in-base">' + html + '</div>';
-            } else if (overlayStatus == 1) {
-                html = '<div class="metaseo-info-from-overlay">' + html + '</div>';
-            } else {
-                html = '<div class="metaseo-info-from-base">' + html + '</div>';
+            switch (overlayStatus) {
+                case 1:
+                    overlayClass = 'metaseo-info-from-overlay';
+                    break;
+                case 2:
+                    overlayClass = 'metaseo-info-only-in-base';
+                    break;
+                default:
+                    overlayClass = 'metaseo-info-from-base';
             }
 
-            return html;
+            return me._fieldRendererCallback(value, qtip, 23, true, overlayClass); //html
         };
 
         var fieldRendererRaw = function (value, metaData, record, rowIndex, colIndex, store) {
@@ -559,7 +565,7 @@ MetaSeo.overview.grid = {
                 value = '<div class="metaseo-boolean"><strong>' + Ext.util.Format.htmlEncode(MetaSeo.overview.conf.lang.boolean_yes) + '</strong></div>';
             }
 
-            return me._fieldRendererCallback(value, '', false, false);
+            return me._fieldRendererCallback(value, '', false, false, '');
         };
 
         var columnModel = [{
@@ -582,7 +588,7 @@ MetaSeo.overview.grid = {
                     value = new Array(record.data._depth).join('    ') + value;
                 }
 
-                return me._fieldRendererCallback(value, qtip, false, true);
+                return me._fieldRendererCallback(value, qtip, false, true, '');
             },
             metaSeoClickEdit: {
                 xtype: 'textfield',
@@ -712,7 +718,7 @@ MetaSeo.overview.grid = {
                         value = Ext.util.Format.htmlEncode(value);
                     }
 
-                    return me._fieldRendererCallback(value, qtip, false, false);
+                    return me._fieldRendererCallback(value, qtip, false, false, '');
                 };
 
                 columnModel.push({
@@ -1050,16 +1056,22 @@ MetaSeo.overview.grid = {
 
 
     _fieldRenderer: function (value) {
-        return this._fieldRendererCallback(value, value, 23, true);
+        return this._fieldRendererCallback(value, value, 23, true, '');
     },
 
     _fieldRendererRaw: function (value) {
-        return this._fieldRendererCallback(value, value, false, true);
+        return this._fieldRendererCallback(value, value, false, true, '');
     },
 
-    _fieldRendererCallback: function (value, qtip, maxLength, escape) {
+    _fieldRendererCallback: function (value, qtip, maxLength, escape, additionalClasses) {
         var classes = '';
         var icon = '';
+
+        if (additionalClasses) {
+            additionalClasses = additionalClasses.toString().trim();
+        } else {
+            additionalClasses = '';
+        }
 
         if (this._cellEditMode) {
             classes += 'metaseo-cell-editable ';
@@ -1088,7 +1100,7 @@ MetaSeo.overview.grid = {
         }
         qtip = qtip.replace(/\n/g, "<br />");
 
-        return '<div class="' + classes + '" ext:qtip="' + qtip + '">' + value + icon + '</div>';
+        return '<div class="' + classes + ' ' + additionalClasses + '" ext:qtip="' + qtip + '">' + value + icon + '</div>';
     }
 
 
