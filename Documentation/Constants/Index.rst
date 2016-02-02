@@ -38,7 +38,7 @@ Canonical Tag (No MP mode)       Prevent canonical links to contain mountpoint i
 Publish Page Expire Time         Publish expire date from the “End Date” of the page.         *enabled*
                                  Currently only used for Google.
 
-Link generation                  Automatic generate index and up/next/prev-links.             *enabled*
+Link generation                  Automatic generate index and up/next/prev-links.             *disabled*
 
 Enable Dublin Core (DC.) tags    Enable/Disable output of dublin core (DC) metatags           *enabled*
 
