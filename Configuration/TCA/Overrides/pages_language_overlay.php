@@ -83,7 +83,7 @@ $tempColumns = array(
     ),
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages_language_overlay', $tempColumns, 1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages_language_overlay', $tempColumns);
 
 // TCA Palettes
 $GLOBALS['TCA']['pages_language_overlay']['palettes']['tx_metaseo_pagetitle'] = array(
