@@ -212,7 +212,7 @@ $tempColumns = array(
 );
 
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages', $tempColumns, 1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages', $tempColumns);
 
 // TCA Palettes
 $GLOBALS['TCA']['pages']['palettes']['tx_metaseo_pagetitle'] = array(
