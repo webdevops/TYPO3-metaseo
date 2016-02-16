@@ -1320,6 +1320,8 @@ class MetatagPart extends AbstractPart
     protected function generateOpenGraphMetaTags()
     {
         $tsSetupSeoOg = $this->tsSetupSeo['opengraph.'];
+        $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
+        $storeMeta = $connector->getStore();
 
         // Get list of tags (filtered array)
         $ogTagNameList = array_keys($tsSetupSeoOg);
@@ -1346,6 +1348,10 @@ class MetatagPart extends AbstractPart
                     $tsSetupSeoOg[$ogTagName],
                     $tsSetupSeoOg[$ogTagName . '.']
                 );
+            } else {
+                if (array_key_exists($ogTagName, $storeMeta['meta:og']) && '' !== $storeMeta['meta:og'][$ogTagName]) {
+                    $ogTagValue = $storeMeta['meta:og'][$ogTagName];
+                }
             }
 
             if ($ogTagValue !== null && strlen($ogTagValue) >= 1) {
