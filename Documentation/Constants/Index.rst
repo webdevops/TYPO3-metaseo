@@ -24,6 +24,11 @@ Canonical Tag                    Publish canonical link if possible             
                                  (TYPO3-cache is enabled and cHash is valid)
                                  or if user entered canonical tag into page options.          *disabled*
 
+Canonical Protocol Fallback      If no protocol is set via TYPO3's page properties, use       *disabled*
+                                 this as a fallback to set a unique protocol for both http
+                                 and https requests. Can be set to 'http', 'https' or left
+                                 empty to disable the fallback.
+
 Canonical Tag (Strict mode)      Enable strict mode (all wrong GET-parameters will            *enabled*
                                  generate a canonical-tag to the self without GET-params).
 
