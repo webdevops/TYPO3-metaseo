@@ -72,7 +72,7 @@ plugin.metaseo {
     metaTags.p3pPolicyUrl =
 
     # cat=plugin.metaseo.metaTags/enable/30; type=boolean; label= Link generation: Automatic generate index, up, prev und next links (metatags).
-    metaTags.linkGeneration = 1
+    metaTags.linkGeneration = 0
 
     # cat=plugin.metaseo.metaTags/enable/31; type=boolean; label= Meta Description: Enable Dublin Core (DC.) metatags
     metaTags.enableDC = 1
