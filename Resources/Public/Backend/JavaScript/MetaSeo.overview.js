@@ -25,6 +25,7 @@
 Ext.ns('MetaSeo.overview');
 
 Ext.onReady(function () {
+    Ext.Ajax.defaultHeaders = {'X-Tx-Metaseo-Ajax': 1};
     Ext.QuickTips.init();
     Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 

@@ -10,6 +10,17 @@ if (TYPO3_MODE == 'BE') {
     // Field validations
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals']['tx_metaseo_backend_validation_float']
         = 'EXT:metaseo/Classes/Backend/Validator/ValidatorImport.php';
+
+    /*
+     * BackendCompliantTsfeController suppresses redirect http headers sent by TypoScriptFrontendController
+     * by faking default scheme for pages processed by TypoScriptFrontendController (use for Ajax requests only)
+     */
+    if (isset($_SERVER['HTTP_X_TX_METASEO_AJAX'])) { //original header is 'X-Tx-Metaseo-Ajax' (prefixed by webserver)
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']
+            ['TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController'] = array(
+                'className' => 'Metaseo\\Metaseo\\Frontend\\Controller\\BackendCompliantTsfeController'
+            );
+    }
 }
 
 // ##############################################
