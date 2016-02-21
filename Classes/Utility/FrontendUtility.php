@@ -90,7 +90,8 @@ class FrontendUtility
         if ($lastTsSetupPid !== $pageUid) {
             // Cache TSFE if possible to prevent reinit (is still slow but we need the TSFE)
             if (empty($cacheTSFE[$pageUid])) {
-                /** @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $tsfeController */
+                // suppress http redirect headers via BackendCompliantTsfeController, loaded via ext_localconf.php
+                /** @var \Metaseo\Metaseo\Frontend\Controller\BackendCompliantTsfeController $tsfeController */
                 $tsfeController                   = $objectManager->get(
                     'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
                     $GLOBALS['TYPO3_CONF_VARS'],
