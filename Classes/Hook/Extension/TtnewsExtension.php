@@ -1,11 +1,10 @@
 <?php
-namespace Metaseo\Metaseo\Hook\Extension;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de>
- *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,30 +22,34 @@ namespace Metaseo\Metaseo\Hook\Extension;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Hook\Extension;
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
 /**
  * EXT:tt_news hook for metatags
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: TtnewsExtension.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class TtnewsExtension {
+class TtnewsExtension
+{
 
     /**
      * Extra item marker hook for metatag fetching
      *
-     * @param    array $markerArray        Marker array
-     * @param    array $row                Current tt_news row
-     * @param    array $lConf                Local configuration
-     * @param    object $ttnewsObj            Pi-object from tt_news
-     * @return    array                        Marker array (not changed)
+     * @param   array          $markerArray Marker array
+     * @param   array          $row         Current tt_news row
+     * @param   array          $lConf       Local configuration
+     * @param   AbstractPlugin $ttnewsObj   Pi-object from tt_news
+     *
+     * @return  array                Marker array (not changed)
      */
-    public function extraItemMarkerProcessor($markerArray, $row, $lConf, $ttnewsObj) {
+    public function extraItemMarkerProcessor(array $markerArray, array $row, array $lConf, AbstractPlugin $ttnewsObj)
+    {
         $theCode = (string)strtoupper(trim($ttnewsObj->theCode));
 
-        $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Metaseo\\Metaseo\\Connector');
+        $connector = GeneralUtility::makeInstance('Metaseo\\Metaseo\\Connector');
 
         switch ($theCode) {
             case 'SINGLE':
@@ -86,5 +89,3 @@ class TtnewsExtension {
         return $markerArray;
     }
 }
-
-?>

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2014-11-08T14:45:02Z"
+          product-name="metaseo">
+        <header/>
+        <body>
+            <trans-unit id="pages.tab.seo" xml:space="preserve" approved="yes">
+                <source>SEO</source>
+                <target>SEO</target>
+            </trans-unit>
+            <trans-unit id="pages.palette.pagetitle" xml:space="preserve" approved="yes">
+                <source>Pagetitle</source>
+                <target>Seitentitel</target>
+            </trans-unit>
+            <trans-unit id="pages.palette.geo" xml:space="preserve" approved="yes">
+                <source>Geo position</source>
+                <target>Geo Position</target>
+            </trans-unit>
+            <trans-unit id="pages.palette.crawler" xml:space="preserve" approved="yes">
+                <source>Searchengines</source>
+                <target>Suchmaschinen</target>
+            </trans-unit>
+            <trans-unit id="pages.palette.sitemap" xml:space="preserve" approved="yes">
+                <source>Sitemap</source>
+                <target>Sitemap</target>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.tab.sitemap" xml:space="preserve" approved="yes">
+                <source>Sitemap</source>
+                <target>Sitemap</target>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.tab.robotstxt" xml:space="preserve" approved="yes">
+                <source>Robots.txt</source>
+                <target>Robots.txt</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_pagetitle" xml:space="preserve" approved="yes">
+                <source>title-TAG (absolute, without prefix/suffix)</source>
+                <target>title-TAG (absolut, ohne Prefix/Suffix)</target>
+            </trans-unit>
+            <trans-unit id="pages_language_overlay.tx_metaseo_pagetitle" xml:space="preserve" approved="yes">
+                <source>title-TAG</source>
+                <target>title-TAG</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_pagetitle_rel" xml:space="preserve" approved="yes">
+                <source>Browsertitle</source>
+                <target>Browsertitel</target>
+            </trans-unit>
+            <trans-unit id="pages_language_overlay.tx_metaseo_pagetitle_rel" xml:space="preserve" approved="yes">
+                <source>Browsertitle</source>
+                <target>Browsertitel</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_is_exclude" xml:space="preserve" approved="yes">
+                <source>Exclude page from SearchEngines</source>
+                <target>Seite von Suchmaschinen ausschließen</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_pagetitle_prefix" xml:space="preserve" approved="yes">
+                <source>Prefix (inheritable)</source>
+                <target>Präfix (vererbbar)</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_pagetitle_suffix" xml:space="preserve" approved="yes">
+                <source>Suffix (inheritable)</source>
+                <target>Suffix (vererbbar)</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_inheritance" xml:space="preserve" approved="yes">
+                <source>Inheritance mode</source>
+                <target>Vererbungsmodus</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_canonicalurl" xml:space="preserve" approved="yes">
+                <source>Canonical URL (if your content is a copy from another webpage, link here to it)</source>
+                <target>Canonical URL (Wenn der Inhalt der Webseite von einer Anderen übernommen worden ist, hier die URL dieser Seite eintragen)</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_geo_lat" xml:space="preserve" approved="yes">
+                <source>Latitude</source>
+                <target>Breitengrad</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_geo_long" xml:space="preserve" approved="yes">
+                <source>Longitude</source>
+                <target>Längengrad</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_geo_place" xml:space="preserve" approved="yes">
+                <source>City/Place</source>
+                <target>Stadt/Standort</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_geo_region" xml:space="preserve" approved="yes">
+                <source>Region</source>
+                <target>Region</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_inheritance.I.0" xml:space="preserve" approved="yes">
+                <source>Normal</source>
+                <target>Normal</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_inheritance.I.1" xml:space="preserve" approved="yes">
+                <source>Skip (don't herit from this page)</source>
+                <target>Überspringen (von dieser Seite nicht vererben)</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_priority" xml:space="preserve" approved="yes">
+                <source>Priority (0-100)</source>
+                <target>Priorität (0-100)</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_change_frequency" xml:space="preserve" approved="yes">
+                <source>Page change frequency</source>
+                <target>Änderungshäufigkeit der Seite</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_change_frequency.I.0" xml:space="preserve" approved="yes">
+                <source>Default (see constants)</source>
+                <target>Standard (siehe Konstanten)</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_change_frequency.I.1" xml:space="preserve" approved="yes">
+                <source>Always</source>
+                <target>Immer</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_change_frequency.I.2" xml:space="preserve" approved="yes">
+                <source>Hourly</source>
+                <target>Stündlich</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_change_frequency.I.3" xml:space="preserve" approved="yes">
+                <source>Daily</source>
+                <target>Täglich</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_change_frequency.I.4" xml:space="preserve" approved="yes">
+                <source>Weekly</source>
+                <target>Wöchentlich</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_change_frequency.I.5" xml:space="preserve" approved="yes">
+                <source>Monthly</source>
+                <target>Monatlich</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_change_frequency.I.6" xml:space="preserve" approved="yes">
+                <source>Yearly</source>
+                <target>Jährlich</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_change_frequency.I.7" xml:space="preserve" approved="yes">
+                <source>Never (archive)</source>
+                <target>Nie (Archivseite)</target>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root" xml:space="preserve" approved="yes">
+                <source>SEO Settings for Root</source>
+                <target>SEO Einstellungen für Website</target>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.is_sitemap" xml:space="preserve" approved="yes">
+                <source>Sitemap active</source>
+                <target>Sitemap aktiv</target>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.is_sitemap_page_indexer" xml:space="preserve" approved="yes">
+                <source>Page indexer</source>
+                <target>Seiten-Indizierung</target>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.is_sitemap_page_indexer.description" xml:space="preserve" approved="yes">
+                <source>Page indexer</source>
+                <target>Seiten-Indizierung</target>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.is_sitemap_typolink_indexer" xml:space="preserve" approved="yes">
+                <source>TypoLink indexer</source>
+                <target>TypoLink-Indizierung</target>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.is_sitemap_language_lock" xml:space="preserve" approved="yes">
+                <source>Enable language-domain support (lock output to current language)</source>
+                <target>Sprach-Domain Unterstützung aktivieren (Sitemap gibt nur aktuelle Sprache aus)</target>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.sitemap_page_limit" xml:space="preserve" approved="yes">
+                <source>Sitemap.xml entry page limit (keep empty to use default of 1000)</source>
+                <target>Sitemap.xml Einträge pro Seite (Leer für Standard von 1000 Einträgen)</target>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.sitemap_priority" xml:space="preserve" approved="yes">
+                <source>Priority (if page have no priority) (default:1)</source>
+                <target>Priorität (wenn bei Seite nicht gesetzt) (Standard:1)</target>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.sitemap_priority_depth_multiplier" xml:space="preserve" approved="yes">
+                <source>Priority depth multiplier (default:1)</source>
+                <target>Priorität Seitentiefe Multiplikator (Standard:1)</target>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.sitemap_priority_depth_modificator" xml:space="preserve" approved="yes">
+                <source>Priority depth modificator (default:1)</source>
+                <target>Priorität Seitentiefe Modifikator (Standard:1)</target>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.is_robotstxt" xml:space="preserve" approved="yes">
+                <source>Robots.txt active</source>
+                <target>Robots.txt aktiv</target>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.is_robotstxt_sitemap_static" xml:space="preserve" approved="yes">
+                <source>Link to static sitemap.xml (scheduler-task needed)</source>
+                <target>Statische sitemap.xml nutzen (Planer Task wird benötigt)</target>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.robotstxt" xml:space="preserve" approved="yes">
+                <source>Robots.txt content (replaces default robots.txt content)</source>
+                <target>Robots.txt Inhalt (Ersetzt den Standard Inhalt der robots.txt)</target>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.robotstxt_additional" xml:space="preserve" approved="yes">
+                <source>Robots.txt additional content (below default)</source>
+                <target>Robots.txt Zusatzinhalt (wird unter dem Standard ausgegeben)</target>
+            </trans-unit>
+            <trans-unit id="is_sitemap_page_indexer.description" xml:space="preserve" approved="yes">
+                <source>If enabled the url of the generated and cached pages will be indexed for the sitemap. This indexing is slow.</source>
+                <target>Wenn diese Option aktiviert ist wird die URL der generierten und gecachten Seite für die Sitemap indziert. Diese Indizierung ist relativ langsam.</target>
+            </trans-unit>
+            <trans-unit id="is_sitemap_typolink_indexer.description" xml:space="preserve" approved="yes">
+                <source>If enabled the url of links generated by the typolink-function will be indexed for the sitemap. This indexing is fast.</source>
+                <target>Wenn diese Option aktiviert ist wird die URL der Links, die über die typolink-Funktion generiert werden, indiziert. Diese Indizierung ist schnell.</target>
+            </trans-unit>
+            <trans-unit id="is_sitemap_language_lock.description" xml:space="preserve" approved="yes">
+                <source>Enable this if you have multiple domains pointing to different languages, eg. example.de points to the german version and example.com to the english version. The generated sitemap will only output the current language and no other language sites.</source>
+                <target>Aktivieren Sie diese Option wenn Sie pro Sprache eine unterschiedliche Domain nutzen wollen, z.B. example.de für Deutsch und example.com für Englisch. Die Ausgabe der Seitemap wird auf die aktuelle Sprache beschränkt, auf der Seitemap von example.com werden folglich nur englische Einträge angezeigt.</target>
+            </trans-unit>
+            <trans-unit id="robotstxt.description" xml:space="preserve" approved="yes">
+                <source>If there is no content in this field the standard robots.txt is generated (from TypoScript setup plugin.metaseo.robotsTxt)</source>
+                <target>Wenn dieses Feld leer ist wird die Standard robots.txt generiert (definiert im TypoScript Setup plugin.metaseo.robotsTxt)</target>
+            </trans-unit>
+            <trans-unit id="robotstxt_additional.description" xml:space="preserve" approved="yes">
+                <source>Will be placed under the default or custom robots.txt</source>
+                <target>Dieser Inhalt wird unter die Ausgabe der robots.txt gesetzt.</target>
+            </trans-unit>
+            <trans-unit id="is_robotstxt_sitemap_static.description" xml:space="preserve" approved="yes">
+                <source>Normally, the %sitemap% marker links to the dynamic version of the sitemap. If this is enabled the %sitemap% marker links to the static file version generated by the scheduler.</source>
+                <target>Normalerweise verweist der Marker %sitemap% auf die dynamische Sitemap-Generierung. Ist diese Option aktiv wird stattdessen auf die statische Version verlink. Hierfür wird ein Planer-Task benötigt, der die statsiche Version generiert.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

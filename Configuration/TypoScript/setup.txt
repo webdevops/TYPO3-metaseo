@@ -9,337 +9,430 @@
 config.titleTagFunction = Metaseo\Metaseo\Page\Part\PagetitlePart->main
 
 page {
-	# MetaSEO: Metatags
-	headerData.84113002 = USER
-	headerData.84113002 {
-		userFunc = Metaseo\Metaseo\Page\Part\MetatagPart->main
-	}
+    # MetaSEO: Metatags
+    headerData.84113002 = USER
+    headerData.84113002 {
+        userFunc = Metaseo\Metaseo\Page\Part\MetatagPart->main
+    }
 
-	# MetaSEO: Pager Footer
-	84113002 = USER
-	84113002 {
-		userFunc = Metaseo\Metaseo\Page\Part\FooterPart->main
-	}
+    # MetaSEO: Pager Footer
+    84113002 = USER
+    84113002 {
+        userFunc = Metaseo\Metaseo\Page\Part\FooterPart->main
+    }
 }
 
 # TypoScript added by extension "metaseo"
 plugin.metaseo =
 plugin.metaseo {
-	# Page title generator
-	pageTitle =
-	pageTitle {
-		applySitetitleToPagetitle = {$plugin.metaseo.pageTitle.applySitetitleToPagetitle}
-		applySitetitleToPrefixSuffix = {$plugin.metaseo.pageTitle.applySitetitleToPrefixSuffix}
-		sitetitleGlue = {$plugin.metaseo.pageTitle.sitetitleGlue}
-		sitetitleGlueSpaceBefore = {$plugin.metaseo.pageTitle.sitetitleGlueSpaceBefore}
-		sitetitleGlueSpaceAfter = {$plugin.metaseo.pageTitle.sitetitleGlueSpaceAfter}
-		sitetitlePosition = {$plugin.metaseo.pageTitle.sitetitlePosition}
-		sitetitle = {$plugin.metaseo.pageTitle.sitetitle}
+    # Page title generator
+    pageTitle =
+    pageTitle {
+        # Caching of page title
+        caching = 1
 
+        applySitetitleToPagetitle = {$plugin.metaseo.pageTitle.applySitetitleToPagetitle}
+        applySitetitleToPrefixSuffix = {$plugin.metaseo.pageTitle.applySitetitleToPrefixSuffix}
+        sitetitleGlue = {$plugin.metaseo.pageTitle.sitetitleGlue}
+        sitetitleGlueSpaceBefore = {$plugin.metaseo.pageTitle.sitetitleGlueSpaceBefore}
+        sitetitleGlueSpaceAfter = {$plugin.metaseo.pageTitle.sitetitleGlueSpaceAfter}
+        sitetitlePosition = {$plugin.metaseo.pageTitle.sitetitlePosition}
+        sitetitle = {$plugin.metaseo.pageTitle.sitetitle}
 
-		# list of stdWraps for advanced page title manipulations
-		stdWrap =
-		stdWrap {
-			# stdWrap for raw page title (before processing)
-			before =
-			before {
-			}
+        # list of stdWraps for advanced page title manipulations
+        stdWrap =
+        stdWrap {
+            # stdWrap for raw page title (before processing)
+            before =
+            before {
 
-			# stdWrap for sitetitle (the title from the template, not from the page)
-			sitetitle =
-			sitetitle {
-			}
+            }
 
-			# stdWrap for processed page title (after processing)
-			after =
-			after {
-			}
-		}
+            # stdWrap for sitetitle (the title from the template, not from the page)
+            sitetitle =
+            sitetitle {
 
-	}
+            }
 
-	# Page metatag generator
-	metaTags =
-	metaTags {
-		enableDC = {$plugin.metaseo.metaTags.enableDC}
-		description = {$plugin.metaseo.metaTags.description}
-		keywords = {$plugin.metaseo.metaTags.keywords}
-		copyright = {$plugin.metaseo.metaTags.copyright}
-		email = {$plugin.metaseo.metaTags.email}
-		author = {$plugin.metaseo.metaTags.author}
-		publisher = {$plugin.metaseo.metaTags.publisher}
-		language = {$plugin.metaseo.metaTags.language}
-		distribution = {$plugin.metaseo.metaTags.distribution}
-		rating = {$plugin.metaseo.metaTags.rating}
-		revisit = {$plugin.metaseo.metaTags.revisit}
+            # stdWrap for processed page title (after processing)
+            after =
+            after {
 
-		p3pCP = {$plugin.metaseo.metaTags.p3pCP}
-		p3pPolicyUrl = {$plugin.metaseo.metaTags.p3pPolicyUrl}
+            }
+        }
+    }
 
-		linkGeneration = {$plugin.metaseo.metaTags.linkGeneration}
+    # Page metatag generator
+    metaTags =
+    metaTags {
+        enableDC = {$plugin.metaseo.metaTags.enableDC}
+        description = {$plugin.metaseo.metaTags.description}
+        keywords = {$plugin.metaseo.metaTags.keywords}
+        copyright = {$plugin.metaseo.metaTags.copyright}
+        email = {$plugin.metaseo.metaTags.email}
+        author = {$plugin.metaseo.metaTags.author}
+        publisher = {$plugin.metaseo.metaTags.publisher}
+        language = {$plugin.metaseo.metaTags.language}
+        distribution = {$plugin.metaseo.metaTags.distribution}
+        rating = {$plugin.metaseo.metaTags.rating}
+        revisit = {$plugin.metaseo.metaTags.revisit}
+
+        p3pCP = {$plugin.metaseo.metaTags.p3pCP}
+        p3pPolicyUrl = {$plugin.metaseo.metaTags.p3pPolicyUrl}
+
+        linkGeneration = {$plugin.metaseo.metaTags.linkGeneration}
 
         robotsEnable = {$plugin.metaseo.metaTags.robotsEnable}
-		robotsIndex = {$plugin.metaseo.metaTags.robotsIndex}
-		robotsFollow = {$plugin.metaseo.metaTags.robotsFollow}
-		robotsArchive = {$plugin.metaseo.metaTags.robotsArchive}
-		robotsSnippet = {$plugin.metaseo.metaTags.robotsSnippet}
-		robotsNoImageindex = {$plugin.metaseo.metaTags.robotsNoImageindex}
-		robotsNoTranslate = {$plugin.metaseo.metaTags.robotsNoTranslate}
-		robotsOdp = {$plugin.metaseo.metaTags.robotsOdp}
-		robotsYdir = {$plugin.metaseo.metaTags.robotsYdir}
+        robotsIndex = {$plugin.metaseo.metaTags.robotsIndex}
 
-		geoPositionLatitude = {$plugin.metaseo.metaTags.geoPositionLatitude}
-		geoPositionLongitude = {$plugin.metaseo.metaTags.geoPositionLongitude}
-		geoRegion = {$plugin.metaseo.metaTags.geoRegion}
-		geoPlacename = {$plugin.metaseo.metaTags.geoPlacename}
+        robotsIndex {
+            # blacklist (RegExp, eg /typo3/)
+            blacklist {
 
-		googleVerification = {$plugin.metaseo.metaTags.googleVerification}
-		msnVerification = {$plugin.metaseo.metaTags.msnVerification}
-		yahooVerification = {$plugin.metaseo.metaTags.yahooVerification}
-		wotVerification = {$plugin.metaseo.metaTags.wotVerification}
+            }
+        }
 
-		picsLabel = {$plugin.metaseo.metaTags.picsLabel}
+        robotsFollow = {$plugin.metaseo.metaTags.robotsFollow}
+        robotsArchive = {$plugin.metaseo.metaTags.robotsArchive}
+        robotsSnippet = {$plugin.metaseo.metaTags.robotsSnippet}
+        robotsNoImageindex = {$plugin.metaseo.metaTags.robotsNoImageindex}
+        robotsNoTranslate = {$plugin.metaseo.metaTags.robotsNoTranslate}
+        robotsOdp = {$plugin.metaseo.metaTags.robotsOdp}
+        robotsYdir = {$plugin.metaseo.metaTags.robotsYdir}
 
-		useLastUpdate = {$plugin.metaseo.metaTags.useLastUpdate}
-		useDetectLanguage = {$plugin.metaseo.metaTags.useDetectLanguage}
-		# canonical tag generator settings
-		useCanonical = {$plugin.metaseo.metaTags.useCanonical}
-		useCanonical {
-			strict = {$plugin.metaseo.metaTags.useCanonical.strict}
-		}
-		useExpire = {$plugin.metaseo.metaTags.useExpire}
+        geoPositionLatitude = {$plugin.metaseo.metaTags.geoPositionLatitude}
+        geoPositionLongitude = {$plugin.metaseo.metaTags.geoPositionLongitude}
+        geoRegion = {$plugin.metaseo.metaTags.geoRegion}
+        geoPlacename = {$plugin.metaseo.metaTags.geoPlacename}
 
-		ieCompatibilityMode = {$plugin.metaseo.userAgent.ieCompatibilityMode}
+        googleVerification = {$plugin.metaseo.metaTags.googleVerification}
+        msnVerification = {$plugin.metaseo.metaTags.msnVerification}
+        yahooVerification = {$plugin.metaseo.metaTags.yahooVerification}
+        wotVerification = {$plugin.metaseo.metaTags.wotVerification}
 
-		# basic configuration for metatag informations
-		conf =
-		conf {
-			description_page.field = description
-			keywords_page.field = keywords
-			title_page.field    = title
-			author_page.field   = author
-			email_page.field    = author_email
+        picsLabel = {$plugin.metaseo.metaTags.picsLabel}
 
-			tx_metaseo_geo_lat.field    = tx_metaseo_geo_lat
-			tx_metaseo_geo_long.field   = tx_metaseo_geo_long
-			tx_metaseo_geo_place.field  = tx_metaseo_geo_place
-			tx_metaseo_geo_region.field = tx_metaseo_geo_region
+        useLastUpdate = {$plugin.metaseo.metaTags.useLastUpdate}
 
-			lastUpdate_page = TEXT
-			lastUpdate_page {
-				data = page:lastUpdated
-				stdWrap.ifEmpty.data = register : SYS_LASTCHANGED
-				date = c
-			}
-		}
+        # canonical tag generator settings
+        canonicalUrl = {$plugin.metaseo.metaTags.canonicalUrl}
+        canonicalUrl {
+            fallbackProtocol = {$plugin.metaseo.metaTags.canonicalUrl.fallbackProtocol}
+            strict = {$plugin.metaseo.metaTags.canonicalUrl.strict}
+            noMP = {$plugin.metaseo.metaTags.canonicalUrl.noMP}
 
-		# section links (start, up, next, prev)
-		sectionLinks =
-		sectionLinks {
-			prev = HMENU
-			prev {
-				special = browse
-				special {
-					items = prev
-					prev.fields.title =
-				}
+            # Default typolink configuration for canonical link
+            typolink {
 
-				1 = TMENU
-				1.NO {
-					wrapItemAndSub = {field:uid}
-					wrapItemAndSub.insertData = 1
-					doNotLinkIt = 1
-				}
-			}
+            }
 
-			next = HMENU
-			next {
-				special = browse
-				special {
-					items = next
-					next.fields.title =
-				}
+            # blacklist (RegExp, eg /typo3/)
+            blacklist {
 
-				1 = TMENU
-				1.NO {
-					wrapItemAndSub = {field:uid}
-					wrapItemAndSub.insertData = 1
-					doNotLinkIt = 1
-				}
-			}
-		}
+            }
+        }
 
-		# list of stdWraps for advanced metatag manipulations
-		stdWrap =
-		stdWrap {
-			# stdWrap for title
-			title =
-			title {
-			}
+        # OpenGraph metatags
+        opengraph = {$plugin.metaseo.metaTags.opengraph}
+        opengraph {
+            site_name = TEXT
+            site_name {
+                data = TSFE:tmpl|sitetitle
+            }
 
-			# stdWrap for description
-			description =
-			description {
-			}
+            title = TEXT
+            title {
+                field = title
+            }
 
-			# stdWrap for keywords
-			keywords =
-			keywords {
-			}
+            type = article
+            admins = 
+            email = {$plugin.metaseo.metaTags.email}
+            phone_number =
+            fax_number =
+            latitude = {$plugin.metaseo.metaTags.geoPositionLatitude}
+            longitude = {$plugin.metaseo.metaTags.geoPositionLongitude}
+            street-address =
+            locality = {$plugin.metaseo.metaTags.geoPlacename}
+            region = {$plugin.metaseo.metaTags.geoRegion}
+            postal-code =
+            country-name =
+        }
 
-			# stdWrap for copyright
-			copyright =
-			copyright {
-			}
+        useExpire = {$plugin.metaseo.metaTags.useExpire}
 
-			# stdWrap for language
-			language =
-			language {
-			}
+        ieCompatibilityMode = {$plugin.metaseo.userAgent.ieCompatibilityMode}
 
-			# stdWrap for email
-			email =
-			email {
-			}
+        # basic configuration for metatag information
+        conf =
+        conf {
+            description_page.field = description
+            keywords_page.field = keywords
+            title_page.field = title
+            author_page.field = author
+            email_page.field = author_email
 
-			# stdWrap for author
-			author =
-			author {
-			}
+            tx_metaseo_geo_lat.field = tx_metaseo_geo_lat
+            tx_metaseo_geo_long.field = tx_metaseo_geo_long
+            tx_metaseo_geo_place.field = tx_metaseo_geo_place
+            tx_metaseo_geo_region.field = tx_metaseo_geo_region
 
-			# stdWrap for publisher
-			publisher =
-			publisher {
-			}
+            lastUpdate_page = TEXT
+            lastUpdate_page {
+                data = page:lastUpdated
+                stdWrap.ifEmpty.data = register : SYS_LASTCHANGED
+                date = c
+            }
+        }
 
-			# stdWrap for distribution
-			distribution =
-			distribution {
-			}
+        # section links (start, up, next, prev)
+        sectionLinks =
+        sectionLinks {
+            prev = HMENU
+            prev {
+                special = browse
+                special {
+                    items = prev
+                    prev.fields.title =
+                }
 
-			# stdWrap for rating
-			rating =
-			rating {
-			}
+                1 = TMENU
+                1.NO {
+                    wrapItemAndSub = {field:uid}
+                    wrapItemAndSub.insertData = 1
+                    doNotLinkIt = 1
+                }
+            }
 
-			# stdWrap for lastUpdate
-			lastUpdate =
-			lastUpdate {
-			}
-		}
-	}
+            next = HMENU
+            next {
+                special = browse
+                special {
+                    items = next
+                    next.fields.title =
+                }
 
-	# Advanced services (google analytics, piwik ...)
-	services =
-	services {
-		# Google Analytics configuration
-		googleAnalytics = {$plugin.metaseo.services.googleAnalytics}
-		googleAnalytics {
-			# show google analytics if user is logged in be (default is disable, we don't want to track be-users)
-			showIfBeLogin = 0
-			anonymizeIp = {$plugin.metaseo.services.googleAnalytics.anonymizeIp}
-			domainName = {$plugin.metaseo.services.googleAnalytics.domainName}
-			trackDownloads = {$plugin.metaseo.services.googleAnalytics.trackDownloads}
-			trackDownloadsScript = EXT:metaseo/Resources/Public/Frontend/JavaScript/GoogleAnalyticsTrackDownload.js
-			customizationCode =
-            universalAnalytics = {$plugin.metaseo.services.googleAnalytics.universalAnalytics}
+                1 = TMENU
+                1.NO {
+                    wrapItemAndSub = {field:uid}
+                    wrapItemAndSub.insertData = 1
+                    doNotLinkIt = 1
+                }
+            }
+        }
 
-			enableIfHeaderIsDisabled  = {$plugin.metaseo.services.enableIfHeaderIsDisabled}
+        # list of stdWraps for advanced metatag manipulations
+        stdWrap =
+        stdWrap {
+            # stdWrap for title
+            title =
+            title {
 
-			## google analytics template code
-			template = COA
-			template {
-				10 = FLUIDTEMPLATE
-				10 {
-					file = EXT:metaseo/Resources/Private/Templates/PageParts/ServiceGoogleAnalytics.html
-					variables {
-						gaCode = TEXT
-						gaCode.field = gaCode
+            }
 
-						gaCustomizationCode = TEXT
-						gaCustomizationCode.field = gaCustomizationCode
+            # stdWrap for description
+            description =
+            description {
 
-						gaIsAnonymize = TEXT
-						gaIsAnonymize.field = gaIsAnonymize
+            }
 
-						gaDomainName = TEXT
-						gaDomainName.field = gaDomainName
+            # stdWrap for keywords
+            keywords =
+            keywords {
+
+            }
+
+            # stdWrap for copyright
+            copyright =
+            copyright {
+
+            }
+
+            # stdWrap for language
+            language =
+            language {
+
+            }
+
+            # stdWrap for email
+            email =
+            email {
+
+            }
+
+            # stdWrap for author
+            author =
+            author {
+
+            }
+
+            # stdWrap for publisher
+            publisher =
+            publisher {
+
+            }
+
+            # stdWrap for distribution
+            distribution =
+            distribution {
+
+            }
+
+            # stdWrap for rating
+            rating =
+            rating {
+
+            }
+
+            # stdWrap for lastUpdate
+            lastUpdate =
+            lastUpdate {
+
+            }
+        }
+    }
+
+    # Advanced services (google analytics, piwik ...)
+    services =
+    services {
+        # Google Analytics configuration
+        googleAnalytics = {$plugin.metaseo.services.googleAnalytics}
+        googleAnalytics {
+            # show google analytics if user is logged in be (default is disable, we don't want to track be-users)
+            showIfBeLogin = 0
+
+            anonymizeIp = {$plugin.metaseo.services.googleAnalytics.anonymizeIp}
+            domainName = {$plugin.metaseo.services.googleAnalytics.domainName}
+
+            trackDownloads = {$plugin.metaseo.services.googleAnalytics.trackDownloads}
+            trackDownloadsScript = EXT:metaseo/Resources/Public/Frontend/JavaScript/GoogleAnalyticsTrackDownload.js
+
+            customizationCode =
+            enableIfHeaderIsDisabled = {$plugin.metaseo.services.enableIfHeaderIsDisabled}
+
+            ## google analytics template code
+            template = COA
+            template {
+                10 = FLUIDTEMPLATE
+                10 {
+                    file = EXT:metaseo/Resources/Private/Templates/PageParts/ServiceGoogleAnalytics.html
+                    variables {
+                        gaCode = TEXT
+                        gaCode.field = gaCode
+
+                        gaCustomizationCode = TEXT
+                        gaCustomizationCode.field = gaCustomizationCode
+
+                        gaIsAnonymize = TEXT
+                        gaIsAnonymize.field = gaIsAnonymize
+
+                        gaDomainName = TEXT
+                        gaDomainName.field = gaDomainName
 
                         gaUseUniversalAnalytics = TEXT
                         gaUseUniversalAnalytics.field = gaUseUniversalAnalytics
-					}
-				}
-			}
-		}
+                    }
+                }
+            }
+        }
 
-		# Piwik configuration
-		piwik =
-		piwik {
-			# show piwik if user is logged in be (default is disable, we don't want to track be-users)
-			showIfBeLogin = 0
-			url = {$plugin.metaseo.services.piwik.url}
-			id = {$plugin.metaseo.services.piwik.id}
-			domainName = {$plugin.metaseo.services.piwik.domainName}
-			cookieDomainName = {$plugin.metaseo.services.piwik.cookieDomainName}
-			doNotTrack = {$plugin.metaseo.services.piwik.doNotTrack}
-			customizationCode =
+        # Piwik configuration
+        piwik =
+        piwik {
+            # show piwik if user is logged in be (default is disable, we don't want to track be-users)
+            showIfBeLogin = 0
+            url = {$plugin.metaseo.services.piwik.url}
+            id = {$plugin.metaseo.services.piwik.id}
 
-			enableIfHeaderIsDisabled  = {$plugin.metaseo.services.enableIfHeaderIsDisabled}
+            domainName = {$plugin.metaseo.services.piwik.domainName}
+            cookieDomainName = {$plugin.metaseo.services.piwik.cookieDomainName}
+            doNotTrack = {$plugin.metaseo.services.piwik.doNotTrack}
+            customizationCode =
 
-			## piwik template code
-			template = COA
-			template {
-				10 = FLUIDTEMPLATE
-				10 {
-					file = EXT:metaseo/Resources/Private/Templates/PageParts/ServicePiwik.html
-					variables {
-						piwikUrl = TEXT
-						piwikUrl.field = piwikUrl
+            enableIfHeaderIsDisabled = {$plugin.metaseo.services.enableIfHeaderIsDisabled}
 
-						piwikId = TEXT
-						piwikId.field = piwikId
+            ## piwik template code
+            template = COA
+            template {
+                10 = FLUIDTEMPLATE
+                10 {
+                    file = EXT:metaseo/Resources/Private/Templates/PageParts/ServicePiwik.html
+                    variables {
+                        piwikUrl = TEXT
+                        piwikUrl.field = piwikUrl
 
-						piwikCustomizationCode = TEXT
-						piwikCustomizationCode.field = piwikCustomizationCode
+                        piwikId = TEXT
+                        piwikId.field = piwikId
 
-						piwikDomainName = TEXT
-						piwikDomainName.field = piwikDomainName
+                        piwikCustomizationCode = TEXT
+                        piwikCustomizationCode.field = piwikCustomizationCode
 
-						piwikCookieDomainName = TEXT
-						piwikCookieDomainName.field = piwikCookieDomainName
+                        piwikDomainName = TEXT
+                        piwikDomainName.field = piwikDomainName
 
-						piwikDoNotTrack = TEXT
-						piwikDoNotTrack.field = piwikDoNotTrack
-					}
-				}
-			}
-		}
-	}
+                        piwikCookieDomainName = TEXT
+                        piwikCookieDomainName.field = piwikCookieDomainName
 
-	# Social services (Google+,...)
-	social =
-	social {
-		googlePlus =
-		googlePlus {
-			profilePageId = {$plugin.metaseo.social.googleplus.profilePageId}
-		}
-	}
+                        piwikDoNotTrack = TEXT
+                        piwikDoNotTrack.field = piwikDoNotTrack
+                    }
+                }
+            }
+        }
+    }
 
-	# Sitemap indexer and generator
-	sitemap =
-	sitemap {
-		pagePriority = {$plugin.metaseo.sitemap.pagePriority}
-	}
+    # Social services (Google+,...)
+    social =
+    social {
+        googlePlus =
+        googlePlus {
+            profilePageId = {$plugin.metaseo.social.googleplus.profilePageId}
+        }
+    }
 
-	# Robots.txt configuration
-	robotsTxt =
-	robotsTxt {
-		# Default robots.txt if no config is found
-		default = COA
-		default {
-			10 = TEXT
-			10 {
-				value (
+    # Sitemap indexer and generator
+    sitemap =
+    sitemap {
+        pagePriority = {$plugin.metaseo.sitemap.pagePriority}
+        changeFrequency = {$plugin.metaseo.sitemap.changeFrequency}
+        expiration = {$plugin.metaseo.sitemap.expiration}
+
+        # indexer settings
+        index {
+            # blacklist (RegExp, eg /typo3/)
+            blacklist {
+
+            }
+
+            # Blacklist for SetupTS PAGE object typeNums
+            pageTypeBlacklist =
+
+            allowNoStaticCachable = {$plugin.metaseo.sitemap.index.allowNoStaticCachable}
+            allowNoCache = {$plugin.metaseo.sitemap.index.allowNoCache}
+
+            # Whitelist of allowed file extensions
+            fileExtension {
+                # PDF
+                1 = pdf
+
+                # Microsoft Office
+                2 = doc,docx,xls,xlsx,ppt,pptx
+
+                # OpenOffice
+                3 = odt,odp,ods,odg
+            }
+        }
+    }
+
+    # Robots.txt configuration
+    robotsTxt =
+    robotsTxt {
+        # Default robots.txt if no config is found
+        default = COA
+        default {
+            10 = TEXT
+            10 {
+                value (
 User-agent: *
 Disallow: /fileadmin/_temp_/
 Disallow: /t3lib/
@@ -347,155 +440,152 @@ Disallow: /typo3/
 Disallow: /typo3_src/
 Disallow: /typo3conf/
 Disallow: /clear.gif
+Allow: /typo3/sysext/frontend/Resources/Public/*
 
-)
-			}
+                )
+            }
 
-			90 = TEXT
-			90 {
-				value (
+            90 = TEXT
+            90 {
+                value (
 Sitemap: %sitemap%
 
-)
-			}
-		}
+                )
+            }
+        }
 
+        # Extra robots.txt, will added even if robots.txt is found
+        extra = COA
+        extra {
 
-		# Extra robots.txt, will added even if robots.txt is found
-		extra = COA
-		extra {
-		}
+        }
 
-		# Robots.txt marker (search/replace, eg. %name%)
-		marker =
-		marker {
-			sitemap = TEXT
-			sitemap {
-				typolink {
-					parameter.data = leveluid:0
-					parameter.wrap = |,841132
-					returnLast = url
-				}
-			}
-		}
-
-	}
+        # Robots.txt marker (search/replace, eg. %name%)
+        marker =
+        marker {
+            sitemap = TEXT
+            sitemap {
+                typolink {
+                    parameter.data = leveluid:0
+                    parameter.wrap = |,841132
+                    returnLast = url
+                }
+            }
+        }
+    }
 }
 
 # MetaSEO TXT Sitemap
 metaSeoSitemapTxt = PAGE
 metaSeoSitemapTxt {
-	typeNum = 841131
+    typeNum = 841131
 
-	config {
-		linkVars < config.linkVars
-		linkVars := removeFromList(type)
-	}
+    config {
+        linkVars < config.linkVars
+        linkVars := removeFromList(type)
+    }
 
-	10 = USER
-	10 {
-		userFunc = Metaseo\Metaseo\Page\SitemapTxtPage->main
-	}
+    10 = USER_INT
+    10 {
+        userFunc = Metaseo\Metaseo\Page\SitemapTxtPage->main
+    }
 
-	config {
-		disableAllHeaderCode = 1
-		additionalHeaders = Content-type:text/plain
-		xhtml_cleaning = 0
+    config {
+        disableAllHeaderCode = 1
+        additionalHeaders = Content-type:text/plain;charset=UTF-8 | X-Robots-Tag: noindex
+        xhtml_cleaning = 0
 
-		## disable static documents and stuff
-		simulateStaticDocuments = 0
-		tx_realurl_enable = 0
-		tx_cooluri_enable = 0
-		sourceopt.enabled = 0
+        ## disable static documents and stuff
+        simulateStaticDocuments = 0
+        tx_realurl_enable = 0
+        tx_cooluri_enable = 0
+        sourceopt.enabled = 0
 
-		## disable indexed search
-		index_enable = 0
+        ## disable indexed search
+        index_enable = 0
 
-		## disable features
-		insertDmailerBoundaries = 0
-		admPanel = 0
-		stat = 0
-		jumpurl_enable = 0
-		debug = 0
-		message_preview = #
-	}
+        ## disable features
+        insertDmailerBoundaries = 0
+        admPanel = 0
+        stat = 0
+        jumpurl_enable = 0
+        debug = 0
+        message_preview = #
+    }
 }
-
 
 # MetaSEO XML Sitemap
 metaSeoSitemapXml = PAGE
 metaSeoSitemapXml {
-	typeNum = 841132
+    typeNum = 841132
 
-	config {
-		linkVars < config.linkVars
-		linkVars := removeFromList(type)
-	}
+    config {
+        linkVars < config.linkVars
+        linkVars := removeFromList(type)
+    }
 
-	10 = USER
-	10 {
-		userFunc = Metaseo\Metaseo\Page\SitemapXmlPage->main
-	}
+    10 = USER_INT
+    10 {
+        userFunc = Metaseo\Metaseo\Page\SitemapXmlPage->main
+    }
 
-	config {
-		disableAllHeaderCode = 1
-		additionalHeaders = Content-type:application/xml
-		xhtml_cleaning = 0
+    config {
+        disableAllHeaderCode = 1
+        additionalHeaders = Content-type: application/xml;charset=UTF-8 | X-Robots-Tag: noindex
+        xhtml_cleaning = 0
 
-		## disable static documents and stuff
-		simulateStaticDocuments = 0
-		tx_realurl_enable = 0
-		tx_cooluri_enable = 0
-		sourceopt.enabled = 0
+        ## disable static documents and stuff
+        simulateStaticDocuments = 0
+        tx_realurl_enable = 0
+        tx_cooluri_enable = 0
+        sourceopt.enabled = 0
 
-		## disable indexed search
-		index_enable = 0
+        ## disable indexed search
+        index_enable = 0
 
-		## disable features
-		insertDmailerBoundaries = 0
-		admPanel = 0
-		stat = 0
-		jumpurl_enable = 0
-		debug = 0
-		message_preview = <!-- -->
-	}
+        ## disable features
+        insertDmailerBoundaries = 0
+        admPanel = 0
+        stat = 0
+        jumpurl_enable = 0
+        debug = 0
+        message_preview = <!-- -->
+    }
 }
 
 # MetaSEO Robots.txt
 metaSeoRobotsTxt = PAGE
 metaSeoRobotsTxt {
-	typeNum = 841133
+    typeNum = 841133
 
-	10 = USER
-	10 {
-		userFunc = Metaseo\Metaseo\Page\RobotsTxtPage->main
-	}
+    10 = USER_INT
+    10 {
+        userFunc = Metaseo\Metaseo\Page\RobotsTxtPage->main
+    }
 
-	config {
-		disableAllHeaderCode = 1
-		additionalHeaders = Content-type:text/plain
-		xhtml_cleaning = 0
+    config {
+        disableAllHeaderCode = 1
+        additionalHeaders = Content-type:text/plain;charset=UTF-8 | X-Robots-Tag: noindex
+        xhtml_cleaning = 0
 
-		## disable static documents and stuff
-		simulateStaticDocuments = 0
-		tx_realurl_enable = 0
-		tx_cooluri_enable = 0
-		sourceopt.enabled = 0
+        ## disable static documents and stuff
+        simulateStaticDocuments = 0
+        tx_realurl_enable = 0
+        tx_cooluri_enable = 0
+        sourceopt.enabled = 0
 
-		## disable indexed search
-		index_enable = 0
+        ## disable indexed search
+        index_enable = 0
 
-		## disable features
-		insertDmailerBoundaries = 0
-		admPanel = 0
-		stat = 0
-		jumpurl_enable = 0
-		debug = 0
-		message_preview = #
-	}
+        ## disable features
+        insertDmailerBoundaries = 0
+        admPanel = 0
+        stat = 0
+        jumpurl_enable = 0
+        debug = 0
+        message_preview = #
+    }
 }
-
-
 
 #####
 # Ext: news

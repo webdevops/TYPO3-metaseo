@@ -1,12 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Utility;
 
-use Metaseo\Metaseo\Utility\DatabaseUtility;
-
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -25,26 +22,26 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Utility;
 
 /**
  * Backend utility
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: BackendUtility.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class BackendUtility {
+class BackendUtility
+{
 
     /**
      * Fetch list of root pages (is_siteroot) in TYPO3 (cached)
      *
      * @return  array
      */
-    public static function getRootPageList() {
-        static $cache = NULL;
+    public static function getRootPageList()
+    {
+        static $cache = null;
 
-        if ($cache === NULL) {
+        if ($cache === null) {
             $query = 'SELECT uid,
                              pid,
                              title
@@ -62,21 +59,21 @@ class BackendUtility {
      *
      * @return  array
      */
-    public static function getRootPageSettingList() {
-        static $cache = NULL;
+    public static function getRootPageSettingList()
+    {
+        static $cache = null;
 
-        if ($cache === NULL) {
+        if ($cache === null) {
             $query = 'SELECT seosr.*
                         FROM tx_metaseo_setting_root seosr
                              INNER JOIN pages p
-                                ON  p.uid = seosr.pid
+                                 ON p.uid = seosr.pid
                                 AND p.is_siteroot = 1
                                 AND p.deleted = 0
-                        WHERE seosr.deleted = 0';
+                       WHERE seosr.deleted = 0';
             $cache = DatabaseUtility::getAllWithIndex($query, 'pid');
         }
 
         return $cache;
     }
-
 }

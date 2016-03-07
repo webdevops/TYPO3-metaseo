@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Sitemap\Generator;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,16 +22,18 @@ namespace Metaseo\Metaseo\Sitemap\Generator;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Sitemap\Generator;
+
+use Metaseo\Metaseo\Utility\GeneralUtility;
+use Metaseo\Metaseo\Utility\SitemapUtility;
 
 /**
  * Sitemap abstract generator
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: AbstractGenerator.php 81677 2013-11-21 12:32:33Z mblaschke $
  */
-abstract class AbstractGenerator {
+abstract class AbstractGenerator
+{
     // ########################################################################
     // Attributes
     // ########################################################################
@@ -42,7 +43,7 @@ abstract class AbstractGenerator {
      *
      * @var integer
      */
-    public $rootPid = NULL;
+    public $rootPid;
 
     /**
      * Sitemap pages
@@ -57,21 +58,12 @@ abstract class AbstractGenerator {
      * @var array
      */
     public $pages = array();
-
-    /**
-     * Extension configuration
-     *
-     * @var array
-     */
-    protected $extConf = array();
-
     /**
      * Extension setup configuration
      *
      * @var array
      */
     public $tsSetup = array();
-
     /**
      * Page change frequency definition list
      *
@@ -86,15 +78,20 @@ abstract class AbstractGenerator {
         6 => 'yearly',
         7 => 'never',
     );
-
     /**
      * Link template for sitemap index
      *
-     * Replacemennt marker ###PAGE### for page-uid
+     * Replacement marker ###PAGE### for page-uid
      *
      * @var string|boolean
      */
-    public $indexPathTemplate = FALSE;
+    public $indexPathTemplate = false;
+    /**
+     * Extension configuration
+     *
+     * @var array
+     */
+    protected $extConf = array();
 
     // ########################################################################
     // Methods
@@ -103,26 +100,27 @@ abstract class AbstractGenerator {
     /**
      * Fetch sitemap information and generate sitemap
      */
-    public function __construct() {
+    public function __construct()
+    {
         // INIT
-        $this->rootPid = \Metaseo\Metaseo\Utility\GeneralUtility::getRootPid();
-        $sysLanguageId = NULL;
+        $this->rootPid = GeneralUtility::getRootPid();
+        $sysLanguageId = null;
 
         $this->tsSetup = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.'];
 
         // Language limit via setupTS
-        if (\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', FALSE)) {
-            $sysLanguageId = \Metaseo\Metaseo\Utility\GeneralUtility::getLanguageId();
+        if (GeneralUtility::getRootSettingValue('is_sitemap_language_lock', false)) {
+            $sysLanguageId = GeneralUtility::getLanguageId();
         }
 
         // Fetch sitemap list/pages
-        $list = \Metaseo\Metaseo\Utility\SitemapUtility::getList($this->rootPid, $sysLanguageId);
+        $list = SitemapUtility::getList($this->rootPid, $sysLanguageId);
 
         $this->sitemapPages = $list['tx_metaseo_sitemap'];
         $this->pages        = $list['pages'];
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('sitemap-setup', $this);
+        GeneralUtility::callHookAndSignal(__CLASS__, 'sitemapSetup', $this);
     }
 
     /**
@@ -130,8 +128,9 @@ abstract class AbstractGenerator {
      *
      * @return integer
      */
-    public function pageCount() {
-        $pageLimit = \Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('sitemap_page_limit', NULL);
+    public function pageCount()
+    {
+        $pageLimit = GeneralUtility::getRootSettingValue('sitemap_page_limit', null);
 
         if (empty($pageLimit)) {
             $pageLimit = 1000;
@@ -157,9 +156,9 @@ abstract class AbstractGenerator {
     /**
      * Create sitemap (for page)
      *
-     * @param   integer $page   Page
+     * @param   integer $page Page
+     *
      * @return  string
      */
-    abstract public function sitemap($page = NULL);
-
+    abstract public function sitemap($page = null);
 }

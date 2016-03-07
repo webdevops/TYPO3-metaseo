@@ -1,4 +1,4 @@
-﻿.. ==================================================
+.. ==================================================
 .. FOR YOUR INFORMATION
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
@@ -6,7 +6,7 @@
 .. include:: ../Includes.txt
 
 
-.. _users-manual:
+.. _changelog:
 
 Changelog
 =========
@@ -19,5 +19,5 @@ Version         Changes
                 - Major improvements of features and codebase
                 - Fixed several major and minor bugs
                 - Fixed manual (now reStructuredText)
-                - Fixed sitemap url generation in TYPO3 Scheduler
+                - Fixed sitemap url generation in TYPO3 scheduler
 =============   ==============================================================================

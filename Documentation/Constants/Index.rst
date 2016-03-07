@@ -1,4 +1,4 @@
-﻿.. ==================================================
+.. ==================================================
 .. FOR YOUR INFORMATION
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
@@ -6,7 +6,7 @@
 .. include:: ../Includes.txt
 
 
-.. _users-manual:
+.. _constants:
 
 Constants
 =========
@@ -21,20 +21,29 @@ Last Update time                 Publish the update time of the current page    
 Detect Language                  Publish the current TYPO3-FE-language as metatag             *enabled*
 
 Canonical Tag                    Publish canonical link if possible                           *enabled*
-                                 (TYPO3-Cache is enabled and cHash is valid)
+                                 (TYPO3-cache is enabled and cHash is valid)
                                  or if user entered canonical tag into page options.          *disabled*
 
-Canonical Tag (Strict mode)      Enable strict mode (all wrong GET-parameters will
+Canonical Protocol Fallback      If no protocol is set via TYPO3's page properties, use       *disabled*
+                                 this as a fallback to set a unique protocol for both http
+                                 and https requests. Can be set to 'http', 'https' or left
+                                 empty to disable the fallback.
+
+Canonical Tag (Strict mode)      Enable strict mode (all wrong GET-parameters will            *enabled*
                                  generate a canonical-tag to the self without GET-params).
 
-                                 eg. /index.php?id=123&foo=bar would generate a
-                                 Canonical-Tag poiting to /index.php?id=123
+                                 e.g. /index.php?id=123&foo=bar would generate a
+                                 Canonical-Tag pointing to /index.php?id=123
                                  if the cHash is wrong or caching is disabled
+
+Canonical Tag (No MP mode)       Prevent canonical links to contain mountpoint information.   *disabled*
+                                 Useful if some pages would count as duplicate content
+                                 because of mountpoints.
 
 Publish Page Expire Time         Publish expire date from the “End Date” of the page.         *enabled*
                                  Currently only used for Google.
 
-Link generation                  Automatic generate index and up/next/prev-links.             *enabled*
+Link generation                  Automatic generate index and up/next/prev-links.             *disabled*
 
 Enable Dublin Core (DC.) tags    Enable/Disable output of dublin core (DC) metatags           *enabled*
 
@@ -64,7 +73,7 @@ Distribution                     Distribution of your website
 
 Revisit after                    Number of days between search engine visits
 
-Geo Location                     Geo-Location of your webpage with latitude,
+Geo Location                     Geo location of your web page with latitude,
                                  longitude, region and  placename
 
 PICS-label                       Platform for Internet Content Selection
@@ -73,17 +82,18 @@ PICS-label                       Platform for Internet Content Selection
 
 P3P Compact Policy               Your P3P Compact Policy.
 
-                                 More informations about P3P:
+                                 More information about P3P:
 
                                  - http://www.w3.org/P3P/
                                  - http://www.w3.org/TR/P3P/
-                                 - http://en.wikipedia.org/wiki/P3P
+                                 - https://en.wikipedia.org/wiki/P3P
                                  - http://www.p3pwriter.com/LRN_111.asp
 
 P3P Policy Url                   Link (full URL) to your P3P Policy File
 ==============================   ==========================================================   =================
 
 Some metatags also have markers which could be build in, following metatags supports markers:
+
 - Title
 - Description
 - Keywords
@@ -119,7 +129,7 @@ Index                            Should the crawler index your website?         
 Follow                           Should the crawler follow  links on your website?            *enabled*
 
 Archive                          Is the crawler allowed to archive the page                   *enabled*
-                                 (eg. google cache)
+                                 (e.g. Google cache)
 
 Snippet                          Should the crawler use the snippet/description               *enabled*
                                  in search results
@@ -134,13 +144,14 @@ YDir                             Should the crawler use the YahooDirectory to   
 
 Services
 --------
-==============================   ==========================================================   =================
-Constant                         Description                                                  Default
-==============================   ==========================================================   =================
+==============================   ===============================================================   =================
+Constant                         Description                                                       Default
+==============================   ===============================================================   =================
 Crawler Verification             Verification code for Google, MSN and Yahoo
                                  webmaster tools and Web of trust
 
 Google Analytics                 The google analytics code for using on your site
+                                 Multiple GA Codes possible, comma separated
                                  (Will not be shown in frontend if BE-user is logged in,
                                  can be re-enabled in BE-Login-Mode:
                                  plugin.metaseo.services.googleAnalytics.showIfBeLogin = 1)
@@ -153,10 +164,10 @@ GA Cookie Domain Name            If you want to limit the current google analyti
                                  - single domain (eg. “example.com”)
                                  - subdomain (eg. “.example.com”)
 
-GA Anonymize IP                  Anonymize the last part of the IP                            *disabled*
+GA Anonymize IP                  Anonymize the last part of the IP                                 *disabled*
                                  (may be required in some countries)
 
-GA Track Downloads               Try to track downloads with google analytics.                *disabled*
+GA Track Downloads               Try to track downloads with google analytics.                     *disabled*
 
                                  See res/ga-track-download.js for more details
 
@@ -170,27 +181,29 @@ Piwik URL                        Url to your Piwik installation
                                  (without http:// and https://)
 
 Piwik ID                         Tracking id of your website in your piwik
+                                 Multiple Piwik IDs possible, comma separated
+
 Piwik Download & Click Domain    Specifies which domains are internal domains:
 
                                  - single domain (eg. “example.com”)
                                  - subdomain (eg. “.example.com”)
 
-                                 For more informations visit:
+                                 For more information visit:
 
-                                 - http://piwik.org/docs/javascript-tracking/
+                                 - https://developer.piwik.org/api-reference/tracking-javascript
 
 Piwik Cookie Domain Name         Specifies the domain name for the tracking cookie:
 
                                  - single domain (eg. “example.com”)
                                  - subdomain (eg. “.example.com”)
 
-                                 For more informations visit:
+                                 For more information visit:
 
-                                 - http://piwik.org/docs/javascript-tracking/
+                                 - https://developer.piwik.org/api-reference/tracking-javascript
 
-Piwik DoNotTrack                 Opt Out users with Mozilla's DoNotTrack                      *enabled*
+Piwik DoNotTrack                 Opt out users with Mozilla's DoNotTrack                           *enabled*
                                  browser setting
-==============================   ==========================================================   =================
+==============================   ===============================================================   =================
 
 
 Social
@@ -198,9 +211,9 @@ Social
 ==============================   ==========================================================   =================
 Constant                         Description                                                  Default
 ==============================   ==========================================================   =================
-Google+ Direct Connect           Your Google+ Profile Page ID
+Google+ Direct Connect           Your Google+ profile page ID
 
-                                 see https://developers.google.com/+/plugins/badge/
+                                 see https://developers.google.com/+/web/badge/
 ==============================   ==========================================================   =================
 
 PageTitle
@@ -231,7 +244,7 @@ Sitetitle position                          Position of Sitetitle (from template
                                             Possible options:                                            (0)
 
                                             Sitetitle-Pagetitle (eg. Example Company: About us)
-                                            Pagetitle-Sitle (eg. About us: Example Company)
+                                            Pagetitle-Sitetitle (eg. About us: Example Company)
 
 Sitetitle                                   Overwrite the template sitetitle with a custom one
 =========================================   ==========================================================   ======================
@@ -260,7 +273,7 @@ Limit to current language           Limit output of the sitemap to the current l
 Default change frequency            Default change frequency for sitemap cache
                                     (will be cached!)
 
-Page priority                       Default page priority if the page have no own                1
+Page priority                       Default page priority if the page has no own                 1
                                     priority set
 
                                     Page priority will be calculated by:

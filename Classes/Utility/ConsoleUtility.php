@@ -1,11 +1,11 @@
 <?php
-namespace Metaseo\Metaseo\Utility;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
- *  (c) 2005-2014 Markus Blaschke <typo3@markus-blaschke.de> (based on sxFramework)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
+ *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
  *  free software; you can redistribute it and/or modify
@@ -22,95 +22,101 @@ namespace Metaseo\Metaseo\Utility;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Utility;
 
 /**
  * Console utility
- *
- * @package     metaseo
- * @subpackage  Utility
- * @version     $Id: CacheUtility.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class ConsoleUtility {
+class ConsoleUtility
+{
 
-	/**
-	 * Write output (without forcing newline)
-	 *
-	 * @param string  $message Message text
-	 * @param integer $padding Pad message
-	 */
-	public static function write($message = NULL, $padding = NULL) {
-		if($padding > 0) {
+    /**
+     * Write output (without forcing newline)
+     *
+     * @param string  $message Message text
+     * @param integer $padding Pad message
+     */
+    public static function write($message = null, $padding = null)
+    {
+        if ($padding > 0) {
             $message = str_pad($message, $padding, ' ');
-		}
+        }
 
-		self::stdOut($message);
-	}
+        self::stdOut($message);
+    }
 
-	/**
-	 * Write output (forcing newline)
-	 *
-	 * @param string $message Message text
-	 */
-	public static function writeLine($message = NULL) {
-		self::stdOut($message."\n");
-	}
+    /**
+     * Send output to STD_OUT
+     *
+     * @param string $message Message text
+     */
+    public static function stdOut($message = null)
+    {
+        if (defined('TYPO3_cliMode')) {
+            file_put_contents('php://stdout', $message);
+        }
+    }
 
-	/**
-	 * Write error (without forcing newline)
-	 *
-	 * @param string  $message Message text
-	 * @param integer $padding Pad message
-	 */
-	public static function writeError($message = NULL, $padding = NULL) {
-		if($padding > 0) {
+    /**
+     * Write output (forcing newline)
+     *
+     * @param string $message Message text
+     */
+    public static function writeLine($message = null)
+    {
+        self::stdOut($message . "\n");
+    }
+
+    /**
+     * Write error (without forcing newline)
+     *
+     * @param string  $message Message text
+     * @param integer $padding Pad message
+     */
+    public static function writeError($message = null, $padding = null)
+    {
+        if ($padding > 0) {
             $message = str_pad($message, $padding, ' ');
-		}
+        }
 
-		self::stdError($message);
-	}
+        self::stdError($message);
+    }
 
-	/**
-	 * Write error (forcing newline)
-	 *
-	 * @param string $message	 Message
-	 */
-	public static function writeErrorLine($message = NULL) {
+    /**
+     * Send output to STD_ERR
+     *
+     * @param string $message Message text
+     */
+    public static function stdError($message = null)
+    {
+        if (defined('TYPO3_cliMode')) {
+            file_put_contents('php://stderr', $message);
+        }
+    }
+
+    /**
+     * Write error (forcing newline)
+     *
+     * @param string $message Message
+     */
+    public static function writeErrorLine($message = null)
+    {
         $message .= "\n";
 
-		self::stdError($message);
-	}
+        self::stdError($message);
+    }
 
-	/**
-	 * Send output to STD_OUT
-	 *
-	 * @param string $message Message text
-	 */
-	public static function stdOut($message = NULL) {
-		if( defined('TYPO3_cliMode') ) {
-			file_put_contents('php://stdout', $message);
-		}
-	}
-
-	/**
-	 * Send output to STD_ERR
-	 *
-	 * @param string $message Message text
-	 */
-	public static function stdError($message = NULL) {
-		if( defined('TYPO3_cliMode') ) {
-			file_put_contents('php://stderr', $message);
-		}
-	}
-
-	/**
-	 * Exit cli script with return code
+    /**
+     * Exit cli script with return code
      *
      * @param integer $exitCode Exit code (0 = success)
-	 */
-	public static function teminate($exitCode) {
-		if( defined('TYPO3_cliMode') ) {
-			exit($exitCode);
-		}
-	}
+     */
+    public static function terminate($exitCode)
+    {
+        if (defined('TYPO3_cliMode')) {
+            exit($exitCode);
+        }
+    }
 }

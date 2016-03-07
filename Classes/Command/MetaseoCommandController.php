@@ -1,15 +1,11 @@
 <?php
-namespace Metaseo\Metaseo\Command;
 
-use Causal\Sphinx\Utility\GeneralUtility;
-use Metaseo\Metaseo\Utility\ConsoleUtility;
-use Metaseo\Metaseo\Utility\DatabaseUtility;
-use Metaseo\Metaseo\Utility\RootPageUtility;
-
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
+ *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
  *  free software; you can redistribute it and/or modify
@@ -26,50 +22,56 @@ use Metaseo\Metaseo\Utility\RootPageUtility;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Command;
+
+use Metaseo\Metaseo\Utility\ConsoleUtility;
+use Metaseo\Metaseo\Utility\DatabaseUtility;
+use Metaseo\Metaseo\Utility\GeneralUtility;
+use Metaseo\Metaseo\Utility\RootPageUtility;
+use Metaseo\Metaseo\Utility\SitemapUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 
 /**
  * TYPO3 Command controller
- *
- * @package     TYPO3
- * @subpackage  metaseo_tqseo_migration
  */
-class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController {
+class MetaseoCommandController extends CommandController
+{
 
     /**
      * Get whole list of sitemap entries
      *
      * @return  string
      */
-    public function garbageCollectorCommand() {
+    public function garbageCollectorCommand()
+    {
         // Expire sitemap entries
-        \Metaseo\Metaseo\Utility\SitemapUtility::expire();
-
-        // Expire cache entries
-        \Metaseo\Metaseo\Utility\CacheUtility::expire();
+        SitemapUtility::expire();
     }
 
     /**
      * Clear sitemap for one root page
      *
      * @param   string $rootPageId Site root page id or domain
+     *
      * @return  string
      */
-    public function clearSitemapCommand($rootPageId) {
-        $rootPageId = $this->_getRootPageIdFromId($rootPageId);
+    public function clearSitemapCommand($rootPageId)
+    {
+        $rootPageId = $this->getRootPageIdFromId($rootPageId);
 
-        if( $rootPageId !== NULL ) {
-            $domain = RootPageUtility::getDomain($rootPageId);
-
+        if ($rootPageId !== null) {
             $query = 'DELETE FROM tx_metaseo_sitemap
-                       WHERE page_rootpid = '.DatabaseUtility::quote($rootPageId, 'tx_metaseo_sitemap').'
+                       WHERE page_rootpid = ' . DatabaseUtility::quote($rootPageId, 'tx_metaseo_sitemap') . '
                          AND is_blacklisted = 0';
             DatabaseUtility::exec($query);
 
             ConsoleUtility::writeLine('Sitemap cleared');
         } else {
             ConsoleUtility::writeErrorLine('No such root page found');
-            ConsoleUtility::teminate(1);
+            ConsoleUtility::terminate(1);
         }
     }
 
@@ -77,54 +79,78 @@ class MetaseoCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
      * Get whole list of sitemap entries
      *
      * @param   string $rootPageId Site root page id or domain
+     *
      * @return  string
      */
-    public function sitemapCommand($rootPageId) {
-        $rootPageId = $this->_getRootPageIdFromId($rootPageId);
+    public function sitemapCommand($rootPageId)
+    {
+        $rootPageId = $this->getRootPageIdFromId($rootPageId);
 
-        if( $rootPageId !== NULL ) {
+        if ($rootPageId !== null) {
             $domain = RootPageUtility::getDomain($rootPageId);
 
-            $query = 'SELECT page_url
-                        FROM tx_metaseo_sitemap
-                       WHERE page_rootpid = '.DatabaseUtility::quote($rootPageId, 'tx_metaseo_sitemap').'
-                         AND is_blacklisted = 0';
+            $query   = 'SELECT page_url
+                          FROM tx_metaseo_sitemap
+                         WHERE page_rootpid = ' . DatabaseUtility::quote($rootPageId, 'tx_metaseo_sitemap') . '
+                           AND is_blacklisted = 0';
             $urlList = DatabaseUtility::getCol($query);
 
-            foreach($urlList as $url) {
-                if( $domain ) {
-                    $url = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($url, $domain);
+            foreach ($urlList as $url) {
+                if ($domain) {
+                    $url = GeneralUtility::fullUrl($url, $domain);
                 }
 
                 ConsoleUtility::writeLine($url);
             }
         } else {
             ConsoleUtility::writeErrorLine('No such root page found');
-            ConsoleUtility::teminate(1);
+            ConsoleUtility::terminate(1);
         }
     }
 
 
-    protected function _getRootPageIdFromId($var) {
-        global $TYPO3_DB;
-        $ret = NULL;
+    /**
+     * Detect root page from id (either PID or sys_domain)
+     *
+     * @param  integer|string $var
+     *
+     * @return integer|null
+     */
+    protected function getRootPageIdFromId($var)
+    {
+        if (is_numeric($var)) {
+            // Passed variable is numeric
+            $pageId = (int)$var;
 
-        if( is_numeric($var) ) {
-            // TODO: check if var is a valid root page
-            $ret = (int)$var;
-        } else {
-            $query = 'SELECT pid
-                        FROM sys_domain
-                       WHERE domainName = '.DatabaseUtility::quote($var, 'sys_domain').'
-                         AND hidden = 0';
-            $pid = DatabaseUtility::getOne($query);
+            /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+            $objectManager = Typo3GeneralUtility::makeInstance(
+                'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
+            );
 
-            if( !empty($pid ) ) {
-                $ret = $pid;
+            /** @var \TYPO3\CMS\Frontend\Page\PageRepository $pageRepo */
+            $pageRepo = $objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+
+            $page = $pageRepo->getPage($pageId);
+
+            if (empty($page['is_siteroot'])) {
+                throw new \RuntimeException('MetaSEO: Page with UID "' . $pageId . '" is no valid root page');
             }
+
+            return $page['uid'];
         }
 
-        return $ret;
-    }
+        // Passed variable is domain name
+        $query = 'SELECT pid
+                    FROM sys_domain
+                   WHERE domainName = ' . DatabaseUtility::quote($var, 'sys_domain') . '
+                     AND hidden = 0';
+        $pid   = DatabaseUtility::getOne($query);
 
+        if (empty($pid)) {
+
+            return null;
+        }
+
+        return $pid;
+    }
 }

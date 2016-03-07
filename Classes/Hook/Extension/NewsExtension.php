@@ -1,10 +1,10 @@
 <?php
-namespace Metaseo\Metaseo\Hook\Extension;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <markus@familie-blaschke.net>
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,16 +22,13 @@ namespace Metaseo\Metaseo\Hook\Extension;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Hook\Extension;
 
 /**
  * EXT:news hook for metatags
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: TtnewsExtension.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class NewsExtension {
-
-
+class NewsExtension
+{
 }

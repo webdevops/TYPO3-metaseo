@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Page\Part;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,24 +22,34 @@ namespace Metaseo\Metaseo\Page\Part;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Page\Part;
+
+use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Page Footer
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: FooterPart.php 84520 2014-03-28 10:33:24Z mblaschke $
  */
-class FooterPart {
+class FooterPart extends AbstractPart
+{
+    /**
+     * Content object renderer
+     *
+     * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     */
+    public $cObj;
 
     /**
      * Add Page Footer
      *
-     * @param    string $title    Default page title (rendered by TYPO3)
+     * @param    string $title Default page title (rendered by TYPO3)
+     *
      * @return    string            Modified page title
      */
-    public function main($title) {
+    public function main($title)
+    {
         // INIT
         $ret        = array();
         $tsSetup    = $GLOBALS['TSFE']->tmpl->setup;
@@ -48,9 +57,9 @@ class FooterPart {
 
         $beLoggedIn = isset($GLOBALS['BE_USER']->user['username']);
 
-        $disabledHeaderCode = FALSE;
+        $disabledHeaderCode = false;
         if (!empty($tsSetup['config.']['disableAllHeaderCode'])) {
-            $disabledHeaderCode = TRUE;
+            $disabledHeaderCode = true;
         }
 
         if (!empty($tsSetup['plugin.']['metaseo.']['services.'])) {
@@ -58,7 +67,7 @@ class FooterPart {
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('pagefooter-setup', $this, $tsServices);
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'pageFooterSetup', $this, $tsServices);
 
         // #########################################
         // GOOGLE ANALYTICS
@@ -67,45 +76,26 @@ class FooterPart {
         if (!empty($tsServices['googleAnalytics'])) {
             $gaConf = $tsServices['googleAnalytics.'];
 
-            $gaEnabled = TRUE;
+            $gaEnabled = true;
 
             if ($disabledHeaderCode && empty($gaConf['enableIfHeaderIsDisabled'])) {
-                $gaEnabled = FALSE;
+                $gaEnabled = false;
             }
 
             if ($gaEnabled && !(empty($gaConf['showIfBeLogin']) && $beLoggedIn)) {
-                $tmp = '';
-
-                $customCode = '';
-                if (!empty($gaConf['customizationCode'])) {
-                    $customCode .= "\n" . $this->cObj->cObjGetSingle(
-                            $gaConf['customizationCode'],
-                            $gaConf['customizationCode.']
-                        );
-                }
-
-                $this->cObj->data['gaCode']                  = $tsServices['googleAnalytics'];
-                $this->cObj->data['gaIsAnonymize']           = (int)!empty($gaConf['anonymizeIp']);
-                $this->cObj->data['gaDomainName']            = $gaConf['domainName'];
-                $this->cObj->data['gaCustomizationCode']     = $customCode;
-                $this->cObj->data['gaUseUniversalAnalytics'] = (int)!empty($gaConf['universalAnalytics']);
-
-                // Build code
-                $ret['ga'] = $this->cObj->cObjGetSingle($gaConf['template'], $gaConf['template.']);
+                // Build Google Analytics service
+                $ret['ga'] = $this->buildGoogleAnalyticsCode($tsServices, $gaConf);
 
                 if (!empty($gaConf['trackDownloads']) && !empty($gaConf['trackDownloadsScript'])) {
-                    $jsFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
-                        $gaConf['trackDownloadsScript']
-                    );
-                    $jsfile = preg_replace('/^' . preg_quote(PATH_site, '/') . '/i', '', $jsFile);
-
-                    $ret['ga.trackdownload'] = '<script type="text/javascript" src="' . htmlspecialchars(
-                            $jsfile
-                        ) . '"></script>';
+                    $ret['ga.trackdownload'] = $this->serviceGoogleAnalyticsTrackDownloads($tsServices, $gaConf);
                 }
             } elseif ($gaEnabled && $beLoggedIn) {
+                // Disable caching
+                $GLOBALS['TSFE']->set_no_cache('MetaSEO: Google Analytics code disabled, backend login detected');
+
                 // Backend login detected, disable cache because this page is viewed by BE-users
-                $ret['ga.disabled'] = '<!-- Google Analytics disabled - Backend-Login detected -->';
+                $ret['ga.disabled'] = '<!-- Google Analytics disabled, '
+                    . 'Page cache disabled - Backend-Login detected -->';
             }
         }
 
@@ -113,48 +103,133 @@ class FooterPart {
         // #########################################
         // PIWIK
         // #########################################
-        if (!empty($tsServices['piwik.']) && !empty($tsServices['piwik.']['url']) && !empty($tsServices['piwik.']['id'])) {
+        if (!empty($tsServices['piwik.'])
+            && !empty($tsServices['piwik.']['url'])
+            && !empty($tsServices['piwik.']['id'])
+        ) {
             $piwikConf = $tsServices['piwik.'];
 
-            $piwikEnabled = TRUE;
+            $piwikEnabled = true;
 
             if ($disabledHeaderCode && empty($piwikConf['enableIfHeaderIsDisabled'])) {
-                $piwikEnabled = FALSE;
+                $piwikEnabled = false;
             }
 
             if ($piwikEnabled && !(empty($piwikConf['showIfBeLogin']) && $beLoggedIn)) {
-                $tmp = '';
-
-                $customCode = '';
-                if (!empty($piwikConf['customizationCode'])) {
-                    $customCode .= "\n" . $this->cObj->cObjGetSingle(
-                            $piwikConf['customizationCode'],
-                            $piwikConf['customizationCode.']
-                        );
-                }
-
-                // remove last slash
-                $piwikConf['url'] = rtrim($piwikConf['url'], '/');
-
-                $this->cObj->data['piwikUrl']               = $piwikConf['url'];
-                $this->cObj->data['piwikId']                = $piwikConf['id'];
-                $this->cObj->data['piwikDomainName']        = $piwikConf['domainName'];
-                $this->cObj->data['piwikCookieDomainName']  = $piwikConf['cookieDomainName'];
-                $this->cObj->data['piwikDoNotTrack']        = $piwikConf['doNotTrack'];
-                $this->cObj->data['piwikCustomizationCode'] = $customCode;
-
-                // Build code
-                $ret['piwik'] = $this->cObj->cObjGetSingle($piwikConf['template'], $piwikConf['template.']);
-
+                // Build Piwik service
+                $ret['piwik'] = $this->buildPiwikCode($tsServices, $piwikConf);
             } elseif ($piwikEnabled && $beLoggedIn) {
+                // Disable caching
+                $GLOBALS['TSFE']->set_no_cache('MetaSEO: Piwik code disabled, backend login detected');
+
                 // Backend login detected, disable cache because this page is viewed by BE-users
-                $ret['piwik.disabled'] = '<!-- Piwik disabled - Backend-Login detected -->';
+                $ret['piwik.disabled'] = '<!-- Piwik disabled, Page cache disabled - Backend-Login detected -->';
             }
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('pagefooter-output', $this, $ret);
+        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'pageFooterOutput', $this, $ret);
 
         return implode("\n", $ret);
+    }
+
+    /**
+     * Google analytics
+     *
+     * @param  array $tsServices SetupTS of services
+     * @param  array $gaConf     Google Analytics configuration
+     *
+     * @return string
+     */
+    public function buildGoogleAnalyticsCode(array $tsServices, array $gaConf)
+    {
+        $ret        = array();
+        $gaCodeList = GeneralUtility::trimExplode(',', $tsServices['googleAnalytics']);
+
+        foreach ($gaCodeList as $gaCode) {
+            $customCode = '';
+            if (!empty($gaConf['customizationCode'])) {
+                $customCode .= "\n" . $this->cObj->cObjGetSingle(
+                    $gaConf['customizationCode'],
+                    $gaConf['customizationCode.']
+                );
+            }
+
+            $this->cObj->data['gaCode']                  = $gaCode;
+            $this->cObj->data['gaIsAnonymize']           = (int)!empty($gaConf['anonymizeIp']);
+            $this->cObj->data['gaDomainName']            = $gaConf['domainName'];
+            $this->cObj->data['gaCustomizationCode']     = $customCode;
+            $this->cObj->data['gaUseUniversalAnalytics'] = (int)!empty($gaConf['universalAnalytics']);
+
+            // Build code
+            $ret[] = $this->cObj->cObjGetSingle($gaConf['template'], $gaConf['template.']);
+        }
+
+        // Build all GA codes
+        $ret = implode("\n", $ret);
+
+        return $ret;
+    }
+
+    /**
+     * Google analytics
+     *
+     * @param  array $tsServices SetupTS of services
+     * @param  array $gaConf     Google Analytics configuration
+     *
+     * @return string
+     * @todo $tsServices is never used
+     */
+    public function serviceGoogleAnalyticsTrackDownloads(array $tsServices, array $gaConf)
+    {
+        $jsFile = Typo3GeneralUtility::getFileAbsFileName($gaConf['trackDownloadsScript']);
+        $jsfile = preg_replace('/^' . preg_quote(PATH_site, '/') . '/i', '', $jsFile);
+
+        $ret = '<script type="text/javascript" src="' . htmlspecialchars($jsfile) . '"></script>';
+
+        return $ret;
+    }
+
+    /**
+     * Piwik
+     *
+     * @param  array $tsServices SetupTS of services
+     * @param  array $piwikConf  Piwik configuration
+     *
+     * @return string
+     */
+    public function buildPiwikCode(array $tsServices, array $piwikConf)
+    {
+        $ret           = array();
+        $piwikCodeList = GeneralUtility::trimExplode(',', $piwikConf['id']);
+
+        foreach ($piwikCodeList as $piwikCode) {
+            $customCode = '';
+            if (!empty($piwikConf['customizationCode'])) {
+                $customCode .= "\n";
+                $customCode .= $this->cObj->cObjGetSingle(
+                    $piwikConf['customizationCode'],
+                    $piwikConf['customizationCode.']
+                );
+            }
+
+            // remove last slash
+            $piwikConf['url'] = rtrim($piwikConf['url'], '/');
+
+            $this->cObj->data['piwikUrl']               = $piwikConf['url'];
+            $this->cObj->data['piwikId']                = $piwikCode;
+            $this->cObj->data['piwikDomainName']        = $piwikConf['domainName'];
+            $this->cObj->data['piwikCookieDomainName']  = $piwikConf['cookieDomainName'];
+            $this->cObj->data['piwikDoNotTrack']        = $piwikConf['doNotTrack'];
+            $this->cObj->data['piwikCustomizationCode'] = $customCode;
+
+            // Build code
+            $ret[] = $this->cObj->cObjGetSingle($piwikConf['template'], $piwikConf['template.']);
+        }
+
+        // Build all piwik codes
+        $ret = implode("\n", $ret);
+
+        return $ret;
     }
 }

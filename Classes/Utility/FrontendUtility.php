@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Utility;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,45 +22,65 @@ namespace Metaseo\Metaseo\Utility;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Utility;
+
+use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
 
 /**
  * General utility
- *
- * @package     metaseo
- * @subpackage  Utility
- * @version     $Id: GeneralUtility.php 81677 2013-11-21 12:32:33Z mblaschke $
  */
-class FrontendUtility {
+class FrontendUtility
+{
 
-    public static function init($pageUid, $rootLine = NULL, $pageData = NULL, $rootlineFull = NULL, $sysLanguage = NULL) {
+    /**
+     * Init TSFE with all needed classes eg. for backend usage ($GLOBALS['TSFE'])
+     *
+     * @param integer      $pageUid      PageUID
+     * @param null|array   $rootLine     Rootline
+     * @param null|array   $pageData     Page data array
+     * @param null|array   $rootlineFull Full rootline
+     * @param null|integer $sysLanguage  Sys language uid
+     */
+    public static function init(
+        $pageUid,
+        $rootLine = null,
+        $pageData = null,
+        $rootlineFull = null,
+        $sysLanguage = null
+    ) {
         static $cacheTSFE = array();
-        static $lastTsSetupPid = NULL;
+        static $lastTsSetupPid = null;
 
-        // FIXME: add sys langauge or check if sys langauge is needed
+        /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+        $objectManager = Typo3GeneralUtility::makeInstance(
+            'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
+        );
 
         // Fetch page if needed
-        if( $pageData === NULL ) {
-            $sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                'TYPO3\\CMS\\Frontend\\Page\\PageRepository'
-            );
+        if ($pageData === null) {
+            /** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPageObj */
+            $sysPageObj                   = $objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+            $sysPageObj->sys_language_uid = $sysLanguage;
 
             $pageData = $sysPageObj->getPage_noCheck($pageUid);
         }
 
         // create time tracker if needed
         if (empty($GLOBALS['TT'])) {
-            $GLOBALS['TT'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                'TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker'
-            );
+            /** @var \TYPO3\CMS\Core\TimeTracker\NullTimeTracker $timeTracker */
+            $timeTracker = $objectManager->get('TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker');
+
+            $GLOBALS['TT'] = $timeTracker;
             $GLOBALS['TT']->start();
         }
 
-        if ($rootLine === NULL) {
-            $sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                'TYPO3\\CMS\\Frontend\\Page\\PageRepository'
-            );
-            $rootLine   = $sysPageObj->getRootLine($pageUid);
+        if ($rootLine === null) {
+            /** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPageObj */
+            $sysPageObj                   = $objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+            $sysPageObj->sys_language_uid = $sysLanguage;
+            $rootLine                     = $sysPageObj->getRootLine($pageUid);
 
             // save full rootline, we need it in TSFE
             $rootlineFull = $rootLine;
@@ -69,28 +88,34 @@ class FrontendUtility {
 
         // Only setup tsfe if current instance must be changed
         if ($lastTsSetupPid !== $pageUid) {
-
             // Cache TSFE if possible to prevent reinit (is still slow but we need the TSFE)
             if (empty($cacheTSFE[$pageUid])) {
-                $GLOBALS['TSFE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                // suppress http redirect headers via BackendCompliantTsfeController, loaded via ext_localconf.php
+                /** @var \Metaseo\Metaseo\Frontend\Controller\BackendCompliantTsfeController $tsfeController */
+                $tsfeController                   = $objectManager->get(
                     'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
                     $GLOBALS['TYPO3_CONF_VARS'],
                     $pageUid,
                     0
                 );
-                $GLOBALS['TSFE']->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                    'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'
-                );
+                $tsfeController->sys_language_uid = $sysLanguage;
 
-                $TSObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                    'TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService'
-                );
+                /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObjRenderer */
+                $cObjRenderer = $objectManager->get('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+
+                /** @var \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService $TSObj */
+                $TSObj = $objectManager->get('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
+
                 $TSObj->tt_track = 0;
                 $TSObj->init();
                 $TSObj->runThroughTemplates($rootLine);
                 $TSObj->generateConfig();
 
                 $_GET['id'] = $pageUid;
+
+                // Init TSFE
+                $GLOBALS['TSFE']       = $tsfeController;
+                $GLOBALS['TSFE']->cObj = $cObjRenderer;
                 $GLOBALS['TSFE']->initFEuser();
                 $GLOBALS['TSFE']->determineId();
 
@@ -117,4 +142,72 @@ class FrontendUtility {
         $GLOBALS['TSFE']->cObj->data = $pageData;
     }
 
+    /**
+     * Check current page for blacklisting
+     *
+     * @param  array $blacklist Blacklist configuration
+     *
+     * @return bool
+     */
+    public static function checkPageForBlacklist(array $blacklist)
+    {
+        return GeneralUtility::checkUrlForBlacklisting(self::getCurrentUrl(), $blacklist);
+    }
+
+    /**
+     * Check if frontend page is cacheable
+     *
+     * @param array|null $conf Configuration
+     * @return bool
+     */
+    public static function isCacheable($conf = null)
+    {
+        $TSFE = self::getTsfe();
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'GET' || !empty($TSFE->fe_user->user['uid'])) {
+            return false;
+        }
+
+        // don't parse if page is not cacheable
+        if (empty($conf['allowNoStaticCachable']) && !$TSFE->isStaticCacheble()) {
+            return false;
+        }
+
+        // Skip no_cache-pages
+        if (empty($conf['allowNoCache']) && !empty($TSFE->no_cache)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Return current URL
+     *
+     * @return null|string
+     */
+    public static function getCurrentUrl()
+    {
+        $ret = null;
+
+        $TSFE = self::getTsfe();
+
+        if (!empty($TSFE->anchorPrefix)) {
+            $ret = (string)$TSFE->anchorPrefix;
+        } else {
+            $ret = (string)$TSFE->siteScript;
+        }
+
+        return $ret;
+    }
+
+    /**
+     * Get TSFE
+     *
+     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     */
+    public static function getTsfe()
+    {
+        return $GLOBALS['TSFE'];
+    }
 }

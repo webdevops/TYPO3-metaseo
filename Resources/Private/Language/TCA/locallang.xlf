@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2014-11-08T14:45:02Z"
+          product-name="metaseo">
+        <header/>
+        <body>
+            <trans-unit id="pages.tab.seo" xml:space="preserve">
+                <source>SEO</source>
+            </trans-unit>
+            <trans-unit id="pages.palette.pagetitle" xml:space="preserve">
+                <source>Pagetitle</source>
+            </trans-unit>
+            <trans-unit id="pages.palette.geo" xml:space="preserve">
+                <source>Geo position</source>
+            </trans-unit>
+            <trans-unit id="pages.palette.crawler" xml:space="preserve">
+                <source>Searchengines</source>
+            </trans-unit>
+            <trans-unit id="pages.palette.sitemap" xml:space="preserve">
+                <source>Sitemap</source>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.tab.sitemap" xml:space="preserve">
+                <source>Sitemap</source>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.tab.robotstxt" xml:space="preserve">
+                <source>Robots.txt</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_pagetitle" xml:space="preserve">
+                <source>title-TAG (absolute, without prefix/suffix)</source>
+            </trans-unit>
+            <trans-unit id="pages_language_overlay.tx_metaseo_pagetitle" xml:space="preserve">
+                <source>title-TAG</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_pagetitle_rel" xml:space="preserve">
+                <source>Browsertitle</source>
+            </trans-unit>
+            <trans-unit id="pages_language_overlay.tx_metaseo_pagetitle_rel" xml:space="preserve">
+                <source>Browsertitle</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_is_exclude" xml:space="preserve">
+                <source>Exclude page from SearchEngines</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_pagetitle_prefix" xml:space="preserve">
+                <source>Prefix (inheritable)</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_pagetitle_suffix" xml:space="preserve">
+                <source>Suffix (inheritable)</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_inheritance" xml:space="preserve">
+                <source>Inheritance mode</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_canonicalurl" xml:space="preserve">
+                <source>Canonical URL (if your content is a copy from another webpage, link here to it)</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_geo_lat" xml:space="preserve">
+                <source>Latitude</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_geo_long" xml:space="preserve">
+                <source>Longitude</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_geo_place" xml:space="preserve">
+                <source>City/Place</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_geo_region" xml:space="preserve">
+                <source>Region</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_inheritance.I.0" xml:space="preserve">
+                <source>Normal</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_inheritance.I.1" xml:space="preserve">
+                <source>Skip (don't herit from this page)</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_priority" xml:space="preserve">
+                <source>Priority (0-100)</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_change_frequency" xml:space="preserve">
+                <source>Page change frequency</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_change_frequency.I.0" xml:space="preserve">
+                <source>Default (see constants)</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_change_frequency.I.1" xml:space="preserve">
+                <source>Always</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_change_frequency.I.2" xml:space="preserve">
+                <source>Hourly</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_change_frequency.I.3" xml:space="preserve">
+                <source>Daily</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_change_frequency.I.4" xml:space="preserve">
+                <source>Weekly</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_change_frequency.I.5" xml:space="preserve">
+                <source>Monthly</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_change_frequency.I.6" xml:space="preserve">
+                <source>Yearly</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_change_frequency.I.7" xml:space="preserve">
+                <source>Never (archive)</source>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root" xml:space="preserve">
+                <source>SEO Settings for Root</source>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.is_sitemap" xml:space="preserve">
+                <source>Sitemap active</source>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.is_sitemap_page_indexer" xml:space="preserve">
+                <source>Page indexer</source>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.is_sitemap_page_indexer.description" xml:space="preserve">
+                <source>Page indexer</source>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.is_sitemap_typolink_indexer" xml:space="preserve">
+                <source>TypoLink indexer</source>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.is_sitemap_language_lock" xml:space="preserve">
+                <source>Enable language-domain support (lock output to current language)</source>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.sitemap_page_limit" xml:space="preserve">
+                <source>Sitemap.xml entry page limit (keep empty to use default of 1000)</source>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.sitemap_priority" xml:space="preserve">
+                <source>Priority (if page have no priority) (default:1)</source>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.sitemap_priority_depth_multiplier" xml:space="preserve">
+                <source>Priority depth multiplier (default:1)</source>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.sitemap_priority_depth_modificator" xml:space="preserve">
+                <source>Priority depth modificator (default:1)</source>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.is_robotstxt" xml:space="preserve">
+                <source>Robots.txt active</source>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.is_robotstxt_sitemap_static" xml:space="preserve">
+                <source>Link to static sitemap.xml (scheduler-task needed)</source>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.robotstxt" xml:space="preserve">
+                <source>Robots.txt content (replaces default robots.txt content)</source>
+            </trans-unit>
+            <trans-unit id="tx_metaseo_setting_root.robotstxt_additional" xml:space="preserve">
+                <source>Robots.txt additional content (below default)</source>
+            </trans-unit>
+            <trans-unit id="is_sitemap_page_indexer.description" xml:space="preserve">
+                <source>If enabled the url of the generated and cached pages will be indexed for the sitemap. This indexing is slow.</source>
+            </trans-unit>
+            <trans-unit id="is_sitemap_typolink_indexer.description" xml:space="preserve">
+                <source>If enabled the url of links generated by the typolink-function will be indexed for the sitemap. This indexing is fast.</source>
+            </trans-unit>
+            <trans-unit id="is_sitemap_language_lock.description" xml:space="preserve">
+                <source>Enable this if you have multiple domains pointing to different languages, eg. example.de points to the german version and example.com to the english version. The generated sitemap will only output the current language and no other language sites.</source>
+            </trans-unit>
+            <trans-unit id="robotstxt.description" xml:space="preserve">
+                <source>If there is no content in this field the standard robots.txt is generated (from TypoScript setup plugin.metaseo.robotsTxt)</source>
+            </trans-unit>
+            <trans-unit id="robotstxt_additional.description" xml:space="preserve">
+                <source>Will be placed under the default or custom robots.txt</source>
+            </trans-unit>
+            <trans-unit id="is_robotstxt_sitemap_static.description" xml:space="preserve">
+                <source>Normally, the %sitemap% marker links to the dynamic version of the sitemap. If this is enabled the %sitemap% marker links to the static file version generated by the scheduler.</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

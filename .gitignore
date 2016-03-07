@@ -1,0 +1,10 @@
+.settings/
+.buildpath
+*.kdev4
+.project
+.remote_password_hash
+.remote_server
+.remote_username
+tmp
+*~
+.idea

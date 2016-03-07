@@ -1,124 +1,32 @@
 <?php
-if (!defined ('TYPO3_MODE')) die ('Access denied.');
 
-// ##############################################
-// SEO Settings Root
-// ##############################################
-$TCA['tx_metaseo_setting_root'] = array(
-    'ctrl' => $TCA['tx_metaseo_setting_root']['ctrl'],
-    'interface' => array(
-        'showRecordFieldList' => 'is_robotstxt,robotstxt',
-    ),
-    'feInterface' => $TCA['tx_metaseo_setting_root']['feInterface'],
-    'columns' => array(
-        'is_sitemap' => array(
-            'label' => 'LLL:EXT:metaseo/locallang_db.xml:tx_metaseo_setting_root.is_sitemap',
-            'config' => array (
-                'type' => 'check',
-            ),
-        ),
-        'is_sitemap_page_indexer' => array(
-            'label' => 'LLL:EXT:metaseo/locallang_db.xml:tx_metaseo_setting_root.is_sitemap_page_indexer',
-            'config' => array (
-                'type' => 'check',
-            ),
-        ),
-        'is_sitemap_typolink_indexer' => array(
-            'label' => 'LLL:EXT:metaseo/locallang_db.xml:tx_metaseo_setting_root.is_sitemap_typolink_indexer',
-            'config' => array (
-                'type' => 'check',
-            ),
-        ),
-        'is_sitemap_language_lock' => array(
-            'label' => 'LLL:EXT:metaseo/locallang_db.xml:tx_metaseo_setting_root.is_sitemap_language_lock',
-            'config' => array (
-                'type' => 'check',
-            ),
-        ),
-        'sitemap_page_limit' => array(
-            'label' => 'LLL:EXT:metaseo/locallang_db.xml:tx_metaseo_setting_root.sitemap_page_limit',
-            'config' => array (
-                'type' => 'input',
-                'size' => '10',
-                'max'  => '10',
-                'eval' => 'int',
-                'range'	=> array(
-                    'upper'	=> '1000000',
-                    'lower'	=> '0',
-                ),
-            ),
-        ),
-        'sitemap_priorty' => array(
-            'label' => 'LLL:EXT:metaseo/locallang_db.xml:tx_metaseo_setting_root.sitemap_priorty',
-            'config' => array (
-                'type' => 'input',
-                'size' => '6',
-                'max'  => '6',
-                'eval' => 'tx_metaseo_backend_validation_float',
-            ),
-        ),
-        'sitemap_priorty_depth_multiplier' => array(
-            'label' => 'LLL:EXT:metaseo/locallang_db.xml:tx_metaseo_setting_root.sitemap_priorty_depth_multiplier',
-            'config' => array (
-                'type' => 'input',
-                'size' => '6',
-                'max'  => '6',
-                'eval' => 'tx_metaseo_backend_validation_float',
-            ),
-        ),
-        'sitemap_priorty_depth_modificator' => array(
-            'label' => 'LLL:EXT:metaseo/locallang_db.xml:tx_metaseo_setting_root.sitemap_priorty_depth_modificator',
-            'config' => array (
-                'type' => 'input',
-                'size' => '6',
-                'max'  => '6',
-                'eval' => 'tx_metaseo_backend_validation_float',
-            ),
-        ),
-        'is_robotstxt' => array(
-            'label' => 'LLL:EXT:metaseo/locallang_db.xml:tx_metaseo_setting_root.is_robotstxt',
-            'config' => array (
-                'type' => 'check',
-            ),
-        ),
-        'is_robotstxt_sitemap_static' => array(
-            'label' => 'LLL:EXT:metaseo/locallang_db.xml:tx_metaseo_setting_root.is_robotstxt_sitemap_static',
-            'config' => array (
-                'type' => 'check',
-            ),
-        ),
-        'robotstxt' => array(
-            'label' => 'LLL:EXT:metaseo/locallang_db.xml:tx_metaseo_setting_root.robotstxt',
-            'config' => array (
-                'type' => 'text',
-                'cols' => '30',
-                'rows' => '20',
-            ),
-        ),
-        'robotstxt_additional' => array(
-            'label' => 'LLL:EXT:metaseo/locallang_db.xml:tx_metaseo_setting_root.robotstxt_additional',
-            'config' => array (
-                'type' => 'text',
-                'cols' => '30',
-                'rows' => '20',
-            ),
-        ),
+/*
+ *  Copyright notice
+ *
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ */
 
-    ),
-    'types' => array(
-        '0' => array(
-            'showitem'	=> '--div--;LLL:EXT:metaseo/locallang_tca.xml:tx_metaseo_setting_root.tab.sitemap,is_sitemap;;pallette_sitemap,is_sitemap_language_lock,sitemap_page_limit,sitemap_priorty,sitemap_priorty_depth_multiplier,sitemap_priorty_depth_modificator,--div--;LLL:EXT:metaseo/locallang_tca.xml:tx_metaseo_setting_root.tab.robotstxt,is_robotstxt;;pallette_robotstxt',
-            'canNotCollapse' => '1'
-        ),
-    ),
-    'palettes' => array(
-        'pallette_sitemap' => array(
-            'showitem' => 'is_sitemap_page_indexer,--linebreak--,is_sitemap_typolink_indexer',
-            'canNotCollapse' => '1'
-        ),
-        'pallette_robotstxt' => array(
-            'showitem' => 'is_robotstxt_sitemap_static,--linebreak--,robotstxt,--linebreak--,robotstxt_additional',
-            'canNotCollapse' => '1'
-        ),
-    ),
-);
+namespace Metaseo\Configuration\TCA;
+
+/**
+ * This File is include()d by TYPO3's ExtensionUtility. We'll get an exception when we remove it.
+ * At some time we should find out what this file is actually good for.
+ */

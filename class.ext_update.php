@@ -1,11 +1,9 @@
 <?php
 
-use TYPO3\CMS\Core\Messaging\FlashMessage;
-
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -24,7 +22,10 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Update class for the extension manager.
@@ -32,10 +33,11 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
  * @package    TYPO3
  * @subpackage metaseo
  */
-class ext_update {
+class ext_update
+{
 
     // ########################################################################
-    // Attributs
+    // Attributes
     // ########################################################################
 
     /**
@@ -43,63 +45,94 @@ class ext_update {
      *
      * @var array
      */
-    protected $_messageList = array();
+    protected $messageList = array();
 
     /**
      * Clear cache (after update)
      *
      * @var boolean
      */
-    protected $_clearCache = FALSE;
+    protected $clearCache = false;
+
+
+    /**
+     * @var \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected $databaseConnection;
 
     // ########################################################################
     // Methods
     // ########################################################################
 
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->databaseConnection = $GLOBALS['TYPO3_DB'];
+    }
+
+    /**
      * Main update function called by the extension manager.
      *
      * @return string
      */
-    public function main() {
-        $this->_processUpdates();
+    public function main()
+    {
+        $this->processUpdates();
 
-        $ret = $this->_generateOutput();
+        $ret = $this->generateOutput();
 
         return $ret;
     }
 
     /**
      * Called by the extension manager to determine if the update menu entry
-     * should by showed.
+     * should be shown.
      *
      * @return bool
-     * @todo find a better way to determine if update is needed or not.
      */
-    public function access() {
-        return TRUE;
+    public function access()
+    {
+        return true;
     }
 
 
     /**
      * The actual update function. Add your update task in here.
      */
-    protected function _processUpdates() {
-        //$this->_processUpdateTypoScriptIncludes();
-        //$this->_processUpdateScheduler();
+    protected function processUpdates()
+    {
+        // migration priorty->priority with v2.0.0
+        $this->renameDatabaseTableField(
+            'tx_metaseo_setting_root',
+            'sitemap_priorty',
+            'sitemap_priority'
+        );
+        $this->renameDatabaseTableField(
+            'tx_metaseo_setting_root',
+            'sitemap_priorty_depth_multiplier',
+            'sitemap_priority_depth_multiplier'
+        );
+        $this->renameDatabaseTableField(
+            'tx_metaseo_setting_root',
+            'sitemap_priorty_depth_modificator',
+            'sitemap_priority_depth_modificator'
+        );
 
-        $this->_processClearCache();
+        $this->processClearCache();
     }
 
     /**
      * Clear cache
      */
-    protected function _processClearCache() {
+    protected function processClearCache()
+    {
 
-        if( $this->_clearCache ) {
+        if ($this->clearCache) {
 
             // Init TCE
-            $TCE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+            $TCE        = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
             $TCE->admin = 1;
             $TCE->clear_cacheCmd('all');
 
@@ -108,42 +141,45 @@ class ext_update {
             $msgStatus = FlashMessage::INFO;
             $msgText   = 'Cleared all caches due migration';
 
-            $this->_addMessage($msgStatus, $msgTitle, $msgText);
+            $this->addMessage($msgStatus, $msgTitle, $msgText);
         }
     }
 
     /**
      * Add message
      *
-     * @param integer $status   Status code
-     * @param string  $title    Title
-     * @param string  $message  Message
+     * @param integer $status  Status code
+     * @param string  $title   Title
+     * @param string  $message Message
      */
-    protected function _addMessage($status, $title, $message) {
-        if( !empty($message) && is_array($message) ) {
+    protected function addMessage($status, $title, $message)
+    {
+        if (!empty($message) && is_array($message)) {
             $liStyle = 'style="margin-bottom: 0;"';
 
-            $message = '<ul><li '.$liStyle.'>'.implode('</li><li '.$liStyle.'>', $message).'</li></ul>';
+            $message = '<ul><li ' . $liStyle . '>' . implode('</li><li ' . $liStyle . '>', $message) . '</li></ul>';
         }
 
-        $this->_messageList[] = array($status, $title, $message);
+        $this->messageList[] = array($status, $title, $message);
     }
 
     /**
      * Generate message title from database row (using title and uid)
      *
-     * @param   array   $row    Database row
+     * @param   array $row Database row
+     *
      * @return  string
      */
-    protected function _messageTitleFromRow($row) {
+    protected function messageTitleFromRow(array $row)
+    {
         $ret = array();
 
-        if( !empty($row['title']) ) {
-            $ret[] = '"'.htmlspecialchars($row['title']).'"';
+        if (!empty($row['title'])) {
+            $ret[] = '"' . htmlspecialchars($row['title']) . '"';
         }
 
-        if( !empty($row['uid']) ) {
-            $ret[] = '[UID #'.htmlspecialchars($row['uid']).']';
+        if (!empty($row['uid'])) {
+            $ret[] = '[UID #' . htmlspecialchars($row['uid']) . ']';
         }
 
         return implode(' ', $ret);
@@ -154,19 +190,61 @@ class ext_update {
      *
      * @return string
      */
-    protected function _generateOutput() {
+    protected function generateOutput()
+    {
         $output = '';
 
-        foreach ($this->_messageList as $message) {
-            $flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        foreach ($this->messageList as $message) {
+            $flashMessage = GeneralUtility::makeInstance(
                 'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
                 $message[2],
                 $message[1],
-                $message[0]);
+                $message[0]
+            );
             $output .= $flashMessage->render();
         }
 
         return $output;
     }
 
+
+    /**
+     * Renames a tabled field and does some plausibility checks.
+     *
+     * @param  string $table
+     * @param  string $oldFieldName
+     * @param  string $newFieldName
+     * @return int
+     */
+    protected function renameDatabaseTableField($table, $oldFieldName, $newFieldName)
+    {
+        $title = 'Renaming "' . $table . ':' . $oldFieldName . '" to "' . $table . ':' . $newFieldName . '": ';
+
+        $currentTableFields = $this->databaseConnection->admin_get_fields($table);
+
+        if ($currentTableFields[$newFieldName]) {
+            $message = 'Field ' . $table . ':' . $newFieldName . ' already existing.';
+            $status = FlashMessage::OK;
+        } else {
+            if (!$currentTableFields[$oldFieldName]) {
+                $message = 'Field ' . $table . ':' . $oldFieldName . ' not existing';
+                $status = FlashMessage::ERROR;
+            } else {
+                $sql = 'ALTER TABLE ' . $table . ' CHANGE COLUMN ' . $oldFieldName . ' ' . $newFieldName . ' ' .
+                    $currentTableFields[$oldFieldName]['Type'];
+
+                if ($this->databaseConnection->admin_query($sql) === false) {
+                    $message = ' SQL ERROR: ' . $this->databaseConnection->sql_error();
+                    $status = FlashMessage::ERROR;
+                } else {
+                    $message = 'OK!';
+                    $status = FlashMessage::OK;
+                }
+            }
+        }
+
+        $this->addMessage($status, $title, $message);
+
+        return $status;
+    }
 }

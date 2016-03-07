@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Sitemap\Generator;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,16 +22,17 @@ namespace Metaseo\Metaseo\Sitemap\Generator;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Sitemap\Generator;
+
+use Metaseo\Metaseo\Utility\GeneralUtility;
 
 /**
  * Sitemap TXT generator
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: TxtGenerator.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class TxtGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator {
+class TxtGenerator extends AbstractGenerator
+{
 
     // ########################################################################
     // Methods
@@ -43,17 +43,20 @@ class TxtGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
      *
      * @return  string
      */
-    public function sitemapIndex() {
+    public function sitemapIndex()
+    {
         return '';
     }
 
     /**
      * Create sitemap (for page)
      *
-     * @param   integer $page   Page
+     * @param   integer $page Page
+     *
      * @return  string
      */
-    public function sitemap($page = NULL) {
+    public function sitemap($page = null)
+    {
         $ret = array();
 
         foreach ($this->sitemapPages as $sitemapPage) {
@@ -62,13 +65,11 @@ class TxtGenerator extends \Metaseo\Metaseo\Sitemap\Generator\AbstractGenerator 
                 continue;
             }
 
-            //$page = $this->pages[ $sitemapPage['page_uid'] ];
-
-            $ret[] = \Metaseo\Metaseo\Utility\GeneralUtility::fullUrl($sitemapPage['page_url']);
+            $ret[] = GeneralUtility::fullUrl($sitemapPage['page_url']);
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHook('sitemap-text-output', $this, $ret);
+        GeneralUtility::callHookAndSignal(__CLASS__, 'sitemapTextOutput', $this, $ret);
 
         return implode("\n", $ret);
     }

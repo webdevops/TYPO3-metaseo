@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Backend\Module;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,15 +22,18 @@ namespace Metaseo\Metaseo\Backend\Module;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Backend\Module;
+
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * TYPO3 Backend module base
- *
- * @package     TYPO3
- * @subpackage  metaseo
  */
-abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+abstract class AbstractModule extends ActionController
+{
     // ########################################################################
     // Attributes
     // ########################################################################
@@ -41,7 +43,7 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
      *
      * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection
      */
-    protected $_formProtection = NULL;
+    protected $formProtection;
 
     // ########################################################################
     // Methods
@@ -50,49 +52,33 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
     /**
      * Initializes the controller before invoking an action method.
      *
-     * @return void
-     */
-    protected function initializeAction() {
-
-        // Init form protection instance
-        $this->_formProtection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            'TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection'
-        );
-
-    }
-
-    /**
-     * Translate key
+     * Override this method to solve tasks which all actions have in
+     * common.
      *
-     * @param   string      $key        Translation key
-     * @param   NULL|array  $arguments  Arguments (vsprintf)
-     * @return  NULL|string
+     * @return void
+     * @api
      */
-    protected function _translate($key, $arguments = NULL) {
-        $ret = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $this->extensionName, $arguments);
-
-        // Not translated handling
-        if( $ret === NULL ) {
-            $ret = '[-'.$key.'-]';
-        }
-
-        return $ret;
+    protected function initializeAction()
+    {
+        $this->formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
     }
 
     /**
      * Translate list
      *
-     * @param   array $list   Translation keys
+     * @param   array $list Translation keys
+     *
      * @return  array
      */
-    protected function _translateList($list) {
+    protected function translateList(array $list)
+    {
         unset($token);
-        foreach($list as &$token) {
-            if( !empty($token) ) {
-                if( is_array($token) ) {
-                    $token = $this->_translateList($token);
+        foreach ($list as &$token) {
+            if (!empty($token)) {
+                if (is_array($token)) {
+                    $token = $this->translateList($token);
                 } else {
-                    $token = $this->_translate($token);
+                    $token = $this->translate($token);
                 }
             }
         }
@@ -102,24 +88,36 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
     }
 
     /**
-     * Create session token
+     * Translate key
      *
-     * @param    string $formName    Form name/Session token name
-     * @return    string
+     * @param   string     $key       Translation key
+     * @param   null|array $arguments Arguments (vsprintf)
+     *
+     * @return  null|string
      */
-    protected function _sessionToken($formName) {
-        $token = $this->_formProtection->generateToken($formName);
-        return $token;
+    protected function translate($key, array $arguments = null)
+    {
+        $ret = LocalizationUtility::translate($key, $this->extensionName, $arguments);
+
+        // Not translated handling
+        if ($ret === null) {
+            $ret = '[-' . $key . '-]';
+        }
+
+        return $ret;
     }
 
     /**
-     * Ajax controller url
+     * Create session token
      *
-     * @param   string  $ajaxCall Ajax Call
-     * @return  string
+     * @param    string $formName Form name/Session token name
+     *
+     * @return    string
      */
-    protected function _ajaxControllerUrl($ajaxCall) {
-        return $this->doc->backPath . 'ajax.php?ajaxID='.urlencode($ajaxCall);
-    }
+    protected function sessionToken($formName)
+    {
+        $token = $this->formProtection->generateToken($formName);
 
+        return $token;
+    }
 }

@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Utility;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,16 +22,15 @@ namespace Metaseo\Metaseo\Utility;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Utility;
 
 /**
  * General utility
- *
- * @package     metaseo
- * @subpackage  Utility
- * @version     $Id: GeneralUtility.php 81677 2013-11-21 12:32:33Z mblaschke $
  */
-class GeneralUtility {
+class GeneralUtility
+{
 
     // ########################################################################
     // Attributes
@@ -43,7 +41,7 @@ class GeneralUtility {
      *
      * @var \TYPO3\CMS\Frontend\Page\PageRepository
      */
-    protected static $sysPageObj = NULL;
+    protected static $sysPageObj;
 
     /**
      * Rootline cache
@@ -62,7 +60,8 @@ class GeneralUtility {
      *
      * @return  integer
      */
-    public static function getLanguageId() {
+    public static function getLanguageId()
+    {
         $ret = 0;
 
         if (!empty($GLOBALS['TSFE']->tmpl->setup['config.']['sys_language_uid'])) {
@@ -73,59 +72,50 @@ class GeneralUtility {
     }
 
     /**
-     * Get current root pid
+     * Get current pid
      *
-     * @param   integer|null $uid    Page UID
      * @return  integer
      */
-    public static function getRootPid($uid = NULL) {
-        static $cache = array();
-        $ret = NULL;
+    public static function getCurrentPid()
+    {
+        return $GLOBALS['TSFE']->id;
+    }
 
-        if ($uid === NULL) {
-            #################
-            # Current root PID
-            #################
-            $rootline = self::getRootLine();
-            if (!empty($rootline[0])) {
-                $ret = $rootline[0]['uid'];
-            }
-        } else {
-            #################
-            # Other root PID
-            #################
-            if (!isset($cache[$uid])) {
-                $cache[$uid] = NULL;
-                $rootline    = self::getRootLine($uid);
+    /**
+     * Check if there is any mountpoint in rootline
+     *
+     * @param   integer|null $uid Page UID
+     *
+     * @return  boolean
+     */
+    public static function isMountpointInRootLine($uid = null)
+    {
+        $ret = false;
 
-                if (!empty($rootline[0])) {
-                    $cache[$uid] = $rootline[0]['uid'];
+        // Performance check, there must be an MP-GET value
+        if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('MP')) {
+            // Possible mount point detected, let's check the rootline
+            foreach (self::getRootLine($uid) as $page) {
+                if (!empty($page['_MOUNT_OL'])) {
+                    // Mountpoint detected in rootline
+                    $ret = true;
                 }
             }
-
-            $ret = $cache[$uid];
         }
 
         return $ret;
     }
 
     /**
-     * Get current pid
-     *
-     * @return  integer
-     */
-    public static function getCurrentPid() {
-        return $GLOBALS['TSFE']->id;
-    }
-
-    /**
      * Get current root line
      *
-     * @param   integer|null $uid    Page UID
+     * @param   integer|null $uid Page UID
+     *
      * @return  array
      */
-    public static function getRootLine($uid = NULL) {
-        if ($uid === NULL) {
+    public static function getRootLine($uid = null)
+    {
+        if ($uid === null) {
             #################
             # Current rootline
             #################
@@ -146,7 +136,7 @@ class GeneralUtility {
             #################
             if (empty(self::$rootlineCache[$uid])) {
                 // Fetch full rootline to TYPO3 root (0)
-                $rootline = self::_getSysPageObj()->getRootLine($uid);
+                $rootline = self::getSysPageObj()->getRootLine($uid);
 
                 // Filter rootline by siteroot
                 $rootline = self::filterRootlineBySiteroot((array)$rootline);
@@ -164,9 +154,11 @@ class GeneralUtility {
      * Filter rootline to get the real one up to siteroot page
      *
      * @param $rootline
+     *
      * @return array
      */
-    protected static function filterRootlineBySiteroot(array $rootline) {
+    protected static function filterRootlineBySiteroot(array $rootline)
+    {
         $ret = array();
 
         // Make sure sorting is right (first root, last page)
@@ -182,7 +174,30 @@ class GeneralUtility {
             }
         }
         $ret = array_reverse($ret);
+
         return $ret;
+    }
+
+    /**
+     * Get sys page object
+     *
+     * @return  \TYPO3\CMS\Frontend\Page\PageRepository
+     */
+    protected static function getSysPageObj()
+    {
+        if (self::$sysPageObj === null) {
+            /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
+            );
+
+            /** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPageObj */
+            $sysPageObj = $objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+
+            self::$sysPageObj = $sysPageObj;
+        }
+
+        return self::$sysPageObj;
     }
 
     /**
@@ -190,49 +205,62 @@ class GeneralUtility {
      *
      * @return  array
      */
-    public static function getSysDomain() {
-        static $ret = NULL;
+    public static function getSysDomain()
+    {
+        static $ret = null;
 
-        if ($ret !== NULL) {
+        if ($ret !== null) {
             return $ret;
         }
 
-        $host = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST');
+        $host    = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST');
         $rootPid = self::getRootPid();
 
         $query = 'SELECT *
                     FROM sys_domain
                    WHERE pid = ' . (int)$rootPid . '
-                     AND domainName = ' . DatabaseUtility::quote( $host, 'sys_domain' ) . '
+                     AND domainName = ' . DatabaseUtility::quote($host, 'sys_domain') . '
                      AND hidden = 0';
-        $ret = DatabaseUtility::getRow($query);
+        $ret   = DatabaseUtility::getRow($query);
 
         return $ret;
     }
 
     /**
-     * Get root setting row
+     * Get current root pid
      *
-     * @param   integer $rootPid    Root Page Id
-     * @return  array
+     * @param   integer|null $uid Page UID
+     *
+     * @return  integer
      */
-    public static function getRootSetting($rootPid = NULL) {
-        static $ret = NULL;
+    public static function getRootPid($uid = null)
+    {
+        static $cache = array();
+        $ret = null;
 
-        if ($ret !== NULL) {
-            return $ret;
+        if ($uid === null) {
+            #################
+            # Current root PID
+            #################
+            $rootline = self::getRootLine();
+            if (!empty($rootline[0])) {
+                $ret = $rootline[0]['uid'];
+            }
+        } else {
+            #################
+            # Other root PID
+            #################
+            if (!isset($cache[$uid])) {
+                $cache[$uid] = null;
+                $rootline    = self::getRootLine($uid);
+
+                if (!empty($rootline[0])) {
+                    $cache[$uid] = $rootline[0]['uid'];
+                }
+            }
+
+            $ret = $cache[$uid];
         }
-
-        if ($rootPid === NULL) {
-            $rootPid = self::getRootPid();
-        }
-
-        $query = 'SELECT *
-                    FROM tx_metaseo_setting_root
-                   WHERE pid = ' . (int)$rootPid.'
-                     AND deleted = 0
-                   LIMIT 1';
-        $ret = DatabaseUtility::getRow($query);
 
         return $ret;
     }
@@ -240,12 +268,14 @@ class GeneralUtility {
     /**
      * Get root setting value
      *
-     * @param   string       $name           Name of configuration
-     * @param   mixed|NULL   $defaultValue   Default value
-     * @param   integer|NULL $rootPid        Root Page Id
+     * @param   string       $name         Name of configuration
+     * @param   mixed|NULL   $defaultValue Default value
+     * @param   integer|NULL $rootPid      Root Page Id
+     *
      * @return  array
      */
-    public static function getRootSettingValue($name, $defaultValue = NULL, $rootPid = NULL) {
+    public static function getRootSettingValue($name, $defaultValue = null, $rootPid = null)
+    {
         $setting = self::getRootSetting($rootPid);
 
         if (isset($setting[$name])) {
@@ -258,17 +288,48 @@ class GeneralUtility {
     }
 
     /**
+     * Get root setting row
+     *
+     * @param   integer $rootPid Root Page Id
+     *
+     * @return  array
+     */
+    public static function getRootSetting($rootPid = null)
+    {
+        static $ret = null;
+
+        if ($ret !== null) {
+            return $ret;
+        }
+
+        if ($rootPid === null) {
+            $rootPid = self::getRootPid();
+        }
+
+        $query = 'SELECT *
+                    FROM tx_metaseo_setting_root
+                   WHERE pid = ' . (int)$rootPid . '
+                     AND deleted = 0
+                   LIMIT 1';
+        $ret   = DatabaseUtility::getRow($query);
+
+        return $ret;
+    }
+
+    /**
      * Get extension configuration
      *
-     * @param   string $name       Name of config
-     * @param   boolean $default    Default value
+     * @param   string  $name    Name of config
+     * @param   boolean $default Default value
+     *
      * @return  mixed
      */
-    public static function getExtConf($name, $default = NULL) {
-        static $conf = NULL;
+    public static function getExtConf($name, $default = null)
+    {
+        static $conf = null;
         $ret = $default;
 
-        if ($conf === NULL) {
+        if ($conf === null) {
             // Load ext conf
             $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['metaseo']);
             if (!is_array($conf)) {
@@ -285,18 +346,23 @@ class GeneralUtility {
     }
 
     /**
-     * Call hook
+     * Call hook and signal
      *
-     * @param   string     $name   Name of hook
-     * @param   boolean    $obj    Object
-     * @param   mixed|NULL $args   Args
+     * @param   string     $class Name of the class containing the signal
+     * @param   string     $name  Name of hook
+     * @param   mixed $obj Reference to be passed along (typically "$this"
+     *                     - being a reference to the calling object) (REFERENCE!)
+     * @param   mixed|NULL $args  Args
+     *
      * @return  mixed
      */
-    public static function callHook($name, $obj, &$args = NULL) {
-        static $hookConf = NULL;
+    public static function callHookAndSignal($class, $name, $obj, &$args = null)
+    {
+        static $hookConf = null;
+        static $signalSlotDispatcher = null;
 
         // Fetch hooks config for metaseo, minimize array lookups
-        if ($hookConf === NULL) {
+        if ($hookConf === null) {
             $hookConf = array();
             if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks'])
                 && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['metaseo']['hooks'])
@@ -313,20 +379,34 @@ class GeneralUtility {
                 }
             }
         }
+
+        // Call signal
+        if ($signalSlotDispatcher === null) {
+            /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
+            );
+
+            /** @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher */
+            $signalSlotDispatcher = $objectManager->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+        }
+        $signalSlotDispatcher->dispatch($class, $name, array($args, $obj));
     }
 
+
     /**
-     * Full url
-     *g
-     * Make sure the url is absolute (http://....)
+     * Generate full url
+     *
+     * Makes sure the url is absolute (http://....)
      *
      * @param   string $url    URL
      * @param   string $domain Domain
+     *
      * @return  string
      */
-    public static function fullUrl($url, $domain = NULL) {
+    public static function fullUrl($url, $domain = null)
+    {
         if (!preg_match('/^https?:\/\//i', $url)) {
-
             // Fix for root page link
             if ($url === '/') {
                 $url = '';
@@ -337,27 +417,17 @@ class GeneralUtility {
                 $url = substr($url, 1);
             }
 
-            if( $domain !== NULL ) {
+            if ($domain !== null) {
                 // specified domain
-                $url = 'http://'.$domain.'/'.$url;
+                $url = 'http://' . $domain . '/' . $url;
             } else {
                 // domain from env
-                $url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL').$url;
+                $url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $url;
             }
         }
 
-
         // Fix url stuff
         $url = str_replace('?&', '?', $url);
-
-        // Removed by request of https://forge.typo3.org/issues/61845
-        // replace double slashes but not before a : (eg. http://)
-        //$url = preg_replace('_(?<!:)\//_', '/', $url);
-
-        // Fallback
-        //if( !empty($GLOBALS['TSFE']) && !preg_match('/^https?:\/\//i', $url ) ) {
-        //	$url = $GLOBALS['TSFE']->baseUrlWrap($url);
-        //}
 
         return $url;
     }
@@ -367,17 +437,27 @@ class GeneralUtility {
     // ########################################################################
 
     /**
-     * Get sys page object
+     * Check if url is blacklisted
      *
-     * @return  \TYPO3\CMS\Frontend\Page\PageRepository
+     * @param  string $url           URL
+     * @param  array  $blacklistConf Blacklist configuration (list of regexp)
+     *
+     * @return bool
      */
-    protected static function _getSysPageObj() {
-        if (self::$sysPageObj === NULL) {
-            self::$sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                'TYPO3\\CMS\\Frontend\\Page\\PageRepository'
-            );
+    public static function checkUrlForBlacklisting($url, array $blacklistConf)
+    {
+        // check for valid url
+        if (empty($url)) {
+            return true;
         }
-        return self::$sysPageObj;
-    }
 
+        $blacklistConf = (array)$blacklistConf;
+        foreach ($blacklistConf as $blacklistRegExp) {
+            if (preg_match($blacklistRegExp, $url)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

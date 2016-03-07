@@ -1,9 +1,9 @@
 .metaseo-search-highlight {
-	background-color: yellow;
+    background-color: yellow;
 }
 
 .metaseo-cell-highlight {
-	background-color: #FCFF91;
+    background-color: #FCFF91;
 }
 
 .metaseo-warning {
@@ -11,16 +11,16 @@
 }
 
 .metaseo-url-https {
-	color: green;
+    color: green;
 }
 
 .metaseo-boolean {
-	text-align: center;
+    text-align: center;
 }
 
 .metaseo-default {
-	color: #808080;
-	font-style: italic;
+    color: #808080;
+    font-style: italic;
 }
 
 .metaseo-info-from-base {
@@ -37,62 +37,71 @@
 }
 
 .metaseo-grid-editable .x-grid3-body .x-grid3-cell {
-	position: relative;
-	cursor: pointer;
+    position: relative;
+    cursor: pointer;
 }
 
 .metaseo-grid-editable .x-grid3-body .x-grid3-cell:hover {
-	background-color: #B3B3B3;
-	color: white;
+    background-color: #B3B3B3;
+    color: white;
 }
 
 .metaseo-grid-editable .x-grid3-body .x-grid3-cell:hover.metaseo-cell-highlight {
-	color: black;
+    color: black;
 }
 
 .metaseo-grid-editable .x-grid3-body .x-grid3-cell .t3-icon {
-	visibility: hidden;
-	position: absolute; right: -1px; top: 0px; bottom: 0px;
-	background-color: #B3B3B3;
+    visibility: hidden;
+    position: absolute;
+    right: -1px;
+    top: 0;
+    bottom: 0;
+    background-color: #B3B3B3;
 }
 
 .metaseo-grid-editable .x-grid3-body .x-grid3-cell:hover .t3-icon {
-	visibility: visible;
+    visibility: visible;
 }
 
 .metaseo-cell-editable {
     cursor: pointer;
 }
+
 .metaseo-cell-editable .t3-icon {
     cursor: pointer !important;
 }
 
-.x-grid3-body .x-grid3-cell  .metaseo-toolbar {
-	text-align: center;
+.x-grid3-body .x-grid3-cell .metaseo-toolbar {
+    text-align: center;
 }
 
 .x-grid3-body .x-grid3-cell .metaseo-toolbar .t3-icon {
-	visibility: visible !important;
-	position: static !important;
-	background-color: transparent !important;
+    visibility: visible !important;
+    position: static !important;
+    background-color: transparent !important;
 }
-
 
 td.center,
 th.center {
-	text-align: center;
+    text-align: center;
 }
-
 
 .t3-icon[onclick] {
     cursor: pointer !important;
 }
 
-.icon-grid { background-image:url('../Icons/Delete.gif') !important; }
-.delete { background-image: url('../Icons/Delete.gif') !important; }
+.icon-grid {
+    background-image: url('../Icons/Delete.gif') !important;
+}
 
-.deletedPath { color: #ff0000; font-weight: bold; }
+.delete {
+    background-image: url('../Icons/Delete.gif') !important;
+}
 
+.deletedPath {
+    color: #ff0000;
+    font-weight: bold;
+}
 
 .x-window .x-window-body {
     padding: 10px 15px;

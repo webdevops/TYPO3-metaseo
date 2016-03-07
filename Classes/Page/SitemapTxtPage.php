@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Page;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,16 +22,17 @@ namespace Metaseo\Metaseo\Page;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Page;
+
+use Metaseo\Metaseo\Utility\GeneralUtility;
 
 /**
  * Sitemap txt page
- *
- * @package     metaseo
- * @subpackage  Page
- * @version     $Id: class.robots_txt.php 62700 2012-05-22 15:53:22Z mblaschke $
  */
-class SitemapTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
+class SitemapTxtPage extends AbstractPage
+{
 
     // ########################################################################
     // Attributes
@@ -48,16 +48,17 @@ class SitemapTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
      *
      * @return  string
      */
-    public function main() {
+    public function main()
+    {
         // INIT
         $this->tsSetup = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.'];
 
         // check if sitemap is enabled in root
-        if (!\Metaseo\Metaseo\Utility\GeneralUtility::getRootSettingValue('is_sitemap', TRUE)) {
+        if (!GeneralUtility::getRootSettingValue('is_sitemap', true)) {
             $this->showError('Sitemap is not available, please check your configuration [control-center]');
         }
 
-        $ret = $this->_build();
+        $ret = $this->build();
 
         return $ret;
     }
@@ -67,14 +68,13 @@ class SitemapTxtPage extends \Metaseo\Metaseo\Page\AbstractPage {
      *
      * @return mixed
      */
-    protected function _build() {
-        $generator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            'Metaseo\\Metaseo\\Sitemap\\Generator\\TxtGenerator'
-        );
+    protected function build()
+    {
+        /** @var \Metaseo\Metaseo\Sitemap\Generator\TxtGenerator $generator */
+        $generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\TxtGenerator');
 
         $ret = $generator->sitemap();
 
         return $ret;
     }
-
 }

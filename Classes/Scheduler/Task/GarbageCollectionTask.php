@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Scheduler\Task;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,30 +22,29 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Scheduler\Task;
+
+use Metaseo\Metaseo\Utility\SitemapUtility;
+use TYPO3\CMS\Scheduler\Task\AbstractTask as Typo3AbstractTask;
 
 /**
  * Scheduler Task Garbage Collection
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: GarbageCollectionTask.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class GarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
+class GarbageCollectionTask extends Typo3AbstractTask
+{
 
     /**
      * Execute task
      *
      * @return  boolean
      */
-    public function execute() {
+    public function execute()
+    {
         // Expire sitemap entries
-        \Metaseo\Metaseo\Utility\SitemapUtility::expire();
+        SitemapUtility::expire();
 
-        // Expire cache entries
-        \Metaseo\Metaseo\Utility\CacheUtility::expire();
-
-        return TRUE;
+        return true;
     }
-
 }

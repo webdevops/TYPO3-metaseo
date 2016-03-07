@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Scheduler\Task;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,16 +22,15 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Scheduler\Task;
 
 /**
  * Scheduler Task Sitemap TXT
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: SitemapTxtTask.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class SitemapTxtTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask {
+class SitemapTxtTask extends AbstractSitemapTask
+{
 
     // ########################################################################
     // Attributes
@@ -43,7 +41,7 @@ class SitemapTxtTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
      *
      * @var string
      */
-    protected $_sitemapDir = 'uploads/tx_metaseo/sitemap_txt';
+    protected $sitemapDir = 'uploads/tx_metaseo/sitemap_txt';
 
     // ########################################################################
     // Methods
@@ -54,26 +52,25 @@ class SitemapTxtTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
      *
      * @param   integer $rootPageId Root page id
      * @param   integer $languageId Language id
+     *
      * @return  boolean
      */
-    protected function _buildSitemap($rootPageId, $languageId) {
+    protected function buildSitemap($rootPageId, $languageId)
+    {
 
-        if ($languageId !== NULL) {
+        if ($languageId !== null) {
             // Language lock enabled
             $sitemapFileName = 'sitemap-r%s-l%s.txt.gz';
         } else {
             $sitemapFileName = 'sitemap-r%s.txt.gz';
         }
 
-        $generator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            'Metaseo\\Metaseo\\Sitemap\\Generator\\TxtGenerator'
-        );
+        $generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\TxtGenerator');
         $content   = $generator->sitemap();
 
         $fileName = sprintf($sitemapFileName, $rootPageId, $languageId);
-        $this->_writeToFile(PATH_site . '/' . $this->_sitemapDir . '/' . $fileName, $content);
+        $this->writeToFile(PATH_site . '/' . $this->sitemapDir . '/' . $fileName, $content);
 
-        return TRUE;
+        return true;
     }
-
 }

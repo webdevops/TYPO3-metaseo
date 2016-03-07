@@ -1,12 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Scheduler\Task;
 
-use Metaseo\Metaseo\Utility\DatabaseUtility;
-
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -25,54 +22,71 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Scheduler\Task;
+
+use Metaseo\Metaseo\Utility\DatabaseUtility;
+use Metaseo\Metaseo\Utility\FrontendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Scheduler Task Sitemap Base
- *
- * @package     metaseo
- * @subpackage  Sitemap
- * @version     $Id: AbstractTask.php 84520 2014-03-28 10:33:24Z mblaschke $
  */
-abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
+abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+{
 
     // ########################################################################
     // Attributes
     // ########################################################################
 
     /**
+     * Backend Form Protection object
+     *
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     * @inject
+     */
+    protected $objectManager;
+
+    /**
      * Language lock
      *
      * @var integer
      */
-    protected $_languageLock = FALSE;
+    protected $languageLock;
 
     /**
      * Language list
      *
      * @var array
      */
-    protected $_languageIdList = NULL;
+    protected $languageIdList;
 
     // ########################################################################
     // Methods
     // ########################################################################
 
     /**
+     * Initialize task
+     */
+    protected function initialize()
+    {
+        $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+    }
+
+    /**
      * Get list of root pages in current typo3
      *
      * @return  array
      */
-    protected function _getRootPages() {
-        $ret = array();
-
+    protected function getRootPages()
+    {
         $query = 'SELECT uid
                     FROM pages
                    WHERE is_siteroot = 1
                      AND deleted = 0';
-        $ret = DatabaseUtility::getColWithIndex($query);
 
-        return $ret;
+        return DatabaseUtility::getColWithIndex($query);
     }
 
 
@@ -81,40 +95,49 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
      *
      * @return  array
      */
-    protected function _initLanguages() {
-        $this->_languageIdList[0] = 0;
+    protected function initLanguages()
+    {
+        $this->languageIdList[0] = 0;
 
-        $query = 'SELECT uid
-                    FROM sys_language
-                   WHERE hidden = 0';
-        $this->_languageIdList = DatabaseUtility::getColWithIndex($query);
+        $query      = 'SELECT uid
+                         FROM sys_language
+                        WHERE hidden = 0';
+        $langIdList = DatabaseUtility::getColWithIndex($query);
+
+        $this->languageIdList = $langIdList;
     }
 
     /**
      * Set root page language
+     *
+     * @param integer $languageId
      */
-    protected function _setRootPageLanguage($languageId) {
+    protected function setRootPageLanguage($languageId)
+    {
         $GLOBALS['TSFE']->tmpl->setup['config.']['sys_language_uid'] = $languageId;
-        $this->_languageLock = $languageId;
+        $this->languageLock                                          = $languageId;
     }
 
     /**
-     * Initalize root page (TSFE and stuff)
+     * Initialize root page (TSFE and stuff)
      *
-     * @param   integer $rootPageId $rootPageId
+     * @param integer $rootPageId $rootPageId
      */
-    protected function _initRootPage($rootPageId) {
-        \Metaseo\Metaseo\Utility\FrontendUtility::init($rootPageId);
+    protected function initRootPage($rootPageId)
+    {
+        FrontendUtility::init($rootPageId);
     }
 
     /**
      * Write content to file
      *
-     * @param   string $file       Filename/path
-     * @param   string $content    Content
+     * @param   string $file    Filename/path
+     * @param   string $content Content
+     *
      * @throws  \Exception
      */
-    protected function _writeToFile($file, $content) {
+    protected function writeToFile($file, $content)
+    {
         if (!function_exists('gzopen')) {
             throw new \Exception('metaseo needs zlib support');
         }
@@ -127,7 +150,5 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
         } else {
             throw new \Exception('Could not open ' . $file . ' for writing');
         }
-
     }
-
 }

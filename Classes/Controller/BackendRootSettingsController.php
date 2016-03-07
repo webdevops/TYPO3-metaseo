@@ -1,12 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Controller;
 
-use Metaseo\Metaseo\Utility\DatabaseUtility;
-
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -25,15 +22,21 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Controller;
+
+use Metaseo\Metaseo\Backend\Module\AbstractStandardModule;
+use Metaseo\Metaseo\Utility\BackendUtility;
+use Metaseo\Metaseo\Utility\DatabaseUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility as Typo3BackendUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 
 /**
  * TYPO3 Backend module root settings
- *
- * @package     TYPO3
- * @subpackage  metaseo
  */
-class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\AbstractStandardModule {
+class BackendRootSettingsController extends AbstractStandardModule
+{
     // ########################################################################
     // Attributes
     // ########################################################################
@@ -45,17 +48,18 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
     /**
      * Main action
      */
-    public function mainAction() {
+    public function mainAction()
+    {
         // #################
         // Root page list
         // #################
 
-        $rootPageList   = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageList();
-        $rootIdList     = array_keys($rootPageList);
+        $rootPageList = BackendUtility::getRootPageList();
+        $rootIdList   = array_keys($rootPageList);
 
-        $rootPidCondition = NULL;
-        if( !empty($rootIdList) ) {
-            $rootPidCondition = 'p.uid IN ('.implode(',', $rootIdList).')';
+        $rootPidCondition = null;
+        if (!empty($rootIdList)) {
+            $rootPidCondition = 'p.uid IN (' . implode(',', $rootIdList) . ')';
         } else {
             $rootPidCondition = '1=0';
         }
@@ -64,42 +68,44 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
         // Root setting list (w/ automatic creation)
         // #################
 
-        // check which root lages have no root settings
-        $query = 'SELECT p.uid
-                    FROM pages p
-                         LEFT JOIN tx_metaseo_setting_root seosr
-                            ON   seosr.pid = p.uid
-                             AND seosr.deleted = 0
-                    WHERE '.$rootPidCondition.'
-                      AND seosr.uid IS NULL';
+        // check which root pages have no root settings
+        $query   = 'SELECT p.uid
+                      FROM pages p
+                           LEFT JOIN tx_metaseo_setting_root seosr
+                                ON seosr.pid = p.uid
+                               AND seosr.deleted = 0
+                     WHERE ' . $rootPidCondition . '
+                       AND seosr.uid IS NULL';
         $uidList = DatabaseUtility::getCol($query);
-        foreach( $uidList as $tmpUid ) {
+        foreach ($uidList as $tmpUid) {
             $query = 'INSERT INTO tx_metaseo_setting_root (pid, tstamp, crdate, cruser_id)
-                            VALUES ('.(int)$tmpUid.',
-                                    '.(int)time().',
-                                    '.(int)time().',
-                                    '.(int)$GLOBALS['BE_USER']->user['uid'].')';
+                           VALUES (' . (int)$tmpUid . ',
+                                   ' . (int)time() . ',
+                                   ' . (int)time() . ',
+                                   ' . (int)$GLOBALS['BE_USER']->user['uid'] . ')';
             DatabaseUtility::execInsert($query);
         }
 
-        $rootSettingList  = \Metaseo\Metaseo\Utility\BackendUtility::getRootPageSettingList();
+        $rootSettingList = BackendUtility::getRootPageSettingList();
 
         // #################
         // Domain list
         // ##################
 
         // Fetch domain name
-        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-            'uid, pid, domainName, forced',
-            'sys_domain',
-            'hidden = 0',
-            '',
-            'forced DESC, sorting'
-        );
+        $query   = 'SELECT uid,
+                           pid,
+                           domainName,
+                           forced
+                      FROM sys_domain
+                     WHERE hidden = 0
+                  ORDER BY forced DESC,
+                           sorting';
+        $rowList = DatabaseUtility::getAll($query);
 
         $domainList = array();
-        while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
-            $domainList[ $row['pid'] ][ $row['uid'] ] = $row;
+        foreach ($rowList as $row) {
+            $domainList[$row['pid']][$row['uid']] = $row;
         }
 
         // #################
@@ -107,47 +113,35 @@ class BackendRootSettingsController extends \Metaseo\Metaseo\Backend\Module\Abst
         // #################
 
         unset($page);
-        foreach($rootPageList as $pageId => &$page) {
+        foreach ($rootPageList as $pageId => &$page) {
             // Domain list
             $page['domainList'] = '';
-            if( !empty($domainList[$pageId]) ) {
+            if (!empty($domainList[$pageId])) {
                 $page['domainList'] = $domainList[$pageId];
             }
 
             // Settings
             $page['rootSettings'] = array();
-            if( !empty($rootSettingList[$pageId]) ) {
+            if (!empty($rootSettingList[$pageId])) {
                 $page['rootSettings'] = $rootSettingList[$pageId];
             }
 
             // Settings available
-            $page['settingsLink'] = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_metaseo_setting_root]['.$rootSettingList[$pageId]['uid'].']=edit',$this->doc->backPath);
+            $page['settingsLink'] = Typo3BackendUtility::editOnClick(
+                '&edit[tx_metaseo_setting_root][' . $rootSettingList[$pageId]['uid'] . ']=edit'
+            );
         }
         unset($page);
 
         // check if there is any root page
-        if( empty($rootPageList) ) {
-            $message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-                $this->_translate('message.warning.noRootPage.message'),
-                $this->_translate('message.warning.noRootPage.title'),
-                \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+        if (empty($rootPageList)) {
+            $this->addFlashMessage(
+                $this->translate('message.warning.noRootPage.message'),
+                $this->translate('message.warning.noRootPage.title'),
+                FlashMessage::WARNING
             );
-            \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($message);
         }
-
-        // ############################
-        // Page/JS
-        // ############################
-
-        // FIXME: do we really need a template engine here?
-        $this->template = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
-        $pageRenderer = $this->template->getPageRenderer();
-
-        $basePathJs  = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/JavaScript';
-        $basePathCss = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('metaseo') . 'Resources/Public/Backend/Css';
-        $pageRenderer->addCssFile($basePathCss.'/Default.css');
 
         $this->view->assign('RootPageList', $rootPageList);
     }
-
 }

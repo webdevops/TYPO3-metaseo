@@ -1,0 +1,41 @@
+<f:be.container
+    includeCssFiles="{
+        0: '{f:uri.resource(path:\'Backend/Css/Default.css\')}'
+    }"
+    includeJsFiles="{
+        0:'{f:uri.resource(path:\'Backend/JavaScript/MetaSeo.js\')}',
+        1:'{f:uri.resource(path:\'Backend/JavaScript/Ext.ux.plugin.FitToParent.js\')}',
+        2:'{f:uri.resource(path:\'Backend/JavaScript/MetaSeo.overview.js\')}'
+    }"
+    loadExtJs="true"
+    >
+
+    <div class="typo3-fullDoc">
+
+        <div id="typo3-docheader">
+            <div class="typo3-docheader-functions">
+                <div class="left">
+                    <f:be.buttons.csh/>
+                    <f:render section="button-toolbar" optional="true"/>
+                </div>
+                <div class="right"></div>
+            </div>
+            <div class="typo3-docheader-buttons">
+                <div class="left"></div>
+                <div class="right">
+                    <f:be.buttons.shortcut/>
+                </div>
+            </div>
+        </div>
+
+        <div id="typo3-docbody">
+            <div id="typo3-inner-docbody">
+                <f:render section="title" optional="true"/>
+                <f:flashMessages renderMode="div"/>
+                <f:render section="content"/>
+            </div>
+        </div>
+
+    </div>
+    <f:format.raw value="<script>{JavaScript}</script>" />
+</f:be.container>

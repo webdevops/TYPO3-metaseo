@@ -1,10 +1,9 @@
 <?php
-namespace Metaseo\Metaseo\Scheduler\Task;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
- *  (c) 2014 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
  *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
@@ -23,16 +22,15 @@ namespace Metaseo\Metaseo\Scheduler\Task;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
+
+namespace Metaseo\Metaseo\Scheduler\Task;
 
 /**
  * Scheduler Task Sitemap XML
- *
- * @package     metaseo
- * @subpackage  lib
- * @version     $Id: SitemapXmlTask.php 81080 2013-10-28 09:54:33Z mblaschke $
  */
-class SitemapXmlTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask {
+class SitemapXmlTask extends AbstractSitemapTask
+{
 
     // ########################################################################
     // Attributes
@@ -43,7 +41,7 @@ class SitemapXmlTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
      *
      * @var string
      */
-    protected $_sitemapDir = 'uploads/tx_metaseo/sitemap_xml';
+    protected $sitemapDir = 'uploads/tx_metaseo/sitemap_xml';
 
     // ########################################################################
     // Methods
@@ -54,26 +52,27 @@ class SitemapXmlTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
      *
      * @param   integer $rootPageId Root page id
      * @param   integer $languageId Language id
+     *
      * @return  boolean
      */
-    protected function _buildSitemap($rootPageId, $languageId) {
-        if ($languageId !== NULL) {
+    protected function buildSitemap($rootPageId, $languageId)
+    {
+        if ($languageId !== null) {
             // Language lock enabled
-            $rootPageLinkTempalte = 'sitemap-r%s-l%s-p###PAGE###.xml.gz';
+            $rootPageLinkTemplate = 'sitemap-r%s-l%s-p###PAGE###.xml.gz';
             $sitemapIndexFileName = 'index-r%s-l%s.xml.gz';
             $sitemapPageFileName  = 'sitemap-r%s-l%s-p%s.xml.gz';
         } else {
-            $rootPageLinkTempalte = 'sitemap-r%s-p###PAGE###.xml.gz';
+            $rootPageLinkTemplate = 'sitemap-r%s-p###PAGE###.xml.gz';
             $sitemapIndexFileName = 'index-r%s.xml.gz';
             $sitemapPageFileName  = 'sitemap-r%s-p%3$s.xml.gz';
         }
 
         // Init builder
-        $generator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            'Metaseo\\Metaseo\\Sitemap\\Generator\\XmlGenerator'
-        );
-        $fileName = sprintf($rootPageLinkTempalte, $rootPageId, $languageId);
-        $generator->indexPathTemplate = $this->_generateSitemapLinkTemplate($fileName);
+        $generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\XmlGenerator');
+        $fileName  = sprintf($rootPageLinkTemplate, $rootPageId, $languageId);
+
+        $generator->indexPathTemplate = $this->generateSitemapLinkTemplate($fileName);
 
         // Get list of pages
         $pageCount = $generator->pageCount();
@@ -81,16 +80,15 @@ class SitemapXmlTask extends \Metaseo\Metaseo\Scheduler\Task\AbstractSitemapTask
         // Index
         $content  = $generator->sitemapIndex();
         $fileName = sprintf($sitemapIndexFileName, $rootPageId, $languageId);
-        $this->_writeToFile(PATH_site . '/' . $this->_sitemapDir . '/' . $fileName, $content);
+        $this->writeToFile(PATH_site . '/' . $this->sitemapDir . '/' . $fileName, $content);
 
         // Page
         for ($i = 0; $i < $pageCount; $i++) {
             $content  = $generator->sitemap($i);
             $fileName = sprintf($sitemapPageFileName, $rootPageId, $languageId, $i);
-            $this->_writeToFile(PATH_site . '/' . $this->_sitemapDir . '/' . $fileName, $content);
+            $this->writeToFile(PATH_site . '/' . $this->sitemapDir . '/' . $fileName, $content);
         }
 
-        return TRUE;
+        return true;
     }
-
 }
