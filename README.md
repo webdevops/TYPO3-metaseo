@@ -1,6 +1,6 @@
 # MetaSEO - Search Engine Optimization for TYPO3
 
-![stable v1.0.8](https://img.shields.io/badge/stable-v1.0.8-green.svg?style=flat)
+![stable v2.0.0](https://img.shields.io/badge/stable-v2.0.0-green.svg?style=flat)
 ![development v2.0.0](https://img.shields.io/badge/development-v2.0.0-red.svg?style=flat)
 ![License GPL3](https://img.shields.io/badge/license-GPL3-blue.svg?style=flat)
 
@@ -21,10 +21,10 @@ It's a replacement for the "metatag"-extension and the successor of "tq_seo".
 
 ## Version status
 
-* Version **1.x**:
+* Version **2.0.0**:
 
   + Branch **master**
-  + TYPO3 Version: 6.2.x
+  + TYPO3 Version: 6.2.x - 7.4.x
   + Composer: dev-master
 
 * Version **2.x**:
