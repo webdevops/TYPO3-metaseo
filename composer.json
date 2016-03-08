@@ -16,7 +16,7 @@
   },
   "require": {
     "php": ">=5.3.0",
-    "typo3/cms-core": "~6.2.14|>=7.6.0,<8.0"
+    "typo3/cms-core": ">=6.2.0,<8.0"
   },
   "replace": {
     "metaseo": "self.version",
