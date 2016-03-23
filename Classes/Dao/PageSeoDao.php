@@ -40,6 +40,12 @@ class PageSeoDao extends Dao
     protected $pageTreeView;
 
     /**
+     * Extended options set via plugin.metaseo.extensibility
+     * @var array
+     */
+    protected $extensibilityOptions;
+
+    /**
      * Return default tree
      *
      * @param   array   $page              Root page
@@ -68,8 +74,10 @@ class PageSeoDao extends Dao
         foreach ($fieldList as $field) {
             $tree->addField($field, true);
         }
+
         $tree->init(
-            'AND doktype IN (1,4) AND ' . $this->getBackendUserAuthentication()->getPagePermsClause(1)
+            'AND doktype IN (' . $this->getDocTypeList() . ') AND '
+            . $this->getBackendUserAuthentication()->getPagePermsClause(1)
         );
 
         $tree->tree[] = array(
@@ -176,6 +184,23 @@ class PageSeoDao extends Dao
         }
 
         return $list;
+    }
+
+    protected function getDocTypeList()
+    {
+        if (!isset($this->extensibilityOptions['allowedDoktypes'])
+            || empty($this->extensibilityOptions['allowedDoktypes'])
+        ) {
+            return '1,4'; //default
+        }
+
+        // validate input
+        $allowedDoktypes = explode(',', $this->extensibilityOptions['allowedDoktypes']);
+        foreach ($allowedDoktypes as &$allowedDoktype) {
+            $allowedDoktype = (int)trim($allowedDoktype);
+        }
+
+        return implode(',', $allowedDoktypes);
     }
 
     /**
@@ -322,6 +347,18 @@ class PageSeoDao extends Dao
     public function setPageTreeView($pageTreeView)
     {
         $this->pageTreeView = $pageTreeView;
+
+        return $this;
+    }
+
+    /**
+     * @param array $extensibilityOptions
+     *
+     * @return $this
+     */
+    public function setExtensibilityOptions(array $extensibilityOptions)
+    {
+        $this->extensibilityOptions = $extensibilityOptions;
 
         return $this;
     }

@@ -123,6 +123,10 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
                 $this->getPageSeoDaoMock()
             ),
             array(
+                'TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager',
+                $this->getConfigurationManagerMock()
+            ),
+            array(
                 'Metaseo\\Metaseo\\Dao\\TemplateDao',
                 $this->getTemplateDaoMock()
             ),
@@ -193,6 +197,10 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
             ->expects($this->any())
             ->method('setPageTreeView')
             ->will($this->returnSelf());
+        $mock
+            ->expects($this->any())
+            ->method('setExtensibilityOptions')
+            ->will($this->returnSelf());
         return $mock;
     }
 
@@ -219,6 +227,31 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
             ->expects($this->any())
             ->method('getExcludeListArray')
             ->will($this->returnValue(array()));
+        return $mock;
+    }
+
+    /**
+     * @return \TYPO3\CMS\Extbase\Configuration\ConfigurationManager
+     */
+    protected function getConfigurationManagerMock()
+    {
+        $mock = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
+        $mock
+            ->expects($this->any())
+            ->method('getConfiguration')
+            ->will(
+                $this->returnValue(
+                    array(
+                        'plugin.' => array(
+                            'metaseo.' => array(
+                                'extensibility.' => array(
+                                    'allowedDoktypes' => '1,4'
+                                )
+                            )
+                        )
+                    )
+                )
+            );
         return $mock;
     }
 
