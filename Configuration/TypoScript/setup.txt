@@ -25,6 +25,13 @@ page {
 # TypoScript added by extension "metaseo"
 plugin.metaseo =
 plugin.metaseo {
+
+    # General options
+    general =
+    general {
+        allowedDoktypes = {$plugin.metaseo.general.allowedDoktypes}
+    }
+
     # Page title generator
     pageTitle =
     pageTitle {

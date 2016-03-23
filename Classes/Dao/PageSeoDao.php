@@ -31,6 +31,10 @@ use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 class PageSeoDao extends Dao
 {
@@ -38,6 +42,20 @@ class PageSeoDao extends Dao
      * @var PageTreeView
      */
     protected $pageTreeView;
+
+    /**
+     * General options set via plugin.metaseo.general
+     * @var array
+     */
+    protected $generalOptions;
+
+    public function __construct()
+    {
+        $om = GeneralUtility::makeInstance(ObjectManager::class);
+        /** @var ConfigurationManager $cm */
+        $cm = $om->get(ConfigurationManager::class);
+        $this->generalOptions = $cm->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT)['plugin.']['metaseo.']['general.'];
+    }
 
     /**
      * Return default tree
@@ -68,8 +86,10 @@ class PageSeoDao extends Dao
         foreach ($fieldList as $field) {
             $tree->addField($field, true);
         }
+
+        $doktypeList = (isset($this->generalOptions['allowedDoktypes']) && !empty($this->generalOptions['allowedDoktypes'])) ? $this->generalOptions['allowedDoktypes'] : '1,4';
         $tree->init(
-            'AND doktype IN (1,4) AND ' . $this->getBackendUserAuthentication()->getPagePermsClause(1)
+            'AND doktype IN (' . $doktypeList . ') AND ' . $this->getBackendUserAuthentication()->getPagePermsClause(1)
         );
 
         $tree->tree[] = array(

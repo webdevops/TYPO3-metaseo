@@ -2,6 +2,10 @@
 # This are the default TS-constants for metaseo
 ##
 plugin.metaseo {
+
+    # cat=plugin.metaseo.general/page/01; type=string; label= Doktypes list for backend page tree
+    general.allowedDoktypes = 1,4
+
     # cat=plugin.metaseo.metaTags/page/01; type=string; label= Meta Description: Short description of your webpage.
     metaTags.description =
 
