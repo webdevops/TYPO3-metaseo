@@ -32,9 +32,7 @@ use Metaseo\Metaseo\Utility\DatabaseUtility;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 class PageSeoDao extends Dao
 {
@@ -44,17 +42,17 @@ class PageSeoDao extends Dao
     protected $pageTreeView;
 
     /**
-     * General options set via plugin.metaseo.general
+     * Extended options set via plugin.metaseo.extensibility
      * @var array
      */
-    protected $generalOptions;
+    protected $extensibilityOptions;
 
     public function __construct()
     {
-        $om = GeneralUtility::makeInstance(ObjectManager::class);
-        /** @var ConfigurationManager $cm */
-        $cm = $om->get(ConfigurationManager::class);
-        $this->generalOptions = $cm->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT)['plugin.']['metaseo.']['general.'];
+        $om = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $cm = $om->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
+        $config = $cm->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+        $this->extensibilityOptions = $config['plugin.']['metaseo.']['extensibility.'];
     }
 
     /**
@@ -87,7 +85,7 @@ class PageSeoDao extends Dao
             $tree->addField($field, true);
         }
 
-        $doktypeList = (isset($this->generalOptions['allowedDoktypes']) && !empty($this->generalOptions['allowedDoktypes'])) ? $this->generalOptions['allowedDoktypes'] : '1,4';
+        $doktypeList = (isset($this->extensibilityOptions['allowedDoktypes']) && !empty($this->extensibilityOptions['allowedDoktypes'])) ? $this->extensibilityOptions['allowedDoktypes'] : '1,4';
         $tree->init(
             'AND doktype IN (' . $doktypeList . ') AND ' . $this->getBackendUserAuthentication()->getPagePermsClause(1)
         );

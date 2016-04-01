@@ -26,10 +26,10 @@ page {
 plugin.metaseo =
 plugin.metaseo {
 
-    # General options
-    general =
-    general {
-        allowedDoktypes = {$plugin.metaseo.general.allowedDoktypes}
+    # extensibility options
+    extensibility =
+    extensibility {
+        allowedDoktypes = {$plugin.metaseo.extensibility.allowedDoktypes}
     }
 
     # Page title generator
