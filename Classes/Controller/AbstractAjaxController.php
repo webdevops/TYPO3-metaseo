@@ -38,7 +38,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
  */
 abstract class AbstractAjaxController
 {
-    const CONTENT_FORMAT_JSON = 'json';
+    const CONTENT_FORMAT_JSON = 'jsonbody';
 
     /**
      * Json status indicators
