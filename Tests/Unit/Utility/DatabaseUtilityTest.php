@@ -109,7 +109,7 @@ class DatabaseUtilityTest extends UnitTestCase
     }
 
     /**
-     * @expectedException \PHPUnit_Framework_Error
+     * @expectedException \TypeError
      */
     public function testConditionInException()
     {
