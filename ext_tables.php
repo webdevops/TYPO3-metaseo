@@ -14,6 +14,9 @@ defined('TYPO3_MODE') or exit;
     'EXT:metaseo/Resources/Private/Language/locallang.tca.xml'
 );
 
+// allow pages which contain such a record to be copied by users without throwing errors
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_metaseo_setting_root');
+
 
 // ############################################################################
 // Backend
