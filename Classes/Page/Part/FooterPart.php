@@ -26,8 +26,8 @@
 
 namespace Metaseo\Metaseo\Page\Part;
 
+use Metaseo\Metaseo\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Page Footer
@@ -67,7 +67,7 @@ class FooterPart extends AbstractPart
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'pageFooterSetup', $this, $tsServices);
+        GeneralUtility::callHookAndSignal(__CLASS__, 'pageFooterSetup', $this, $tsServices);
 
         // #########################################
         // GOOGLE ANALYTICS
@@ -128,7 +128,7 @@ class FooterPart extends AbstractPart
         }
 
         // Call hook
-        \Metaseo\Metaseo\Utility\GeneralUtility::callHookAndSignal(__CLASS__, 'pageFooterOutput', $this, $ret);
+        GeneralUtility::callHookAndSignal(__CLASS__, 'pageFooterOutput', $this, $ret);
 
         return implode("\n", $ret);
     }
@@ -144,7 +144,7 @@ class FooterPart extends AbstractPart
     public function buildGoogleAnalyticsCode(array $tsServices, array $gaConf)
     {
         $ret        = array();
-        $gaCodeList = GeneralUtility::trimExplode(',', $tsServices['googleAnalytics']);
+        $gaCodeList = Typo3GeneralUtility::trimExplode(',', $tsServices['googleAnalytics']);
 
         foreach ($gaCodeList as $gaCode) {
             $customCode = '';
@@ -201,7 +201,7 @@ class FooterPart extends AbstractPart
     public function buildPiwikCode(array $tsServices, array $piwikConf)
     {
         $ret           = array();
-        $piwikCodeList = GeneralUtility::trimExplode(',', $piwikConf['id']);
+        $piwikCodeList = Typo3GeneralUtility::trimExplode(',', $piwikConf['id']);
 
         foreach ($piwikCodeList as $piwikCode) {
             $customCode = '';

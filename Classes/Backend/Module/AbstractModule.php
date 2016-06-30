@@ -26,6 +26,7 @@
 
 namespace Metaseo\Metaseo\Backend\Module;
 
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -60,7 +61,7 @@ abstract class AbstractModule extends ActionController
      */
     protected function initializeAction()
     {
-        $this->formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
+        $this->formProtection = FormProtectionFactory::get();
     }
 
     /**

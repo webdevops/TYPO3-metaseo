@@ -29,11 +29,12 @@ namespace Metaseo\Metaseo\Scheduler\Task;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 use Metaseo\Metaseo\Utility\FrontendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Scheduler\Task\AbstractTask as T3AbstractTask;
 
 /**
  * Scheduler Task Sitemap Base
  */
-abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+abstract class AbstractTask extends T3AbstractTask
 {
 
     // ########################################################################

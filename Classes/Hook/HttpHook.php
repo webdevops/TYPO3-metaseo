@@ -28,6 +28,7 @@ namespace Metaseo\Metaseo\Hook;
 
 use Metaseo\Metaseo\Utility\FrontendUtility;
 use Metaseo\Metaseo\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
 
 /**
  * Http Header generator
@@ -57,7 +58,7 @@ class HttpHook
         );
 
         /** @var \TYPO3\CMS\Core\Cache\CacheManager $cacheManager */
-        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        $objectManager = Typo3GeneralUtility::makeInstance(
             'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
         );
         $cacheManager  = $objectManager->get('TYPO3\\CMS\\Core\\Cache\\CacheManager');

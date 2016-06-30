@@ -30,6 +30,7 @@ use Metaseo\Metaseo\Utility\FrontendUtility;
 use Metaseo\Metaseo\Utility\GeneralUtility;
 use Metaseo\Metaseo\Utility\SitemapUtility;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
 
 /**
  * Sitemap Indexer
@@ -109,7 +110,7 @@ abstract class SitemapIndexHook implements SingletonInterface
     public function __construct()
     {
         /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        $this->objectManager = Typo3GeneralUtility::makeInstance(
             'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
         );
 
@@ -135,7 +136,7 @@ abstract class SitemapIndexHook implements SingletonInterface
         if (!empty($this->conf['sitemap.']['index.']['fileExtension.'])) {
             # File extensions can be a comma separated list
             foreach ($this->conf['sitemap.']['index.']['fileExtension.'] as $fileExtListRaw) {
-                $fileExtList       = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fileExtListRaw);
+                $fileExtList       = Typo3GeneralUtility::trimExplode(',', $fileExtListRaw);
                 $this->fileExtList = array_merge($this->fileExtList, $fileExtList);
             };
         }
