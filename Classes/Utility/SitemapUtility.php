@@ -237,7 +237,7 @@ class SitemapUtility
      * @param   integer $rootPid    Root page id of tree
      * @param   integer $languageId Limit to language id
      *
-     * @return  boolean|array
+     * @return  array
      */
     public static function getList($rootPid, $languageId = null)
     {
@@ -267,7 +267,8 @@ class SitemapUtility
         $resultRows = DatabaseUtility::getAll($query);
 
         if (!$resultRows) {
-            return false;
+
+            return self::getListArray(); //empty
         }
 
         foreach ($resultRows as $row) {
@@ -284,15 +285,27 @@ class SitemapUtility
             $pageList = DatabaseUtility::getAllWithIndex($query, 'uid');
 
             if (empty($pageList)) {
-                return false;
+
+                return self::getListArray(); //empty
             }
         }
 
-        $ret = array(
+        return self::getListArray($sitemapList, $pageList);
+    }
+
+    /**
+     * Combines two arrays
+     *
+     * @param array $sitemapList list of metaseo sitemaps
+     * @param array $pageList    list of pages for these sitemaps
+     *
+     * @return array
+     */
+    protected static function getListArray(array $sitemapList = array(), array $pageList = array())
+    {
+        return array(
             'tx_metaseo_sitemap' => $sitemapList,
             'pages'              => $pageList
         );
-
-        return $ret;
     }
 }
