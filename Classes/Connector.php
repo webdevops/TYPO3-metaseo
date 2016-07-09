@@ -48,6 +48,7 @@ class Connector implements SingletonInterface
         'meta'      => array(),
         'meta:og'   => array(),
         'custom'    => array(),
+        'custom:og' => array(),
         'pagetitle' => array(),
         'sitemap'   => array(),
     );
@@ -169,6 +170,21 @@ class Connector implements SingletonInterface
         $value = (string)$value;
 
         self::$store['custom'][$key] = $value;
+    }
+
+    /**
+     * Set custom opengraph tag
+     *
+     * @param   string $key   Metatag name
+     * @param   string $value Metatag value
+     */
+    public static function setCustomOpenGraphTag($key, $value)
+    {
+        $key   = (string)$key;
+        $value = (string)$value;
+
+        self::$store['flag']['custom:og:external'] = true;
+        self::$store['custom:og'][$key] = $value;
     }
 
     /**

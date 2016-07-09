@@ -243,7 +243,6 @@ class MetatagPart extends AbstractPart
      */
     protected function initExtensionSupport()
     {
-
         // Extension: news
         if (ExtensionManagementUtility::isLoaded('news')) {
             $this->initExtensionSupportNews();
@@ -510,6 +509,7 @@ class MetatagPart extends AbstractPart
     {
         $pageRecordId = $pageRecord['uid'];
         $storeMeta = $this->getStoreMeta();
+        $advMetaTagCondition = array();
 
         // #################
         // External Og tags (from connector)
@@ -517,10 +517,10 @@ class MetatagPart extends AbstractPart
         if ($this->isAvailableExternalOgTags()) {
             // External OpenGraph support
             $advMetaTagCondition[] = 'tag_name NOT LIKE \'og:%\'';
-            if (!empty($storeMeta['meta:og'])) {
+            if (!empty($storeMeta['meta:og'])) { //overwrite known og tags
                 $externalOgTags = $storeMeta['meta:og'];
                 foreach ($externalOgTags as $tagName => $tagValue) {
-                    if (array_key_exists('og.' . $tagName, $metaTags)) {
+                    if (array_key_exists('og.' . $tagName, $metaTags)) { //_only_ known og tags
                         $metaTags['og.' . $tagName] = array(
                             'tag'        => 'meta',
                             'attributes' => array(
@@ -532,11 +532,27 @@ class MetatagPart extends AbstractPart
                 }
             }
         }
+        if ($this->isAvailableExternalOgCustomTags()) {
+            $ogTagKeys = array();
+            if (!empty($storeMeta['custom:og'])) {
+                $externalCustomOgTags = $storeMeta['custom:og'];
+                foreach ($externalCustomOgTags as $tagName => $tagValue) { //take all tags
+                    $metaTags['og.' . $tagName] = array(
+                        'tag'        => 'meta',
+                        'attributes' => array(
+                            'property'  => 'og:' . $tagName,
+                            'content'   => $tagValue,
+                        ),
+                    );
+                    $ogTagKeys[] = 'og:' . $tagName;
+                }
+            }
+            $advMetaTagCondition[] = DatabaseUtility::conditionNotIn('tag_name', $ogTagKeys, true);
+        }
 
         // #################
         // Adv meta tags (from editor)
         // #################
-        $advMetaTagCondition = array();
 
         if (!empty($advMetaTagCondition)) {
             $advMetaTagCondition = '( ' . implode(') AND (', $advMetaTagCondition) . ' )';
@@ -1385,6 +1401,16 @@ class MetatagPart extends AbstractPart
         $storeMeta = $this->getStoreMeta();
 
         return !empty($storeMeta['flag']['meta:og:external']);
+    }
+
+    /**
+     * @return bool true if external custom OpenGraph tags are available via the Connector, false otherwise
+     */
+    protected function isAvailableExternalOgCustomTags()
+    {
+        $storeMeta = $this->getStoreMeta();
+
+        return !empty($storeMeta['flag']['custom:og:external']);
     }
 
     /**
