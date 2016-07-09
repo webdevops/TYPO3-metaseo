@@ -250,3 +250,28 @@ If you want to activate a “real” sitemap.xml feature (eg. http://example.com
 
         );
 
+
+
+Configuration via Extension Manager
+-----------------------------------
+
+In TYPO3's extension manager go to the configuration symbol besides the entry for metaseo:
+
+.. figure:: ../Images/AdministatorManual/ConfigurationExtensionManager.png
+    :scale: 80%
+    :alt: Configuration via Extension Manager
+
+==============================   ==========================================================
+Configuration variable           Description
+==============================   ==========================================================
+general.pagingSize               Pagination: Maximum number of entries displayed per page
+                                 in tables of backend sections Sitemap and SEO/Metatags.
+                                 Defaults to 50 entries per page.
+
+general.enableBeta               Enable or disable beta features.
+
+general.enableIntegrationTTNews  Enable or disable tt_news integration.
+
+general.sitemap_                 to be documented.
+clearCachePossibility
+==============================   ==========================================================

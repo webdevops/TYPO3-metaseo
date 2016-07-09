@@ -202,7 +202,7 @@ class BackendPageSeoController extends AbstractStandardModule
             'ajaxController'   => $ajaxController,
             'pid'              => (int)$pageId,
             'renderTo'         => 'tx-metaseo-sitemap-grid',
-            'pagingSize'       => 50,
+            'pagingSize'       => $this->getUiPagingSize(),
             'depth'            => 2,
             'sortField'        => 'crdate',
             'sortDir'          => 'DESC',
