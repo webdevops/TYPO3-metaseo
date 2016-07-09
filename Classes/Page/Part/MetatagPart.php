@@ -232,6 +232,7 @@ class MetatagPart extends AbstractPart
         }
 
         $this->processMetaTags($this->metaTagList);
+        //todo: type mismatch array->string for $this->metaTagList
         $this->metaTagList = $this->renderMetaTags($this->metaTagList);
 
         return $this->metaTagList;
@@ -508,26 +509,34 @@ class MetatagPart extends AbstractPart
     protected function advMetaTags(array &$metaTags, array $pageRecord, $sysLanguageId, array $customMetaTagList)
     {
         $pageRecordId = $pageRecord['uid'];
+        $storeMeta = $this->getStoreMeta();
 
-        $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
-        $storeMeta = $connector->getStore();
+        // #################
+        // External Og tags (from connector)
+        // #################
+        if ($this->isAvailableExternalOgTags()) {
+            // External OpenGraph support
+            $advMetaTagCondition[] = 'tag_name NOT LIKE \'og:%\'';
+            if (!empty($storeMeta['meta:og'])) {
+                $externalOgTags = $storeMeta['meta:og'];
+                foreach ($externalOgTags as $tagName => $tagValue) {
+                    if (array_key_exists('og.' . $tagName, $metaTags)) {
+                        $metaTags['og.' . $tagName] = array(
+                            'tag'        => 'meta',
+                            'attributes' => array(
+                                'property'  => 'og:' . $tagName,
+                                'content'   => $tagValue,
+                            ),
+                        );
+                    }
+                }
+            }
+        }
 
         // #################
         // Adv meta tags (from editor)
         // #################
-        $advMetaTagList      = array();
         $advMetaTagCondition = array();
-
-        if (!empty($storeMeta['flag']['meta:og:external'])) {
-            // External OpenGraph support
-            $advMetaTagCondition[] = 'tag_name NOT LIKE \'og:%\'';
-
-            // Add external og-tags to adv meta tag list
-            if (!empty($storeMeta['meta:og'])) {
-                //todo: $advMetaTagList not in use
-                $advMetaTagList = array_merge($advMetaTagList, $storeMeta['meta:og']);
-            }
-        }
 
         if (!empty($advMetaTagCondition)) {
             $advMetaTagCondition = '( ' . implode(') AND (', $advMetaTagCondition) . ' )';
@@ -546,13 +555,23 @@ class MetatagPart extends AbstractPart
 
         // Add metadata to tag list
         foreach ($advMetaTagList as $tagName => $tagValue) {
-            $metaTags['adv.' . $tagName] = array(
-                'tag'        => 'meta',
-                'attributes' => array(
-                    'rel'  => $tagName,
-                    'href' => $tagValue,
-                ),
-            );
+            if (substr($tagName, 0, 3) === 'og:') {
+                $metaTags['og.' . $tagName] = array(
+                    'tag'        => 'meta',
+                    'attributes' => array(
+                        'property'  => $tagName,
+                        'content'   => $tagValue,
+                    ),
+                );
+            } else {
+                $metaTags['adv.' . $tagName] = array(
+                    'tag'        => 'meta',
+                    'attributes' => array(
+                        'rel'  => $tagName,  //todo: rel and href might not be suitable in every case
+                        'href' => $tagValue,
+                    ),
+                );
+            }
         }
 
         // #################
@@ -562,7 +581,7 @@ class MetatagPart extends AbstractPart
             $metaTags['adv.' . $tagName] = array(
                 'tag'        => 'meta',
                 'attributes' => array(
-                    'rel'  => $tagName,
+                    'rel'  => $tagName,  //todo: rel and href might not be suitable in every case
                     'href' => $tagValue,
                 ),
             );
@@ -772,9 +791,7 @@ class MetatagPart extends AbstractPart
     {
         $ret = array();
 
-        /** @var \Metaseo\Metaseo\Connector $connector */
-        $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
-        $storeMeta = $connector->getStore();
+        $storeMeta = $this->getStoreMeta();
 
         // Std meta tags
         foreach ($storeMeta['meta'] as $metaKey => $metaValue) {
@@ -1358,5 +1375,33 @@ class MetatagPart extends AbstractPart
                 );
             }
         }
+    }
+
+    /**
+     * @return bool true if external OpenGraph tags are available via the Connector, false otherwise
+     */
+    protected function isAvailableExternalOgTags()
+    {
+        $storeMeta = $this->getStoreMeta();
+
+        return !empty($storeMeta['flag']['meta:og:external']);
+    }
+
+    /**
+     * @return array with the meta tags from the connector
+     */
+    protected function getStoreMeta()
+    {
+        return $this->getConnector()->getStore();
+    }
+
+    /**
+     * @return \Metaseo\Metaseo\Connector
+     */
+    protected function getConnector()
+    {
+        /** @var \Metaseo\Metaseo\Connector $connector */
+        $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
+        return $connector;
     }
 }
