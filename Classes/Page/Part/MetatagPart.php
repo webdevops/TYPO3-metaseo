@@ -1332,7 +1332,7 @@ class MetatagPart extends AbstractPart
     {
         //User has specified a canonical URL in the page properties
         if (!empty($this->pageRecord['tx_metaseo_canonicalurl'])) {
-            return $this->pageRecord['tx_metaseo_canonicalurl'];
+        	return $this->generateLink($this->pageRecord['tx_metaseo_canonicalurl']);
         }
 
         //Fallback to global settings to generate Url
