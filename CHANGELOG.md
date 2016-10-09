@@ -1,5 +1,9 @@
 # MetaSEO - Changelog
 
+## MetaSEO 2.0.1
+
+- Bugfixes
+
 ## MetaSEO 2.0
 
 - Added TYPO3 7.x support
