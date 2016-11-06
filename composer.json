@@ -8,7 +8,7 @@
   },
   "license": ["GPL-3.0+"],
   "keywords": ["TYPO3 CMS"],
-  "version": "2.0.0",
+  "version": "2.0.1",
   "autoload": {
     "psr-4": {
       "Metaseo\\Metaseo\\": "Classes/"
