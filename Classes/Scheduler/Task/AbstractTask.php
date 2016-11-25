@@ -85,7 +85,7 @@ abstract class AbstractTask extends T3AbstractTask
         $query = 'SELECT uid
                     FROM pages
                    WHERE is_siteroot = 1
-                     AND deleted = 0';
+                     AND deleted = 0 AND hidden = 0';
 
         return DatabaseUtility::getColWithIndex($query);
     }
