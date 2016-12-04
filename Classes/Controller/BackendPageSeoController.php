@@ -166,8 +166,7 @@ class BackendPageSeoController extends AbstractStandardModule
 
             // Flag (if available)
             if (!empty($langRow['flag'])) {
-                $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-' . $langRow['flag']
-                    . ' t3-icon-' . $langRow['flag'] . '"></span>';
+                $flag .= IconUtility::getSpriteIcon('flags-' . $langRow['flag']);
                 $flag .= '&nbsp;';
             }
 

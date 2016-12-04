@@ -281,7 +281,7 @@ MetaSeo.sitemap.grid = {
 
                 // Flag (if available)
                 if (lang.flag) {
-                    ret += '<span class="t3-icon t3-icon-flags t3-icon-flags-' + Ext.util.Format.htmlEncode(lang.flag) + ' t3-icon-' + Ext.util.Format.htmlEncode(lang.flag) + '"></span>';
+                    ret += lang.flagHtml;
                     ret += '&nbsp;';
                 }
 

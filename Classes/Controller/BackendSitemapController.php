@@ -222,13 +222,12 @@ class BackendSitemapController extends AbstractStandardModule
             $this->translate('empty.search.page_language'),
         );
 
-        foreach ($languageFullList as $langId => $langRow) {
+        foreach ($languageFullList as $langId => &$langRow) {
             $flag = '';
 
             // Flag (if available)
             if (!empty($langRow['flag'])) {
-                $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-' . $langRow['flag']
-                    . ' t3-icon-' . $langRow['flag'] . '"></span>';
+                $flag.= IconUtility::getSpriteIcon('flags-' . $langRow['flag']);
                 $flag .= '&nbsp;';
             }
 
@@ -240,6 +239,7 @@ class BackendSitemapController extends AbstractStandardModule
                 $label,
                 $flag
             );
+            $langRow['flagHtml'] = $flag;
         }
 
         // Depth
