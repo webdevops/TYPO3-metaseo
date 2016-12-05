@@ -811,25 +811,21 @@ class MetatagPart extends AbstractPart
 
         // Std meta tags
         foreach ($storeMeta['meta'] as $metaKey => $metaValue) {
-            $metaValue = trim($metaValue);
-
             if ($metaValue === null) {
                 // Remove meta
                 unset($this->tsSetupSeo[$metaKey]);
             } elseif (!empty($metaValue)) {
-                $this->tsSetupSeo[$metaKey] = $metaValue;
+                $this->tsSetupSeo[$metaKey] = trim($metaValue);
             }
         }
 
         // Custom meta tags
         foreach ($storeMeta['custom'] as $metaKey => $metaValue) {
-            $metaValue = trim($metaValue);
-
             if ($metaValue === null) {
                 // Remove meta
                 unset($ret[$metaKey]);
             } elseif (!empty($metaValue)) {
-                $ret[$metaKey] = $metaValue;
+                $ret[$metaKey] = trim($metaValue);
             }
         }
 
