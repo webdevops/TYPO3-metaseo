@@ -1248,16 +1248,16 @@ class MetatagPart extends AbstractPart
 
         $currentIsRootpage = ($currentPage['uid'] === $rootPage['uid']);
 
-        // Generate rootpage url
-        $rootPageUrl = null;
-        if (!empty($rootPage)) {
-            $rootPageUrl = $this->generateLink($rootPage['uid']);
-        }
-
         // Only generate up, prev and next if NOT rootpage
         // to prevent linking to other domains
         // see https://github.com/mblaschke/TYPO3-metaseo/issues/5
         if (!$currentIsRootpage) {
+            $startPage    = $GLOBALS['TSFE']->cObj->HMENU($this->tsSetupSeo['sectionLinks.']['start.']);
+            $startPageUrl = null;
+            if (!empty($startPage)) {
+                $startPageUrl = $this->generateLink($startPage);
+            }
+
             $prevPage    = $GLOBALS['TSFE']->cObj->HMENU($this->tsSetupSeo['sectionLinks.']['prev.']);
             $prevPageUrl = null;
             if (!empty($prevPage)) {
@@ -1272,12 +1272,12 @@ class MetatagPart extends AbstractPart
         }
 
         // Start (first page in rootline -> root page)
-        if (!empty($rootPageUrl)) {
+        if (!empty($startPageUrl)) {
             $this->metaTagList['link.rel.start'] = array(
                 'tag'        => 'link',
                 'attributes' => array(
                     'rel'  => 'start',
-                    'href' => $rootPageUrl,
+                    'href' => $startPageUrl,
                 ),
             );
         }
