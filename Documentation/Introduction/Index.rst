@@ -127,6 +127,7 @@ Thanks to...
 
 - TEQneers GmbH & Co. KG for sponsoring the predecessor "tq_seo"
 - jweiland.net especially Wolfgang Wagner for all the tutorials
+- Anton Danilov
 - Pierre Arlt
 - Riccardo De Contardi
 - Rico Sonntag
