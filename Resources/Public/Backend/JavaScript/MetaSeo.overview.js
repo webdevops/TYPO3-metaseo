@@ -1051,7 +1051,6 @@ MetaSeo.overview.grid = {
                 item.tooltip = item.header;
             }
         });
-
         return columnModel;
     },
 
@@ -1063,6 +1062,8 @@ MetaSeo.overview.grid = {
     _fieldRendererRaw: function (value) {
         return this._fieldRendererCallback(value, value, false, true, '');
     },
+
+    _fieldRendererTemplate: new Ext.XTemplate('<div class="{classes} {additionalClasses}" ext:qtip="{qtip}">{value}{icon}</div>'),
 
     _fieldRendererCallback: function (value, qtip, maxLength, escape, additionalClasses) {
         var classes = '';
@@ -1101,9 +1102,13 @@ MetaSeo.overview.grid = {
         }
         qtip = qtip.replace(/\n/g, "<br />");
 
-        return '<div class="' + classes + ' ' + additionalClasses + '" ext:qtip="' + qtip + '">' + value + icon + '</div>';
+        return this._fieldRendererTemplate.apply({
+            classes: classes,
+            additionalClasses: additionalClasses,
+            qtip: qtip,
+            value: value,
+            icon: icon
+        });
     }
-
-
 };
 
