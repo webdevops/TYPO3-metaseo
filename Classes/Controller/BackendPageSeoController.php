@@ -215,9 +215,9 @@ class BackendPageSeoController extends AbstractStandardModule
             'criteriaFulltext' => '',
             'realurlAvailable' => $realUrlAvailable,
             'sprite'           => array(
-                'edit'   => IconUtility::getSpriteIcon('actions-document-open'),
-                'info'   => IconUtility::getSpriteIcon('actions-document-info'),
-                'editor' => IconUtility::getSpriteIcon('actions-system-options-view'),
+                'edit'   => $this->getIcon('actions-document-open'),
+                'info'   => $this->getIcon('actions-document-info'),
+                'editor' => $this->getIcon('actions-system-options-view'),
             ),
         );
 
@@ -288,5 +288,29 @@ class BackendPageSeoController extends AbstractStandardModule
             MetaSeo.overview.conf.lang = ' . json_encode($metaSeoLang) . ';
         '
         );
+    }
+
+    private function getIcon($iconName)
+    {
+        $html = IconUtility::getSpriteIcon($iconName);
+        //Ugly workaround to make icons clickable in TYPO3 7.6.
+        //It's deprecated anyways, therefore changes in the future when we drop support for 6.2.
+        if (stripos('svg', $html)) {
+            //not found
+            return $html; //Typo3 6.2. That works.
+        } else {
+            //found => TYPO3 7 workaround must be applied.
+            switch ($iconName) {
+                case 'actions-document-open':
+                    return '<span class="t3-icon t3-icon-actions '
+                        . 't3-icon-actions-document t3-icon-document-open"></span>';
+                case 'actions-document-info':
+                    return '<span class="t3-icon t3-icon-actions '
+                    . ' t3-icon-actions-document t3-icon-document-info"></span>';
+                case 'actions-system-options-view':
+                    return '<span class="t3-icon t3-icon-actions '
+                    . 't3-icon-actions-document t3-icon-document-view"></span>';
+            }
+        }
     }
 }
