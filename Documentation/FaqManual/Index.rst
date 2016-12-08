@@ -28,7 +28,7 @@ Indexed Sitemap
 ---------------
 
 | **Problem:**
-|    When I want to open my sitemap I get an error "The page is not configured! [type=841131|841132|841133][]. This means that there is no TypoScript object of type PAGE with typeNum=841131|841132|841133 configured."
+|    When I want to open my sitemap I get an error "The page is not configured! `[type=841131|841132|841133][]`. This means that there is no TypoScript object of type PAGE with `typeNum=841131|841132|841133` configured."
 | **Solution:**
 |    Make sure you have configured MetaSEO "Include static" as described in the installation manual.
 |

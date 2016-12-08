@@ -107,6 +107,7 @@ Example for Google Analytics in TypoScript-Setup:
         )
     }
 
+
 Template customization (advanced)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -139,7 +140,6 @@ Example for your own Google Analytics Template:
       myOwnStuff = TEXT
       myOwnStuff.value = foobar
     }
-
 
 
 Sitemap
@@ -289,3 +289,4 @@ All hooks are also available as Extbase Signal. Please use signals instead of ho
 
         // ------------------------------------------------------------------------
     }
+
