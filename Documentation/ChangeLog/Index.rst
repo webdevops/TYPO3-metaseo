@@ -21,3 +21,9 @@ Version         Changes
                 - Fixed manual (now reStructuredText)
                 - Fixed sitemap url generation in TYPO3 scheduler
 =============   ==============================================================================
+2.0.0           [Milestone 2.0.0 at Github](https://github.com/mblaschke/TYPO3-metaseo/milestone/2?closed=1)
+=============   ==============================================================================
+2.0.1           [Milestone 2.0.1 at Github](https://github.com/mblaschke/TYPO3-metaseo/milestone/7?closed=1)
+=============   ==============================================================================
+2.0.2           [Milestone 2.0.2 at Github](https://github.com/mblaschke/TYPO3-metaseo/milestone/8?closed=1)
+=============   ==============================================================================
