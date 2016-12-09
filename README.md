@@ -43,29 +43,31 @@ The latest stable release of MetaSEO is available via [TYPO3 TER](https://typo3.
 using TYPO3's extension manager or using composer:
 
     {
-        "repositories": [
-            { "type": "composer", "url": "https://composer.typo3.org/" }
-        ],
-        .......
-        "require": {
-            "typo3/cms": "6.2.*",
-            "typo3-ter/metaseo": "*"
-        }
+      "repositories": [
+        { "type": "composer", "url": "https://composer.typo3.org/" }
+      ],
+      .......
+      "require": {
+        "php": ">=5.3.0",
+        "typo3/cms-core": ">=6.2.0,<8.0",
+        "typo3-ter/metaseo": "*"
+      },
     }
 
 As long as you are aware that our unstable branch can break at any time, feel free to preview coming releases by using
 our unstable branch at Github:
 
     {
-        "repositories": [
-            { "type": "composer", "url": "https://composer.typo3.org/" },
-            { "type": "vcs", "url": "https://github.com/mblaschke/TYPO3-metaseo.git" },
-        ],
-        .......
-        "require": {
-            "typo3/cms": "6.2.*",
-            "mblaschke/metaseo": "dev-master"
-        }
+      "repositories": [
+        { "type": "composer", "url": "https://composer.typo3.org/" },
+        { "type": "vcs", "url": "https://github.com/mblaschke/TYPO3-metaseo.git" },
+      ],
+      .......
+      "require": {
+        "php": ">=5.3.0",
+        "typo3/cms-core": ">=6.2.0,<8.0",
+        "mblaschke/metaseo": "dev-master"
+      }
     }
 
 MetaSEO is also available via [packagist](https://packagist.org/packages/mblaschke/metaseo).
