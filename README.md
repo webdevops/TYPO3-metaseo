@@ -34,7 +34,7 @@ It's a replacement for the "metatag" extension and the successor of the disconti
   + TYPO3 Version: 6.2.x - 7.6.x
   + Composer: dev-develop
 
-For version specific information see [Changelog for MetaSEO](CHANGELOG.md)
+For version specific information see [changelog for MetaSEO](CHANGELOG.md)
 
 
 ## Composer Support
