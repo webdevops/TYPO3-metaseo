@@ -104,5 +104,6 @@ th.center {
 }
 
 .x-window .x-window-body {
+    width: auto !important;
     padding: 10px 15px;
 }
