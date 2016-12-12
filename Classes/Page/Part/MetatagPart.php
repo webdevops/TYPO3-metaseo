@@ -633,10 +633,10 @@ class MetatagPart extends AbstractPart
         foreach ($keyList as $key) {
             if (!empty($tags[$key]['attributes'])) {
                 foreach ($markerList as $marker => $value) {
-                    // only replace markers if they are present
                     unset($metaTagAttribute);
                     foreach ($tags[$key]['attributes'] as &$metaTagAttribute) {
-                        if (strpos($metaTagAttribute, $marker)) {
+                        // only replace markers if they are present
+                        if (strpos($metaTagAttribute, $marker) !== false) {
                             $metaTagAttribute = str_replace($marker, $value, $metaTagAttribute);
                         }
                     }
