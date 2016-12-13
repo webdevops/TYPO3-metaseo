@@ -91,12 +91,12 @@ MetaSEO is driven by the community and we're pleased to add new contributions.
 If you want to provide improvements, please
 
 - make sure that an [issue](https://github.com/mblaschke/TYPO3-metaseo/issues) exists so that it is clear what
-  your contribution is supposed to do. Eventually open a new issue.
+  your contribution is supposed to do. Eventually, open a new issue.
 - add a `Fixes #123` to the message of your first commit, whereas `#123` should be the issue number.
 - add yourself to the [list of contributors](https://github.com/mblaschke/TYPO3-metaseo/blob/develop/Documentation/Introduction/Index.rst)
   when you send us your first pull request (PR).
-- provide as many commits in your PR as necessary (there's no single-commit policy).
-- one PR should not affect more than one issue (if possible).
+- provide as many commits in your PR as necessary. There's no single-commit policy, but one PR should not affect more
+  than one issue (if possible).
 
 The coding style of MetaSEO's source code follows the
 [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
