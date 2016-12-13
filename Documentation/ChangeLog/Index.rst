@@ -23,10 +23,12 @@ Changelog
 |             | - Link generation (start/prev/next) now uses first element of group for start                      |
 |             |                                                                                                    |
 |             | `Milestone 2.0.2 <https://github.com/mblaschke/TYPO3-metaseo/milestone/8?closed=1>`_               |
+|             | `Changes in 2.0.2 <https://github.com/mblaschke/TYPO3-metaseo/compare/2.0.1...2.0.2>`_             |
 +-------------+----------------------------------------------------------------------------------------------------+
 | **2.0.1**   | **Bugfix release** (2016-11-06)                                                                    |
 |             |                                                                                                    |
 |             | `Milestone 2.0.1 <https://github.com/mblaschke/TYPO3-metaseo/milestone/7?closed=1>`_               |
+|             | `Changes in 2.0.1 <https://github.com/mblaschke/TYPO3-metaseo/compare/2.0.0...2.0.1>`_             |
 +-------------+----------------------------------------------------------------------------------------------------+
 | **2.0.0**   | **Major release** (2016-03-07)                                                                     |
 |             |                                                                                                    |
@@ -58,38 +60,47 @@ Changelog
 |             | - Changed names of hooks, use camelCase now                                                        |
 |             |                                                                                                    |
 |             | `Milestone 2.0.0 <https://github.com/mblaschke/TYPO3-metaseo/milestone/2?closed=1>`_               |
+|             | `Changes in 2.0.0 <https://github.com/mblaschke/TYPO3-metaseo/compare/1.0.8...2.0.0>`_             |
 +-------------+----------------------------------------------------------------------------------------------------+
 | **1.0.8**   | **Bugfix release** (2014-04-25)                                                                    |
 |             |                                                                                                    |
 |             | `Milestone 1.0.8 <https://github.com/mblaschke/TYPO3-metaseo/milestone/4?closed=1>`_               |
+|             | `Changes in 1.0.8 <https://github.com/mblaschke/TYPO3-metaseo/compare/1.0.7...1.0.8>`_             |
 +-------------+----------------------------------------------------------------------------------------------------+
 | **1.0.7**   | **Bugfix release** (2015-04-18)                                                                    |
 |             |                                                                                                    |
 |             | `Milestone 1.0.7 <https://github.com/mblaschke/TYPO3-metaseo/milestone/3?closed=1>`_               |
+|             | `Changes in 1.0.7 <https://github.com/mblaschke/TYPO3-metaseo/compare/1.0.6...1.0.7>`_             |
 +-------------+----------------------------------------------------------------------------------------------------+
 | **1.0.6**   | **Bugfix release** (2015-02-26)                                                                    |
 |             |                                                                                                    |
 |             | `Milestone 1.0.6 <https://github.com/mblaschke/TYPO3-metaseo/milestone/14?closed=1>`_              |
+|             | `Changes in 1.0.6 <https://github.com/mblaschke/TYPO3-metaseo/compare/1.0.5...1.0.6>`_             |
 +-------------+----------------------------------------------------------------------------------------------------+
 | **1.0.5**   | **Bugfix release** (2014-10-24)                                                                    |
 |             |                                                                                                    |
 |             | `Milestone 1.0.5 <https://github.com/mblaschke/TYPO3-metaseo/milestone/1?closed=1>`_               |
+|             | `Changes in 1.0.5 <https://github.com/mblaschke/TYPO3-metaseo/compare/1.0.4...1.0.5>`_             |
 +-------------+----------------------------------------------------------------------------------------------------+
 | **1.0.4**   | **Bugfix release** (2014-09-15)                                                                    |
 |             |                                                                                                    |
 |             | `Milestone 1.0.4 <https://github.com/mblaschke/TYPO3-metaseo/milestone/13?closed=1>`_              |
+|             | `Changes in 1.0.4 <https://github.com/mblaschke/TYPO3-metaseo/compare/1.0.3...1.0.4>`_             |
 +-------------+----------------------------------------------------------------------------------------------------+
 | **1.0.3**   | **Bugfix release** (2014-09-10)                                                                    |
 |             |                                                                                                    |
 |             | `Milestone 1.0.3 <https://github.com/mblaschke/TYPO3-metaseo/milestone/12?closed=1>`_              |
+|             | `Changes in 1.0.3 <https://github.com/mblaschke/TYPO3-metaseo/compare/1.0.2...1.0.3>`_             |
 +-------------+----------------------------------------------------------------------------------------------------+
 | **1.0.2**   | **Bugfix release** (2014-09-04)                                                                    |
 |             |                                                                                                    |
 |             | `Milestone 1.0.2 <https://github.com/mblaschke/TYPO3-metaseo/milestone/11?closed=1>`_              |
+|             | `Changes in 1.0.2 <https://github.com/mblaschke/TYPO3-metaseo/compare/1.0.1...1.0.2>`_             |
 +-------------+----------------------------------------------------------------------------------------------------+
 | **1.0.1**   | **Bugfix release** (2014-09-03)                                                                    |
 |             |                                                                                                    |
 |             | `Milestone 1.0.1 <https://github.com/mblaschke/TYPO3-metaseo/milestone/10?closed=1>`_              |
+|             | `Changes in 1.0.1 <https://github.com/mblaschke/TYPO3-metaseo/compare/1.0.0...1.0.1>`_             |
 +-------------+----------------------------------------------------------------------------------------------------+
 | **1.0.0**   | **Major release** (2014-08-31)                                                                     |
 |             |                                                                                                    |
@@ -103,6 +114,6 @@ Changelog
 +-------------+----------------------------------------------------------------------------------------------------+
 
 
-Latest information also is available in the list of tagged
+Latest information also is available in the list of
+`milestones <https://github.com/mblaschke/TYPO3-metaseo/milestones>`_ and tagged
 `releases <https://github.com/mblaschke/TYPO3-metaseo/releases>`_.
-and `milestones <https://github.com/mblaschke/TYPO3-metaseo/milestones>`_.
