@@ -101,7 +101,6 @@ class SitemapUtility
         }
 
         // Escape/Quote data
-        unset($pageDataValue);
         foreach ($pageData as &$pageDataValue) {
             if ($pageDataValue === null) {
                 $pageDataValue = 'NULL';
@@ -113,7 +112,6 @@ class SitemapUtility
                 $pageDataValue = DatabaseUtility::quote($pageDataValue, 'tx_metaseo_sitemap');
             }
         }
-        unset($pageDataValue);
 
         // only process each page once to keep sql-statements at a normal level
         if (empty($cache[$pageHash])) {

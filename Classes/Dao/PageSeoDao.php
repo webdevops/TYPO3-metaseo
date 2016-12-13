@@ -102,7 +102,6 @@ class PageSeoDao extends Dao
             $defaultOverlayStatus = 2;
         }
 
-        unset($row);
         foreach ($list as &$row) {
             // Set field as main fields
             foreach ($fieldList as $fieldName) {
@@ -112,7 +111,6 @@ class PageSeoDao extends Dao
 
             $row['_depth'] = $this->listCalcDepth($row['uid'], $rootLineRaw);
         }
-        unset($row);
 
         // ############################
         // Language overlay
@@ -142,13 +140,11 @@ class PageSeoDao extends Dao
             );
 
             // update all overlay status field to "from base"
-            unset($row);
             foreach ($list as &$row) {
                 foreach ($overlayFieldList as $fieldName) {
                     $row['_overlay'][$fieldName] = 0;
                 }
             }
-            unset($row);
 
             while ($overlayRow = DatabaseUtility::connection()->sql_fetch_assoc($res)) {
                 $pageOriginalId = $overlayRow['pid'];

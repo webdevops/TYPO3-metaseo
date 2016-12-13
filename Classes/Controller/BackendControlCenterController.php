@@ -114,7 +114,6 @@ class BackendControlCenterController extends AbstractStandardModule
         // Build root page list
         // #################
 
-        unset($page);
         foreach ($rootPageList as $pageId => &$page) {
             // Domain list
             $page['domainList'] = '';
@@ -136,7 +135,6 @@ class BackendControlCenterController extends AbstractStandardModule
             $page['sitemapLink']   = RootPageUtility::getSitemapIndexUrl($pageId);
             $page['robotsTxtLink'] = RootPageUtility::getRobotsTxtUrl($pageId);
         }
-        unset($page);
 
         // check if there is any root page
         if (empty($rootPageList)) {

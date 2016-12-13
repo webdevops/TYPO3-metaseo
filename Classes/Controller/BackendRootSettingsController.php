@@ -112,7 +112,6 @@ class BackendRootSettingsController extends AbstractStandardModule
         // Build root page list
         // #################
 
-        unset($page);
         foreach ($rootPageList as $pageId => &$page) {
             // Domain list
             $page['domainList'] = '';
@@ -131,7 +130,6 @@ class BackendRootSettingsController extends AbstractStandardModule
                 '&edit[tx_metaseo_setting_root][' . $rootSettingList[$pageId]['uid'] . ']=edit'
             );
         }
-        unset($page);
 
         // check if there is any root page
         if (empty($rootPageList)) {

@@ -50,8 +50,6 @@ class MetaDataController extends AbstractPageSeoController
     protected function getIndex(array $page, $depth, $sysLanguage)
     {
         $list = $this->getPageSeoDao()->index($page, $depth, $sysLanguage, $this->fieldList);
-
-        unset($row);
         foreach ($list as &$row) {
             if (!empty($row['lastupdated'])) {
                 $row['lastupdated'] = date('Y-m-d', $row['lastupdated']);
@@ -59,7 +57,6 @@ class MetaDataController extends AbstractPageSeoController
                 $row['lastupdated'] = '';
             }
         }
-        unset($row);
 
         return $list;
     }
