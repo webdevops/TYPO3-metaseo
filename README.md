@@ -78,12 +78,14 @@ Please feel free to file an issue in our [Bugtracker](https://github.com/mblasch
 
 * MetaSEO version
 * TYPO3 version
+* RealUrl version (if used)
 * PHP version
 * Web server and version (optional)
 * Operating system and version (optional)
 * Hoster name (in rare cases)
 
-In case of issues, please update to the latest version of MetaSEO first.
+In case of issues, please update to the latest version of MetaSEO first. We also strongly recommend to use recent
+versions of TYPO3 CMS (6.2.28+, 7.6.12+) and RealUrl (2.1.5+)
 
 ## Contribute
 
