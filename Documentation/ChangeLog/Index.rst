@@ -114,6 +114,6 @@ Changelog
 +-------------+----------------------------------------------------------------------------------------------------+
 
 
-Latest information also is available in the list of tagged
+Latest information also is available in the list of
+`milestones <https://github.com/mblaschke/TYPO3-metaseo/milestones>`_ and tagged
 `releases <https://github.com/mblaschke/TYPO3-metaseo/releases>`_.
-and `milestones <https://github.com/mblaschke/TYPO3-metaseo/milestones>`_.
