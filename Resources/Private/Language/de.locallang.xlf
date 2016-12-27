@@ -328,7 +328,7 @@
                 <source>Author E-Mail</source>
                 <target>Autor E-Mail</target>
             </trans-unit>
-            <trans-unit id="header.sitemap.page_lastupdated" xml:space="preserve" approved="yes">
+            <trans-unit id="header.sitemap.page_lastUpdated" xml:space="preserve" approved="yes">
                 <source>Last updated</source>
                 <target>Letztes Update</target>
             </trans-unit>
