@@ -169,7 +169,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         }
 
         $pid         = (int)$this->postVar['pid'];
-        $fieldName   = strtolower((string)$this->postVar['field']);
+        $fieldName   = (string)$this->postVar['field'];
         $fieldValue  = (string)$this->postVar['value'];
         $sysLanguage = (int)$this->postVar['sysLanguage'];
 
@@ -271,7 +271,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         // ############################
 
         switch ($fieldName) {
-            case 'lastupdated':
+            case 'lastUpdated':
                 // transform to unix timestamp
                 $fieldValue = strtotime($fieldValue);
                 break;

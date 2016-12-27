@@ -247,7 +247,7 @@
             <trans-unit id="header.sitemap.page_author_email" xml:space="preserve">
                 <source>Author E-Mail</source>
             </trans-unit>
-            <trans-unit id="header.sitemap.page_lastupdated" xml:space="preserve">
+            <trans-unit id="header.sitemap.page_lastUpdated" xml:space="preserve">
                 <source>Last updated</source>
             </trans-unit>
             <trans-unit id="header.sitemap.page_geo_lat" xml:space="preserve">
