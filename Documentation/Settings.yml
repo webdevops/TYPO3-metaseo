@@ -4,10 +4,10 @@
 
 ---
 conf.py:
-  copyright: 2014
+  copyright: 2014-2016
   project: MetaSEO
-  version: 1.0
-  release: 1.0.0
+  version: 2.0
+  release: 2.0.0
   html_theme_options:
       github_repository: mblaschke/TYPO3-metaseo
       github_branch: develop

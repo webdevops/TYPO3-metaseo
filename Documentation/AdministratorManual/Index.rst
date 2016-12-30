@@ -249,3 +249,4 @@ If you want to activate a “real” sitemap.xml feature (eg. http://example.com
         ),
 
         );
+

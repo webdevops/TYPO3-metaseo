@@ -633,10 +633,10 @@ class MetatagPart extends AbstractPart
         foreach ($keyList as $key) {
             if (!empty($tags[$key]['attributes'])) {
                 foreach ($markerList as $marker => $value) {
-                    // only replace markers if they are present
                     unset($metaTagAttribute);
                     foreach ($tags[$key]['attributes'] as &$metaTagAttribute) {
-                        if (strpos($metaTagAttribute, $marker)) {
+                        // only replace markers if they are present
+                        if (strpos($metaTagAttribute, $marker) !== false) {
                             $metaTagAttribute = str_replace($marker, $value, $metaTagAttribute);
                         }
                     }
@@ -811,25 +811,21 @@ class MetatagPart extends AbstractPart
 
         // Std meta tags
         foreach ($storeMeta['meta'] as $metaKey => $metaValue) {
-            $metaValue = trim($metaValue);
-
             if ($metaValue === null) {
                 // Remove meta
                 unset($this->tsSetupSeo[$metaKey]);
             } elseif (!empty($metaValue)) {
-                $this->tsSetupSeo[$metaKey] = $metaValue;
+                $this->tsSetupSeo[$metaKey] = trim($metaValue);
             }
         }
 
         // Custom meta tags
         foreach ($storeMeta['custom'] as $metaKey => $metaValue) {
-            $metaValue = trim($metaValue);
-
             if ($metaValue === null) {
                 // Remove meta
                 unset($ret[$metaKey]);
             } elseif (!empty($metaValue)) {
-                $ret[$metaKey] = $metaValue;
+                $ret[$metaKey] = trim($metaValue);
             }
         }
 
@@ -1248,16 +1244,16 @@ class MetatagPart extends AbstractPart
 
         $currentIsRootpage = ($currentPage['uid'] === $rootPage['uid']);
 
-        // Generate rootpage url
-        $rootPageUrl = null;
-        if (!empty($rootPage)) {
-            $rootPageUrl = $this->generateLink($rootPage['uid']);
-        }
-
         // Only generate up, prev and next if NOT rootpage
         // to prevent linking to other domains
         // see https://github.com/mblaschke/TYPO3-metaseo/issues/5
         if (!$currentIsRootpage) {
+            $startPage    = $GLOBALS['TSFE']->cObj->HMENU($this->tsSetupSeo['sectionLinks.']['start.']);
+            $startPageUrl = null;
+            if (!empty($startPage)) {
+                $startPageUrl = $this->generateLink($startPage);
+            }
+
             $prevPage    = $GLOBALS['TSFE']->cObj->HMENU($this->tsSetupSeo['sectionLinks.']['prev.']);
             $prevPageUrl = null;
             if (!empty($prevPage)) {
@@ -1272,12 +1268,12 @@ class MetatagPart extends AbstractPart
         }
 
         // Start (first page in rootline -> root page)
-        if (!empty($rootPageUrl)) {
+        if (!empty($startPageUrl)) {
             $this->metaTagList['link.rel.start'] = array(
                 'tag'        => 'link',
                 'attributes' => array(
                     'rel'  => 'start',
-                    'href' => $rootPageUrl,
+                    'href' => $startPageUrl,
                 ),
             );
         }
@@ -1332,7 +1328,7 @@ class MetatagPart extends AbstractPart
     {
         //User has specified a canonical URL in the page properties
         if (!empty($this->pageRecord['tx_metaseo_canonicalurl'])) {
-            return $this->pageRecord['tx_metaseo_canonicalurl'];
+            return $this->generateLink($this->pageRecord['tx_metaseo_canonicalurl']);
         }
 
         //Fallback to global settings to generate Url

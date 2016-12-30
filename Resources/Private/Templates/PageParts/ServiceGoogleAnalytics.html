@@ -7,8 +7,8 @@
 <f:if condition="{gaDomainName}">
     <f:then>
         <f:format.raw value="
-                ga('create', '{gaCode}', {
-                    'cookieDomain': '{gaDomainName}',
+                ga('create', '{gaCode}', {" />
+        <f:format.raw value="            'cookieDomain': '{gaDomainName}',
                     'cookieName': '_gua',
                     'cookieExpires': 20000
                 });" />
@@ -17,11 +17,11 @@
         <f:format.raw value="ga('create', '{gaCode}', 'auto');" />
     </f:else>
 </f:if>
-<f:format.raw value="ga('send', 'pageview');" />
-<f:if condition="{gaIsAnonymize}">
-    <f:format.raw value="ga('set', 'anonymizeIp', true);" />
-</f:if>
 <f:if condition="{gaCustomizationCode}">
     <f:format.raw value="{gaCustomizationCode};" />
 </f:if>
+<f:if condition="{gaIsAnonymize}">
+    <f:format.raw value="ga('set', 'anonymizeIp', true);" />
+</f:if>
+<f:format.raw value="ga('send', 'pageview');" />
 <f:format.raw value="</script>" />

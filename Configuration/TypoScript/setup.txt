@@ -188,6 +188,23 @@ plugin.metaseo {
         # section links (start, up, next, prev)
         sectionLinks =
         sectionLinks {
+
+            start = HMENU
+            start {
+                special = browse
+                special {
+                    items = first
+                    first.fields.title =
+                }
+
+                1 = TMENU
+                1.NO {
+                    wrapItemAndSub = {field:uid}
+                    wrapItemAndSub.insertData = 1
+                    doNotLinkIt = 1
+                }
+            }
+
             prev = HMENU
             prev {
                 special = browse

@@ -40,7 +40,7 @@ class MetaDataController extends AbstractPageSeoController
             'abstract',
             'author',
             'author_email',
-            'lastupdated',
+            'lastUpdated',
         );
     }
 
@@ -53,10 +53,10 @@ class MetaDataController extends AbstractPageSeoController
 
         unset($row);
         foreach ($list as &$row) {
-            if (!empty($row['lastupdated'])) {
-                $row['lastupdated'] = date('Y-m-d', $row['lastupdated']);
+            if (!empty($row['lastUpdated'])) {
+                $row['lastUpdated'] = date('Y-m-d', $row['lastUpdated']);
             } else {
-                $row['lastupdated'] = '';
+                $row['lastUpdated'] = '';
             }
         }
         unset($row);

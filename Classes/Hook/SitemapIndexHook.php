@@ -181,6 +181,16 @@ abstract class SitemapIndexHook implements SingletonInterface
 
         // remove abs ref prefix
         if ($absRefPrefix !== false && strpos($ret, $absRefPrefix) === 0) {
+            $parsedUrl = parse_url($linkUrl);
+            if ($parsedUrl !== false
+                && $parsedUrl['path'] === $absRefPrefix
+                && substr($absRefPrefix, -1) === '/'  //sanity check: must end with /
+            ) {
+                //for root pages: treat '/' like a suffix, not like a prefix => don't remove last '/' in that case!
+                //This ensures that for an absRefPrefix = '/abc/' or '/' we return '/' instead of empty strings
+                $absRefPrefixLength--;
+            }
+
             $ret = substr($ret, $absRefPrefixLength);
         }
 
