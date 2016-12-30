@@ -1,4 +1,4 @@
-<!-- To avoid feedback loops, please provide us the following information: -->
+<!-- To avoid feedback loops, we suggest to provide the following information: -->
 
 **MetaSEO version**: 0.0.0
 
