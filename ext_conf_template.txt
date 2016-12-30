@@ -1,3 +1,6 @@
+# cat=General; type=int+; label=Pagination: Maximum number of entries displayed in tables of backend sections Sitemap and SEO/Metatags. Defaults to 50 entries.
+pagingSize =
+
 # cat=General; type=boolean; label=Beta: Enable beta-features, see manual for details (default is disabled)
 enableBeta =
 

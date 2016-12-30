@@ -267,7 +267,7 @@ class BackendSitemapController extends AbstractStandardModule
             'ajaxController'        => SitemapController::AJAX_PREFIX,
             'pid'                   => (int)$rootPid,
             'renderTo'              => 'tx-metaseo-sitemap-grid',
-            'pagingSize'            => 50,
+            'pagingSize'            => $this->getUiPagingSize(),
             'sortField'             => 'crdate',
             'sortDir'               => 'DESC',
             'filterIcon'            => IconUtility::getSpriteIcon(

@@ -31,4 +31,21 @@ namespace Metaseo\Metaseo\Backend\Module;
  */
 abstract class AbstractStandardModule extends AbstractModule
 {
+    /**
+     * default size for pagination
+     */
+    const METASEO_UI_DEFAULT_PAGING_SIZE = 50;
+
+    /**
+     * @return int
+     */
+    protected function getUiPagingSize()
+    {
+        $confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['metaseo']);
+        if (empty($confArr['pagingSize'])) {
+            return self::METASEO_UI_DEFAULT_PAGING_SIZE;
+        }
+
+        return (int)$confArr['pagingSize'];
+    }
 }

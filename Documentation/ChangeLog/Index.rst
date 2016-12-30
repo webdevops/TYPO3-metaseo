@@ -15,7 +15,9 @@ Changelog
 +-------------+----------------------------------------------------------------------------------------------------+
 | Version     | Changes                                                                                            |
 +=============+====================================================================================================+
-| **2.0.3**   | **Bugfix release**                                                                                 |
+| **2.0.3**   | **New feature and Bugfix release**                                                                 |
+|             |                                                                                                    |
+|             |  - Number of entries shown in sitemap now can be changed via extension manager                     |
 |             |                                                                                                    |
 |             | `Milestone 2.0.3 <https://github.com/mblaschke/TYPO3-metaseo/milestone/16?closed=1>`_              |
 |             | `Changes in 2.0.3 <https://github.com/mblaschke/TYPO3-metaseo/compare/2.0.2...2.0.3>`_             |
