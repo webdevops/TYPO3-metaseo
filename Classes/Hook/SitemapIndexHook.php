@@ -252,6 +252,7 @@ abstract class SitemapIndexHook implements SingletonInterface
      * - REQUEST_METHOD (must be GET)
      * - If there is a feuser session
      * - Page type blacklisting
+     * - Exclusion from search engines
      * - If page is static cacheable
      * - If no_cache is not set
      *
@@ -285,6 +286,11 @@ abstract class SitemapIndexHook implements SingletonInterface
 
         // Check for type blacklisting (from typoscript PAGE object)
         if (in_array($GLOBALS['TSFE']->type, $this->pageTypeBlacklist)) {
+            return false;
+        }
+
+        // Check if page is excluded from search engines
+        if (!empty($GLOBALS['TSFE']->page['tx_metaseo_is_exclude'])) {
             return false;
         }
 
