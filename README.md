@@ -1,6 +1,6 @@
 # MetaSEO - Search Engine Optimization for TYPO3
 
-![stable v2.0.1](https://img.shields.io/badge/stable-v2.0.1-green.svg?style=flat)
+![stable v2.0.2](https://img.shields.io/badge/stable-v2.0.3-green.svg?style=flat)
 ![development v2.0.2](https://img.shields.io/badge/development-v2.0.2-red.svg?style=flat)
 ![License GPL3](https://img.shields.io/badge/license-GPL3-blue.svg?style=flat)
 
@@ -22,7 +22,7 @@ It's a replacement for the "metatag" extension and the successor of the disconti
 
 ## Version status
 
-* Version **2.0.1**:
+* Version **2.0.2**:
 
   + Branch **master**
   + TYPO3 Version: 6.2.x - 7.6.x
