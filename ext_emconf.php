@@ -37,4 +37,4 @@ $EM_CONF[$_EXTKEY] = [
 			'Metaseo\\Metaseo\\' => 'Classes',
 		],
 	],
-;
+];
