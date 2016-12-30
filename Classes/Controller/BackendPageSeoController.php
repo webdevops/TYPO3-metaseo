@@ -243,7 +243,7 @@ class BackendPageSeoController extends AbstractStandardModule
             'page_abstract'                    => 'header.sitemap.page_abstract',
             'page_author'                      => 'header.sitemap.page_author',
             'page_author_email'                => 'header.sitemap.page_author_email',
-            'page_lastupdated'                 => 'header.sitemap.page_lastupdated',
+            'page_lastUpdated'                 => 'header.sitemap.page_lastUpdated',
             'page_geo_lat'                     => 'header.sitemap.page_geo_lat',
             'page_geo_long'                    => 'header.sitemap.page_geo_long',
             'page_geo_place'                   => 'header.sitemap.page_geo_place',

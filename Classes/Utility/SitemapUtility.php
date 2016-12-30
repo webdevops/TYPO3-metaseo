@@ -56,6 +56,7 @@ class SitemapUtility
         PageRepository::DOKTYPE_SPACER,           // Menu separator  (TYPO3 CMS)
         PageRepository::DOKTYPE_SYSFOLDER,        // Folder          (TYPO3 CMS)
         PageRepository::DOKTYPE_RECYCLER,         // Recycler        (TYPO3 CMS)
+        PageRepository::DOKTYPE_LINK,             // External Link   (TYPO3 CMS)
     );
 
     /**

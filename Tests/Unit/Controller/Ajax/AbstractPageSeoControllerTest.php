@@ -158,7 +158,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
         $listData = array(
             1 => array(
                 'uid' => 1,
-                'lastupdated' => 1
+                'lastUpdated' => 1
             )
         );
         $mock = $this->getMock('Metaseo\\Metaseo\\Dao\\PageSeoDao');

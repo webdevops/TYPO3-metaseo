@@ -416,7 +416,7 @@ MetaSeo.overview.grid = {
                     {name: 'abstract', type: 'string'},
                     {name: 'author', type: 'string'},
                     {name: 'author_email', type: 'string'},
-                    {name: 'lastupdated', type: 'string'}
+                    {name: 'lastUpdated', type: 'string'}
                 );
                 break;
 
@@ -651,11 +651,11 @@ MetaSeo.overview.grid = {
                         vtype: 'email'
                     }
                 }, {
-                    id: 'lastupdated',
-                    header: MetaSeo.overview.conf.lang.page_lastupdated,
+                    id: 'lastUpdated',
+                    header: MetaSeo.overview.conf.lang.page_lastUpdated,
                     width: 'auto',
                     sortable: false,
-                    dataIndex: 'lastupdated',
+                    dataIndex: 'lastUpdated',
                     renderer: fieldRendererRaw,
                     metaSeoClickEdit: {
                         xtype: 'datefield',
