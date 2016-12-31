@@ -91,6 +91,11 @@ class SitemapIndexPageHook extends SitemapIndexHook
             return;
         }
 
+        if (!$this->checkIfNoLanguageFallback()) {
+            // got content in fallback language => don't index
+            return;
+        }
+
         $pageUrl = $this->getPageUrl();
 
         // check blacklisting
@@ -103,6 +108,22 @@ class SitemapIndexPageHook extends SitemapIndexHook
         if (!empty($pageData)) {
             SitemapUtility::index($pageData);
         }
+    }
+
+    /**
+     * Returns True if language chosen by L= parameter matches language of content
+     * Returns False if content is in fallback language
+     *
+     * @return bool
+     */
+    protected function checkIfNoLanguageFallback()
+    {
+        $tsfe = self::getTsfe();
+        // Check if we have fallen back to a default language
+        if (GeneralUtility::getLanguageId() !== $tsfe->sys_language_uid) {
+            return false; //don't index untranslated page
+        }
+        return true;
     }
 
     /**
