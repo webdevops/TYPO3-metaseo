@@ -387,7 +387,9 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
      */
     protected function getPageRepository()
     {
-        return $this->objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+        $pageRepository = $this->objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+        $pageRepository->versioningPreview = true; //enable preview mode
+        return $pageRepository;
     }
 
     /**

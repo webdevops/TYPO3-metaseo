@@ -28,6 +28,7 @@ namespace Metaseo\Metaseo\Hook;
 
 use Metaseo\Metaseo\Utility\GeneralUtility;
 use Metaseo\Metaseo\Utility\SitemapUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Sitemap Indexer
@@ -128,11 +129,36 @@ class SitemapIndexLinkHook extends SitemapIndexHook
             $pageLanguage = (int)GeneralUtility::getLanguageId();
         }
 
+        if (!$this->checkIfTranslationExists($linkPageUid, $pageLanguage)) {
+            //translation does not exist => don't index
+            return;
+        }
+
         // Index link
         $pageData = $this->generateSitemapPageData($linkUrl, $linkPageUid, $rootline, $pageLanguage, $linkType);
         if (!empty($pageData)) {
             SitemapUtility::index($pageData);
         }
+    }
+
+    /**
+     * Returns True if translation exists for a chosen language (L=) parameter
+     * Returns False if no translation exists
+     *
+     * @return bool
+     */
+    protected function checkIfTranslationExists($linkPageUid, $requestLanguage)
+    {
+        if ($requestLanguage === 0) {
+            //default language always exists
+            return true;
+        }
+        $translated =  BackendUtility::getRecordLocalization('pages', $linkPageUid, $requestLanguage);
+        if ($translated === false || $translated === null) {
+            //translation does not exist
+            return false;
+        }
+        return true;
     }
 
     // ########################################################################
