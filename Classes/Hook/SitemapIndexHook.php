@@ -31,6 +31,7 @@ use Metaseo\Metaseo\Utility\GeneralUtility;
 use Metaseo\Metaseo\Utility\SitemapUtility;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Sitemap Indexer
@@ -122,9 +123,11 @@ abstract class SitemapIndexHook implements SingletonInterface
      */
     protected function initConfiguration()
     {
+        $tsfe = self::getTsfe();
+
         // Get configuration
-        if (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.'])) {
-            $this->conf = $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.'];
+        if (!empty($tsfe->tmpl->setup['plugin.']['metaseo.'])) {
+            $this->conf = $tsfe->tmpl->setup['plugin.']['metaseo.'];
         }
 
         // Store blacklist configuration
@@ -168,11 +171,13 @@ abstract class SitemapIndexHook implements SingletonInterface
         static $absRefPrefix = null;
         static $absRefPrefixLength = 0;
         $ret = $linkUrl;
+        $tsfe = self::getTsfe();
+
 
         // Fetch abs ref prefix if available/set
         if ($absRefPrefix === null) {
-            if (!empty($GLOBALS['TSFE']->tmpl->setup['config.']['absRefPrefix'])) {
-                $absRefPrefix       = $GLOBALS['TSFE']->tmpl->setup['config.']['absRefPrefix'];
+            if (!empty($tsfe->tmpl->setup['config.']['absRefPrefix'])) {
+                $absRefPrefix       = $tsfe->tmpl->setup['config.']['absRefPrefix'];
                 $absRefPrefixLength = strlen($absRefPrefix);
             } else {
                 $absRefPrefix = false;
@@ -284,18 +289,20 @@ abstract class SitemapIndexHook implements SingletonInterface
             return false;
         }
 
+        $tsfe = self::getTsfe();
+
         // Check for type blacklisting (from typoscript PAGE object)
-        if (in_array($GLOBALS['TSFE']->type, $this->pageTypeBlacklist)) {
+        if (in_array($tsfe->type, $this->pageTypeBlacklist)) {
             return false;
         }
 
         // Check if page is excluded from search engines
-        if (!empty($GLOBALS['TSFE']->page['tx_metaseo_is_exclude'])) {
+        if (!empty($tsfe->page['tx_metaseo_is_exclude'])) {
             return false;
         }
 
         // Check for doktype blacklisting (from current page record)
-        if (in_array((int)$GLOBALS['TSFE']->page['doktype'], $this->doktypeBlacklist)) {
+        if (in_array((int)$tsfe->page['doktype'], $this->doktypeBlacklist)) {
             return false;
         }
 
@@ -303,5 +310,13 @@ abstract class SitemapIndexHook implements SingletonInterface
         $this->pageIndexFlag = true;
 
         return true;
+    }
+
+    /**
+     * @return TypoScriptFrontendController
+     */
+    protected static function getTsfe()
+    {
+        return $GLOBALS['TSFE'];
     }
 }
