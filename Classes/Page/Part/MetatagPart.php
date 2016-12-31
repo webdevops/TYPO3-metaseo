@@ -99,6 +99,11 @@ class MetatagPart extends AbstractPart
     protected function initialize()
     {
         $this->cObj       = $GLOBALS['TSFE']->cObj;
+        if (ExtensionManagementUtility::isLoaded('fluidpages')) {
+            // works around missing language overlay when fluidpages extension is used
+            $this->cObj->start($GLOBALS['TSFE']->page, 'pages');
+        }
+
         $this->tsSetup    = $GLOBALS['TSFE']->tmpl->setup;
         $this->pageRecord = $GLOBALS['TSFE']->page;
         $this->pageMeta   = array();
