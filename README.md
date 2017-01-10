@@ -35,7 +35,7 @@ It's a replacement for the "metatag" extension and the successor of the disconti
   + Composer: dev-develop
 
 For version specific information see [changelog for MetaSEO](CHANGELOG.md)
-
+ 
 
 ## Composer Support
 

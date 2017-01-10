@@ -51,6 +51,7 @@ $tempColumns = array(
         'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_inheritance',
         'config'  => array(
             'type'     => 'select',
+            'renderType' => 'selectSingle',
             'items'    => array(
                 array(
                     'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_inheritance.I.0',
@@ -118,6 +119,7 @@ $tempColumns = array(
         'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_change_frequency',
         'config'  => array(
             'type'     => 'select',
+            'renderType' => 'selectSingle',
             'items'    => array(
                 array(
                     'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:'
