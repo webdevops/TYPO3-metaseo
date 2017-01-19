@@ -88,9 +88,18 @@ class UrlController extends AbstractPageSeoSimController
             $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['disablePathCache']     = 1;
         }
 
-        $this->getFrontendUtility()->initTsfe($page, null, $page, null); //todo: 5th parameter is sysLanguage
+        $feUtility = $this->getFrontendUtility();
+        $feUtility->initTsfe($page, null, $page, null, $sysLanguage);
 
-        $ret = $this->getFrontendUtility()->getTypoLinkUrl(array('parameter' => $page['uid']));
+        $typoLink = array(
+            'parameter' => $page['uid']
+        );
+        if ($sysLanguage > 0) {
+            //translate speaking URL
+            $typoLink['additionalParams'] = '&L='.$sysLanguage;
+        }
+
+        $ret = $feUtility->getTypoLinkUrl($typoLink);
 
         if (!empty($ret)) {
             $ret = GeneralUtility::fullUrl($ret);
