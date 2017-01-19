@@ -138,7 +138,8 @@ class PageSeoDao extends Dao
             $res = DatabaseUtility::connection()->exec_SELECTquery(
                 implode(',', $queryFieldList),
                 'pages_language_overlay',
-                'pid IN(' . implode(',', $pageIdList) . ') AND sys_language_uid = ' . (int)$sysLanguage
+                'pid IN(' . implode(',', $pageIdList) . ') AND sys_language_uid = ' . (int)$sysLanguage.'
+                 AND deleted = 0'
             );
 
             // update all overlay status field to "from base"
