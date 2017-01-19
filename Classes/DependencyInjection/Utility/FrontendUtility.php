@@ -86,7 +86,7 @@ class FrontendUtility implements SingletonInterface
             );
         }
 
-        MetaseoFrontendUtility::init($page['uid'], $rootLine, $pageData, $rootlineFull, $sysLanguage);
+        MetaseoFrontendUtility::init($pageUid, $rootLine, $pageData, $rootlineFull, $sysLanguage);
     }
 
     /**

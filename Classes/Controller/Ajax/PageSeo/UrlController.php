@@ -57,7 +57,7 @@ class UrlController extends AbstractPageSeoSimController
     /**
      * @inheritDoc
      */
-    protected function executeSimulate()
+    protected function executeSimulate($sysLanguage)
     {
         $pid = (int)$this->postVar['pid'];
 
@@ -88,7 +88,7 @@ class UrlController extends AbstractPageSeoSimController
             $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['disablePathCache']     = 1;
         }
 
-        $this->getFrontendUtility()->initTsfe($page, null, $page, null);
+        $this->getFrontendUtility()->initTsfe($page, null, $page, null); //todo: 5th parameter is sysLanguage
 
         $ret = $this->getFrontendUtility()->getTypoLinkUrl(array('parameter' => $page['uid']));
 

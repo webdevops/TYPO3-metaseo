@@ -935,7 +935,8 @@ MetaSeo.overview.grid = {
                             Ext.Ajax.request({
                                 url: ajaxUrl,
                                 params: {
-                                    pid: Ext.encode(record.get('uid'))
+                                    pid: Ext.encode(record.get('uid')),
+                                    sysLanguage: Ext.encode(MetaSeo.overview.conf.sysLanguage)
                                 },
                                 success: callbackFinish,
                                 failure: callbackFinish
@@ -1021,7 +1022,8 @@ MetaSeo.overview.grid = {
                         Ext.Ajax.request({
                             url: ajaxUrl,
                             params: {
-                                pid: Ext.encode(record.get('uid'))
+                                pid: Ext.encode(record.get('uid')),
+                                sysLanguage: Ext.encode(MetaSeo.overview.conf.sysLanguage)
                             },
                             success: callbackFinish,
                             failure: callbackFinish
