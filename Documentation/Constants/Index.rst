@@ -247,6 +247,8 @@ Sitetitle position                          Position of Sitetitle (from template
                                             Pagetitle-Sitetitle (eg. About us: Example Company)
 
 Sitetitle                                   Overwrite the template sitetitle with a custom one
+
+Caching                                     Enable or disable caching of page title (for debugging)      *enabled*
 =========================================   ==========================================================   ======================
 
 Sitemap

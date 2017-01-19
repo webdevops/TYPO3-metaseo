@@ -28,9 +28,6 @@ plugin.metaseo {
     # Page title generator
     pageTitle =
     pageTitle {
-        # Caching of page title
-        caching = 1
-
         applySitetitleToPagetitle = {$plugin.metaseo.pageTitle.applySitetitleToPagetitle}
         applySitetitleToPrefixSuffix = {$plugin.metaseo.pageTitle.applySitetitleToPrefixSuffix}
         sitetitleGlue = {$plugin.metaseo.pageTitle.sitetitleGlue}
@@ -38,6 +35,9 @@ plugin.metaseo {
         sitetitleGlueSpaceAfter = {$plugin.metaseo.pageTitle.sitetitleGlueSpaceAfter}
         sitetitlePosition = {$plugin.metaseo.pageTitle.sitetitlePosition}
         sitetitle = {$plugin.metaseo.pageTitle.sitetitle}
+
+        # Caching of page title
+        caching = {$plugin.metaseo.pageTitle.caching}
 
         # list of stdWraps for advanced page title manipulations
         stdWrap =
