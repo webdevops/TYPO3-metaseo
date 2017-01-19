@@ -163,6 +163,11 @@ class PagetitlePart extends AbstractPart
     {
         $cachingEnabled = !empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['pageTitle.']['caching']);
 
+        // Ajax: disable pagetitle caching when in backend mode
+        if (defined('TYPO3_MODE') && TYPO3_MODE == 'BE') {
+            $cachingEnabled = false;
+        }
+
         // Enable caching only if caching is enabled in SetupTS
         // And if there is any USER_INT on the current page
         //
