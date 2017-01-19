@@ -37,7 +37,7 @@ abstract class AbstractPageSeoSimController extends AbstractPageSeoController im
     {
         try {
             $this->init();
-            $ajaxObj->setContent($this->executeSimulate());
+            $ajaxObj->setContent($this->executeSimulate($this->getLanguage()));
         } catch (\Exception $exception) {
             $this->ajaxExceptionHandler($exception, $ajaxObj);
         }
@@ -47,9 +47,25 @@ abstract class AbstractPageSeoSimController extends AbstractPageSeoController im
     }
 
     /**
+     * @param   integer $sysLanguage System language
+     *
      * @return array
      *
      * @throws \Metaseo\Metaseo\Exception\Ajax\AjaxException
      */
-    abstract protected function executeSimulate();
+    abstract protected function executeSimulate($sysLanguage);
+
+    /**
+     * @return int language from Ajax request parameters
+     */
+    protected function getLanguage()
+    {
+        $sysLanguage = (int)$this->postVar['sysLanguage'];
+
+        // Store last selected language
+        $this->getBackendUserAuthentication()
+            ->setAndSaveSessionData('MetaSEO.sysLanguage', $sysLanguage);
+
+        return $sysLanguage;
+    }
 }

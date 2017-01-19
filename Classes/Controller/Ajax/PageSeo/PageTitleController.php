@@ -51,7 +51,7 @@ class PageTitleController extends AbstractPageSeoSimController
     /**
      * @inheritDoc
      */
-    protected function executeSimulate()
+    protected function executeSimulate($sysLanguage)
     {
         $pid = (int)$this->postVar['pid'];
 
@@ -75,15 +75,20 @@ class PageTitleController extends AbstractPageSeoSimController
             );
         }
 
-        // Load TYPO3 classes
-        $this->getFrontendUtility()->initTsfe($page, null, $page, null);
+        $simulator = Typo3GeneralUtility::makeInstance(
+            'Metaseo\Metaseo\Controller\Ajax\PageSeo\PageTitleSimController'
+        );
+        $simulator->setObjectManager($this->objectManager);
+
+        $simulationPageList = $simulator->getIndex($page, 1, $sysLanguage);
+        $simulatedPage = $simulationPageList[$pid];
 
         $pagetitle = Typo3GeneralUtility::makeInstance(
             'Metaseo\\Metaseo\\Page\\Part\\PagetitlePart'
         );
 
         return array(
-            'title' => $pagetitle->main($page['title']),
+            'title' => $pagetitle->main($simulatedPage['title_simulated']),
         );
     }
 }
