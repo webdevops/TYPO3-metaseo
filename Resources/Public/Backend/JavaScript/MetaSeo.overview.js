@@ -416,7 +416,7 @@ MetaSeo.overview.grid = {
                     {name: 'abstract', type: 'string'},
                     {name: 'author', type: 'string'},
                     {name: 'author_email', type: 'string'},
-                    {name: 'lastupdated', type: 'string'}
+                    {name: 'lastUpdated', type: 'string'}
                 );
                 break;
 
@@ -651,11 +651,11 @@ MetaSeo.overview.grid = {
                         vtype: 'email'
                     }
                 }, {
-                    id: 'lastupdated',
-                    header: MetaSeo.overview.conf.lang.page_lastupdated,
+                    id: 'lastUpdated',
+                    header: MetaSeo.overview.conf.lang.page_lastUpdated,
                     width: 'auto',
                     sortable: false,
-                    dataIndex: 'lastupdated',
+                    dataIndex: 'lastUpdated',
                     renderer: fieldRendererRaw,
                     metaSeoClickEdit: {
                         xtype: 'datefield',
@@ -935,7 +935,8 @@ MetaSeo.overview.grid = {
                             Ext.Ajax.request({
                                 url: ajaxUrl,
                                 params: {
-                                    pid: Ext.encode(record.get('uid'))
+                                    pid: Ext.encode(record.get('uid')),
+                                    sysLanguage: Ext.encode(MetaSeo.overview.conf.sysLanguage)
                                 },
                                 success: callbackFinish,
                                 failure: callbackFinish
@@ -1021,7 +1022,8 @@ MetaSeo.overview.grid = {
                         Ext.Ajax.request({
                             url: ajaxUrl,
                             params: {
-                                pid: Ext.encode(record.get('uid'))
+                                pid: Ext.encode(record.get('uid')),
+                                sysLanguage: Ext.encode(MetaSeo.overview.conf.sysLanguage)
                             },
                             success: callbackFinish,
                             failure: callbackFinish
@@ -1051,7 +1053,6 @@ MetaSeo.overview.grid = {
                 item.tooltip = item.header;
             }
         });
-
         return columnModel;
     },
 
@@ -1063,6 +1064,8 @@ MetaSeo.overview.grid = {
     _fieldRendererRaw: function (value) {
         return this._fieldRendererCallback(value, value, false, true, '');
     },
+
+    _fieldRendererTemplate: new Ext.XTemplate('<div class="{classes} {additionalClasses}" ext:qtip="{qtip}">{value}{icon}</div>'),
 
     _fieldRendererCallback: function (value, qtip, maxLength, escape, additionalClasses) {
         var classes = '';
@@ -1101,9 +1104,13 @@ MetaSeo.overview.grid = {
         }
         qtip = qtip.replace(/\n/g, "<br />");
 
-        return '<div class="' + classes + ' ' + additionalClasses + '" ext:qtip="' + qtip + '">' + value + icon + '</div>';
+        return this._fieldRendererTemplate.apply({
+            classes: classes,
+            additionalClasses: additionalClasses,
+            qtip: qtip,
+            value: value,
+            icon: icon
+        });
     }
-
-
 };
 

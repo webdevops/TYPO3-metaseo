@@ -26,6 +26,8 @@
 
 namespace Metaseo\Metaseo\Utility;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
+
 /**
  * General utility
  */
@@ -93,7 +95,7 @@ class GeneralUtility
         $ret = false;
 
         // Performance check, there must be an MP-GET value
-        if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('MP')) {
+        if (Typo3GeneralUtility::_GET('MP')) {
             // Possible mount point detected, let's check the rootline
             foreach (self::getRootLine($uid) as $page) {
                 if (!empty($page['_MOUNT_OL'])) {
@@ -187,7 +189,7 @@ class GeneralUtility
     {
         if (self::$sysPageObj === null) {
             /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            $objectManager = Typo3GeneralUtility::makeInstance(
                 'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
             );
 
@@ -213,7 +215,7 @@ class GeneralUtility
             return $ret;
         }
 
-        $host    = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST');
+        $host    = Typo3GeneralUtility::getIndpEnv('HTTP_HOST');
         $rootPid = self::getRootPid();
 
         $query = 'SELECT *
@@ -375,7 +377,7 @@ class GeneralUtility
         if (!empty($hookConf[$name]) && is_array($hookConf[$name])) {
             foreach ($hookConf[$name] as $_funcRef) {
                 if ($_funcRef) {
-                    \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $args, $obj);
+                    Typo3GeneralUtility::callUserFunction($_funcRef, $args, $obj);
                 }
             }
         }
@@ -383,14 +385,14 @@ class GeneralUtility
         // Call signal
         if ($signalSlotDispatcher === null) {
             /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            $objectManager = Typo3GeneralUtility::makeInstance(
                 'TYPO3\\CMS\\Extbase\\Object\\ObjectManager'
             );
 
             /** @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher */
             $signalSlotDispatcher = $objectManager->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
         }
-        $signalSlotDispatcher->dispatch($class, $name, array($args, $obj));
+        list($args) = $signalSlotDispatcher->dispatch($class, $name, array($args, $obj));
     }
 
 
@@ -422,7 +424,7 @@ class GeneralUtility
                 $url = 'http://' . $domain . '/' . $url;
             } else {
                 // domain from env
-                $url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $url;
+                $url = Typo3GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $url;
             }
         }
 

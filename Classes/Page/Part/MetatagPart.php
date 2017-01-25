@@ -99,6 +99,11 @@ class MetatagPart extends AbstractPart
     protected function initialize()
     {
         $this->cObj       = $GLOBALS['TSFE']->cObj;
+        if (ExtensionManagementUtility::isLoaded('fluidpages')) {
+            // works around missing language overlay when fluidpages extension is used
+            $this->cObj->start($GLOBALS['TSFE']->page, 'pages');
+        }
+
         $this->tsSetup    = $GLOBALS['TSFE']->tmpl->setup;
         $this->pageRecord = $GLOBALS['TSFE']->page;
         $this->pageMeta   = array();
@@ -232,6 +237,7 @@ class MetatagPart extends AbstractPart
         }
 
         $this->processMetaTags($this->metaTagList);
+        //todo: type mismatch array->string for $this->metaTagList
         $this->metaTagList = $this->renderMetaTags($this->metaTagList);
 
         return $this->metaTagList;
@@ -242,7 +248,6 @@ class MetatagPart extends AbstractPart
      */
     protected function initExtensionSupport()
     {
-
         // Extension: news
         if (ExtensionManagementUtility::isLoaded('news')) {
             $this->initExtensionSupportNews();
@@ -508,26 +513,51 @@ class MetatagPart extends AbstractPart
     protected function advMetaTags(array &$metaTags, array $pageRecord, $sysLanguageId, array $customMetaTagList)
     {
         $pageRecordId = $pageRecord['uid'];
+        $storeMeta = $this->getStoreMeta();
+        $advMetaTagCondition = array();
 
-        $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
-        $storeMeta = $connector->getStore();
+        // #################
+        // External Og tags (from connector)
+        // #################
+        if ($this->isAvailableExternalOgTags()) {
+            // External OpenGraph support
+            $advMetaTagCondition[] = 'tag_name NOT LIKE \'og:%\'';
+            if (!empty($storeMeta['meta:og'])) { //overwrite known og tags
+                $externalOgTags = $storeMeta['meta:og'];
+                foreach ($externalOgTags as $tagName => $tagValue) {
+                    if (array_key_exists('og.' . $tagName, $metaTags)) { //_only_ known og tags
+                        $metaTags['og.' . $tagName] = array(
+                            'tag'        => 'meta',
+                            'attributes' => array(
+                                'property'  => 'og:' . $tagName,
+                                'content'   => $tagValue,
+                            ),
+                        );
+                    }
+                }
+            }
+        }
+        if ($this->isAvailableExternalOgCustomTags()) {
+            $ogTagKeys = array();
+            if (!empty($storeMeta['custom:og'])) {
+                $externalCustomOgTags = $storeMeta['custom:og'];
+                foreach ($externalCustomOgTags as $tagName => $tagValue) { //take all tags
+                    $metaTags['og.' . $tagName] = array(
+                        'tag'        => 'meta',
+                        'attributes' => array(
+                            'property'  => 'og:' . $tagName,
+                            'content'   => $tagValue,
+                        ),
+                    );
+                    $ogTagKeys[] = 'og:' . $tagName;
+                }
+            }
+            $advMetaTagCondition[] = DatabaseUtility::conditionNotIn('tag_name', $ogTagKeys, true);
+        }
 
         // #################
         // Adv meta tags (from editor)
         // #################
-        $advMetaTagList      = array();
-        $advMetaTagCondition = array();
-
-        if (!empty($storeMeta['flag']['meta:og:external'])) {
-            // External OpenGraph support
-            $advMetaTagCondition[] = 'tag_name NOT LIKE \'og:%\'';
-
-            // Add external og-tags to adv meta tag list
-            if (!empty($storeMeta['meta:og'])) {
-                //todo: $advMetaTagList not in use
-                $advMetaTagList = array_merge($advMetaTagList, $storeMeta['meta:og']);
-            }
-        }
 
         if (!empty($advMetaTagCondition)) {
             $advMetaTagCondition = '( ' . implode(') AND (', $advMetaTagCondition) . ' )';
@@ -546,13 +576,23 @@ class MetatagPart extends AbstractPart
 
         // Add metadata to tag list
         foreach ($advMetaTagList as $tagName => $tagValue) {
-            $metaTags['adv.' . $tagName] = array(
-                'tag'        => 'meta',
-                'attributes' => array(
-                    'rel'  => $tagName,
-                    'href' => $tagValue,
-                ),
-            );
+            if (substr($tagName, 0, 3) === 'og:') {
+                $metaTags['og.' . $tagName] = array(
+                    'tag'        => 'meta',
+                    'attributes' => array(
+                        'property'  => $tagName,
+                        'content'   => $tagValue,
+                    ),
+                );
+            } else {
+                $metaTags['adv.' . $tagName] = array(
+                    'tag'        => 'meta',
+                    'attributes' => array(
+                        'rel'  => $tagName,  //todo: rel and href might not be suitable in every case
+                        'href' => $tagValue,
+                    ),
+                );
+            }
         }
 
         // #################
@@ -562,7 +602,7 @@ class MetatagPart extends AbstractPart
             $metaTags['adv.' . $tagName] = array(
                 'tag'        => 'meta',
                 'attributes' => array(
-                    'rel'  => $tagName,
+                    'rel'  => $tagName,  //todo: rel and href might not be suitable in every case
                     'href' => $tagValue,
                 ),
             );
@@ -598,10 +638,10 @@ class MetatagPart extends AbstractPart
         foreach ($keyList as $key) {
             if (!empty($tags[$key]['attributes'])) {
                 foreach ($markerList as $marker => $value) {
-                    // only replace markers if they are present
                     unset($metaTagAttribute);
                     foreach ($tags[$key]['attributes'] as &$metaTagAttribute) {
-                        if (strpos($metaTagAttribute, $marker)) {
+                        // only replace markers if they are present
+                        if (strpos($metaTagAttribute, $marker) !== false) {
                             $metaTagAttribute = str_replace($marker, $value, $metaTagAttribute);
                         }
                     }
@@ -772,31 +812,25 @@ class MetatagPart extends AbstractPart
     {
         $ret = array();
 
-        /** @var \Metaseo\Metaseo\Connector $connector */
-        $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
-        $storeMeta = $connector->getStore();
+        $storeMeta = $this->getStoreMeta();
 
         // Std meta tags
         foreach ($storeMeta['meta'] as $metaKey => $metaValue) {
-            $metaValue = trim($metaValue);
-
             if ($metaValue === null) {
                 // Remove meta
                 unset($this->tsSetupSeo[$metaKey]);
             } elseif (!empty($metaValue)) {
-                $this->tsSetupSeo[$metaKey] = $metaValue;
+                $this->tsSetupSeo[$metaKey] = trim($metaValue);
             }
         }
 
         // Custom meta tags
         foreach ($storeMeta['custom'] as $metaKey => $metaValue) {
-            $metaValue = trim($metaValue);
-
             if ($metaValue === null) {
                 // Remove meta
                 unset($ret[$metaKey]);
             } elseif (!empty($metaValue)) {
-                $ret[$metaKey] = $metaValue;
+                $ret[$metaKey] = trim($metaValue);
             }
         }
 
@@ -1215,16 +1249,16 @@ class MetatagPart extends AbstractPart
 
         $currentIsRootpage = ($currentPage['uid'] === $rootPage['uid']);
 
-        // Generate rootpage url
-        $rootPageUrl = null;
-        if (!empty($rootPage)) {
-            $rootPageUrl = $this->generateLink($rootPage['uid']);
-        }
-
         // Only generate up, prev and next if NOT rootpage
         // to prevent linking to other domains
         // see https://github.com/mblaschke/TYPO3-metaseo/issues/5
         if (!$currentIsRootpage) {
+            $startPage    = $GLOBALS['TSFE']->cObj->HMENU($this->tsSetupSeo['sectionLinks.']['start.']);
+            $startPageUrl = null;
+            if (!empty($startPage)) {
+                $startPageUrl = $this->generateLink($startPage);
+            }
+
             $prevPage    = $GLOBALS['TSFE']->cObj->HMENU($this->tsSetupSeo['sectionLinks.']['prev.']);
             $prevPageUrl = null;
             if (!empty($prevPage)) {
@@ -1239,12 +1273,12 @@ class MetatagPart extends AbstractPart
         }
 
         // Start (first page in rootline -> root page)
-        if (!empty($rootPageUrl)) {
+        if (!empty($startPageUrl)) {
             $this->metaTagList['link.rel.start'] = array(
                 'tag'        => 'link',
                 'attributes' => array(
                     'rel'  => 'start',
-                    'href' => $rootPageUrl,
+                    'href' => $startPageUrl,
                 ),
             );
         }
@@ -1299,7 +1333,7 @@ class MetatagPart extends AbstractPart
     {
         //User has specified a canonical URL in the page properties
         if (!empty($this->pageRecord['tx_metaseo_canonicalurl'])) {
-            return $this->pageRecord['tx_metaseo_canonicalurl'];
+            return $this->generateLink($this->pageRecord['tx_metaseo_canonicalurl']);
         }
 
         //Fallback to global settings to generate Url
@@ -1425,5 +1459,43 @@ class MetatagPart extends AbstractPart
                 );
             }
         }
+    }
+
+    /**
+     * @return bool true if external OpenGraph tags are available via the Connector, false otherwise
+     */
+    protected function isAvailableExternalOgTags()
+    {
+        $storeMeta = $this->getStoreMeta();
+
+        return !empty($storeMeta['flag']['meta:og:external']);
+    }
+
+    /**
+     * @return bool true if external custom OpenGraph tags are available via the Connector, false otherwise
+     */
+    protected function isAvailableExternalOgCustomTags()
+    {
+        $storeMeta = $this->getStoreMeta();
+
+        return !empty($storeMeta['flag']['custom:og:external']);
+    }
+
+    /**
+     * @return array with the meta tags from the connector
+     */
+    protected function getStoreMeta()
+    {
+        return $this->getConnector()->getStore();
+    }
+
+    /**
+     * @return \Metaseo\Metaseo\Connector
+     */
+    protected function getConnector()
+    {
+        /** @var \Metaseo\Metaseo\Connector $connector */
+        $connector = $this->objectManager->get('Metaseo\\Metaseo\\Connector');
+        return $connector;
     }
 }

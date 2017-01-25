@@ -159,6 +159,9 @@ plugin.metaseo {
     # cat=plugin.metaseo.pageTitle/enable/07; type=string; label= Sitetitle : Overwrite the template sitetitle with a custom one
     pageTitle.sitetitle =
 
+    # cat=plugin.metaseo.pageTitle/enable/08; type=boolean; label= Enable pagetitle caching (for debugging)
+    pageTitle.caching = 1
+
     # cat=plugin.metaseo.sitemap/page/02; type=int+; label= Default page priority (0-100)
     sitemap.pagePriority =
 

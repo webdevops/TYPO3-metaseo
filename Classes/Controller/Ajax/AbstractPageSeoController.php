@@ -169,7 +169,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         }
 
         $pid         = (int)$this->postVar['pid'];
-        $fieldName   = strtolower((string)$this->postVar['field']);
+        $fieldName   = (string)$this->postVar['field'];
         $fieldValue  = (string)$this->postVar['value'];
         $sysLanguage = (int)$this->postVar['sysLanguage'];
 
@@ -195,6 +195,8 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         // Security checks
         // ############################
 
+        // generates the excludelist, based on TCA/exclude-flag and non_exclude_fields for the user:
+        $excludedTablesAndFields = array_flip($this->getDataHandler()->getExcludeListArray());
 
         // check if user is able to modify pages
         if (!$this->getBackendUserAuthentication()->check('tables_modify', 'pages')) {
@@ -221,8 +223,9 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         }
 
         // check if user is able to modify the field of pages
-        if (!$this->getBackendUserAuthentication()
-            ->check('non_exclude_fields', 'pages:' . $fieldName)
+        if (isset($excludedTablesAndFields['pages-' . $fieldName])
+            && !$this->getBackendUserAuthentication()
+                ->check('non_exclude_fields', 'pages:' . $fieldName)
         ) {
             // No access
 
@@ -249,8 +252,9 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
             }
 
             // check if user is able to modify the field of pages
-            if (!$this->getBackendUserAuthentication()
-                ->check('non_exclude_fields', 'pages_language_overlay:' . $fieldName)
+            if (isset($excludedTablesAndFields['pages_language_overlay-' . $fieldName])
+                && !$this->getBackendUserAuthentication()
+                    ->check('non_exclude_fields', 'pages_language_overlay:' . $fieldName)
             ) {
                 // No access
 
@@ -267,7 +271,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         // ############################
 
         switch ($fieldName) {
-            case 'lastupdated':
+            case 'lastUpdated':
                 // transform to unix timestamp
                 $fieldValue = strtotime($fieldValue);
                 break;
@@ -383,7 +387,9 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
      */
     protected function getPageRepository()
     {
-        return $this->objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+        $pageRepository = $this->objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+        $pageRepository->versioningPreview = true; //enable preview mode
+        return $pageRepository;
     }
 
     /**

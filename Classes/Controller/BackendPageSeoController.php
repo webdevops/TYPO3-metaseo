@@ -166,8 +166,7 @@ class BackendPageSeoController extends AbstractStandardModule
 
             // Flag (if available)
             if (!empty($langRow['flag'])) {
-                $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-' . $langRow['flag']
-                    . ' t3-icon-' . $langRow['flag'] . '"></span>';
+                $flag .= IconUtility::getSpriteIcon('flags-' . $langRow['flag']);
                 $flag .= '&nbsp;';
             }
 
@@ -203,7 +202,7 @@ class BackendPageSeoController extends AbstractStandardModule
             'ajaxController'   => $ajaxController,
             'pid'              => (int)$pageId,
             'renderTo'         => 'tx-metaseo-sitemap-grid',
-            'pagingSize'       => 50,
+            'pagingSize'       => $this->getUiPagingSize(),
             'depth'            => 2,
             'sortField'        => 'crdate',
             'sortDir'          => 'DESC',
@@ -216,9 +215,9 @@ class BackendPageSeoController extends AbstractStandardModule
             'criteriaFulltext' => '',
             'realurlAvailable' => $realUrlAvailable,
             'sprite'           => array(
-                'edit'   => IconUtility::getSpriteIcon('actions-document-open'),
-                'info'   => IconUtility::getSpriteIcon('actions-document-info'),
-                'editor' => IconUtility::getSpriteIcon('actions-system-options-view'),
+                'edit'   => $this->getIcon('actions-document-open'),
+                'info'   => $this->getIcon('actions-document-info'),
+                'editor' => $this->getIcon('actions-system-options-view'),
             ),
         );
 
@@ -244,7 +243,7 @@ class BackendPageSeoController extends AbstractStandardModule
             'page_abstract'                    => 'header.sitemap.page_abstract',
             'page_author'                      => 'header.sitemap.page_author',
             'page_author_email'                => 'header.sitemap.page_author_email',
-            'page_lastupdated'                 => 'header.sitemap.page_lastupdated',
+            'page_lastUpdated'                 => 'header.sitemap.page_lastUpdated',
             'page_geo_lat'                     => 'header.sitemap.page_geo_lat',
             'page_geo_long'                    => 'header.sitemap.page_geo_long',
             'page_geo_place'                   => 'header.sitemap.page_geo_place',
@@ -289,5 +288,29 @@ class BackendPageSeoController extends AbstractStandardModule
             MetaSeo.overview.conf.lang = ' . json_encode($metaSeoLang) . ';
         '
         );
+    }
+
+    private function getIcon($iconName)
+    {
+        $html = IconUtility::getSpriteIcon($iconName);
+        //Ugly workaround to make icons clickable in TYPO3 7.6.
+        //It's deprecated anyways, therefore changes in the future when we drop support for 6.2.
+        if (stripos('svg', $html)) {
+            //not found
+            return $html; //Typo3 6.2. That works.
+        } else {
+            //found => TYPO3 7 workaround must be applied.
+            switch ($iconName) {
+                case 'actions-document-open':
+                    return '<span class="t3-icon t3-icon-actions '
+                        . 't3-icon-actions-document t3-icon-document-open"></span>';
+                case 'actions-document-info':
+                    return '<span class="t3-icon t3-icon-actions '
+                    . ' t3-icon-actions-document t3-icon-document-info"></span>';
+                case 'actions-system-options-view':
+                    return '<span class="t3-icon t3-icon-actions '
+                    . 't3-icon-actions-document t3-icon-document-view"></span>';
+            }
+        }
     }
 }
