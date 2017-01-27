@@ -392,7 +392,7 @@ class GeneralUtility
             /** @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher */
             $signalSlotDispatcher = $objectManager->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
         }
-        list($args) = $signalSlotDispatcher->dispatch($class, $name, array($args, $obj));
+        list($args) = $signalSlotDispatcher->dispatch($class, $name, array(&$args, $obj));
     }
 
 
