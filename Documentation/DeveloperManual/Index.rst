@@ -166,7 +166,44 @@ plugin.metaseo.sitemap.index.fileExtension                   List of allowed fil
 
 ==========================================================   ==========================================================   ======================
 
+Signals
+-----
 
+For a list of Signals see the "Hooks" section down below.
+
+::
+
+	<?php
+	// ----------------------------------------------------------------------------
+	// Example of MetaSEO Signals
+	//
+	// Example integration (eg. in localconf.php or ext_localconf.php):
+	//
+	$signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
+	$signalSlotDispatcher->connect(
+		\Metaseo\Metaseo\Page\Part\MetatagPart::class,  // Signal class name
+		'metatagOutput',                                  // Signal name
+		\Vendor\Extension\Signals\MetaseoExtend::class,        // Slot class name
+		'metatagOutput'                                // Slot name
+	);
+	// ----------------------------------------------------------------------------
+	
+	class MetaseoExtend {
+		/**
+		 * Metaseo Signal for page metadata
+		 * see -> \Metaseo\Metaseo\Page\Part\MetatagPart->processMetaTags
+		 *
+		 * @param $args
+		 * @param $obj
+		 * @return array
+		 */
+		public function metatagOutput($args, $obj) {
+			// Modify the parameter $args here
+			$args["meta.description"]["attributes"]["content"] = "newDescription";
+
+			return array($args, $obj);	
+		}
+	}
 Hooks
 -----
 
