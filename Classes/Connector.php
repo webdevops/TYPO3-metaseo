@@ -67,9 +67,9 @@ class Connector implements SingletonInterface
     {
         $value = (string)$value;
 
-        if ($updateTsfe && !empty($GLOBAL['TSFE'])) {
-            $GLOBAL['TSFE']->page['title']   = $value;
-            $GLOBAL['TSFE']->indexedDocTitle = $value;
+        if ($updateTsfe && !empty($GLOBALS['TSFE'])) {
+            $GLOBALS['TSFE']->page['title']   = $value;
+            $GLOBALS['TSFE']->indexedDocTitle = $value;
         }
 
         self::$store['pagetitle']['pagetitle.title'] = $value;
