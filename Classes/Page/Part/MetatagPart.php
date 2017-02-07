@@ -1417,8 +1417,19 @@ class MetatagPart extends AbstractPart
      */
     protected function generateOpenGraphMetaTags()
     {
+        $prefixes = array('og');
         $tsSetupSeoOg = $this->tsSetupSeo['opengraph.'];
+        $this->convertOpenGraphTypoScriptToMetaTags($prefixes, $tsSetupSeoOg);
+    }
 
+    /**
+     * Convert nested TypoScript to OpenGraph MetaTags
+     *
+     * @param array $prefixes
+     * @param array $tsSetupSeoOg
+     */
+    protected function convertOpenGraphTypoScriptToMetaTags(array $prefixes, array $tsSetupSeoOg)
+    {
         // Get list of tags (filtered array)
         $ogTagNameList = array_keys($tsSetupSeoOg);
         $ogTagNameList = array_unique(
@@ -1444,13 +1455,20 @@ class MetatagPart extends AbstractPart
                     $tsSetupSeoOg[$ogTagName],
                     $tsSetupSeoOg[$ogTagName . '.']
                 );
+            } elseif (!array_key_exists($ogTagName, $tsSetupSeoOg) && array_key_exists($ogTagName . '.', $tsSetupSeoOg)) {
+                // Nested object (e.g. image)
+                array_push($prefixes, $ogTagName);
+                $this->convertOpenGraphTypoScriptToMetaTags($prefixes, $tsSetupSeoOg[$ogTagName . '.']);
+                array_pop($prefixes);
             }
 
             if ($ogTagValue !== null && strlen($ogTagValue) >= 1) {
-                $this->metaTagList['og.' . $ogTagName] = array(
+                $path = $prefixes;
+                $path[] = $ogTagName;
+                $this->metaTagList[implode('.', $path)] = array(
                     'tag'        => 'meta',
                     'attributes' => array(
-                        'property' => 'og:' . $ogTagName,
+                        'property' => implode(':', $path),
                         'content'  => $ogTagValue,
                     ),
                 );

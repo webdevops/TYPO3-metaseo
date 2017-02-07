@@ -63,6 +63,12 @@ plugin.metaseo {
     # cat=plugin.metaseo.metaTags/enable/26; type=boolean; label= OpenGraph Tags: Enable generation of OpenGraph Tags
     metaTags.opengraph = 1
 
+    # cat=plugin.metaseo.metaTags/page/20; type=string; label= Open Graph image width
+    metaTags.opengraphImageWidth = 1200c
+
+    # cat=plugin.metaseo.metaTags/page/21; type=string; label= Open Graph image height
+    metaTags.opengraphImageHeight = 630c
+
     # cat=plugin.metaseo.metaTags/enable/27; type=boolean; label= Publish Page Expire Time: Anounce Expire Tag (TYPO3's enddate in content elements).
     metaTags.useExpire = 1
 

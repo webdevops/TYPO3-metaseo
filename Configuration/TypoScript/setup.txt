@@ -152,6 +152,52 @@ plugin.metaseo {
                 field = title
             }
 
+            image {
+                url = FILES
+                url {
+                    references {
+                        table = pages
+                        uid.data = page:uid
+                        fieldName = tx_metaseo_opengraph_image
+                    }
+                    renderObj = TEXT
+                    renderObj {
+                        typolink {
+                            parameter {
+                                stdWrap.cObject = IMG_RESOURCE
+                                stdWrap.cObject {
+                                    file {
+                                        import.data = file:current:uid
+                                        treatIdAsReference = 1
+                                        width = {$plugin.metaseo.metaTags.opengraphImageWidth}
+                                        height = {$plugin.metaseo.metaTags.opengraphImageHeight}
+                                    }
+                                }
+                            }
+                            returnLast = url
+                            forceAbsoluteUrl = 1
+                        }
+                    }
+                }
+
+                width = TEXT
+                width {
+                    data = TSFE:lastImgResourceInfo|0
+                }
+
+                height = TEXT
+                height {
+                    data = TSFE:lastImgResourceInfo|1
+                }
+
+                type = TEXT
+                type {
+                    wrap = image/|
+                    data = TSFE:lastImgResourceInfo|2
+                    required = 1
+                }
+            }
+
             type = article
             admins = 
             email = {$plugin.metaseo.metaTags.email}
