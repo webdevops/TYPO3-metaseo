@@ -96,7 +96,7 @@ class FrontendUtility implements SingletonInterface
      */
     public function getTypoLinkUrl(array $conf)
     {
-        return $this->getTSFE()->cObj->typolink_URL($conf);
+        return $this->getTSFE()->cObj->typoLink_URL($conf);
     }
 
     /**

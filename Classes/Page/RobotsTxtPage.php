@@ -204,7 +204,7 @@ class RobotsTxtPage extends AbstractPage
                 'parameter' => $path
             );
 
-            $markerList['%sitemap%'] = $this->cObj->typolink_URL($conf);
+            $markerList['%sitemap%'] = $this->cObj->typoLink_URL($conf);
         }
 
         // Fix sitemap-marker url (add prefix if needed)
