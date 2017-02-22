@@ -413,19 +413,21 @@ class GeneralUtility
             if ($url === '/') {
                 $url = '';
             }
-
-            // remove first /
-            if (strpos($url, '/') === 0) {
-                $url = substr($url, 1);
-            }
-
+            
             if ($domain !== null) {
-                // specified domain
-                $url = 'http://' . $domain . '/' . $url;
+                if(!preg_match('/^https?:\/\//i', $domain)) {
+                    $domain = 'http://' . $domain;
+                }
+                $domain = rtrim($domain, '/').'/';
             } else {
-                // domain from env
-                $url = Typo3GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $url;
+                if (strpos($url, '/') === 0) {
+                    $domain = Typo3GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST');
+                } else {
+                    $domain = Typo3GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+                }
             }
+            
+            $url = $domain . $url;
         }
 
         // Fix url stuff
