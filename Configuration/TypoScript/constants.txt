@@ -175,4 +175,10 @@ plugin.metaseo {
 
     # cat=plugin.metaseo.sitemap/index/01; type=boolean; label= Index no_cache pages: Allow to index no_cache pages
     sitemap.index.allowNoCache = 0
+
+    # cat=plugin.metaseo.sitemap/index/01; type=boolean; label= Priority tag in sitemap: Include priority tag in sitemap
+    sitemap.enablePriority = 1
+
+    # cat=plugin.metaseo.sitemap/index/01; type=boolean; label= Lastmod tag in sitemap: Include lastmod tag in sitemap
+    sitemap.enableLastMod = 1
 }
