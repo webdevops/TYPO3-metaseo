@@ -285,6 +285,10 @@ Page priority                       Default page priority if the page has no own
                                     ( `[page priority] – [priority modificator] ) *`
                                     ( `1/[page depth] * [page multiplier] )`
 
+Priority tag in sitemap             Include priority tag in sitemap                              1
+
+Lastmod tag in sitemap              Include lastmod tag in sitemap                               1
+
 Page priority depth multiplier      Page depth multiplier, see formula in page priority          1
 
 Page priority depth modificator     Page depth modificator, see formula in page priority         1
