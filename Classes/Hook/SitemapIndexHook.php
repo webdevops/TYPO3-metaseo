@@ -184,6 +184,8 @@ abstract class SitemapIndexHook implements SingletonInterface
             }
         }
 
+        $absRefPrefixLengthTmp = $absRefPrefixLength; //makes sure we do not write back to static variable
+
         // remove abs ref prefix
         if ($absRefPrefix !== false && strpos($ret, $absRefPrefix) === 0) {
             $parsedUrl = parse_url($linkUrl);
@@ -193,10 +195,10 @@ abstract class SitemapIndexHook implements SingletonInterface
             ) {
                 //for root pages: treat '/' like a suffix, not like a prefix => don't remove last '/' in that case!
                 //This ensures that for an absRefPrefix = '/abc/' or '/' we return '/' instead of empty strings
-                $absRefPrefixLength--;
+                $absRefPrefixLengthTmp--;
             }
 
-            $ret = substr($ret, $absRefPrefixLength);
+            $ret = substr($ret, $absRefPrefixLengthTmp);
         }
 
         return $ret;
