@@ -237,13 +237,18 @@ class XmlGenerator extends AbstractGenerator
             // #####################################
             $ret .= '<url>';
             $ret .= '<loc>' . htmlspecialchars($pageUrl) . '</loc>';
-            $ret .= '<lastmod>' . $pageModificationDate . '</lastmod>';
+
+            if ($this->tsSetup['enableLastMod']) {
+                $ret .= '<lastmod>' . $pageModificationDate . '</lastmod>';
+            }
 
             if (!empty($pageChangeFrequency)) {
                 $ret .= '<changefreq>' . htmlspecialchars($pageChangeFrequency) . '</changefreq>';
             }
 
-            $ret .= '<priority>' . $pagePriority . '</priority>';
+            if ($this->tsSetup['enablePriority']) {
+                $ret .= '<priority>' . $pagePriority . '</priority>';
+            }
 
             $ret .= '</url>';
         }
