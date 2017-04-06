@@ -33,12 +33,12 @@ if (TYPO3_MODE == 'BE') {
         'web',
         'pageseo',
         '', # Position
-        ['BackendPageSeo' => 'main,metadata,geo,searchengines,url,pagetitle,pagetitlesim'], # Controller array
-        [
+        array('BackendPageSeo' => 'main,metadata,geo,searchengines,url,pagetitle,pagetitlesim'), # Controller array
+        array(
             'access' => 'user,group',
             'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Backend/Icons/ModuleSeo.png',
             'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/ModuleSeo/locallang.xlf',
-        ]
+        )
     );
 
     // ####################################################
@@ -52,9 +52,9 @@ if (TYPO3_MODE == 'BE') {
 	$iconRegistry->registerIcon(
 		'module-seo',
 		\TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
-		[
+		array(
 			'name' => 'bullseye'
-		]
+		)
 	);
 
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
@@ -62,12 +62,12 @@ if (TYPO3_MODE == 'BE') {
         'metaseo',
         '',
         '',
-        [],
-        [
+        array(),
+        array(
             'access' => 'user,group',
             'iconIdentifier' => 'module-seo',
             'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/ModuleMain/locallang.xlf',
-        ]
+        )
     );
 
 
@@ -76,12 +76,12 @@ if (TYPO3_MODE == 'BE') {
         'metaseo',
         'controlcenter',
         '',
-        ['BackendControlCenter' => 'main'],
-        [
+        array('BackendControlCenter' => 'main'),
+        array(
             'access' => 'user,group',
             'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Backend/Icons/ModuleControlCenter.png',
             'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/ModuleControlCenter/locallang.xlf',
-        ]
+        )
     );
 
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
@@ -89,12 +89,12 @@ if (TYPO3_MODE == 'BE') {
         'metaseo',
         'sitemap',
         'after:controlcenter',
-        ['BackendSitemap' => 'main,sitemap'],
-        [
+        array('BackendSitemap' => 'main,sitemap'),
+        array(
             'access' => 'user,group',
             'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Backend/Icons/ModuleSitemap.png',
             'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/ModuleSitemap/locallang.xlf',
-        ]
+        )
     );
 
     // ############################################################################
