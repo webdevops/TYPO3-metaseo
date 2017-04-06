@@ -139,6 +139,7 @@ Thanks to...
 - Florian Duffner
 - Georg Tiefenbrunn
 - Arne-Kolja Bachstein
+- Birger Stöckelmann
 - Paul-Christian Volkmer
 - Dominik Steinborn
 - Attila Glück

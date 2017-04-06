@@ -2,6 +2,7 @@
 # This are the default TS-constants for metaseo
 ##
 plugin.metaseo {
+
     # cat=plugin.metaseo.metaTags/page/01; type=string; label= Meta Description: Short description of your webpage.
     metaTags.description =
 
@@ -175,4 +176,7 @@ plugin.metaseo {
 
     # cat=plugin.metaseo.sitemap/index/01; type=boolean; label= Index no_cache pages: Allow to index no_cache pages
     sitemap.index.allowNoCache = 0
+
+    # cat=plugin.metaseo.extensibility/page/01; type=string; label= Doktypes list for backend page tree
+    extensibility.allowedDoktypes = 1,4
 }
