@@ -58,23 +58,19 @@ class SitemapTxtPage extends AbstractPage
             $this->showError('Sitemap is not available, please check your configuration [control-center]');
         }
 
-        $ret = $this->build();
-
-        return $ret;
+        return $this->build();
     }
 
     /**
      * Build sitemap index or specific page
      *
-     * @return mixed
+     * @return string
      */
     protected function build()
     {
         /** @var \Metaseo\Metaseo\Sitemap\Generator\TxtGenerator $generator */
         $generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\TxtGenerator');
 
-        $ret = $generator->sitemap();
-
-        return $ret;
+        return $generator->sitemap();
     }
 }
