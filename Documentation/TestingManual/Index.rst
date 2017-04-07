@@ -28,10 +28,21 @@ Prerequisites
 ^^^^^^^^^^^^^
 
 You need to install
-- PHP 5.6 or PHP 7.0.16 to test against TYPO3 6.2 or 7.6
-- php-cli, php-curl, php-gd, php-intl, php-mysql, php-zip
-- Latest version of composer
-- PHPUnit 5.1.3 or use the PHPUnit version shipped with TYPO3 CMS (e.g. PHPUnit 4.8.29)
+
+* PHP 5.6 or PHP 7.0.16 to test against TYPO3 6.2 or 7.6
+* php-cli, php-curl, php-gd, php-intl, php-mysql, php-zip, curl
+* Latest version of composer
+* PHPUnit 5.1.3 or use the PHPUnit version shipped with TYPO3 CMS (e.g. PHPUnit 4.8.29)
+
+
+Using ubuntu 16.04, that could look like this:
+
+::
+
+    sudo su - root
+    apt-get install php7.0-cli php7.0-curl php7.0-gd php7.0-intl php7.0-mysql php7.0-zip phpunit curl
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 
 Testing MetaSEO 2.x against TYPO3 CMS 7.6
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -99,6 +110,7 @@ known to work with PHP 5.6 and PHP 7.0.16 at least.
     cd typo3conf/ext
     ln -s ../../../metaseo
 
+
 Running the test suite works exactly the same as described in the 7.6 section.
 
 Testing the documentation for syntax errors
@@ -109,8 +121,10 @@ and preview the rendered html output in a browser of your choice:
 
 ::
 
+    sudo apt-get install python-sphinx # when using debian or ubuntu
     cd metaseo/Documentation/_make
     make html
     firefox build/html/Index.html
+
 
 The rst files are known to render with Sphinx v1.3.6 at least.
