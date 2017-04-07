@@ -62,6 +62,7 @@ MetaSEO
     Constants/Index
     BackendModules/Index
     AdministratorManual/Index
-    DeveloperManual/Index
     FaqManual/Index
+    DeveloperManual/Index
+    TestingManual/Index
     ChangeLog/Index
