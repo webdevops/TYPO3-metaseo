@@ -42,8 +42,6 @@ class MetaseoCommandController extends CommandController
 
     /**
      * Get whole list of sitemap entries
-     *
-     * @return  string
      */
     public function garbageCollectorCommand()
     {
@@ -55,8 +53,6 @@ class MetaseoCommandController extends CommandController
      * Clear sitemap for one root page
      *
      * @param   string $rootPageId Site root page id or domain
-     *
-     * @return  string
      */
     public function clearSitemapCommand($rootPageId)
     {
@@ -79,8 +75,6 @@ class MetaseoCommandController extends CommandController
      * Get whole list of sitemap entries
      *
      * @param   string $rootPageId Site root page id or domain
-     *
-     * @return  string
      */
     public function sitemapCommand($rootPageId)
     {
