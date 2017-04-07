@@ -355,8 +355,6 @@ class GeneralUtility
      * @param   mixed $obj Reference to be passed along (typically "$this"
      *                     - being a reference to the calling object) (REFERENCE!)
      * @param   mixed|NULL $args  Args
-     *
-     * @return  mixed
      */
     public static function callHookAndSignal($class, $name, $obj, &$args = null)
     {

@@ -216,8 +216,6 @@ class RobotsTxtPage extends AbstractPage
         // Apply marker list
         if (!empty($markerList)) {
             $ret = strtr($ret, $markerList);
-
-            return $ret;
         }
 
         return $ret;
