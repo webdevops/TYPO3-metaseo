@@ -32,7 +32,7 @@ use Metaseo\Metaseo\Utility\BackendUtility;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 use Metaseo\Metaseo\Utility\SitemapUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility as Typo3BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -170,6 +170,8 @@ class BackendSitemapController extends AbstractStandardModule
      */
     public function sitemapAction()
     {
+        /** @var \TYPO3\CMS\Core\Imaging\IconFactory $iconFactory */
+        $iconFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconFactory');
         $params  = GeneralUtility::_GP('tx_metaseo_metaseometaseo_metaseositemap');
         $rootPid = $params['pageId'];
 
@@ -227,7 +229,7 @@ class BackendSitemapController extends AbstractStandardModule
 
             // Flag (if available)
             if (!empty($langRow['flag'])) {
-                $flag.= IconUtility::getSpriteIcon('flags-' . $langRow['flag']);
+                $flag.= $iconFactory->getIcon('flags-' . $langRow['flag'], Icon::SIZE_SMALL)->render();
                 $flag .= '&nbsp;';
             }
 
@@ -270,9 +272,10 @@ class BackendSitemapController extends AbstractStandardModule
             'pagingSize'            => $this->getUiPagingSize(),
             'sortField'             => 'crdate',
             'sortDir'               => 'DESC',
-            'filterIcon'            => IconUtility::getSpriteIcon(
-                'actions-system-tree-search-open'
-            ),
+            'filterIcon'            => $iconFactory->getIcon(
+                'actions-system-tree-search-open',
+                Icon::SIZE_SMALL
+            )->render(),
             'dataLanguage'          => $languageList,
             'dataDepth'             => $depthList,
             'criteriaFulltext'      => '',
