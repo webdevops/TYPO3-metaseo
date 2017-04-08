@@ -39,8 +39,9 @@
                 <tr>
                     <!-- Toolbar -->
                     <td>
-                        <f:be.buttons.icon uri="{f:uri.action(action:'sitemap',arguments:{pageId: RootPage.uid})}"
-                                           icon="actions-system-list-open"/>
+                        <f:link.action action="sitemap" arguments="{pageId: RootPage.uid}">
+                            <core:icon identifier="actions-system-list-open" size="small" />
+                        </f:link.action>
                     </td>
 
                     <!-- Title -->
