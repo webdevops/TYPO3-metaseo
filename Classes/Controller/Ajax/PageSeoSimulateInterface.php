@@ -26,19 +26,18 @@
 
 namespace Metaseo\Metaseo\Controller\Ajax;
 
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 interface PageSeoSimulateInterface extends PageSeoInterface
 {
     /**
      * Executes an AJAX request which simulates field values
      *
-     * @param array $params Array of parameters from the AJAX interface, currently unused (as of 6.2.14)
-     *                      becomes available starting with 7.4.0 (c048cede,
-     *                      https://forge.typo3.org/issues/68186)
-     * @param AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      *
-     * @return void
+     * @return ResponseInterface
      */
-    public function simulateAction($params = array(), AjaxRequestHandler &$ajaxObj = null);
+    public function simulateAction(ServerRequestInterface $request, ResponseInterface $response);
 }

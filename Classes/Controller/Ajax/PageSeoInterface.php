@@ -26,44 +26,39 @@
 
 namespace Metaseo\Metaseo\Controller\Ajax;
 
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 interface PageSeoInterface
 {
     /**
      * Executes an AJAX request which displays the data (usually as a list)
      *
-     * @param array $params Array of parameters from the AJAX interface, currently unused (as of 6.2.14)
-     *                      becomes available starting with 7.4.0 (c048cede,
-     *                      https://forge.typo3.org/issues/68186)
-     * @param AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      *
-     * @return void
+     * @return ResponseInterface
      */
-    public function indexAction($params = array(), AjaxRequestHandler &$ajaxObj = null);
+    public function indexAction(ServerRequestInterface $request, ResponseInterface $response);
 
     /**
      * Executes an AJAX request which updates the data in the database
      *
-     * @param array $params Array of parameters from the AJAX interface, currently unused (as of 6.2.14)
-     *                      becomes available starting with 7.4.0 (c048cede,
-     *                      https://forge.typo3.org/issues/68186)
-     * @param AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      *
-     * @return void
+     * @return ResponseInterface
      */
-    public function updateAction($params = array(), AjaxRequestHandler &$ajaxObj = null);
+    public function updateAction(ServerRequestInterface $request, ResponseInterface $response);
 
 
     /**
      * Executes an AJAX request which updates the data in the database recursively
      *
-     * @param array $params Array of parameters from the AJAX interface, currently unused (as of 6.2.14)
-     *                      becomes available starting with 7.4.0 (c048cede,
-     *                      https://forge.typo3.org/issues/68186)
-     * @param AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      *
-     * @return void
+     * @return ResponseInterface
      */
-    public function updateRecursiveAction($params = array(), AjaxRequestHandler &$ajaxObj = null);
+    public function updateRecursiveAction(ServerRequestInterface $request, ResponseInterface $response);
 }
