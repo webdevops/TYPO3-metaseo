@@ -32,29 +32,29 @@ use Metaseo\Metaseo\DependencyInjection\Utility\HttpUtility;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 use Metaseo\Metaseo\Utility\SitemapUtility;
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * TYPO3 Backend ajax module sitemap
  */
 class SitemapController extends AbstractAjaxController implements SitemapInterface
 {
-    const AJAX_PREFIX = 'tx_metaseo_controller_ajax_sitemap';
+    const AJAX_PREFIX = 'tx_metaseo_controller_sitemap';
 
     /**
      * @inheritDoc
      */
-    public function indexAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
+    public function indexAction(ServerRequestInterface $request, ResponseInterface $response)
     {
         try {
             $this->init();
-            $ajaxObj->setContent($this->executeIndex());
+            $response->getBody()->write(\GuzzleHttp\json_encode($this->executeIndex()));
         } catch (Exception $exception) {
-            $this->ajaxExceptionHandler($exception, $ajaxObj);
+            return $this->ajaxExceptionHandler($exception, $response);
         }
 
-        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
-        $ajaxObj->render();
+        return $response;
     }
 
     /**
@@ -168,17 +168,16 @@ class SitemapController extends AbstractAjaxController implements SitemapInterfa
     /**
      * @inheritDoc
      */
-    public function blacklistAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
+    public function blacklistAction(ServerRequestInterface $request, ResponseInterface $response)
     {
         try {
             $this->init();
-            $ajaxObj->setContent($this->executeBlacklist());
+            $response->getBody()->write(\GuzzleHttp\json_encode($this->executeBlacklist()));
         } catch (Exception $exception) {
-            $this->ajaxExceptionHandler($exception, $ajaxObj);
+            return $this->ajaxExceptionHandler($exception, $response);
         }
 
-        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
-        $ajaxObj->render();
+        return $response;
     }
 
     /*
@@ -220,17 +219,16 @@ class SitemapController extends AbstractAjaxController implements SitemapInterfa
     /**
      * @inheritDoc
      */
-    public function whitelistAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
+    public function whitelistAction(ServerRequestInterface $request, ResponseInterface $response)
     {
         try {
             $this->init();
-            $ajaxObj->setContent($this->executeWhitelist());
+            $response->getBody()->write(\GuzzleHttp\json_encode($this->executeWhitelist()));
         } catch (Exception $exception) {
-            $this->ajaxExceptionHandler($exception, $ajaxObj);
+            return $this->ajaxExceptionHandler($exception, $response);
         }
 
-        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
-        $ajaxObj->render();
+        return $response;
     }
 
     /*
@@ -272,17 +270,16 @@ class SitemapController extends AbstractAjaxController implements SitemapInterfa
     /**
      * @inheritDoc
      */
-    public function deleteAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
+    public function deleteAction(ServerRequestInterface $request, ResponseInterface $response)
     {
         try {
             $this->init();
-            $ajaxObj->setContent($this->executeDelete());
+            $response->getBody()->write(\GuzzleHttp\json_encode($this->executeDelete()));
         } catch (Exception $exception) {
-            $this->ajaxExceptionHandler($exception, $ajaxObj);
+            return $this->ajaxExceptionHandler($exception, $response);
         }
 
-        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
-        $ajaxObj->render();
+        return $response;
     }
 
     /**
@@ -323,17 +320,16 @@ class SitemapController extends AbstractAjaxController implements SitemapInterfa
     /**
      * @inheritDoc
      */
-    public function deleteAllAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
+    public function deleteAllAction(ServerRequestInterface $request, ResponseInterface $response)
     {
         try {
             $this->init();
-            $ajaxObj->setContent($this->executeDeleteAll());
+            $response->getBody()->write(\GuzzleHttp\json_encode($this->executeDeleteAll()));
         } catch (Exception $exception) {
-            $this->ajaxExceptionHandler($exception, $ajaxObj);
+            return $this->ajaxExceptionHandler($exception, $response);
         }
 
-        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
-        $ajaxObj->render();
+        return $response;
     }
 
     /**

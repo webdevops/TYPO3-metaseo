@@ -29,7 +29,7 @@ namespace Metaseo\Metaseo\Controller;
 use Exception;
 use Metaseo\Metaseo\DependencyInjection\Utility\HttpUtility;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 
@@ -38,8 +38,6 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
  */
 abstract class AbstractAjaxController
 {
-    const CONTENT_FORMAT_JSON = 'jsonbody';
-
     /**
      * Json status indicators
      */
@@ -152,25 +150,33 @@ abstract class AbstractAjaxController
      * always sets http status 500 and does not respect content format.
      *
      * @param Exception $exception
-     * @param AjaxRequestHandler $ajaxObj
+     * @param ResponseInterface $response
      *
-     * @return void
+     * @return ResponseInterface
      */
-    protected function ajaxExceptionHandler(Exception $exception, AjaxRequestHandler &$ajaxObj)
+    protected function ajaxExceptionHandler(Exception $exception, ResponseInterface $response)
     {
         $responseArray = array();
         if ($exception instanceof AjaxException) {
             $responseArray[self::JSON_ERROR] = $this->translate($exception->getMessage());
-            $this->getHttpUtility()->sendHttpHeader($exception->getHttpStatus());
+            $statusNumber = $exception->getHttpStatus();
+            $statusMessage = $this->getHttpUtility()->getHttpStatusMessage($exception->getHttpStatus());
             $errorCode = $exception->getCode();
             if (!empty($errorCode)) {
                 $responseArray[self::JSON_ERROR_NUMBER] = $exception->getCode();
             }
         } else {
+            $statusNumber = HttpUtility::HTTP_STATUS_INTERNAL_SERVER_ERROR;
+            $statusMessage = $this->getHttpUtility()
+                ->getHttpStatusMessage(HttpUtility::HTTP_STATUS_INTERNAL_SERVER_ERROR);
             $responseArray[self::JSON_ERROR] = $exception->getMessage();
-            $this->getHttpUtility()->sendHttpHeader(HttpUtility::HTTP_STATUS_INTERNAL_SERVER_ERROR);
         }
-        $ajaxObj->setContent($responseArray);
+        $response->getBody()->write(\GuzzleHttp\json_encode($responseArray));
+
+        return $response->withStatus(
+            $statusNumber,
+            $statusMessage
+        );
     }
 
     /**

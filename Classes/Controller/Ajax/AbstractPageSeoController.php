@@ -31,7 +31,8 @@ use Metaseo\Metaseo\Controller\AbstractAjaxController;
 use Metaseo\Metaseo\Controller\Ajax\PageSeo as PageSeo;
 use Metaseo\Metaseo\DependencyInjection\Utility\HttpUtility;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * TYPO3 Backend ajax module page
@@ -39,7 +40,7 @@ use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 abstract class AbstractPageSeoController extends AbstractAjaxController implements PageSeoInterface
 {
     const LIST_TYPE = 'undefined';
-    const AJAX_PREFIX = 'tx_metaseo_controller_ajax_pageseo_';
+    const AJAX_PREFIX = 'tx_metaseo_controller_pageseo_';
 
     // ########################################################################
     // Attributes
@@ -73,17 +74,16 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
     /**
      * @inheritDoc
      */
-    public function indexAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
+    public function indexAction(ServerRequestInterface $request, ResponseInterface $response)
     {
         try {
             $this->init();
-            $ajaxObj->setContent($this->executeIndex());
+            $response->getBody()->write(\GuzzleHttp\json_encode($this->executeIndex()));
         } catch (Exception $exception) {
-            $this->ajaxExceptionHandler($exception, $ajaxObj);
+            return $this->ajaxExceptionHandler($exception, $response);
         }
 
-        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
-        $ajaxObj->render();
+        return $response;
     }
 
     /**
@@ -139,17 +139,16 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
     /**
      * @inheritDoc
      */
-    public function updateAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
+    public function updateAction(ServerRequestInterface $request, ResponseInterface $response)
     {
         try {
             $this->init();
-            $ajaxObj->setContent($this->executeUpdate());
+            $response->getBody()->write(\GuzzleHttp\json_encode($this->executeUpdate()));
         } catch (Exception $exception) {
-            $this->ajaxExceptionHandler($exception, $ajaxObj);
+            return $this->ajaxExceptionHandler($exception, $response);
         }
 
-        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
-        $ajaxObj->render();
+        return $response;
     }
 
     /**
@@ -287,17 +286,16 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
     /**
      * @inheritDoc
      */
-    public function updateRecursiveAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
+    public function updateRecursiveAction(ServerRequestInterface $request, ResponseInterface $response)
     {
         try {
             $this->init();
-            $ajaxObj->setContent($this->executeUpdateRecursive());
+            $request->getBody()->write(\GuzzleHttp\json_encode($this->executeUpdateRecursive()));
         } catch (Exception $exception) {
-            $this->ajaxExceptionHandler($exception, $ajaxObj);
+            return $this->ajaxExceptionHandler($exception, $response);
         }
 
-        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
-        $ajaxObj->render();
+        return $response;
     }
 
     /**
