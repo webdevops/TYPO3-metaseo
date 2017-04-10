@@ -1,35 +1,23 @@
-<f:be.container
-    includeCssFiles="{
-        0: '{f:uri.resource(path:\'Backend/Css/Default.css\')}'
-    }"
-    >
-
-    <div class="typo3-fullDoc">
-
-        <div id="typo3-docheader">
-            <div class="typo3-docheader-functions">
-                <div class="left">
-                    <f:be.buttons.csh/>
-                    <f:render section="button-toolbar" optional="true"/>
+<f:Be.Container
+        includeCssFiles="{0: '{f:uri.resource(path:\'Backend/Css/Default.css\')}'}">
+    <div class="module">
+        <div class="module-docheader">
+            <div class="module-docheader-bar module-docheader-bar-buttons">
+                <div class="module-docheader-bar-column-left">
+                    &nbsp;
                 </div>
-                <div class="right"></div>
-            </div>
-            <div class="typo3-docheader-buttons">
-                <div class="left"></div>
-                <div class="right">
-                    <f:be.buttons.shortcut/>
+                <div class="module-docheader-bar-column-right">
+                    <f:be.buttons.shortcut />
                 </div>
             </div>
         </div>
+        <div class="module-body">
+            <f:render section="title" optional="true" />
 
-        <div id="typo3-docbody">
-            <div id="typo3-inner-docbody">
-                <f:render section="title" optional="true"/>
-                <f:flashMessages />
-                <f:render section="content"/>
-            </div>
+            <f:flashMessages />
+
+            <f:render section="content" />
         </div>
-
     </div>
 
-</f:be.container>
+</f:Be.Container>

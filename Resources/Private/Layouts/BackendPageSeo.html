@@ -1,4 +1,4 @@
-<f:be.container
+<f:Be.Container
     includeCssFiles="{
         0: '{f:uri.resource(path:\'Backend/Css/Default.css\')}'
     }"
@@ -10,32 +10,38 @@
     loadExtJs="true"
     >
 
-    <div class="typo3-fullDoc">
+    <div class="module">
 
-        <div id="typo3-docheader">
+        <div class="module-docheader">
             <div class="typo3-docheader-functions">
-                <div class="left">
-                    <f:be.buttons.csh/>
-                    <f:render section="button-toolbar" optional="true"/>
+                <div class="module-docheader-bar module-docheader-bar-navigation">
+                    <div class="module-docheader-bar-column-left">
+                        <f:be.buttons.csh/>
+                        <f:render section="button-toolbar" optional="true"/>
+                    </div>
+                    <div class="module-docheader-bar-column-right"></div>
                 </div>
-                <div class="right"></div>
             </div>
-            <div class="typo3-docheader-buttons">
-                <div class="left"></div>
-                <div class="right">
-                    <f:be.buttons.shortcut/>
+            <div class="module-docheader-bar module-docheader-bar-buttons">
+                <div class="module-docheader-bar-column-left">
+                    &nbsp;
+                </div>
+                <div class="module-docheader-bar-column-right">
+                    <f:be.buttons.shortcut />
                 </div>
             </div>
         </div>
 
-        <div id="typo3-docbody">
-            <div id="typo3-inner-docbody">
-                <f:render section="title" optional="true"/>
-                <f:flashMessages />
-                <f:render section="content"/>
-            </div>
+        <div class="module-body">
+
+            <f:render section="title" optional="true"/>
+
+            <f:flashMessages />
+
+            <f:render section="content"/>
+
         </div>
 
     </div>
     <f:format.raw value="<script>{JavaScript}</script>" />
-</f:be.container>
+</f:Be.Container>
