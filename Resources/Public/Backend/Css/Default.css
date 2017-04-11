@@ -107,3 +107,10 @@ th.center {
     width: auto !important;
     padding: 10px 15px;
 }
+
+.x-mask-loading div {
+    background-image: url("../Icons/Spinner.gif");
+}
+.x-mask-loading-message div {
+    background-image: url("../Icons/Spinner.gif");
+}
