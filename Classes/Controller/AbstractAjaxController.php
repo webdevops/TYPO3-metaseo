@@ -30,6 +30,7 @@ use Exception;
 use Metaseo\Metaseo\DependencyInjection\Utility\HttpUtility;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 
@@ -85,10 +86,12 @@ abstract class AbstractAjaxController
 
     /**
      * Collect and process POST vars and stores them into $this->postVars
+     *
+     * @param ServerRequestInterface $request
      */
-    protected function fetchParams()
+    protected function fetchParams(ServerRequestInterface $request)
     {
-        $rawPostVarList = GeneralUtility::_POST();
+        $rawPostVarList = $request->getParsedBody();
         foreach ($rawPostVarList as $key => $value) {
             $this->postVar[$key] = json_decode($value);
         }
@@ -127,8 +130,6 @@ abstract class AbstractAjaxController
      */
     protected function init()
     {
-        $this->fetchParams();
-
         // Include ajax local lang
         $this->getLanguageService()->includeLLFile('EXT:metaseo/Resources/Private/Language/locallang.xlf');
 

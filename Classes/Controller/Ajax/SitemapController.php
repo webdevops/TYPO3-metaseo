@@ -49,6 +49,7 @@ class SitemapController extends AbstractAjaxController implements SitemapInterfa
     {
         try {
             $this->init();
+            $this->fetchParams($request);
             $response->getBody()->write(\GuzzleHttp\json_encode($this->executeIndex()));
         } catch (Exception $exception) {
             return $this->ajaxExceptionHandler($exception, $response);
@@ -172,6 +173,7 @@ class SitemapController extends AbstractAjaxController implements SitemapInterfa
     {
         try {
             $this->init();
+            $this->fetchParams($request);
             $response->getBody()->write(\GuzzleHttp\json_encode($this->executeBlacklist()));
         } catch (Exception $exception) {
             return $this->ajaxExceptionHandler($exception, $response);
@@ -223,6 +225,7 @@ class SitemapController extends AbstractAjaxController implements SitemapInterfa
     {
         try {
             $this->init();
+            $this->fetchParams($request);
             $response->getBody()->write(\GuzzleHttp\json_encode($this->executeWhitelist()));
         } catch (Exception $exception) {
             return $this->ajaxExceptionHandler($exception, $response);
@@ -274,6 +277,7 @@ class SitemapController extends AbstractAjaxController implements SitemapInterfa
     {
         try {
             $this->init();
+            $this->fetchParams($request);
             $response->getBody()->write(\GuzzleHttp\json_encode($this->executeDelete()));
         } catch (Exception $exception) {
             return $this->ajaxExceptionHandler($exception, $response);
@@ -324,6 +328,7 @@ class SitemapController extends AbstractAjaxController implements SitemapInterfa
     {
         try {
             $this->init();
+            $this->fetchParams($request);
             $response->getBody()->write(\GuzzleHttp\json_encode($this->executeDeleteAll()));
         } catch (Exception $exception) {
             return $this->ajaxExceptionHandler($exception, $response);
