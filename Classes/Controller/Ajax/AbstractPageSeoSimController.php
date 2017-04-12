@@ -38,6 +38,7 @@ abstract class AbstractPageSeoSimController extends AbstractPageSeoController im
     {
         try {
             $this->init();
+            $this->fetchParams($request);
             $response->getBody()->write(\GuzzleHttp\json_encode($this->executeSimulate($this->getLanguage())));
         } catch (\Exception $exception) {
             return $this->ajaxExceptionHandler($exception, $response);
