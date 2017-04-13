@@ -28,30 +28,18 @@ if (TYPO3_MODE == 'BE') {
     // Module category "SEO"
     // ####################################################
 
-    if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) >= 7005000) {
-        // IconRegistry is available since TYPO3 7.5.0
-        /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
-        $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("TYPO3\\CMS\\Core\\Imaging\\IconRegistry");
-        $iconRegistry->registerIcon(
-            'module-seo',
-            "TYPO3\\CMS\\Core\\Imaging\\IconProvider\\FontawesomeIconProvider",
-            array(
-                'name' => 'bullseye'
-            )
-        );
-    }
-
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
         $_EXTKEY,
         'metaseo',
         '',
         '',
-        array(),
-        array(
+        [],
+        [
             'access' => 'user,group',
+            'icon' => '',
             'iconIdentifier' => 'module-seo',
             'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/ModuleMain/locallang.xlf',
-        )
+        ]
     );
 
 
