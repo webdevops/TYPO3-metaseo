@@ -5,7 +5,7 @@ return array(
         'title'         => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:tx_metaseo_setting_root',
         'label'         => 'uid',
         'adminOnly'     => true,
-        'iconfile'      => 'page',
+        'iconfile'      => 'EXT:backend/Resources/Public/Icons/module-page.svg',
         'hideTable'     => true,
         'dividers2tabs' => true,
     ),
