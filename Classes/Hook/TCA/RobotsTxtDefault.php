@@ -87,8 +87,9 @@ class RobotsTxtDefault
         // ############################
         $rootPageId = $data['row']['pid'];
 
-        /** @var \TYPO3\CMS\Core\TimeTracker\NullTimeTracker $timeTracker */
-        $timeTracker = $this->objectManager->get('TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker');
+        // Disables the time tracker to speed up TypoScript execution
+        /** @var \TYPO3\CMS\Core\TimeTracker\TimeTracker $timeTracker */
+        $timeTracker = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TimeTracker\\TimeTracker', false);
 
         $GLOBALS['TT'] = $timeTracker;
         $GLOBALS['TT']->start();
