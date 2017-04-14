@@ -19,7 +19,7 @@ if (TYPO3_MODE == 'BE') {
         array('BackendPageSeo' => 'main,metadata,geo,searchengines,url,pagetitle,pagetitlesim'), # Controller array
         array(
             'access' => 'user,group',
-            'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Backend/Icons/ModuleSeo.png',
+            'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Backend/Icons/ModuleSeo.svg',
             'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/ModuleSeo/locallang.xlf',
         )
     );
@@ -33,13 +33,13 @@ if (TYPO3_MODE == 'BE') {
         'metaseo',
         '',
         '',
-        [],
-        [
+        array(),
+        array(
             'access' => 'user,group',
             'icon' => '',
             'iconIdentifier' => 'module-seo',
             'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/ModuleMain/locallang.xlf',
-        ]
+        )
     );
 
 
@@ -51,7 +51,7 @@ if (TYPO3_MODE == 'BE') {
         array('BackendControlCenter' => 'main'),
         array(
             'access' => 'user,group',
-            'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Backend/Icons/ModuleControlCenter.png',
+            'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Backend/Icons/ModuleControlCenter.svg',
             'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/ModuleControlCenter/locallang.xlf',
         )
     );
@@ -64,7 +64,7 @@ if (TYPO3_MODE == 'BE') {
         array('BackendSitemap' => 'main,sitemap'),
         array(
             'access' => 'user,group',
-            'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Backend/Icons/ModuleSitemap.png',
+            'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Backend/Icons/ModuleSitemap.svg',
             'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/ModuleSitemap/locallang.xlf',
         )
     );
