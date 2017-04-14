@@ -69,8 +69,9 @@ class FrontendUtility
 
         // create time tracker if needed
         if (empty($GLOBALS['TT'])) {
-            /** @var \TYPO3\CMS\Core\TimeTracker\NullTimeTracker $timeTracker */
-            $timeTracker = $objectManager->get('TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker');
+            // Disables the time tracker to speed up TypoScript execution
+            /** @var \TYPO3\CMS\Core\TimeTracker\TimeTracker $timeTracker */
+            $timeTracker = Typo3GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TimeTracker\\TimeTracker', false);
 
             $GLOBALS['TT'] = $timeTracker;
             $GLOBALS['TT']->start();
