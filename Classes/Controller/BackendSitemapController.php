@@ -103,8 +103,6 @@ class BackendSitemapController extends AbstractStandardModule
         // Build root page list
         // #################
 
-
-        unset($page);
         foreach ($rootPageList as $pageId => &$page) {
             $stats = array(
                 'sum_pages'     => 0,
@@ -151,7 +149,6 @@ class BackendSitemapController extends AbstractStandardModule
 
             $page['stats'] = $stats;
         }
-        unset($page);
 
         // check if there is any root page
         if (empty($rootPageList)) {
