@@ -37,7 +37,7 @@ abstract class AbstractPageSeoSimControllerTest extends AbstractPageSeoControlle
     {
         $this->expectedDaoMethod = 'getPageById';
         $subject = $this->getSubject();
-        $subject->simulateAction(array(), $this->getAjaxRequestHandlerMock());
+        $subject->simulateAction($this->getRequestMock(), $this->getResponseMock());
     }
 
     /**

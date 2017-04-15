@@ -41,15 +41,16 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
      */
     protected $fieldForUpdate;
 
+    /**
+     * @var array POST parameters to be passed through the ServerRequest object
+     */
+    protected $postParameters;
+
     public function setUp()
     {
+        $this->setPostParameters();
         $this->setGlobals();
         $this->loginBackendUser();
-        $_POST['pid'] = 1;
-        $_POST['field'] = json_encode($this->getUpdateField());
-        $_POST['value'] = '1';
-        $_POST['depth'] = 2;
-        $_POST['sysLanguage'] = 0;
     }
 
     /**
@@ -64,7 +65,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
     {
         $this->expectedDaoMethod = 'index';
         $subject = $this->getSubject();
-        $subject->indexAction(array(), $this->getAjaxRequestHandlerMock());
+        $subject->indexAction($this->getRequestMock(), $this->getResponseMock());
     }
 
     /**
@@ -74,7 +75,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
     {
         $this->expectedDaoMethod = 'updatePageTableField';
         $subject = $this->getSubject();
-        $subject->updateAction(array(), $this->getAjaxRequestHandlerMock());
+        $subject->updateAction($this->getRequestMock(), $this->getResponseMock());
     }
 
     /**
@@ -84,7 +85,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
     {
         $this->expectedDaoMethod = 'updatePageTableField';
         $subject = $this->getSubject();
-        $subject->updateRecursiveAction(array(), $this->getAjaxRequestHandlerMock());
+        $subject->updateRecursiveAction($this->getRequestMock(), $this->getResponseMock());
     }
 
     /**
@@ -140,14 +141,52 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Http\AjaxRequestHandler
+     * @return \Psr\Http\Message\ResponseInterface
      */
-    protected function getAjaxRequestHandlerMock()
+    protected function getResponseMock()
     {
-        return $this
-            ->getMockBuilder('TYPO3\\CMS\\Core\\Http\\AjaxRequestHandler')
+        $mock = $this
+            ->getMockBuilder('TYPO3\\CMS\\Core\\Http\\Response')
             ->disableOriginalConstructor()
             ->getMock();
+        $mock
+            ->expects($this->any())
+            ->method('getBody')
+            ->will($this->returnValue($this->getResponseBodyMock()));
+        return $mock;
+    }
+
+    /**
+     * @return \Psr\Http\Message\StreamInterface
+     */
+    protected function getResponseBodyMock()
+    {
+        $mock = $this
+            ->getMockBuilder('TYPO3\\CMS\\Core\\Http\\Stream')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mock
+            ->expects($this->any())
+            ->method('write');
+        return $mock;
+    }
+
+    /**
+     * @return \Psr\Http\Message\ServerRequestInterface
+     */
+    protected function getRequestMock()
+    {
+        $mock = $this
+            ->getMockBuilder('TYPO3\\CMS\\Core\\Http\\ServerRequest')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mock
+            ->expects($this->any())
+            ->method('getParsedBody')
+            ->will(
+                $this->returnValue($this->postParameters)
+            );
+        return $mock;
     }
 
     /**
@@ -316,5 +355,19 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
             ->getMockBuilder('TYPO3\\CMS\\Core\\Database\\DatabaseConnection')
             ->setConstructorArgs(array())
             ->getMock();
+    }
+
+    /**
+     * Sets POST parameters to be passed through the ServerRequest object
+     */
+    protected function setPostParameters()
+    {
+        $this->postParameters = array(
+            'pid' => 1,
+            'field' => json_encode($this->getUpdateField()),
+            'value' => '1',
+            'depth' => 2,
+            'sysLanguage' => 0
+        );
     }
 }
