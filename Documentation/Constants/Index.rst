@@ -26,15 +26,16 @@ Canonical Tag                    Publish canonical link if possible             
 
 Canonical Protocol Fallback      If no protocol is set via TYPO3's page properties, use       *disabled*
                                  this as a fallback to set a unique protocol for both http
-                                 and https requests. Can be set to 'http', 'https' or left
+                                 and https requests. Can be set to `http`, `https` or left
                                  empty to disable the fallback.
 
-Canonical Tag (Strict mode)      Enable strict mode (all wrong GET-parameters will            *enabled*
-                                 generate a canonical-tag to the self without GET-params).
+Canonical Tag (Strict mode)      Enable strict mode (all wrong `GET` parameters will          *enabled*
+                                 generate a canonical-tag to the self without `GET`
+                                 parameters).
 
-                                 e.g. /index.php?id=123&foo=bar would generate a
-                                 Canonical-Tag pointing to /index.php?id=123
-                                 if the cHash is wrong or caching is disabled
+                                 e.g. `/index.php?id=123&foo=bar` would generate a
+                                 Canonical-Tag pointing to `/index.php?id=123`
+                                 if the `cHash` is wrong or caching is disabled
 
 Canonical Tag (No MP mode)       Prevent canonical links to contain mountpoint information.   *disabled*
                                  Useful if some pages would count as duplicate content
@@ -87,7 +88,7 @@ P3P Compact Policy               Your P3P Compact Policy.
                                  - http://www.w3.org/P3P/
                                  - http://www.w3.org/TR/P3P/
                                  - https://en.wikipedia.org/wiki/P3P
-                                 - http://www.p3pwriter.com/LRN_111.asp
+                                 - http://www.p3pwriter.com
 
 P3P Policy Url                   Link (full URL) to your P3P Policy File
 ==============================   ==========================================================   =================
@@ -159,10 +160,10 @@ Google Analytics                 The google analytics code for using on your sit
 GA Cookie Domain Name            If you want to limit the current google analytics to
                                  one domain (or subdomain) set the domain name here, eg.:
 
-                                 - “auto” (default in google analytics)
-                                 - “none”
-                                 - single domain (eg. “example.com”)
-                                 - subdomain (eg. “.example.com”)
+                                 - `auto` (default in google analytics)
+                                 - `none`
+                                 - single domain (eg. `example.com`)
+                                 - subdomain (eg. `.example.com`)
 
 GA Anonymize IP                  Anonymize the last part of the IP                                 *disabled*
                                  (may be required in some countries)
@@ -173,20 +174,21 @@ GA Track Downloads               Try to track downloads with google analytics.  
 
                                  Currently supported files:
 
-                                 - doc,docx,xls,ppt,odt,ods,pdf,zip,tar,gz,txt,vsd,vxd,
-                                   rar,exe,wma,mov,avi,ogg,ogm,mkv,wmv,mp3,webm
+                                 - `doc`,`docx`,`xls`,`ppt`,`odt`,`ods`,`pdf`,`zip`,
+                                   `tar`,`gz`,`txt`,`vsd`,`vxd`,`rar`,`exe`,`wma`,`mov`,
+                                   `avi`,`ogg`,`ogm`,`mkv`,`wmv`,`mp3`,`webm`
 
 Piwik URL                        Url to your Piwik installation
 
-                                 (without http:// and https://)
+                                 (without `http://` and `https://`)
 
 Piwik ID                         Tracking id of your website in your piwik
                                  Multiple Piwik IDs possible, comma separated
 
 Piwik Download & Click Domain    Specifies which domains are internal domains:
 
-                                 - single domain (eg. “example.com”)
-                                 - subdomain (eg. “.example.com”)
+                                 - single domain (eg. `example.com`)
+                                 - subdomain (eg. `.example.com`)
 
                                  For more information visit:
 
@@ -194,8 +196,8 @@ Piwik Download & Click Domain    Specifies which domains are internal domains:
 
 Piwik Cookie Domain Name         Specifies the domain name for the tracking cookie:
 
-                                 - single domain (eg. “example.com”)
-                                 - subdomain (eg. “.example.com”)
+                                 - single domain (eg. `example.com`)
+                                 - subdomain (eg. `.example.com`)
 
                                  For more information visit:
 
@@ -243,10 +245,12 @@ Sitetitle glue spacer (after)               Add spacer after glue string        
 Sitetitle position                          Position of Sitetitle (from template)                        Sitetitle-Pagetitle
                                             Possible options:                                            (0)
 
-                                            Sitetitle-Pagetitle (eg. Example Company: About us)
-                                            Pagetitle-Sitetitle (eg. About us: Example Company)
+                                            Sitetitle-Pagetitle (eg. `Example Company: About us`)
+                                            Pagetitle-Sitetitle (eg. `About us: Example Company`)
 
 Sitetitle                                   Overwrite the template sitetitle with a custom one
+
+Caching                                     Enable or disable caching of page title (for debugging)      *enabled*
 =========================================   ==========================================================   ======================
 
 Sitemap
@@ -262,24 +266,28 @@ Page limit                          Limit pages on sitemap-xml-pages            
 Limit to current language           Limit output of the sitemap to the current language.         *disabled*
                                     This will enable multi-language-domain sitemaps. eg:
 
-                                    - www.example.com (FE-Language is english) will output
+                                    - `www.example.com` (FE-Language is english) will output
                                       only english pages
-                                    - www.example.de (FE-Language is german) will output
+                                    - `www.example.de` (FE-Language is german) will output
                                       only german pages
 
                                     This option was ported from the extension configuration
                                     and will replace this configuration.
 
 Default change frequency            Default change frequency for sitemap cache
-                                    (will be cached!)
+                                    (will be cached)
 
 Page priority                       Default page priority if the page has no own                 1
                                     priority set
 
                                     Page priority will be calculated by:
 
-                                    ( [page priority] – [priority modificator] ) *
-                                    ( 1/[page depth] * [page multiplier] )
+                                    ( `[page priority] – [priority modificator] ) *`
+                                    ( `1/[page depth] * [page multiplier] )`
+
+Priority tag in sitemap             Include priority tag in sitemap                              1
+
+Lastmod tag in sitemap              Include lastmod tag in sitemap                               1
 
 Page priority depth multiplier      Page depth multiplier, see formula in page priority          1
 

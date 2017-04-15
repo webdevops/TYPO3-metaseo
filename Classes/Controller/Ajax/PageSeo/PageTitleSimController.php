@@ -49,7 +49,7 @@ class PageTitleSimController extends AbstractPageSeoController
     /**
      * @inheritDoc
      */
-    protected function getIndex(array $page, $depth, $sysLanguage)
+    public function getIndex(array $page, $depth, $sysLanguage)
     {
         $list = $this->getPageSeoDao()->index($page, $depth, $sysLanguage, $this->fieldList);
 

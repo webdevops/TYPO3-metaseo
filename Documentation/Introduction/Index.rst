@@ -141,5 +141,8 @@ Thanks to...
 - Arne-Kolja Bachstein
 - Paul-Christian Volkmer
 - Dominik Steinborn
+- Attila Glück
+- Simon Schaufelberger
+- Marcus Müller
 - all other contributors and bug reporters
 - famfamfam for these cool silk icons http://www.famfamfam.com/lab/icons/silk/

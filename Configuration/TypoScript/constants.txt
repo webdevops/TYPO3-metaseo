@@ -158,6 +158,9 @@ plugin.metaseo {
     # cat=plugin.metaseo.pageTitle/enable/07; type=string; label= Sitetitle : Overwrite the template sitetitle with a custom one
     pageTitle.sitetitle =
 
+    # cat=plugin.metaseo.pageTitle/enable/08; type=boolean; label= Enable pagetitle caching (for debugging)
+    pageTitle.caching = 1
+
     # cat=plugin.metaseo.sitemap/page/02; type=int+; label= Default page priority (0-100)
     sitemap.pagePriority =
 
@@ -172,4 +175,10 @@ plugin.metaseo {
 
     # cat=plugin.metaseo.sitemap/index/01; type=boolean; label= Index no_cache pages: Allow to index no_cache pages
     sitemap.index.allowNoCache = 0
+
+    # cat=plugin.metaseo.sitemap/index/01; type=boolean; label= Priority tag in sitemap: Include priority tag in sitemap
+    sitemap.enablePriority = 1
+
+    # cat=plugin.metaseo.sitemap/index/01; type=boolean; label= Lastmod tag in sitemap: Include lastmod tag in sitemap
+    sitemap.enableLastMod = 1
 }

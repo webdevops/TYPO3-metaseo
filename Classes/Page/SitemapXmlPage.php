@@ -59,15 +59,13 @@ class SitemapXmlPage extends AbstractPage
             $this->showError('Sitemap is not available, please check your configuration [control-center]');
         }
 
-        $ret = $this->build();
-
-        return $ret;
+        return $this->build();
     }
 
     /**
      * Build sitemap index or specific page
      *
-     * @return mixed
+     * @return string
      */
     protected function build()
     {
@@ -77,11 +75,9 @@ class SitemapXmlPage extends AbstractPage
         $generator = $this->objectManager->get('Metaseo\\Metaseo\\Sitemap\\Generator\\XmlGenerator');
 
         if (empty($page) || $page === 'index') {
-            $ret = $generator->sitemapIndex();
+            return $generator->sitemapIndex();
         } else {
-            $ret = $generator->sitemap($page);
+            return $generator->sitemap($page);
         }
-
-        return $ret;
     }
 }

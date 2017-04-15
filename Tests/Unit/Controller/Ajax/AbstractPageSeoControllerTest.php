@@ -214,7 +214,12 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
      */
     protected function getDataHandlerMock()
     {
-        return $this->getMock('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+        $mock = $this->getMock('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+        $mock
+            ->expects($this->any())
+            ->method('getExcludeListArray')
+            ->will($this->returnValue(array()));
+        return $mock;
     }
 
     /**
