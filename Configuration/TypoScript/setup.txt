@@ -195,6 +195,7 @@ plugin.metaseo {
                 special {
                     items = first
                     first.fields.title =
+                    first.fields.nav_title =
                 }
 
                 1 = TMENU
@@ -211,6 +212,7 @@ plugin.metaseo {
                 special {
                     items = prev
                     prev.fields.title =
+                    prev.fields.nav_title =
                 }
 
                 1 = TMENU
@@ -227,6 +229,7 @@ plugin.metaseo {
                 special {
                     items = next
                     next.fields.title =
+                    next.fields.nav_title =
                 }
 
                 1 = TMENU
