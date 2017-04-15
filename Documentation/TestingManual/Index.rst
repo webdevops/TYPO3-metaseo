@@ -15,10 +15,10 @@ This section is written for developers who want to contribute new test cases to 
 want to test their changes against regressions.
 
 Please note that MetaSEO's test cases slightly differ from the way test cases are written in the TYPO3 core.
-For the moment, our test cases can just be directly run in an IDE like PhpStorm, ignoring the fact that TYPO3
-provides additional infrastructure which we currently don't use.
+For instance, our test cases can be run directly via CLI or in an IDE like PhpStorm, thereby ignoring the fact
+that TYPO3 provides additional infrastructure which we currently don't use.
 
-The test suite currently even avoids to test components from the core, which in turn means that the test suite
+The test suite currently even avoids to test core components, which in turn means that the MetaSEO's test suite
 contains unit tests only whereas core components are mocked as far as possible.
 
 Setting up the test suite
@@ -29,7 +29,7 @@ Prerequisites
 
 You need to install
 
-* PHP 5.6 or PHP 7.0.16 to test against TYPO3 6.2 or 7.6
+* PHP 5.6 or 7.0 to test against TYPO3 6.2 and 7.6
 * php-cli, php-curl, php-gd, php-intl, php-mysql, php-zip, curl
 * Latest version of composer
 * PHPUnit 5.1.3 or use the PHPUnit version shipped with TYPO3 CMS (e.g. PHPUnit 4.8.29)
@@ -62,9 +62,9 @@ Clone TYPO3 sources, install dependencies and manually symlink to your MetaSEO d
 In your IDE, add another PHPUnit test configuration. The IDE should know, that you want to run the tests
 in `metaseo/Tests` and that you want to use the configuration file which is provided by TYPO3.
 
-In PhpStorm, the configuration looks like this:
+In PhpStorm 2017.1.1, the configuration looks like this:
 
-.. figure:: ../Images/TestingManual/IDETestConfiguration.png
+.. figure:: ../Images/TestingManual/IDETestConfiguration_v2.png
     :scale: 80%
     :alt: Adding a test configuration in PhpStorm
 
@@ -72,7 +72,7 @@ You can now execute the test by choosing the new test configuration and pressing
 
 In case of success, the result should more or less look like this:
 
-.. figure:: ../Images/TestingManual/IDETestResult.png
+.. figure:: ../Images/TestingManual/IDETestResult_v2.png
     :scale: 80%
     :alt: Test result in IDE
 
