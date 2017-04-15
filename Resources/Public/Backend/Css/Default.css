@@ -115,12 +115,8 @@ th.center {
     min-height: 22px;
 }
 
-.ext-strict .ext-webkit .x-small-editor .x-form-text {
-    font-size: 12px;
-    line-height: 1.5;
-    color: #333;
-    height: 28px;
-    padding:4px 6px;
+.ext-strict .ext-webkit .x-small-editor .x-form-text,
+.ext-strict .x-small-editor .x-form-text {
     background-color: #fefefe;
     border: 1px solid #bbb;
     border-radius: 2px;
@@ -129,13 +125,6 @@ th.center {
     transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 
-.x-small-editor .x-form-field-wrap .x-form-trigger {
-    height: 24px;
-    margin-right: 3px;
-}
-.x-form-field-wrap.x-form-field-trigger-wrap {
-    margin-right: 4px;
-}
 .x-combo-list {
     border-color: #999;
 }
