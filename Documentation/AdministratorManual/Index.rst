@@ -11,12 +11,66 @@
 Administrator Manual
 ====================
 
-Installation
-------------
+Installation via extension manager
+----------------------------------
 
-- Install Extension via Extension Manager.
-- Include “static extension template” (Template → Info/Modify → Edit the whole template record → “Include static (from extensions):” and select “MetaSEO”)
-- *Optional:* If you want to import your settings from the predecessor `tq_seo` install the `metaseo_tqseo_import` extension and run the importer.
+- Update the extension manager's extension list
+- Install the extension `metaseo` via extension manager.
+- Include “static extension template” (Template → Info/Modify → Edit the whole template record → “Include static
+  (from extensions):” and select “MetaSEO”)
+- Modify your metatags via constants editor
+
+Installation via composer
+-------------------------
+
+- Make sure that you have a recent version of composer installed
+- Make sure that you have TYPO3 CMS installed in composer mode
+- `cd` to the path with your `composer.json`
+- To install via TER (recommended default), run `composer require typo3-ter/metaseo -o`
+- To install via Packagist (for enthusiasts), run `composer require mblaschke/metaseo -o`
+- If asked for a version constraint, answer with `*`
+- Include “static extension template” (Template → Info/Modify → Edit the whole template record → “Include static
+  (from extensions):” and select “MetaSEO”)
+- Modify your metatags via constants editor
+
+Migration from TYPO3 CMS 7.6 to 8.7
+-----------------------------------
+
+- Check out the latest `announcements <https://github.com/mblaschke/TYPO3-metaseo/issues/376>`_.
+
+Migration from TYPO3 CMS 6.2 to 7.6
+-----------------------------------
+
+- Upgrade the extension `metaseo` to the latest 2.x version, still using TYPO3 CMS 6.2.
+- Clear all caches in the install tool
+- You are now ready to go for TYPO3 CMS 7.6
+
+Migration from extension tq_seo
+-------------------------------
+
+Before you start the migration, there's two important things to know:
+
+- The migration helper extension `metaseo_tqseo_import` is available for TYPO3 CMS 6.2 only. That said, please make
+  sure to migrate to `metaseo` *before* upgrading to later versions of TYPO3 CMS.
+- `metaseo` 2.0.0 contains schema updates which the migration helper extension `metaseo_tqseo_import` is not aware of.
+  That said, please also make sure that you *don't* install `metaseo` 2.0.0 or later before you migrate.
+
+To migrate from `tq_seo` to `metaseo` please follow these steps:
+
+- Make sure that you use TYPO3 CMS 6.2
+- Update the extension manager's extension list
+- Update `tq_seo` to version 6.0.1.
+- Clear all caches using the install tool.
+- Update your database schema using the install tool.
+- Uninstall or disable the extension `tq_seo`. Don't update your database schema.
+- Install the extension `metaseo` *1.0.8* via extension manager. Installing later versions of `metaseo` will break
+  the migration process.
+- Include “static extension template” (Template → Info/Modify → Edit the whole template record → “Include static
+  (from extensions):” and select “MetaSEO”)
+- Install the extension `metaseo_tqseo_import` and run the importer.
+- Uninstall or disable the extension `metaseo_tqseo_import`
+- Update your database schema using the install tool.
+- Upgrade the extension `metaseo` to the latest 2.x version, still using TYPO3 CMS 6.2.
 - Modify your metatags via constants editor
 
 Indexed Sitemap
