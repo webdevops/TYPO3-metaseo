@@ -132,7 +132,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
                 $this->getDataHandlerMock()
             ),
         );
-        $mock = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $mock = $this->createMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
         $mock
             ->expects($this->any())
             ->method('get')
@@ -200,7 +200,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
                 'lastUpdated' => 1
             )
         );
-        $mock = $this->getMock('Metaseo\\Metaseo\\Dao\\PageSeoDao');
+        $mock = $this->createMock('Metaseo\\Metaseo\\Dao\\PageSeoDao');
         $mock
             ->expects($this->any())
             ->method('index')
@@ -240,7 +240,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
      */
     protected function getTemplateDaoMock()
     {
-        $mock = $this->getMock('Metaseo\\Metaseo\\Dao\\TemplateDao');
+        $mock = $this->createMock('Metaseo\\Metaseo\\Dao\\TemplateDao');
         $mock
             ->expects($this->any())
             ->method('checkForTemplateByUidList')
@@ -253,7 +253,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
      */
     protected function getDataHandlerMock()
     {
-        $mock = $this->getMock('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+        $mock = $this->createMock('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
         $mock
             ->expects($this->any())
             ->method('getExcludeListArray')
@@ -266,7 +266,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
      */
     protected function getPageRepositoryMock()
     {
-        return $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+        return $this->createMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
     }
 
     /**
@@ -274,7 +274,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
      */
     protected function getPageTitlePartMock()
     {
-        return $this->getMock('Metaseo\\Metaseo\\Page\\Part\\PagetitlePart');
+        return $this->createMock('Metaseo\\Metaseo\\Page\\Part\\PagetitlePart');
     }
 
     /**
@@ -282,7 +282,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
      */
     protected function getFrontendUtilityMock()
     {
-        $mock = $this->getMock('Metaseo\\Metaseo\\DependencyInjection\\Utility\\FrontendUtility');
+        $mock = $this->createMock('Metaseo\\Metaseo\\DependencyInjection\\Utility\\FrontendUtility');
         $mock
             ->expects($this->any())
             ->method('getTypoLinkUrl')
@@ -299,7 +299,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
      */
     protected function getHttpUtilityMock()
     {
-        $mock = $this->getMock('Metaseo\\Metaseo\\DependencyInjection\\Utility\\HttpUtility');
+        $mock = $this->createMock('Metaseo\\Metaseo\\DependencyInjection\\Utility\\HttpUtility');
         $this->configureHttpUtilityMock($mock);
         return $mock;
     }
@@ -319,7 +319,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
      */
     protected function loginBackendUser()
     {
-        $mock = $this->getMock(
+        $mock = $this->createMock(
             'TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication',
             array(),
             array(),
@@ -336,7 +336,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
             ->method('doesUserHaveAccess')
             ->will($this->returnValue(true));
         $GLOBALS['BE_USER'] = $mock;
-        $GLOBALS['TYPO3_DB'] = $this->getMock(
+        $GLOBALS['TYPO3_DB'] = $this->createMock(
             'TYPO3\\CMS\\Core\\Database\\DatabaseConnection',
             array(),
             array(),
@@ -350,7 +350,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
      */
     protected function setGlobals()
     {
-        $GLOBALS['LANG'] = $this->getMock('TYPO3\\CMS\\Lang\\LanguageService');
+        $GLOBALS['LANG'] = $this->createMock('TYPO3\\CMS\\Lang\\LanguageService');
         $GLOBALS['TYPO3_DB'] = $this
             ->getMockBuilder('TYPO3\\CMS\\Core\\Database\\DatabaseConnection')
             ->setConstructorArgs(array())
