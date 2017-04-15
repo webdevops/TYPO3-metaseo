@@ -21,8 +21,92 @@ provides additional infrastructure which we currently don't use.
 The test suite currently even avoids to test components from the core, which in turn means that the test suite
 contains unit tests only whereas core components are mocked as far as possible.
 
-Setting up the test suite
--------------------------
+Setting up the test suite for MetaSEO 3.x
+-----------------------------------------
+
+Prerequisites
+^^^^^^^^^^^^^
+
+You need to install
+
+* PHP 7.0+ to test against TYPO3 8.7
+* php-cli, php-curl, php-gd, php-intl, php-mysql, php-zip, curl, xdebug
+* Latest version of composer
+* PHPUnit (to resolve dependencies)
+
+
+Using ubuntu 16.04, that could look like this:
+
+::
+
+    sudo su - root
+    apt-get install php7.0-cli php7.0-curl php7.0-gd php7.0-intl php7.0-mysql php7.0-zip php-xdebug phpunit curl
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+
+Testing MetaSEO 3.x against TYPO3 CMS 8.7
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Starting with TYPO3 CMS 8.7, we can make use of TYPO3's testing framework which integrates nicely
+into an IDE like PHPStorm as described in the following steps:
+
+Clone TYPO3 sources, install dependencies and manually symlink to your MetaSEO directory:
+
+::
+
+    git clone --single-branch --branch TYPO3_8-7 https://github.com/TYPO3/TYPO3.CMS.git TYPO3.87.TEST
+    cd TYPO3.87.TEST
+    composer install -o
+    mkdir -p typo3conf/ext
+    cd typo3conf/ext
+    ln -s ../../../metaseo
+
+
+In your IDE, add another PHPUnit test configuration. The IDE needs to know a few things:
+
+* PHPUnit should execute only tests in directory `metaseo/Tests`.
+* PHPUnit should use the configuration file `UnitTests.xml` which is provided by TYPO3.
+* A PHPUnit parameter `--whitelist` is needed to specify a directory to report code coverage for.
+* TYPO3's testing framework needs to know TYPO3's root directory which can be specified in an
+  environment variable `TYPO3_PATH_ROOT`
+* PHP CLI should know which classes must be loaded whereas composer's autoloader does the job
+  by passing a parameter `-d auto_prepend_file='vendor/autoload.php'` to PHP CLI.
+* A working directory to `cd` into. That should be TYPO3's root directory again.
+
+In PhpStorm 2017.1.1, the configuration looks like this:
+
+.. figure:: ../Images/TestingManual/IDETestConfiguration_v3.png
+    :scale: 80%
+    :alt: Adding a test configuration in PhpStorm
+
+    You can now run the tests of the test suite by choosing the new test configuration and pressing the run button.
+
+    In case of success, the result should more or less look like this:
+
+.. figure:: ../Images/TestingManual/IDETestResult_v3.png
+    :scale: 80%
+    :alt: Test result in IDE
+
+    As an alternative, the test suite can also be run via command line interface:
+
+::
+
+    cd TYPO3.87.TEST
+    ./bin/phpunit  --configuration vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml ../metaseo/Tests
+
+
+That should return an output like
+
+::
+
+    PHPUnit 5.7.5 by Sebastian Bergmann and contributors.
+    .......................  23 / 23 (100%)
+    Time: 601 ms, Memory: 16.00MB
+    OK (23 tests, 55 assertions)
+
+
+Setting up the test suite for MetaSEO 2.x
+-----------------------------------------
 
 Prerequisites
 ^^^^^^^^^^^^^
