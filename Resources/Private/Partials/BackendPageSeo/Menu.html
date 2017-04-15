@@ -1,0 +1,19 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:metaseo="http://typo3.org/ns/Metaseo/Metaseo/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<metaseo:be.menus.actionMenu>
+    <f:be.menus.actionMenuItem label="{f:translate(key: 'menu.seo.page.metadata')}" controller="BackendPageSeo"
+                               action="main"/>
+    <f:be.menus.actionMenuItem label="{f:translate(key: 'menu.seo.page.geo')}" controller="BackendPageSeo"
+                               action="geo"/>
+    <f:be.menus.actionMenuItem label="{f:translate(key: 'menu.seo.page.searchengines')}" controller="BackendPageSeo"
+                               action="searchengines"/>
+    <f:be.menus.actionMenuItem label="{f:translate(key: 'menu.seo.page.url')}" controller="BackendPageSeo"
+                               action="url"/>
+    <f:be.menus.actionMenuItem label="{f:translate(key: 'menu.seo.page.pagetitle')}" controller="BackendPageSeo"
+                               action="pagetitle"/>
+    <f:be.menus.actionMenuItem label="{f:translate(key: 'menu.seo.page.pagetitlesim')}" controller="BackendPageSeo"
+                               action="pagetitlesim"/>
+</metaseo:be.menus.actionMenu>
+</html>
