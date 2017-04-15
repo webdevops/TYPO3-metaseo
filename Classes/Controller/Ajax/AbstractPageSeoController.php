@@ -293,7 +293,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
         try {
             $this->init();
             $this->fetchParams($request);
-            $request->getBody()->write(\GuzzleHttp\json_encode($this->executeUpdateRecursive()));
+            $response->getBody()->write(\GuzzleHttp\json_encode($this->executeUpdateRecursive()));
         } catch (Exception $exception) {
             return $this->ajaxExceptionHandler($exception, $response);
         }

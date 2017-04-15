@@ -41,15 +41,16 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
      */
     protected $fieldForUpdate;
 
+    /**
+     * @var array POST parameters to be passed through the ServerRequest object
+     */
+    protected $postParameters;
+
     public function setUp()
     {
+        $this->setPostParameters();
         $this->setGlobals();
         $this->loginBackendUser();
-        $_POST['pid'] = 1;
-        $_POST['field'] = json_encode($this->getUpdateField());
-        $_POST['value'] = '1';
-        $_POST['depth'] = 2;
-        $_POST['sysLanguage'] = 0;
     }
 
     /**
@@ -64,7 +65,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
     {
         $this->expectedDaoMethod = 'index';
         $subject = $this->getSubject();
-        $subject->indexAction(array(), $this->getAjaxRequestHandlerMock());
+        $subject->indexAction($this->getRequestMock(), $this->getResponseMock());
     }
 
     /**
@@ -74,7 +75,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
     {
         $this->expectedDaoMethod = 'updatePageTableField';
         $subject = $this->getSubject();
-        $subject->updateAction(array(), $this->getAjaxRequestHandlerMock());
+        $subject->updateAction($this->getRequestMock(), $this->getResponseMock());
     }
 
     /**
@@ -84,7 +85,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
     {
         $this->expectedDaoMethod = 'updatePageTableField';
         $subject = $this->getSubject();
-        $subject->updateRecursiveAction(array(), $this->getAjaxRequestHandlerMock());
+        $subject->updateRecursiveAction($this->getRequestMock(), $this->getResponseMock());
     }
 
     /**
@@ -131,7 +132,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
                 $this->getDataHandlerMock()
             ),
         );
-        $mock = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $mock = $this->createMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
         $mock
             ->expects($this->any())
             ->method('get')
@@ -140,14 +141,52 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Http\AjaxRequestHandler
+     * @return \Psr\Http\Message\ResponseInterface
      */
-    protected function getAjaxRequestHandlerMock()
+    protected function getResponseMock()
     {
-        return $this
-            ->getMockBuilder('TYPO3\\CMS\\Core\\Http\\AjaxRequestHandler')
+        $mock = $this
+            ->getMockBuilder('TYPO3\\CMS\\Core\\Http\\Response')
             ->disableOriginalConstructor()
             ->getMock();
+        $mock
+            ->expects($this->any())
+            ->method('getBody')
+            ->will($this->returnValue($this->getResponseBodyMock()));
+        return $mock;
+    }
+
+    /**
+     * @return \Psr\Http\Message\StreamInterface
+     */
+    protected function getResponseBodyMock()
+    {
+        $mock = $this
+            ->getMockBuilder('TYPO3\\CMS\\Core\\Http\\Stream')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mock
+            ->expects($this->any())
+            ->method('write');
+        return $mock;
+    }
+
+    /**
+     * @return \Psr\Http\Message\ServerRequestInterface
+     */
+    protected function getRequestMock()
+    {
+        $mock = $this
+            ->getMockBuilder('TYPO3\\CMS\\Core\\Http\\ServerRequest')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mock
+            ->expects($this->any())
+            ->method('getParsedBody')
+            ->will(
+                $this->returnValue($this->postParameters)
+            );
+        return $mock;
     }
 
     /**
@@ -161,7 +200,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
                 'lastUpdated' => 1
             )
         );
-        $mock = $this->getMock('Metaseo\\Metaseo\\Dao\\PageSeoDao');
+        $mock = $this->createMock('Metaseo\\Metaseo\\Dao\\PageSeoDao');
         $mock
             ->expects($this->any())
             ->method('index')
@@ -201,7 +240,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
      */
     protected function getTemplateDaoMock()
     {
-        $mock = $this->getMock('Metaseo\\Metaseo\\Dao\\TemplateDao');
+        $mock = $this->createMock('Metaseo\\Metaseo\\Dao\\TemplateDao');
         $mock
             ->expects($this->any())
             ->method('checkForTemplateByUidList')
@@ -214,7 +253,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
      */
     protected function getDataHandlerMock()
     {
-        $mock = $this->getMock('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+        $mock = $this->createMock('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
         $mock
             ->expects($this->any())
             ->method('getExcludeListArray')
@@ -227,7 +266,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
      */
     protected function getPageRepositoryMock()
     {
-        return $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+        return $this->createMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
     }
 
     /**
@@ -235,7 +274,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
      */
     protected function getPageTitlePartMock()
     {
-        return $this->getMock('Metaseo\\Metaseo\\Page\\Part\\PagetitlePart');
+        return $this->createMock('Metaseo\\Metaseo\\Page\\Part\\PagetitlePart');
     }
 
     /**
@@ -243,7 +282,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
      */
     protected function getFrontendUtilityMock()
     {
-        $mock = $this->getMock('Metaseo\\Metaseo\\DependencyInjection\\Utility\\FrontendUtility');
+        $mock = $this->createMock('Metaseo\\Metaseo\\DependencyInjection\\Utility\\FrontendUtility');
         $mock
             ->expects($this->any())
             ->method('getTypoLinkUrl')
@@ -260,7 +299,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
      */
     protected function getHttpUtilityMock()
     {
-        $mock = $this->getMock('Metaseo\\Metaseo\\DependencyInjection\\Utility\\HttpUtility');
+        $mock = $this->createMock('Metaseo\\Metaseo\\DependencyInjection\\Utility\\HttpUtility');
         $this->configureHttpUtilityMock($mock);
         return $mock;
     }
@@ -280,7 +319,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
      */
     protected function loginBackendUser()
     {
-        $mock = $this->getMock(
+        $mock = $this->createMock(
             'TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication',
             array(),
             array(),
@@ -297,7 +336,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
             ->method('doesUserHaveAccess')
             ->will($this->returnValue(true));
         $GLOBALS['BE_USER'] = $mock;
-        $GLOBALS['TYPO3_DB'] = $this->getMock(
+        $GLOBALS['TYPO3_DB'] = $this->createMock(
             'TYPO3\\CMS\\Core\\Database\\DatabaseConnection',
             array(),
             array(),
@@ -311,10 +350,24 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
      */
     protected function setGlobals()
     {
-        $GLOBALS['LANG'] = $this->getMock('TYPO3\\CMS\\Lang\\LanguageService');
+        $GLOBALS['LANG'] = $this->createMock('TYPO3\\CMS\\Lang\\LanguageService');
         $GLOBALS['TYPO3_DB'] = $this
             ->getMockBuilder('TYPO3\\CMS\\Core\\Database\\DatabaseConnection')
             ->setConstructorArgs(array())
             ->getMock();
+    }
+
+    /**
+     * Sets POST parameters to be passed through the ServerRequest object
+     */
+    protected function setPostParameters()
+    {
+        $this->postParameters = array(
+            'pid' => 1,
+            'field' => json_encode($this->getUpdateField()),
+            'value' => '1',
+            'depth' => 2,
+            'sysLanguage' => 0
+        );
     }
 }
