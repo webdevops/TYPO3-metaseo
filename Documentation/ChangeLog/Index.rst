@@ -15,6 +15,13 @@ Changelog
 +-------------+----------------------------------------------------------------------------------------------------+
 | Version     | Changes                                                                                            |
 +=============+====================================================================================================+
+| **2.1.0**   | **New feature and Bugfix release**                                                                 |
+|             |                                                                                                    |
+|             |                                                                                                    |
+|             |                                                                                                    |
+|             | `Milestone 2.1.0 <https://github.com/mblaschke/TYPO3-metaseo/milestone/17?closed=1>`_              |
+|             | `Changes in 2.1.0 <https://github.com/mblaschke/TYPO3-metaseo/compare/2.0.4...2.1.0>`_             |
++-------------+----------------------------------------------------------------------------------------------------+
 | **2.0.4**   | **New feature and Bugfix release**                                                                 |
 |             |                                                                                                    |
 |             | - Sitemap: Tags `lastmod` and `priority` now can be disabled via configuration                     |
