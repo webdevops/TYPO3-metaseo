@@ -28,10 +28,6 @@
     font-style: italic;
 }
 
-.metaseo-info-from-overlay {
-
-}
-
 .metaseo-info-only-in-base {
     color: red;
 }
@@ -50,16 +46,15 @@
     color: black;
 }
 
-.metaseo-grid-editable .x-grid3-body .x-grid3-cell .t3-icon {
+.metaseo-grid-editable .x-grid3-body .x-grid3-cell .t3js-icon {
     visibility: hidden;
     position: absolute;
-    right: -1px;
-    top: 0;
-    bottom: 0;
+    right: 3px;
+    top: 2px;
     background-color: #B3B3B3;
 }
 
-.metaseo-grid-editable .x-grid3-body .x-grid3-cell:hover .t3-icon {
+.metaseo-grid-editable .x-grid3-body .x-grid3-cell:hover .t3js-icon {
     visibility: visible;
 }
 
@@ -67,15 +62,11 @@
     cursor: pointer;
 }
 
-.metaseo-cell-editable .t3-icon {
-    cursor: pointer !important;
-}
-
 .x-grid3-body .x-grid3-cell .metaseo-toolbar {
     text-align: center;
 }
 
-.x-grid3-body .x-grid3-cell .metaseo-toolbar .t3-icon {
+.x-grid3-body .x-grid3-cell .metaseo-toolbar .t3js-icon {
     visibility: visible !important;
     position: static !important;
     background-color: transparent !important;
@@ -90,10 +81,7 @@ th.center {
     cursor: pointer !important;
 }
 
-.icon-grid {
-    background-image: url('../Icons/Delete.gif') !important;
-}
-
+.icon-grid,
 .delete {
     background-image: url('../Icons/Delete.gif') !important;
 }
@@ -108,9 +96,45 @@ th.center {
     padding: 10px 15px;
 }
 
-.x-mask-loading div {
-    background-image: url("../Icons/Spinner.gif");
-}
+.x-mask-loading div,
 .x-mask-loading-message div {
     background-image: url("../Icons/Spinner.gif");
+}
+
+.x-panel-tbar-noheader .x-toolbar,
+.x-panel-mc .x-panel-tbar .x-toolbar {
+    border-color:transparent;
+    padding-bottom: 10px;
+}
+.x-panel-bbar .x-toolbar {
+    padding-top: 10px;
+}
+
+.ext-strict .x-grid3-cell-inner,
+.ext-strict .x-grid3-hd-inner {
+    min-height: 22px;
+}
+
+.ext-strict .ext-webkit .x-small-editor .x-form-text,
+.ext-strict .x-small-editor .x-form-text {
+    background-color: #fefefe;
+    border: 1px solid #bbb;
+    border-radius: 2px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+.x-combo-list {
+    border-color: #999;
+}
+.x-combo-list-item {
+    border: 1px solid transparent;
+}
+.x-combo-list-item:nth-child(odd) {
+    background-color: #f7f7f7;
+}
+.x-panel-tl .x-panel-header {
+    padding: 10px 5px;
+    color: #000;
 }
