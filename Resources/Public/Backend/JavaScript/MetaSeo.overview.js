@@ -152,6 +152,15 @@ MetaSeo.overview.grid = {
                             });
                         }
                     }
+                },
+                templates: {
+                    cell: new Ext.Template(
+                        // By setting this template, mouse pointer changes when hovering over the icon
+                        // As a bonus: The clickable area extends to the very upper/lower border of the cell
+                        // As soon as there is a better solution for this issue, this template becomes obsolete
+                        '<td class="x-grid3-col x-grid3-cell x-grid3-td-{id} x-selectable {css}" style="{style}" tabIndex="0" {cellAttr}>',
+                        '<div class="x-grid3-cell-inner x-grid3-col-{id}" {attr}>{value}</div>','</td>'
+                    )
                 }
             },
             tbar: [
@@ -512,7 +521,6 @@ MetaSeo.overview.grid = {
         });
     },
 
-
     _createGridColumnModel: function () {
         var me = this;
 
@@ -798,7 +806,7 @@ MetaSeo.overview.grid = {
                 var fieldRendererUrlSimulate = function (value, metaData, record, rowIndex, colIndex, store) {
                     var qtip = Ext.util.Format.htmlEncode(MetaSeo.overview.conf.lang.qtip_url_simulate);
 
-                    return '<div class="metaseo-toolbar" ext:qtip="' + qtip + '">' + MetaSeo.overview.conf.sprite.info + '</div>';
+                    return '<div class="metaseo-toolbar" ext:qtip="' + qtip + '">' + MetaSeo.reRenderIcon(MetaSeo.overview.conf.sprite.info) + '</div>';
                 };
 
 
@@ -952,7 +960,7 @@ MetaSeo.overview.grid = {
                 var fieldRendererTitleSimulate = function (value, metaData, record, rowIndex, colIndex, store) {
                     var qtip = Ext.util.Format.htmlEncode(MetaSeo.overview.conf.lang.qtip_pagetitle_simulate);
 
-                    return '<div class="metaseo-toolbar" ext:qtip="' + qtip + '">' + MetaSeo.overview.conf.sprite.info + '</div>';
+                    return '<div class="metaseo-toolbar" ext:qtip="' + qtip + '">' + MetaSeo.reRenderIcon(MetaSeo.overview.conf.sprite.info) + '</div>';
                 };
 
                 columnModel.push({
@@ -1079,7 +1087,7 @@ MetaSeo.overview.grid = {
 
         if (this._cellEditMode) {
             classes += 'metaseo-cell-editable ';
-            icon = MetaSeo.overview.conf.sprite.edit;
+            icon = MetaSeo.reRenderIcon(MetaSeo.overview.conf.sprite.edit);
         }
 
         if (this._fullCellHighlight && !Ext.isEmpty(MetaSeo.overview.conf.criteriaFulltext)) {

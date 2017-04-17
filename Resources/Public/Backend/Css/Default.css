@@ -51,7 +51,6 @@
     position: absolute;
     right: 3px;
     top: 2px;
-    background-color: #B3B3B3;
 }
 
 .metaseo-grid-editable .x-grid3-body .x-grid3-cell:hover .t3js-icon {
@@ -68,8 +67,6 @@
 
 .x-grid3-body .x-grid3-cell .metaseo-toolbar .t3js-icon {
     visibility: visible !important;
-    position: static !important;
-    background-color: transparent !important;
 }
 
 td.center,
@@ -137,4 +134,9 @@ th.center {
 .x-panel-tl .x-panel-header {
     padding: 10px 5px;
     color: #000;
+}
+.t3js-icon-single-span {
+    width:16px;
+    height:16px;
+    background-size: cover;
 }
