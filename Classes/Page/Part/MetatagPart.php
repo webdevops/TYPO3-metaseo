@@ -1331,6 +1331,7 @@ class MetatagPart extends AbstractPart
      */
     protected function generateCanonicalUrl()
     {
+        $extCompat7 = ExtensionManagementUtility::isLoaded('compatibility7');
         //User has specified a canonical URL in the page properties
         if (!empty($this->pageRecord['tx_metaseo_canonicalurl'])) {
             return $this->generateLink($this->pageRecord['tx_metaseo_canonicalurl']);
@@ -1344,7 +1345,7 @@ class MetatagPart extends AbstractPart
             if (!empty($clUrl) && isset($clLinkConf) && isset($clDisableMpMode)) {
                 $url = $this->generateLink($clUrl, $clLinkConf, $clDisableMpMode);
                 return $this->setFallbackProtocol(
-                    $this->pageRecord['url_scheme'], //page properties protocol selection
+                    $extCompat7 ? $this->pageRecord['url_scheme'] : null, //page properties protocol selection
                     $this->tsSetupSeo['canonicalUrl.']['fallbackProtocol'],
                     $url
                 );

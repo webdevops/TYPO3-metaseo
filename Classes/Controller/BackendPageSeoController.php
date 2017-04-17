@@ -194,6 +194,7 @@ class BackendPageSeoController extends AbstractStandardModule
         // ############################
 
         $realUrlAvailable = ExtensionManagementUtility::isLoaded('realurl');
+        $urlSchemeAvailable = ExtensionManagementUtility::isLoaded('compatibility7');
 
         $ajaxController = AbstractPageSeoController::AJAX_PREFIX . $listType;
 
@@ -215,6 +216,7 @@ class BackendPageSeoController extends AbstractStandardModule
             'listType'         => $listType,
             'criteriaFulltext' => '',
             'realurlAvailable' => $realUrlAvailable,
+            'urlSchemeAvailable' => $urlSchemeAvailable,
             'sprite'           => array(
                 'edit'   => $iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render(),
                 'info'   => $iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render(),

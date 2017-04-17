@@ -448,9 +448,14 @@ MetaSeo.overview.grid = {
 
             case 'url':
                 gridDsColumns.push(
-                    {name: 'alias', type: 'string'},
-                    {name: 'url_scheme', type: 'string'}
+                    {name: 'alias', type: 'string'}
                 );
+
+                if (MetaSeo.overview.conf.urlSchemeAvailable) {
+                    gridDsColumns.push(
+                        {name: 'url_scheme', type: 'string'}
+                    );
+                }
 
                 if (MetaSeo.overview.conf.realurlAvailable) {
                     gridDsColumns.push(
@@ -810,35 +815,39 @@ MetaSeo.overview.grid = {
                 };
 
 
+                if (MetaSeo.overview.conf.urlSchemeAvailable) {
+                    columnModel.push({
+                        id: 'url_scheme',
+                        header: MetaSeo.overview.conf.lang.page_url_scheme,
+                        width: 100,
+                        sortable: false,
+                        dataIndex: 'url_scheme',
+                        renderer: fieldRendererUrlScheme,
+                        metaSeoClickEdit: {
+                            xtype: 'combo',
+                            forceSelection: true,
+                            editable: false,
+                            mode: 'local',
+                            triggerAction: 'all',
+                            store: new Ext.data.ArrayStore({
+                                id: 0,
+                                fields: [
+                                    'id',
+                                    'label'
+                                ],
+                                data: [
+                                    [0, MetaSeo.overview.conf.lang.page_url_scheme_default],
+                                    [1, MetaSeo.overview.conf.lang.page_url_scheme_http],
+                                    [2, MetaSeo.overview.conf.lang.page_url_scheme_https]
+                                ]
+                            }),
+                            valueField: 'id',
+                            displayField: 'label'
+                        }
+                    });
+                }
+
                 columnModel.push({
-                    id: 'url_scheme',
-                    header: MetaSeo.overview.conf.lang.page_url_scheme,
-                    width: 100,
-                    sortable: false,
-                    dataIndex: 'url_scheme',
-                    renderer: fieldRendererUrlScheme,
-                    metaSeoClickEdit: {
-                        xtype: 'combo',
-                        forceSelection: true,
-                        editable: false,
-                        mode: 'local',
-                        triggerAction: 'all',
-                        store: new Ext.data.ArrayStore({
-                            id: 0,
-                            fields: [
-                                'id',
-                                'label'
-                            ],
-                            data: [
-                                [0, MetaSeo.overview.conf.lang.page_url_scheme_default],
-                                [1, MetaSeo.overview.conf.lang.page_url_scheme_http],
-                                [2, MetaSeo.overview.conf.lang.page_url_scheme_https]
-                            ]
-                        }),
-                        valueField: 'id',
-                        displayField: 'label'
-                    }
-                }, {
                     id: 'alias',
                     header: MetaSeo.overview.conf.lang.page_url_alias,
                     width: 200,
