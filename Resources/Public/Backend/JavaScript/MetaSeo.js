@@ -173,5 +173,23 @@ MetaSeo = {
                 }
         }
         TYPO3.Flashmessage.display(sev, title, message, duration);
+    },
+
+    iconRenderer: new Ext.XTemplate(
+        '<span class="t3js-icon t3js-icon-single-span" style="background-image: url(\'{url}\')"></span>'
+    ),
+
+    reRenderIcon: function (iconMarkup) {
+        // Works around unclickable edit/info icons (presumably ExtJS related magic does this)
+        // clickability fails as soon as nested tags are rendered!
+        // this function extracts the url from some markup with a src= property and renders it to a single span tag
+        // We need an alternative for ExtJS anyways. This workaround may stay until that is done.
+        var iconUrl = iconMarkup.match(/src="(.*?)"/g).map(function(val){
+            return val.replace(/src="/g,'').replace(/"/g,'');
+        })[0];
+
+        return this.iconRenderer.apply({
+            url: iconUrl
+        });
     }
 };
