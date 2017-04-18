@@ -5,9 +5,8 @@
 ![License GPL3](https://img.shields.io/badge/license-GPL3-blue.svg?style=flat)
 
 
-[![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/mblaschke/typo3-metaseo.svg)](https://isitmaintained.com/project/mblaschke/typo3-metaseo "Average time to resolve an issue")
-[![Percentage of issues still open](https://isitmaintained.com/badge/open/mblaschke/typo3-metaseo.svg)](https://isitmaintained.com/project/mblaschke/typo3-metaseo "Percentage of issues still open")
-
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/mblaschke/TYPO3-metaseo.svg)](http://isitmaintained.com/project/mblaschke/TYPO3-metaseo "Average time to resolve an issue")
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/mblaschke/TYPO3-metaseo.svg)](http://isitmaintained.com/project/mblaschke/TYPO3-metaseo "Percentage of issues still open")
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/19914ab4-1f0f-4be0-9215-410fba880af2/big.png)](https://insight.sensiolabs.com/projects/19914ab4-1f0f-4be0-9215-410fba880af2)
 
@@ -33,6 +32,11 @@ It's a replacement for the "metatag" extension and the successor of the disconti
   + Branch **develop**
   + TYPO3 Version: 6.2.x - 7.6.x
   + Composer: dev-develop
+
+* Version **3.0.0-dev**:
+
+  + Branch **feature/8lts**
+  + TYPO3 Version: 8.7.x
 
 For version specific information see [changelog for MetaSEO](CHANGELOG.md)
 
@@ -86,6 +90,8 @@ Please feel free to file an issue in our [Bugtracker](https://github.com/mblasch
 
 In case of issues, please update to the latest version of MetaSEO first. We also strongly recommend to use recent
 versions of TYPO3 CMS (6.2.28+, 7.6.12+) and RealUrl (2.1.5+)
+
+MetaSEO users also meet on slack at [#ext-metaseo](https://typo3.slack.com/messages/ext-metaseo/).
 
 ## Contribute
 
