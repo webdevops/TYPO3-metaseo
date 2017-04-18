@@ -33,6 +33,11 @@ It's a replacement for the "metatag" extension and the successor of the disconti
   + TYPO3 Version: 6.2.x - 7.6.x
   + Composer: dev-develop
 
+* Version **3.0.0-dev**:
+
+  + Branch **feature/8lts**
+  + TYPO3 Version: 8.7.x
+
 For version specific information see [changelog for MetaSEO](CHANGELOG.md)
 
 
