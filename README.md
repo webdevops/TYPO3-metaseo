@@ -37,6 +37,7 @@ It's a replacement for the "metatag" extension and the successor of the disconti
 
   + Branch **feature/8lts**
   + TYPO3 Version: 8.7.x
+  + `composer require mblaschke/metaseo:dev-feature/8lts`
 
 For version specific information see [changelog for MetaSEO](CHANGELOG.md)
 
