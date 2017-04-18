@@ -27,7 +27,7 @@
 namespace Metaseo\Metaseo\Tests\Unit\Controller\Ajax;
 
 use PHPUnit_Framework_MockObject_MockObject;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 abstract class AbstractPageSeoControllerTest extends UnitTestCase
 {
