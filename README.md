@@ -5,9 +5,8 @@
 ![License GPL3](https://img.shields.io/badge/license-GPL3-blue.svg?style=flat)
 
 
-[![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/mblaschke/typo3-metaseo.svg)](https://isitmaintained.com/project/mblaschke/typo3-metaseo "Average time to resolve an issue")
-[![Percentage of issues still open](https://isitmaintained.com/badge/open/mblaschke/typo3-metaseo.svg)](https://isitmaintained.com/project/mblaschke/typo3-metaseo "Percentage of issues still open")
-
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/mblaschke/TYPO3-metaseo.svg)](http://isitmaintained.com/project/mblaschke/TYPO3-metaseo "Average time to resolve an issue")
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/mblaschke/TYPO3-metaseo.svg)](http://isitmaintained.com/project/mblaschke/TYPO3-metaseo "Percentage of issues still open")
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/19914ab4-1f0f-4be0-9215-410fba880af2/big.png)](https://insight.sensiolabs.com/projects/19914ab4-1f0f-4be0-9215-410fba880af2)
 
