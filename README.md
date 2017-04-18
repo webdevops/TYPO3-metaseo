@@ -91,6 +91,8 @@ Please feel free to file an issue in our [Bugtracker](https://github.com/mblasch
 In case of issues, please update to the latest version of MetaSEO first. We also strongly recommend to use recent
 versions of TYPO3 CMS (6.2.28+, 7.6.12+) and RealUrl (2.1.5+)
 
+MetaSEO users also meet on slack at [#ext-metaseo](https://typo3.slack.com/messages/ext-metaseo/).
+
 ## Contribute
 
 MetaSEO is driven by the community and we're pleased to add new contributions.
