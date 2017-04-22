@@ -169,7 +169,7 @@ abstract class SitemapIndexHook implements SingletonInterface
     protected static function processLinkUrl($linkUrl)
     {
         static $absRefPrefix = null;
-        static $absRefPrefixLength = 0;
+        $absRefPrefixLength = 0;
         $ret = $linkUrl;
         $tsfe = self::getTsfe();
 
