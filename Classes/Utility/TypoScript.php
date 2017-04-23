@@ -345,7 +345,7 @@ class TypoScript implements \Iterator
     ## Accessors
     ###########################################################################
 
-    public function setTypoScript(Array $conf)
+    public function setTypoScript(array $conf)
     {
         $this->tsData = $conf;
 

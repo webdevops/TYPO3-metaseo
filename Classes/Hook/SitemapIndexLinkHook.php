@@ -145,6 +145,9 @@ class SitemapIndexLinkHook extends SitemapIndexHook
      * Returns True if translation exists for a chosen language (L=) parameter
      * Returns False if no translation exists
      *
+     * @param int $linkPageUid
+     * @param int $requestLanguage
+     *
      * @return bool
      */
     protected function checkIfTranslationExists($linkPageUid, $requestLanguage)

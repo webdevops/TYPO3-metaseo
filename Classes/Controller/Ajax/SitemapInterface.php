@@ -89,7 +89,4 @@ interface SitemapInterface
      * @return void
      */
     public function deleteAllAction($params = array(), AjaxRequestHandler &$ajaxObj = null);
-
-
-
 }
