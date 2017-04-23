@@ -224,7 +224,6 @@ class SitemapIndexLinkHook extends SitemapIndexHook
             // Page URL
             // ##############
             case 'page':
-                // TODO: Add support for more parameter checks
                 if (is_numeric($conf['conf']['parameter'])) {
                     $uid = $conf['conf']['parameter'];
                 }

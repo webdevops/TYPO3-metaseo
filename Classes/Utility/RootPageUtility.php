@@ -73,7 +73,6 @@ class RootPageUtility
         } else {
             $domain = Typo3GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
         }
-        // "build", TODO: use typolink to use TYPO3 internals
         $url = $domain . 'index.php?id=' . (int)$rootPid . '&type=' . (int)$typeNum;
 
         return $url;

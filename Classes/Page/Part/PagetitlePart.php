@@ -187,7 +187,6 @@ class PagetitlePart extends AbstractPart
      * @param    string $title Default page title (rendered by TYPO3)
      *
      * @return    string            Modified page title
-     * @todo: split up function (too long)
      */
     public function generatePageTitle($title)
     {

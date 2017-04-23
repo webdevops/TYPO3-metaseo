@@ -87,7 +87,7 @@ class FooterPart extends AbstractPart
                 $ret['ga'] = $this->buildGoogleAnalyticsCode($tsServices, $gaConf);
 
                 if (!empty($gaConf['trackDownloads']) && !empty($gaConf['trackDownloadsScript'])) {
-                    $ret['ga.trackdownload'] = $this->serviceGoogleAnalyticsTrackDownloads($tsServices, $gaConf);
+                    $ret['ga.trackdownload'] = $this->serviceGoogleAnalyticsTrackDownloads($gaConf);
                 }
             } elseif ($gaEnabled && $beLoggedIn) {
                 // Disable caching
@@ -174,13 +174,11 @@ class FooterPart extends AbstractPart
     /**
      * Google analytics
      *
-     * @param  array $tsServices SetupTS of services
      * @param  array $gaConf     Google Analytics configuration
      *
      * @return string
-     * @todo $tsServices is never used
      */
-    public function serviceGoogleAnalyticsTrackDownloads(array $tsServices, array $gaConf)
+    public function serviceGoogleAnalyticsTrackDownloads(array $gaConf)
     {
         $jsFile = Typo3GeneralUtility::getFileAbsFileName($gaConf['trackDownloadsScript']);
         $jsfile = preg_replace('/^' . preg_quote(PATH_site, '/') . '/i', '', $jsFile);

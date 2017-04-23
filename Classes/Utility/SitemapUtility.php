@@ -119,7 +119,6 @@ class SitemapUtility
         // only process each page once to keep sql-statements at a normal level
         if (empty($cache[$pageHash])) {
             // $pageData is already quoted
-            // TODO: INSERT INTO ... ON DUPLICATE KEY UPDATE?
 
             $query      = 'SELECT uid
                              FROM tx_metaseo_sitemap

@@ -237,10 +237,8 @@ class MetatagPart extends AbstractPart
         }
 
         $this->processMetaTags($this->metaTagList);
-        //todo: type mismatch array->string for $this->metaTagList
-        $this->metaTagList = $this->renderMetaTags($this->metaTagList);
 
-        return $this->metaTagList;
+        return $this->renderMetaTags($this->metaTagList);
     }
 
     /**
@@ -588,7 +586,7 @@ class MetatagPart extends AbstractPart
                 $metaTags['adv.' . $tagName] = array(
                     'tag'        => 'meta',
                     'attributes' => array(
-                        'rel'  => $tagName,  //todo: rel and href might not be suitable in every case
+                        'rel'  => $tagName, //see https://github.com/mblaschke/TYPO3-metaseo/issues/464
                         'href' => $tagValue,
                     ),
                 );
@@ -602,7 +600,7 @@ class MetatagPart extends AbstractPart
             $metaTags['adv.' . $tagName] = array(
                 'tag'        => 'meta',
                 'attributes' => array(
-                    'rel'  => $tagName,  //todo: rel and href might not be suitable in every case
+                    'rel'  => $tagName, //see https://github.com/mblaschke/TYPO3-metaseo/issues/464
                     'href' => $tagValue,
                 ),
             );

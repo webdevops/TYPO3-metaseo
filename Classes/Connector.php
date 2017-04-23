@@ -217,7 +217,7 @@ class Connector implements SingletonInterface
     // Control methods
     // ########################################################################
 
-    // TODO
+    // nothing defined yet
 
 
     // ########################################################################
