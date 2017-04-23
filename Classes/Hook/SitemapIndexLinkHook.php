@@ -3,8 +3,8 @@
 /*
  *  Copyright notice
  *
- *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
- *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
+ *  (c) 2014 - 2017 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2007 - 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -145,6 +145,9 @@ class SitemapIndexLinkHook extends SitemapIndexHook
      * Returns True if translation exists for a chosen language (L=) parameter
      * Returns False if no translation exists
      *
+     * @param int $linkPageUid
+     * @param int $requestLanguage
+     *
      * @return bool
      */
     protected function checkIfTranslationExists($linkPageUid, $requestLanguage)
@@ -224,7 +227,6 @@ class SitemapIndexLinkHook extends SitemapIndexHook
             // Page URL
             // ##############
             case 'page':
-                // TODO: Add support for more parameter checks
                 if (is_numeric($conf['conf']['parameter'])) {
                     $uid = $conf['conf']['parameter'];
                 }

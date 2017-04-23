@@ -3,8 +3,8 @@
 /*
  *  Copyright notice
  *
- *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
- *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
+ *  (c) 2014 - 2017 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2007 - 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -71,9 +71,9 @@ class BackendSitemapController extends AbstractStandardModule
                                 ON p.uid = s.page_uid
                                AND p.deleted = 0
                                AND ' . DatabaseUtility::conditionNotIn(
-                                        'p.doktype',
-                                        SitemapUtility::getDoktypeBlacklist()
-                                    ) . '
+            'p.doktype',
+            SitemapUtility::getDoktypeBlacklist()
+        ) . '
                 GROUP BY page_rootpid';
         $statsList = DatabaseUtility::getAllWithIndex($query, 'page_rootpid');
 

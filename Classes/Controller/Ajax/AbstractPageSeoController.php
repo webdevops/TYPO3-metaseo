@@ -3,8 +3,8 @@
 /*
  *  Copyright notice
  *
- *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
- *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
+ *  (c) 2014 - 2017 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2007 - 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -396,7 +396,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
     /**
      * Returns array of classes which contain Ajax controllers with <ajaxPrefix> => <className)
      *
-     * @todo replace class concatenation with e.g. 'UrlController::class' as of PHP 5.5  (renders $namespace obsolete)
+     * @see {@link https://github.com/mblaschke/TYPO3-metaseo/issues/380}
      *
      * @return array
      */
