@@ -44,8 +44,8 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  *
  * Usage: no code change required, but you can toggle between original behaviour and using this workaround (=default):
  *
- * setIsAjaxCall(false) disabled: Gives you the original behaviour of the TypoScriptFrontendController
- * setIsAjaxCall(true)  enabled: Fakes the default scheme in a page's page properties during execution of
+ * setAjaxCall(false) disabled: Gives you the original behaviour of the TypoScriptFrontendController
+ * setAjaxCall(true)  enabled: Fakes the default scheme in a page's page properties during execution of
  *                      the fetch_the_id() function which is called from the determineId() function.
  *                      Thereby it suppresses redirect via http headers for the scheme from page properties
  *                      to ensure that TYPO3 does not redirect the Ajax request to some other scheme.
@@ -124,7 +124,7 @@ class BackendCompliantTsfeController extends TypoScriptFrontendController
      *
      * @return $this
      */
-    public function setIsAjaxCall($isAjaxCall)
+    public function setAjaxCall($isAjaxCall)
     {
         $this->isAjaxCall = $isAjaxCall;
 
