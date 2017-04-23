@@ -185,21 +185,21 @@ class FrontendUtility
     /**
      * Return current URL
      *
-     * @return null|string
+     * @return string
      */
     public static function getCurrentUrl()
     {
-        $ret = null;
+        //former $TSFE->anchorPrefix got deprecated in TYPO3 7.x
+        $tsfeAnchorPrefix = substr(
+            Typo3GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'),
+            strlen(Typo3GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))
+        );
 
-        $TSFE = self::getTsfe();
-
-        if (!empty($TSFE->anchorPrefix)) {
-            $ret = (string)$TSFE->anchorPrefix;
+        if ($tsfeAnchorPrefix !== false && !empty($tsfeAnchorPrefix)) {
+            return $tsfeAnchorPrefix;
         } else {
-            $ret = (string)$TSFE->siteScript;
+            return (string) self::getTsfe()->siteScript;
         }
-
-        return $ret;
     }
 
     /**
