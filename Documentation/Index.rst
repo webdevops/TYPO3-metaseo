@@ -33,7 +33,7 @@ MetaSEO
         metatag,metatags,seo,sitemap,google,searchengine,tqseo,tq_seo,metaseo,pagetitle
 
     :Copyright:
-        2014-2016
+        2014-2017
 
     :Author:
         Markus Blaschke
