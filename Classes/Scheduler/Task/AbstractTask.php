@@ -93,8 +93,6 @@ abstract class AbstractTask extends T3AbstractTask
 
     /**
      * Get list of root pages in current typo3
-     *
-     * @return  array
      */
     protected function initLanguages()
     {

@@ -71,9 +71,9 @@ class BackendSitemapController extends AbstractStandardModule
                                 ON p.uid = s.page_uid
                                AND p.deleted = 0
                                AND ' . DatabaseUtility::conditionNotIn(
-                                        'p.doktype',
-                                        SitemapUtility::getDoktypeBlacklist()
-                                    ) . '
+            'p.doktype',
+            SitemapUtility::getDoktypeBlacklist()
+        ) . '
                 GROUP BY page_rootpid';
         $statsList = DatabaseUtility::getAllWithIndex($query, 'page_rootpid');
 
