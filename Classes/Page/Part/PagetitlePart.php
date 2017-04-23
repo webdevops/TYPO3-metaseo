@@ -308,7 +308,6 @@ class PagetitlePart extends AbstractPart
                 }
 
                 if (isset($store['pagetitle.absolute'])) {
-                    $ret      = $store['pagetitle.absolute'];
                     $rawTitle = $store['pagetitle.absolute'];
 
                     $pageTitlePrefix = false;
