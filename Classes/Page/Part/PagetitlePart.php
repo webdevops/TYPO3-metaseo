@@ -3,8 +3,8 @@
 /*
  *  Copyright notice
  *
- *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
- *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
+ *  (c) 2014 - 2017 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2007 - 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -187,7 +187,6 @@ class PagetitlePart extends AbstractPart
      * @param    string $title Default page title (rendered by TYPO3)
      *
      * @return    string            Modified page title
-     * @todo: split up function (too long)
      */
     public function generatePageTitle($title)
     {
@@ -309,7 +308,6 @@ class PagetitlePart extends AbstractPart
                 }
 
                 if (isset($store['pagetitle.absolute'])) {
-                    $ret      = $store['pagetitle.absolute'];
                     $rawTitle = $store['pagetitle.absolute'];
 
                     $pageTitlePrefix = false;

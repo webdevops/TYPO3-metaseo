@@ -3,8 +3,8 @@
 /*
  *  Copyright notice
  *
- *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
- *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
+ *  (c) 2014 - 2017 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2007 - 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -73,7 +73,6 @@ class RootPageUtility
         } else {
             $domain = Typo3GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
         }
-        // "build", TODO: use typolink to use TYPO3 internals
         $url = $domain . 'index.php?id=' . (int)$rootPid . '&type=' . (int)$typeNum;
 
         return $url;

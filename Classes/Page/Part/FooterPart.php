@@ -3,8 +3,8 @@
 /*
  *  Copyright notice
  *
- *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
- *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
+ *  (c) 2014 - 2017 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2007 - 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -87,7 +87,7 @@ class FooterPart extends AbstractPart
                 $ret['ga'] = $this->buildGoogleAnalyticsCode($tsServices, $gaConf);
 
                 if (!empty($gaConf['trackDownloads']) && !empty($gaConf['trackDownloadsScript'])) {
-                    $ret['ga.trackdownload'] = $this->serviceGoogleAnalyticsTrackDownloads($tsServices, $gaConf);
+                    $ret['ga.trackdownload'] = $this->serviceGoogleAnalyticsTrackDownloads($gaConf);
                 }
             } elseif ($gaEnabled && $beLoggedIn) {
                 // Disable caching
@@ -174,13 +174,11 @@ class FooterPart extends AbstractPart
     /**
      * Google analytics
      *
-     * @param  array $tsServices SetupTS of services
      * @param  array $gaConf     Google Analytics configuration
      *
      * @return string
-     * @todo $tsServices is never used
      */
-    public function serviceGoogleAnalyticsTrackDownloads(array $tsServices, array $gaConf)
+    public function serviceGoogleAnalyticsTrackDownloads(array $gaConf)
     {
         $jsFile = Typo3GeneralUtility::getFileAbsFileName($gaConf['trackDownloadsScript']);
         $jsfile = preg_replace('/^' . preg_quote(PATH_site, '/') . '/i', '', $jsFile);

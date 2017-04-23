@@ -3,8 +3,8 @@
 /*
  *  Copyright notice
  *
- *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
- *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
+ *  (c) 2014 - 2017 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2007 - 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -237,10 +237,8 @@ class MetatagPart extends AbstractPart
         }
 
         $this->processMetaTags($this->metaTagList);
-        //todo: type mismatch array->string for $this->metaTagList
-        $this->metaTagList = $this->renderMetaTags($this->metaTagList);
 
-        return $this->metaTagList;
+        return $this->renderMetaTags($this->metaTagList);
     }
 
     /**
@@ -588,7 +586,7 @@ class MetatagPart extends AbstractPart
                 $metaTags['adv.' . $tagName] = array(
                     'tag'        => 'meta',
                     'attributes' => array(
-                        'rel'  => $tagName,  //todo: rel and href might not be suitable in every case
+                        'rel'  => $tagName, //see https://github.com/mblaschke/TYPO3-metaseo/issues/464
                         'href' => $tagValue,
                     ),
                 );
@@ -602,7 +600,7 @@ class MetatagPart extends AbstractPart
             $metaTags['adv.' . $tagName] = array(
                 'tag'        => 'meta',
                 'attributes' => array(
-                    'rel'  => $tagName,  //todo: rel and href might not be suitable in every case
+                    'rel'  => $tagName, //see https://github.com/mblaschke/TYPO3-metaseo/issues/464
                     'href' => $tagValue,
                 ),
             );

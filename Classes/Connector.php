@@ -3,8 +3,8 @@
 /*
  *  Copyright notice
  *
- *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
- *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
+ *  (c) 2014 - 2017 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2007 - 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -217,7 +217,7 @@ class Connector implements SingletonInterface
     // Control methods
     // ########################################################################
 
-    // TODO
+    // nothing defined yet
 
 
     // ########################################################################

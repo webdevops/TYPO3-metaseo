@@ -3,8 +3,8 @@
 /*
  *  Copyright notice
  *
- *  (c) 2015 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
- *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
+ *  (c) 2014 - 2017 Markus Blaschke <typo3@markus-blaschke.de> (metaseo)
+ *  (c) 2007 - 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de> (tq_seo)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -104,7 +104,7 @@ class RobotsTxtDefault
         $GLOBALS['TSFE'] = $tsfeController;
 
         //allow dynamically robots.txt to be dynamically scripted via TS
-        if ($GLOBALS['TSFE']->sys_page == null) {
+        if (empty($GLOBALS['TSFE']->sys_page)) {
             $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
             $GLOBALS['TSFE']->initTemplate();
         }
