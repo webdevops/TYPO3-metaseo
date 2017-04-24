@@ -27,7 +27,6 @@
 namespace Metaseo\Metaseo\Utility;
 
 use ReflectionMethod;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility as Typo3ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
 
 class ExtensionManagementUtility
