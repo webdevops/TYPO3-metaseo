@@ -102,7 +102,6 @@ class SitemapUtility
         }
 
         // Escape/Quote data
-        unset($pageDataValue);
         foreach ($pageData as &$pageDataValue) {
             if ($pageDataValue === null) {
                 $pageDataValue = 'NULL';

@@ -114,7 +114,6 @@ class BackendControlCenterController extends AbstractStandardModule
         // Build root page list
         // #################
 
-        unset($page);
         foreach ($rootPageList as $pageId => &$page) {
             // Domain list
             $page['domainList'] = '';

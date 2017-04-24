@@ -104,7 +104,6 @@ class BackendSitemapController extends AbstractStandardModule
         // #################
 
 
-        unset($page);
         foreach ($rootPageList as $pageId => &$page) {
             $stats = array(
                 'sum_pages'     => 0,

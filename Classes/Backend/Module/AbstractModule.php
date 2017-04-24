@@ -73,7 +73,6 @@ abstract class AbstractModule extends ActionController
      */
     protected function translateList(array $list)
     {
-        unset($token);
         foreach ($list as &$token) {
             if (!empty($token)) {
                 if (is_array($token)) {
