@@ -247,46 +247,8 @@ class PagetitlePart extends AbstractPart
         // PAGE TITLE PREFIX/SUFFIX
         // #######################################################################
         if (!$skipPrefixSuffix) {
-            foreach ($this->rootLine as $page) {
-                switch ((int)$page['tx_metaseo_inheritance']) {
-                    case 0:
-                        // ###################################
-                        // Normal
-                        // ###################################
-                        if (!empty($page['tx_metaseo_pagetitle_prefix'])) {
-                            $pageTitlePrefix = $page['tx_metaseo_pagetitle_prefix'];
-                        }
-
-                        if (!empty($page['tx_metaseo_pagetitle_suffix'])) {
-                            $pageTitleSuffix = $page['tx_metaseo_pagetitle_suffix'];
-                        }
-
-                        if ($pageTitlePrefix !== false || $pageTitleSuffix !== false) {
-                            // pagetitle found - break foreach
-                            break 2;
-                        }
-                        break;
-                    case 1:
-                        // ###################################
-                        // Skip
-                        // (don't inherit from this page)
-                        // ###################################
-                        if ((int)$page['uid'] != $currentPid) {
-                            continue 2;
-                        }
-
-                        if (!empty($page['tx_metaseo_pagetitle_prefix'])) {
-                            $pageTitlePrefix = $page['tx_metaseo_pagetitle_prefix'];
-                        }
-
-                        if (!empty($page['tx_metaseo_pagetitle_suffix'])) {
-                            $pageTitleSuffix = $page['tx_metaseo_pagetitle_suffix'];
-                        }
-
-                        break 2;
-                        break;
-                }
-            }
+            $pageTitlePrefix = $this->applyInheritance('tx_metaseo_pagetitle_prefix', $currentPid);
+            $pageTitleSuffix = $this->applyInheritance('tx_metaseo_pagetitle_suffix', $currentPid);
 
             // #################
             // Process settings from access point
@@ -356,6 +318,53 @@ class PagetitlePart extends AbstractPart
         }
 
         return $ret;
+    }
+
+    /**
+     * Traverses root line in reverse order (from leaf node to root) and extracts a field value,
+     * thereby respecting inheritance setting
+     *
+     * @param string $fieldName database field name for e. g. title prefix or title suffix
+     * @param int $currentPid should be the pid of the leaf node
+     *
+     * @return bool|string
+     */
+    protected function applyInheritance($fieldName, $currentPid)
+    {
+        $fieldValue = false;
+        foreach (array_reverse($this->rootLine) as $page) {
+            switch ((int)$page['tx_metaseo_inheritance']) {
+                case 0:
+                    // ###################################
+                    // Normal
+                    // ###################################
+                    if (!empty($page[$fieldName])) {
+                        $fieldValue = $page[$fieldName];
+                    }
+                    if ($fieldValue !== false) {
+                        // pagetitle found - break foreach
+                        break 2;
+                    }
+                    break;
+                case 1:
+                    // ###################################
+                    // Skip
+                    // (don't inherit from this page)
+                    // ###################################
+                    if ((int)$page['uid'] != $currentPid) {
+                        continue 2;
+                    }
+
+                    if (!empty($page[$fieldName])) {
+                        $fieldValue = $page[$fieldName];
+                    }
+
+                    break 2;
+                    break;
+            }
+        }
+
+        return $fieldValue;
     }
 
     /**
