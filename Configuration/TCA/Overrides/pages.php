@@ -1,5 +1,5 @@
 <?php
-defined('TYPO3_MODE') or exit();
+defined('TYPO3_MODE') || die();
 
 $tempColumns = array(
     'tx_metaseo_pagetitle'        => array(
