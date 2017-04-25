@@ -11,13 +11,22 @@
 Developer Manual
 ================
 
-TypoScript Setup
-----------------
+This developer manual is not needed in most cases, at not to let MetaSEO render meta tags and a site map. Most
+users want to skip this section, respectively.
 
-Advanced manipulations (stdWrap support)
-----------------------------------------
+By reading this section, you learn how to
 
-If you want to modify some things you can use stdWraps
+- manipulate the stdWraps MetaSEO uses
+- customize the tracking code in JavaScript
+- customize which document types MetaSEO will index for the site map
+- interconnect another extension via MetaSEO's hooks and signals
+
+This should be necessary only in very rare cases.
+
+Manipulating stdWraps
+---------------------
+
+If you want to modify the output of metaseo, you can change stdWraps in the TypoScript setup of your template.
 
 MetaTags
 ^^^^^^^^
@@ -169,7 +178,7 @@ plugin.metaseo.sitemap.index.fileExtension                   List of allowed fil
 Signals
 -------
 
-For a list of Signals see the "Hooks" section down below.
+For a list of Signals see the "Hooks" section down below. This is an example used to interconnect extensions:
 
 ::
 

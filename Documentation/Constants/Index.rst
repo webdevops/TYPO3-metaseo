@@ -11,8 +11,36 @@
 Constants
 =========
 
+To enable and configure the features of MetaSEO, you want to edit your main template. To do so, enter TYPO3's
+Constants Editor and choose one of the categories which are described below.
+
+.. figure:: ../Images/Constants/ConstantsT3Editor.png
+    :scale: 80%
+    :alt: Constants Editor
+
+    Choosing MetaSEO's constants categories
+
+At least the template of a root page should be configured using these constants but it's also possible
+to configure an extension template for any page and underneath.
+
+Experienced users might want to do this step by typing TypoScript code themselves. The corresponding variable
+names can also be found in the images below, next to the description.
+
 MetaTags
 --------
+
+.. figure:: ../Images/Constants/ConstantsMetatags_Enable.png
+    :scale: 80%
+    :alt: Constants Editor - Metatags
+
+    Enable features of MetaSEO
+
+.. figure:: ../Images/Constants/ConstantsMetatags_Other.png
+    :scale: 80%
+    :alt: Constants Editor - Metatags
+
+    Constants Editor for metatags
+
 ==============================   ==========================================================   =================
 Constant                         Description                                                  Default
 ==============================   ==========================================================   =================
@@ -125,6 +153,13 @@ IE Compatibility Mode            Compatibility mode for Microsoft Internet Explo
 
 Crawler
 -------
+
+.. figure:: ../Images/Constants/ConstantsCrawler.png
+    :scale: 80%
+    :alt: Constants Editor - Crawler
+
+    Constants Editor of crawler (google) settings
+
 ==============================   ==========================================================   =================
 Constant                         Description                                                  Default
 ==============================   ==========================================================   =================
@@ -150,6 +185,13 @@ YDir                             Should the crawler use the YahooDirectory to   
 
 Services
 --------
+
+.. figure:: ../Images/Constants/ConstantsServices.png
+    :scale: 80%
+    :alt: Constants Editor - Services
+
+    Constants Editor of services settings
+
 ==============================   ===============================================================   =================
 Constant                         Description                                                       Default
 ==============================   ===============================================================   =================
@@ -177,11 +219,9 @@ GA Track Downloads               Try to track downloads with google analytics.  
 
                                  See res/ga-track-download.js for more details
 
-                                 Currently supported files:
-
-                                 - `doc`,`docx`,`xls`,`ppt`,`odt`,`ods`,`pdf`,`zip`,
-                                   `tar`,`gz`,`txt`,`vsd`,`vxd`,`rar`,`exe`,`wma`,`mov`,
-                                   `avi`,`ogg`,`ogm`,`mkv`,`wmv`,`mp3`,`webm`
+                                 Currently supported files: doc, docx, xls, ppt, odt, ods, pdf,
+                                 zip, tar, gz, txt, vsd, vxd, rar, exe, wma, mov, avi, ogg, ogm,
+                                 mkv, wmv, mp3, webm
 
 Piwik URL                        Url to your Piwik installation
 
@@ -225,6 +265,13 @@ Google+ Direct Connect           Your Google+ profile page ID
 
 PageTitle
 ---------
+
+.. figure:: ../Images/Constants/ConstantsPagetitle.png
+    :scale: 80%
+    :alt: Constants Editor - Pagetitle
+
+    Constants Editor of pagetitle settings
+
 =========================================   ==========================================================   ======================
 Constant                                    Description                                                  Default
 =========================================   ==========================================================   ======================
@@ -260,6 +307,13 @@ Caching                                     Enable or disable caching of page ti
 
 Sitemap
 -------
+
+.. figure:: ../Images/Constants/ConstantsSitemap.png
+    :scale: 80%
+    :alt: Constants Editor - Sitemap
+
+    Constants Editor of sitemap and indexing settings
+
 =================================   ==========================================================   =================
 Constant                            Description                                                  Default
 =================================   ==========================================================   =================
