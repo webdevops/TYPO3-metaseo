@@ -91,6 +91,11 @@ P3P Compact Policy               Your P3P Compact Policy.
                                  - http://www.p3pwriter.com
 
 P3P Policy Url                   Link (full URL) to your P3P Policy File
+
+OpenGraph image width            Default width of an OpenGraph image                          *1200c*
+
+OpenGraph image height           Default height of an OpenGraph image                         *630c*
+
 ==============================   ==========================================================   =================
 
 Some metatags also have markers which could be build in, following metatags supports markers:
@@ -309,3 +314,4 @@ allowedDoktypes                     List of doktypes (page types) which should b
 
                                     in your own typoscript setup adds the custom page type 91 to the
                                     list of allowed doktypes.
+=================================   ==================================================================   =================
