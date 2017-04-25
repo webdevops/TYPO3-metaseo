@@ -17,9 +17,15 @@ Changelog
 +=============+====================================================================================================+
 | **2.1.0**   | **New feature and Bugfix release**                                                                 |
 |             |                                                                                                    |
+|             | - Added support for OpenGraph images                                                               |
+|             | - Display custom page doktypes in SEO/Metatags section                                             |
 |             |                                                                                                    |
+|             | **Migration to 2.1.0:**                                                                            |
 |             |                                                                                                    |
-|             | `Milestone 2.1.0 <https://github.com/mblaschke/TYPO3-metaseo/milestone/17?closed=1>`_              |
+|             | - Compare and update the database schema in the install tool.                                      |
+|             | - Page title prefix/suffix inheritance has changed. Please check your titles.                      |
+|             |                                                                                                    |
+|             | `Milestone 2.1.0 <https://github.com/mblaschke/TYPO3-metaseo/milestone/5?closed=1>`_               |
 |             | `Changes in 2.1.0 <https://github.com/mblaschke/TYPO3-metaseo/compare/2.0.4...2.1.0>`_             |
 +-------------+----------------------------------------------------------------------------------------------------+
 | **2.0.4**   | **New feature and Bugfix release**                                                                 |
