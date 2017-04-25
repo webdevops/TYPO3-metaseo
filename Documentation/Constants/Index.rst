@@ -293,3 +293,19 @@ Page priority depth multiplier      Page depth multiplier, see formula in page p
 
 Page priority depth modificator     Page depth modificator, see formula in page priority         1
 =================================   ==========================================================   =================
+
+Extensibility
+-------------
+=================================   ==================================================================   =================
+Constant                            Description                                                          Default
+=================================   ==================================================================   =================
+allowedDoktypes                     List of doktypes (page types) which should be displayed in the web   1,4
+                                    module tree. You can extend these types by overriding this
+                                    constant or by adding your own custom page type to the list.
+
+                                    For example:
+
+                                    `plugin.metaseo.extensibility.allowedDoktypes := addToList(91)`
+
+                                    in your own typoscript setup adds the custom page type 91 to the
+                                    list of allowed doktypes.
