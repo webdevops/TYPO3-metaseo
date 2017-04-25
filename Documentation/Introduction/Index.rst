@@ -71,7 +71,6 @@ Backend Modules
 
     Backend Module "SEO Metatags"
 
-
 .. figure:: ../Images/Introduction/ModuleSeoControlCenter.png
     :scale: 80%
     :alt: Backend Module - SEO Control Center
@@ -84,49 +83,35 @@ Backend Modules
 
     Backend Module "SEO Sitemap"
 
-
-Constants
-^^^^^^^^^
-
-.. figure:: ../Images/Introduction/ConstantsMetatags.png
+.. figure:: ../Images/Introduction/ModuleSeoSitemapList.png
     :scale: 80%
-    :alt: Constants Editor - Metatags
+    :alt: Backend Module - SEO Sitemap
 
-    Constants Editor of metatags
+    Backend Module "SEO Sitemap" detail view
 
+Getting started
+---------------
 
-.. figure:: ../Images/Introduction/ConstantsPagetitle.png
-    :scale: 80%
-    :alt: Constants Editor - Pagetitle
+- Install extension and include MetaSEO's static template
+- Make sure a root page exists (can be set in page properties)
+- Make sure a domain record exists (add new domain record in your root page)
+- Now you can enable and configure features via TYPO3's constant editor (e. g. for your root page)
 
-    Constants Editor of pagetitle settings
-
-
-.. figure:: ../Images/Introduction/ConstantsCrawler.png
-    :scale: 80%
-    :alt: Constants Editor - Crawler
-
-    Constants Editor of crawler (google) settings
-
-
-.. figure:: ../Images/Introduction/ConstantsServices.png
-    :scale: 80%
-    :alt: Constants Editor - Services
-
-    Constants Editor of services settings
-
+You can also follow this step by step `video tutorial (German) <https://jweiland.net/video-anleitungen/typo3/interessante-typo3-extensions/metaseo.html>`_
+which is provided by jweiland.net
 
 Found a bug?
 ------------
 
-Just send me a mail to typo3@markus-blaschke.de
-or just enter the bug into the bugtracker at https://github.com/mblaschke/TYPO3-metaseo
+Just send a mail to typo3@markus-blaschke.de
+or file an issue at `github <https://github.com/mblaschke/TYPO3-metaseo>`_
+or ask MetaSEO's `slack channel <https://typo3.slack.com/messages/ext-metaseo/>`_
 
 Thanks to...
 ------------
 
 - TEQneers GmbH & Co. KG for sponsoring the predecessor "tq_seo"
-- jweiland.net especially Wolfgang Wagner for all the tutorials
+- jweiland.net and especially Wolfgang Wagner for their `video tutorial (German) <https://jweiland.net/video-anleitungen/typo3/interessante-typo3-extensions/metaseo.html>`_
 - Anton Danilov
 - Pierre Arlt
 - Riccardo De Contardi
