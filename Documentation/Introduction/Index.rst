@@ -22,12 +22,6 @@ The following features are supported:
 - Manipulation of pagetitle via stdWrap (Beta)
 - Multi-language and/or multi-tree TYPO3 installations
 
-Backend modules:
-
-- SEO page module
-- SEO control center module
-- SEO sitemap module
-
 The following metatags are supported:
 
 - Language (auto-detected)
@@ -59,8 +53,22 @@ The following pagetitle transformations are supported:
 - Sitetitle glue options
 - Sitetitle positon
 
+Backend modules:
+
+- SEO page module
+- SEO control center module
+- SEO sitemap module
+
 Screenshots
 -----------
+
+SEO section in page properties
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. figure:: ../Images/Introduction/PagePropertiesSEO.png
+    :scale: 80%
+    :alt: Page Properties - SEO
+
+    Page Properties "SEO"
 
 
 Backend Modules
@@ -92,13 +100,38 @@ Backend Modules
 Getting started
 ---------------
 
-- Install extension and include MetaSEO's static template
+This is a quick overview to get started using MetaSEO. For details, please have a look at the other chapters
+of this manual.
+
+The basic steps to use MetaSEO are:
+
+- Install the extension and include MetaSEO's static template
 - Make sure a root page exists (can be set in page properties)
 - Make sure a domain record exists (add new domain record in your root page)
-- Now you can enable and configure features via TYPO3's constant editor (e. g. for your root page)
+- Now you can enable and configure MetaSEO's features via TYPO3's constant editor (e. g. for a root page)
+- Edit SEO related data either in section SEO in the page properties or via Metatags/SEO icon on the left pane
 
-You can also follow this step by step `video tutorial (German) <https://jweiland.net/video-anleitungen/typo3/interessante-typo3-extensions/metaseo.html>`_
-which is provided by jweiland.net
+To let MetaSEO create XML sitemaps to be fetched by search engines, enable this feature for each
+root page via MetaSEO's Control Center. MetaSEO handles two ways to pass the sitemap to a search engine:
+
+- Generated at runtime, based on MetaSEO's sitemap index. This is already ways faster than letting TYPO3 traverse
+  the whole page tree. The corresponding URL can be taken from the sitemap preview in the Control Center. It can
+  be added to a `robots.txt` file in order to specify a sitemap and/or be passed to a search engine manually.
+- Let MetaSEO's scheduler task write the sitemap to files. Once again, this is pretty fast because the scheduler
+  task relies on MetaSEO's sitemap index. Using this feature lets you define when exactly
+  an updated sitemap gets visible to search engines. On-top, sitemaps become available as static content which
+  takes pretty much zero calculation time when search engines fetch it.
+
+To see sitemap indexing in action, log out from TYPO3's backend and request some of your web pages to let
+MetaSEO index them. Good to know: MetaSEO makes use of TYPO3's caching architecture which reduces calculation
+time to a minimum, once a page is indexed.
+
+As a bonus, MetaSEO also lets you create, manipulate and preview a robots.txt file via MetaSEO's Control Center.
+To actually use it, let your web server point to it via web server configuration (e.g. `.htaccess` file) or let
+MetaSEO's scheduler task write the `robots.txt` to a file and point to it using a symlink.
+
+Another good place to start with is this step by step `video tutorial (German) <https://jweiland.net/video-anleitungen/typo3/interessante-typo3-extensions/metaseo.html>`_
+which is provided by jweiland.net.
 
 Found a bug?
 ------------
