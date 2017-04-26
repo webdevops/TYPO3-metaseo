@@ -50,16 +50,19 @@ Detect Language                  Publish the current TYPO3-FE-language as metata
 
 Canonical Tag                    Publish canonical link if possible                           *enabled*
                                  (TYPO3-cache is enabled and cHash is valid)
-                                 or if user entered canonical tag into page options.          *disabled*
+                                 or if user entered canonical tag into page options.
 
 Canonical Protocol Fallback      If no protocol is set via TYPO3's page properties, use       *disabled*
                                  this as a fallback to set a unique protocol for both http
                                  and https requests. Can be set to `http`, `https` or left
-                                 empty to disable the fallback.
+                                 empty to disable the fallback. If the web server serves
+                                 both protocols and TYPO3's default `url_scheme` is used
+                                 it is strongly recommended to explicitly specify
+                                 this value to avoid duplicate content.
 
-Canonical Tag (Strict mode)      Enable strict mode (all wrong `GET` parameters will          *enabled*
-                                 generate a canonical-tag to the self without `GET`
-                                 parameters).
+Canonical Tag (Strict mode)      Enable strict mode (unknown `GET` parameters will            *enabled*
+                                 generate a canonical-tag to the same URL without
+                                 these `GET` parameters).
 
                                  e.g. `/index.php?id=123&foo=bar` would generate a
                                  Canonical-Tag pointing to `/index.php?id=123`
