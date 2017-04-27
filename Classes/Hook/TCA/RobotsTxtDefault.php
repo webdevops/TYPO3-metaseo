@@ -102,6 +102,10 @@ class RobotsTxtDefault
         );
 
         $GLOBALS['TSFE'] = $tsfeController;
+        if ($GLOBALS['TSFE']->sys_page == null) {
+            $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
+            $GLOBALS['TSFE']->initTemplate();
+        }
 
         //allow dynamically robots.txt to be dynamically scripted via TS
         if (empty($GLOBALS['TSFE']->sys_page)) {
