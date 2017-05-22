@@ -123,7 +123,7 @@ class GeneralUtility
             #################
             if (empty(self::$rootlineCache['__CURRENT__'])) {
                 // Current rootline
-                $rootline = $GLOBALS['TSFE']->tmpl->rootLine;
+                $rootline = (array)$GLOBALS['TSFE']->tmpl->rootLine;
 
                 // Filter rootline by siteroot
                 $rootline = self::filterRootlineBySiteroot((array)$rootline);
@@ -138,7 +138,7 @@ class GeneralUtility
             #################
             if (empty(self::$rootlineCache[$uid])) {
                 // Fetch full rootline to TYPO3 root (0)
-                $rootline = self::getSysPageObj()->getRootLine($uid);
+                $rootline = (array)self::getSysPageObj()->getRootLine($uid);
 
                 // Filter rootline by siteroot
                 $rootline = self::filterRootlineBySiteroot((array)$rootline);
