@@ -68,4 +68,13 @@ if (TYPO3_MODE == 'BE') {
             'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/ModuleSitemap/locallang.xlf',
         )
     );
+
+    // ############################################################################
+    // CONFIGURATION
+    // ############################################################################
+
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
+        $_EXTKEY,
+        'Configuration/TypoScript',
+        'MetaSEO');
 }
