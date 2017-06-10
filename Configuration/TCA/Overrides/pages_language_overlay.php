@@ -26,6 +26,15 @@ $tempColumns = array(
             'eval'     => 'trim',
         )
     ),
+    'tx_metaseo_opengraph_image' => array(
+        'exclude' => 1,
+        'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:'
+            . 'pages.tx_metaseo_opengraph_image',
+        'config'  => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('tx_metaseo_opengraph_image', array(
+                'maxitems' => 1
+            )
+        )
+    ),
     'tx_metaseo_pagetitle_prefix' => array(
         'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:'
             . 'pages.tx_metaseo_pagetitle_prefix',
@@ -80,6 +89,11 @@ $GLOBALS['TCA']['pages_language_overlay']['palettes']['tx_metaseo_pagetitle'] = 
     'canNotCollapse' => 1
 );
 
+$GLOBALS['TCA']['pages_language_overlay']['palettes']['tx_metaseo_opengraph'] = array(
+    'showitem'       => 'tx_metaseo_opengraph_image',
+    'canNotCollapse' => 1
+);
+
 $GLOBALS['TCA']['pages_language_overlay']['palettes']['tx_metaseo_crawler'] = array(
     'showitem'       => 'tx_metaseo_canonicalurl',
     'canNotCollapse' => 1
@@ -97,6 +111,7 @@ $GLOBALS['TCA']['pages_language_overlay']['palettes']['tx_metaseo_crawler'] = ar
     'pages_language_overlay',
     '--div--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tab.seo;,--palette--;'
     . 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.palette.pagetitle;tx_metaseo_pagetitle,'
+    . '--palette--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.palette.opengraph;tx_metaseo_opengraph,'
     . '--palette--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.palette.crawler;'
     . 'tx_metaseo_crawler',
     '',

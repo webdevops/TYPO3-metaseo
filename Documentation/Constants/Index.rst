@@ -11,8 +11,36 @@
 Constants
 =========
 
+To enable and configure the features of MetaSEO, you want to edit your main template. To do so, enter TYPO3's
+Constants Editor and choose one of the categories which are described below.
+
+.. figure:: ../Images/Constants/ConstantsT3Editor.png
+    :scale: 80%
+    :alt: Constants Editor
+
+    Choosing MetaSEO's constants categories
+
+At least the template of a root page should be configured using these constants but it's also possible
+to configure an extension template for any page and underneath.
+
+Experienced users might want to do this step by typing TypoScript code themselves. The corresponding variable
+names can also be found in the images below, next to the description.
+
 MetaTags
 --------
+
+.. figure:: ../Images/Constants/ConstantsMetatags_Enable.png
+    :scale: 80%
+    :alt: Constants Editor - Metatags
+
+    Enable features of MetaSEO
+
+.. figure:: ../Images/Constants/ConstantsMetatags_Other.png
+    :scale: 80%
+    :alt: Constants Editor - Metatags
+
+    Constants Editor for metatags
+
 ==============================   ==========================================================   =================
 Constant                         Description                                                  Default
 ==============================   ==========================================================   =================
@@ -22,16 +50,19 @@ Detect Language                  Publish the current TYPO3-FE-language as metata
 
 Canonical Tag                    Publish canonical link if possible                           *enabled*
                                  (TYPO3-cache is enabled and cHash is valid)
-                                 or if user entered canonical tag into page options.          *disabled*
+                                 or if user entered canonical tag into page options.
 
 Canonical Protocol Fallback      If no protocol is set via TYPO3's page properties, use       *disabled*
                                  this as a fallback to set a unique protocol for both http
                                  and https requests. Can be set to `http`, `https` or left
-                                 empty to disable the fallback.
+                                 empty to disable the fallback. If the web server serves
+                                 both protocols and TYPO3's default `url_scheme` is used
+                                 it is strongly recommended to explicitly specify
+                                 this value to avoid duplicate content.
 
-Canonical Tag (Strict mode)      Enable strict mode (all wrong `GET` parameters will          *enabled*
-                                 generate a canonical-tag to the self without `GET`
-                                 parameters).
+Canonical Tag (Strict mode)      Enable strict mode (unknown `GET` parameters will            *enabled*
+                                 generate a canonical-tag to the same URL without
+                                 these `GET` parameters).
 
                                  e.g. `/index.php?id=123&foo=bar` would generate a
                                  Canonical-Tag pointing to `/index.php?id=123`
@@ -91,6 +122,11 @@ P3P Compact Policy               Your P3P Compact Policy.
                                  - http://www.p3pwriter.com
 
 P3P Policy Url                   Link (full URL) to your P3P Policy File
+
+OpenGraph image width            Default width of an OpenGraph image                          *1200c*
+
+OpenGraph image height           Default height of an OpenGraph image                         *630c*
+
 ==============================   ==========================================================   =================
 
 Some metatags also have markers which could be build in, following metatags supports markers:
@@ -120,6 +156,13 @@ IE Compatibility Mode            Compatibility mode for Microsoft Internet Explo
 
 Crawler
 -------
+
+.. figure:: ../Images/Constants/ConstantsCrawler.png
+    :scale: 80%
+    :alt: Constants Editor - Crawler
+
+    Constants Editor of crawler (google) settings
+
 ==============================   ==========================================================   =================
 Constant                         Description                                                  Default
 ==============================   ==========================================================   =================
@@ -145,6 +188,13 @@ YDir                             Should the crawler use the YahooDirectory to   
 
 Services
 --------
+
+.. figure:: ../Images/Constants/ConstantsServices.png
+    :scale: 80%
+    :alt: Constants Editor - Services
+
+    Constants Editor of services settings
+
 ==============================   ===============================================================   =================
 Constant                         Description                                                       Default
 ==============================   ===============================================================   =================
@@ -172,11 +222,9 @@ GA Track Downloads               Try to track downloads with google analytics.  
 
                                  See res/ga-track-download.js for more details
 
-                                 Currently supported files:
-
-                                 - `doc`,`docx`,`xls`,`ppt`,`odt`,`ods`,`pdf`,`zip`,
-                                   `tar`,`gz`,`txt`,`vsd`,`vxd`,`rar`,`exe`,`wma`,`mov`,
-                                   `avi`,`ogg`,`ogm`,`mkv`,`wmv`,`mp3`,`webm`
+                                 Currently supported files: doc, docx, xls, ppt, odt, ods, pdf,
+                                 zip, tar, gz, txt, vsd, vxd, rar, exe, wma, mov, avi, ogg, ogm,
+                                 mkv, wmv, mp3, webm
 
 Piwik URL                        Url to your Piwik installation
 
@@ -220,6 +268,13 @@ Google+ Direct Connect           Your Google+ profile page ID
 
 PageTitle
 ---------
+
+.. figure:: ../Images/Constants/ConstantsPagetitle.png
+    :scale: 80%
+    :alt: Constants Editor - Pagetitle
+
+    Constants Editor of pagetitle settings
+
 =========================================   ==========================================================   ======================
 Constant                                    Description                                                  Default
 =========================================   ==========================================================   ======================
@@ -255,6 +310,13 @@ Caching                                     Enable or disable caching of page ti
 
 Sitemap
 -------
+
+.. figure:: ../Images/Constants/ConstantsSitemap.png
+    :scale: 80%
+    :alt: Constants Editor - Sitemap
+
+    Constants Editor of sitemap and indexing settings
+
 =================================   ==========================================================   =================
 Constant                            Description                                                  Default
 =================================   ==========================================================   =================
@@ -293,3 +355,20 @@ Page priority depth multiplier      Page depth multiplier, see formula in page p
 
 Page priority depth modificator     Page depth modificator, see formula in page priority         1
 =================================   ==========================================================   =================
+
+Extensibility
+-------------
+=================================   ==================================================================   =================
+Constant                            Description                                                          Default
+=================================   ==================================================================   =================
+allowedDoktypes                     List of doktypes (page types) which should be displayed in the web   1,4
+                                    module tree. You can extend these types by overriding this
+                                    constant or by adding your own custom page type to the list.
+
+                                    For example:
+
+                                    `plugin.metaseo.extensibility.allowedDoktypes := addToList(91)`
+
+                                    in your own typoscript setup adds the custom page type 91 to the
+                                    list of allowed doktypes.
+=================================   ==================================================================   =================

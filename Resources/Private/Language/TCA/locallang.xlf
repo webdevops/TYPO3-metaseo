@@ -10,6 +10,9 @@
             <trans-unit id="pages.palette.pagetitle" xml:space="preserve">
                 <source>Pagetitle</source>
             </trans-unit>
+            <trans-unit id="pages.palette.opengraph" xml:space="preserve">
+                <source>Open Graph</source>
+            </trans-unit>
             <trans-unit id="pages.palette.geo" xml:space="preserve">
                 <source>Geo position</source>
             </trans-unit>
@@ -36,6 +39,9 @@
             </trans-unit>
             <trans-unit id="pages_language_overlay.tx_metaseo_pagetitle_rel" xml:space="preserve">
                 <source>Browsertitle</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_metaseo_opengraph_image" xml:space="preserve">
+                <source>Image (1200 x 630 px recommended)</source>
             </trans-unit>
             <trans-unit id="pages.tx_metaseo_is_exclude" xml:space="preserve">
                 <source>Exclude page from SearchEngines</source>
