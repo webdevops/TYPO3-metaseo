@@ -6,6 +6,7 @@ CREATE TABLE pages (
     tx_metaseo_pagetitle_rel varchar(255) DEFAULT '' NOT NULL,
     tx_metaseo_pagetitle_prefix varchar(255) DEFAULT '' NOT NULL,
     tx_metaseo_pagetitle_suffix varchar(255) DEFAULT '' NOT NULL,
+    tx_metaseo_opengraph_image int(11) unsigned DEFAULT '0' NOT NULL,
     tx_metaseo_is_exclude int(1) DEFAULT '0' NOT NULL,
     tx_metaseo_inheritance int(11) DEFAULT '0' NOT NULL,
     tx_metaseo_canonicalurl varchar(255) DEFAULT '' NOT NULL,
@@ -25,6 +26,7 @@ CREATE TABLE pages_language_overlay (
     tx_metaseo_pagetitle_rel varchar(255) DEFAULT '' NOT NULL,
     tx_metaseo_pagetitle_prefix varchar(255) DEFAULT '' NOT NULL,
     tx_metaseo_pagetitle_suffix varchar(255) DEFAULT '' NOT NULL,
+    tx_metaseo_opengraph_image int(11) unsigned DEFAULT '0' NOT NULL,
     tx_metaseo_canonicalurl varchar(255) DEFAULT '' NOT NULL
 );
 

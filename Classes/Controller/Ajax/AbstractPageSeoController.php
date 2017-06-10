@@ -31,6 +31,7 @@ use Metaseo\Metaseo\Controller\AbstractAjaxController;
 use Metaseo\Metaseo\Controller\Ajax\PageSeo as PageSeo;
 use Metaseo\Metaseo\DependencyInjection\Utility\HttpUtility;
 use Metaseo\Metaseo\Exception\Ajax\AjaxException;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -353,10 +354,23 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
             ->objectManager
             ->get('Metaseo\\Metaseo\\Dao\\PageSeoDao')
             ->setPageTreeView($this->getPageTreeView())
-            ->setDataHandler($this->getDataHandler());
+            ->setDataHandler($this->getDataHandler())
+            ->setExtensibilityOptions($this->getExtensibilityOptions());
     }
 
     /**
+     * return array
+     */
+    protected function getExtensibilityOptions()
+    {
+        $config = $this
+            ->objectManager
+            ->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager')
+            ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+        return $config['plugin.']['metaseo.']['extensibility.'];
+    }
+
+        /**
      * @return \TYPO3\CMS\Core\DataHandling\DataHandler
      */
     protected function getDataHandler()
