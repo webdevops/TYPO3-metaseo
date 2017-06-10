@@ -15,7 +15,26 @@ Changelog
 +-------------+----------------------------------------------------------------------------------------------------+
 | Version     | Changes                                                                                            |
 +=============+====================================================================================================+
-| **2.1.0**   | **New feature and Bugfix release**                                                                 |
+| **3.0.0**   | **Major release** (2017-06-11)                                                                     |
+|             |                                                                                                    |
+|             | - Added TYPO3 CMS 8.7 LTS support                                                                  |
+|             | - Removed support for TYPO3 CMS 6.2 LTS and 7.6 LTS                                                |
+|             | - contains the new features which were backported into 2.1.0                                       |
+|             | - TCA usage is now on par with TYPO3 CMS 8.7                                                       |
+|             | - Deprecation log is now supposed to stay empty (except for Doctrine DBAL messages)                |
+|             | - metaseo 3.0.0 runs with and without the compatibility7 extension (uninstall it if possible)      |
+|             |                                                                                                    |
+|             | **Migration to 3.0.0:**                                                                            |
+|             |                                                                                                    |
+|             | - Please upgrade to metaseo 2.1.0 in 7.6 LTS before upgrading to 8.7 LTS                           |
+|             | - Clear caches and compare/update the schema via install tool                                      |
+|             | - For details in respect to the schema selection (http/https) feature removal, please visit the    |
+|             |   `Manual <https://docs.typo3.org/typo3cms/extensions/metaseo/stable/AdministratorManual/>`_       |
+|             |                                                                                                    |
+|             | `Milestone 3.0.0 <https://github.com/mblaschke/TYPO3-metaseo/milestone/6?closed=1>`_               |
+|             | `Changes in 3.0.0 <https://github.com/mblaschke/TYPO3-metaseo/compare/2.1.0...3.0.0>`_             |
++-------------+----------------------------------------------------------------------------------------------------+
+| **2.1.0**   | **New feature and Bugfix release** (2017-06-11)                                                    |
 |             |                                                                                                    |
 |             | - Added support for OpenGraph images                                                               |
 |             | - Display custom page doktypes in SEO/Metatags section                                             |
@@ -28,21 +47,21 @@ Changelog
 |             | `Milestone 2.1.0 <https://github.com/mblaschke/TYPO3-metaseo/milestone/5?closed=1>`_               |
 |             | `Changes in 2.1.0 <https://github.com/mblaschke/TYPO3-metaseo/compare/2.0.4...2.1.0>`_             |
 +-------------+----------------------------------------------------------------------------------------------------+
-| **2.0.4**   | **New feature and Bugfix release**                                                                 |
+| **2.0.4**   | **New feature and Bugfix release** (2017-04-15)                                                    |
 |             |                                                                                                    |
 |             | - Sitemap: Tags `lastmod` and `priority` now can be disabled via configuration                     |
 |             |                                                                                                    |
 |             | `Milestone 2.0.4 <https://github.com/mblaschke/TYPO3-metaseo/milestone/17?closed=1>`_              |
 |             | `Changes in 2.0.4 <https://github.com/mblaschke/TYPO3-metaseo/compare/2.0.3...2.0.4>`_             |
 +-------------+----------------------------------------------------------------------------------------------------+
-| **2.0.3**   | **New feature and Bugfix release**                                                                 |
+| **2.0.3**   | **New feature and Bugfix release** (2016-12-31)                                                    |
 |             |                                                                                                    |
 |             | - Number of entries shown in sitemap now can be changed via extension manager                      |
 |             |                                                                                                    |
 |             | `Milestone 2.0.3 <https://github.com/mblaschke/TYPO3-metaseo/milestone/16?closed=1>`_              |
 |             | `Changes in 2.0.3 <https://github.com/mblaschke/TYPO3-metaseo/compare/2.0.2...2.0.3>`_             |
 +-------------+----------------------------------------------------------------------------------------------------+
-| **2.0.2**   | **Bugfix release**                                                                                 |
+| **2.0.2**   | **Bugfix release** (2016-12-30)                                                                    |
 |             |                                                                                                    |
 |             | **Migration to 2.0.2:**                                                                            |
 |             |                                                                                                    |
