@@ -5,7 +5,7 @@ $EM_CONF[$_EXTKEY] = array(
     'description' => 'Search Engine Optimization (SEO), Indexed Google-Sitemap (TXT- and XML-Sitemap) for all Extensions (pibase, extbase), Metatags, Canonical-URL, Pagetitle manipulations, Crawler verification, Piwik and Google Analytics support and some more... multi-language- and multi-tree-support',
     'category' => 'misc',
     'shy' => 0,
-    'version' => '3.0.0-dev',
+    'version' => '3.0.0',
     'dependencies' => '',
     'conflicts' => '',
     'priority' => '',
@@ -24,7 +24,7 @@ $EM_CONF[$_EXTKEY] = array(
     'CGLcompliance_note' => '',
     'constraints' => array(
         'depends' => array(
-            'php' => '5.3.0-0.0.0',
+            'php' => '7.0.0-0.0.0',
             'typo3' => '8.7.0-8.7.99',
         ),
         'conflicts' => array(),
