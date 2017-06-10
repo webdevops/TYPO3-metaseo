@@ -20,11 +20,16 @@ Changelog
 |             | - Added TYPO3 CMS 8.7 LTS support                                                                  |
 |             | - Removed support for TYPO3 CMS 6.2 LTS and 7.6 LTS                                                |
 |             | - contains the new features which were backported into 2.1.0                                       |
+|             | - TCA usage is now on par with TYPO3 CMS 8.7                                                       |
+|             | - Deprecation log is now supposed to stay empty (except for Doctrine DBAL messages)                |
+|             | - metaseo 3.0.0 runs with and without the compatibility7 extension (uninstall it if possible)      |
 |             |                                                                                                    |
 |             | **Migration to 3.0.0:**                                                                            |
 |             |                                                                                                    |
 |             | - Please upgrade to metaseo 2.1.0 in 7.6 LTS before upgrading to 8.7 LTS                           |
 |             | - Clear caches and compare/update the schema via install tool                                      |
+|             | - For details in respect to the schema selection (http/https) feature removal, please visit the    |
+|             |   `Manual <https://docs.typo3.org/typo3cms/extensions/metaseo/stable/AdministratorManual/>`_       |
 |             |                                                                                                    |
 |             | `Milestone 3.0.0 <https://github.com/mblaschke/TYPO3-metaseo/milestone/6?closed=1>`_               |
 |             | `Changes in 3.0.0 <https://github.com/mblaschke/TYPO3-metaseo/compare/2.1.0...3.0.0>`_             |
