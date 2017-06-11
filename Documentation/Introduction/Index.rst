@@ -144,6 +144,7 @@ Thanks to...
 ------------
 
 - TEQneers GmbH & Co. KG for sponsoring the predecessor "tq_seo"
+- `2bis10 IT-Services UG (haftungsbeschränkt) <https://www.2bis10.de>`_ for sponsoring community support and large portions of the code in 2.x and 3.x releases
 - jweiland.net and especially Wolfgang Wagner for their `video tutorial (German) <https://jweiland.net/video-anleitungen/typo3/interessante-typo3-extensions/metaseo.html>`_
 - Anton Danilov
 - Pierre Arlt
@@ -153,7 +154,7 @@ Thanks to...
 - Manfred Egger
 - Carsten Hager
 - Thomas Deuling
-- Thomas Mayer
+- Thomas Mayer // `2bis10 IT-Services UG (haftungsbeschränkt) <https://www.2bis10.de>`_
 - Florian Duffner
 - Georg Tiefenbrunn
 - Arne-Kolja Bachstein
