@@ -21,61 +21,32 @@ It's a replacement for the "metatag" extension and the successor of the disconti
 
 ## Version status
 
-* Version **2.0.4**:
+MetaSEO is available via TYPO3's Extension Manager ([TER](https://typo3.org/extensions/repository/view/metaseo))
+and via composer ([TER](https://typo3.org/extensions/repository/view/metaseo),
+[Packagist](https://packagist.org/packages/mblaschke/metaseo)).
+
+* Development version **3.0.1-dev**:
 
   + Branch **master**
-  + TYPO3 Version: 6.2.x - 7.6.x
-  + Composer: dev-master
-
-* Version **2.1.0-dev**:
-
-  + Branch **develop**
-  + TYPO3 Version: 6.2.x - 7.6.x
-  + Composer: dev-develop
-
-* Version **3.0.0**:
-
-  + Branch **feature/8lts**
   + TYPO3 Version: 8.7.x
-  + `composer require mblaschke/metaseo:dev-feature/8lts`
+  + composer via Packagist: `composer require mblaschke/metaseo:dev-master -o`
+  + Please be aware that the development version can break at any time
+
+* Stable version **3.0.0**:
+
+  + Branch **v3.0**
+  + TYPO3 Version: 8.7.x
+  + composer via TER: `composer require typo3-ter/metaseo -o` (recommended)
+  + composer via Packagist: `composer require mblaschke/metaseo -o`
+
+* Old-Stable version **2.1.0**:
+
+  + Branch **v2.1**
+  + TYPO3 Version: 6.2.x - 7.6.x
+  + composer via TER: `composer require typo3-ter/metaseo -o` (recommended)
+  + composer via Packagist: `composer require mblaschke/metaseo -o`
 
 For version specific information see [changelog for MetaSEO](CHANGELOG.md)
-
-
-## Composer Support
-
-The latest stable release of MetaSEO is available via [TYPO3 TER](https://typo3.org/extensions/repository/view/metaseo)
-using TYPO3's extension manager or using composer:
-
-    {
-      "repositories": [
-        { "type": "composer", "url": "https://composer.typo3.org/" }
-      ],
-      .......
-      "require": {
-        "php": ">=5.3.0",
-        "typo3/cms-core": ">=6.2.0,<8.0",
-        "typo3-ter/metaseo": "*"
-      },
-    }
-
-As long as you are aware that our unstable branch can break at any time, feel free to preview coming releases by using
-our unstable branch at Github:
-
-    {
-      "repositories": [
-        { "type": "composer", "url": "https://composer.typo3.org/" },
-        { "type": "vcs", "url": "https://github.com/mblaschke/TYPO3-metaseo.git" },
-      ],
-      .......
-      "require": {
-        "php": ">=5.3.0",
-        "typo3/cms-core": ">=6.2.0,<8.0",
-        "mblaschke/metaseo": "dev-master"
-      }
-    }
-
-MetaSEO is also available via [packagist](https://packagist.org/packages/mblaschke/metaseo).
 
 ## Found a bug? Have questions?
 
