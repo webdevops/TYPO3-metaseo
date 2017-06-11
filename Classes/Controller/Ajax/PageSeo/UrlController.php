@@ -41,11 +41,13 @@ class UrlController extends AbstractPageSeoSimController
      */
     protected function initFieldList()
     {
-        $fieldList = array(
-            'title',
-            'url_scheme',
-            'alias',
-        );
+        $fieldList = array();
+
+        $fieldList[] = 'title';
+        if (ExtensionManagementUtility::isLoaded('compatibility7')) {
+            $fieldList[] = 'url_scheme';
+        }
+        $fieldList[] = 'alias';
         if (ExtensionManagementUtility::isLoaded('realurl')) {
             $fieldList[] = 'tx_realurl_pathsegment';
             $fieldList[] = 'tx_realurl_pathoverride';

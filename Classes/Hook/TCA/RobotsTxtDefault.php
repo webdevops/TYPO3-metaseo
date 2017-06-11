@@ -87,8 +87,9 @@ class RobotsTxtDefault
         // ############################
         $rootPageId = $data['row']['pid'];
 
-        /** @var \TYPO3\CMS\Core\TimeTracker\NullTimeTracker $timeTracker */
-        $timeTracker = $this->objectManager->get('TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker');
+        // Disables the time tracker to speed up TypoScript execution
+        /** @var \TYPO3\CMS\Core\TimeTracker\TimeTracker $timeTracker */
+        $timeTracker = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TimeTracker\\TimeTracker', false);
 
         $GLOBALS['TT'] = $timeTracker;
         $GLOBALS['TT']->start();
@@ -131,23 +132,7 @@ class RobotsTxtDefault
         $content = htmlspecialchars($content);
         $content = nl2br($content);
 
-        /**
-         * instanciation of TypoScriptFrontendController instanciates PageRenderer which
-         * sets backPath to TYPO3_mainDir which is very bad in the Backend. Therefore,
-         * we must set it back to null to not get frontend-prefixed asset URLs. See #150.
-         */
-        $this->cleanUpPageRendererBackPath();
-
         return $content;
-    }
-
-    /**
-     * Sets backPath of PageRenderer back to null (for Backend)
-     */
-    protected function cleanUpPageRendererBackPath()
-    {
-        $pageRenderer = $this->getPageRenderer();
-        $pageRenderer->setBackPath(null);
     }
 
     /**

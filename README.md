@@ -1,7 +1,7 @@
 # MetaSEO - Search Engine Optimization for TYPO3
 
-![stable v2.1.0](https://img.shields.io/badge/stable-v2.1.0-green.svg?style=flat)
-![development v3.0.0](https://img.shields.io/badge/development-v3.0.0-red.svg?style=flat)
+![stable v3.0.0](https://img.shields.io/badge/stable-v3.0.0-green.svg?style=flat)
+![development v3.0.1](https://img.shields.io/badge/development-v3.0.1-red.svg?style=flat)
 ![License GPL3](https://img.shields.io/badge/license-GPL3-blue.svg?style=flat)
 
 
@@ -25,14 +25,21 @@ MetaSEO is available via TYPO3's Extension Manager ([TER](https://typo3.org/exte
 and via composer ([TER](https://typo3.org/extensions/repository/view/metaseo),
 [Packagist](https://packagist.org/packages/mblaschke/metaseo)).
 
-* Development version **3.0.0-dev**:
+* Development version **3.0.1-dev**:
 
   + Branch **master**
   + TYPO3 Version: 8.7.x
   + composer via Packagist: `composer require mblaschke/metaseo:dev-master -o`
   + Please be aware that the development version can break at any time
 
-* Stable version **2.1.0**:
+* Stable version **3.0.0**:
+
+  + Branch **v3.0**
+  + TYPO3 Version: 8.7.x
+  + composer via TER: `composer require typo3-ter/metaseo -o` (recommended)
+  + composer via Packagist: `composer require mblaschke/metaseo -o`
+
+* Old-Stable version **2.1.0**:
 
   + Branch **v2.1**
   + TYPO3 Version: 6.2.x - 7.6.x

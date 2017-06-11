@@ -1,5 +1,5 @@
 <?php
-defined('TYPO3_MODE') or exit();
+defined('TYPO3_MODE') || die();
 
 $tempColumns = array(
     'tx_metaseo_pagetitle'        => array(
@@ -69,23 +69,12 @@ $tempColumns = array(
             'max'      => '255',
             'checkbox' => '',
             'eval'     => 'trim',
-            'wizards'  => array(
-                '_PADDING' => 2,
-                'link'     => array(
-                    'type'         => 'popup',
-                    'title'        => 'Link',
-                    'icon'         => 'link_popup.gif',
-                    'module' => array(
-                        'name' => 'wizard_element_browser',
-                        'urlParameters' => array(
-                            'mode' => 'wizard',
-                            'act' => 'url'
-                        )
-                    ),
-                    'params'       => array(
+            'renderType' => 'inputLink',
+            'fieldControl' => array(
+                'linkPopup' => array(
+                    'options' => array(
                         'blindLinkOptions' => 'mail',
                     ),
-                    'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1'
                 ),
             ),
         )

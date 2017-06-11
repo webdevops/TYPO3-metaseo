@@ -36,7 +36,7 @@ use Metaseo\Metaseo\Controller\Ajax\PageSeo\SearchEnginesController;
 use Metaseo\Metaseo\Controller\Ajax\PageSeo\UrlController;
 use Metaseo\Metaseo\Utility\DatabaseUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -119,6 +119,9 @@ class BackendPageSeoController extends AbstractStandardModule
             return;
         }
 
+        /** @var \TYPO3\CMS\Core\Imaging\IconFactory $iconFactory */
+        $iconFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconFactory');
+
         // Load PageTS
         $pageTsConf = BackendUtility::getPagesTSconfig($pageId);
 
@@ -166,7 +169,7 @@ class BackendPageSeoController extends AbstractStandardModule
 
             // Flag (if available)
             if (!empty($langRow['flag'])) {
-                $flag .= IconUtility::getSpriteIcon('flags-' . $langRow['flag']);
+                $flag .= $iconFactory->getIcon('flags-' . $langRow['flag'], Icon::SIZE_SMALL)->render();
                 $flag .= '&nbsp;';
             }
 
@@ -191,6 +194,7 @@ class BackendPageSeoController extends AbstractStandardModule
         // ############################
 
         $realUrlAvailable = ExtensionManagementUtility::isLoaded('realurl');
+        $urlSchemeAvailable = ExtensionManagementUtility::isLoaded('compatibility7');
 
         $ajaxController = AbstractPageSeoController::AJAX_PREFIX . $listType;
 
@@ -206,18 +210,17 @@ class BackendPageSeoController extends AbstractStandardModule
             'depth'            => 2,
             'sortField'        => 'crdate',
             'sortDir'          => 'DESC',
-            'filterIcon'       => IconUtility::getSpriteIcon(
-                'actions-system-tree-search-open'
-            ),
+            'filterIcon'       => $iconFactory->getIcon('actions-system-tree-search-open', Icon::SIZE_SMALL)->render(),
             'dataLanguage'     => $languageList,
             'sysLanguage'      => $sysLanguageDefault,
             'listType'         => $listType,
             'criteriaFulltext' => '',
             'realurlAvailable' => $realUrlAvailable,
+            'urlSchemeAvailable' => $urlSchemeAvailable,
             'sprite'           => array(
-                'edit'   => $this->getIcon('actions-document-open'),
-                'info'   => $this->getIcon('actions-document-info'),
-                'editor' => $this->getIcon('actions-system-options-view'),
+                'edit'   => $iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render(),
+                'info'   => $iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render(),
+                'editor' => $iconFactory->getIcon('actions-system-options-view', Icon::SIZE_SMALL)->render(),
             ),
         );
 
@@ -288,29 +291,5 @@ class BackendPageSeoController extends AbstractStandardModule
             MetaSeo.overview.conf.lang = ' . json_encode($metaSeoLang) . ';
         '
         );
-    }
-
-    private function getIcon($iconName)
-    {
-        $html = IconUtility::getSpriteIcon($iconName);
-        //Ugly workaround to make icons clickable in TYPO3 7.6.
-        //It's deprecated anyways, therefore changes in the future when we drop support for 6.2.
-        if (stripos('svg', $html)) {
-            //not found
-            return $html; //Typo3 6.2. That works.
-        } else {
-            //found => TYPO3 7 workaround must be applied.
-            switch ($iconName) {
-                case 'actions-document-open':
-                    return '<span class="t3-icon t3-icon-actions '
-                        . 't3-icon-actions-document t3-icon-document-open"></span>';
-                case 'actions-document-info':
-                    return '<span class="t3-icon t3-icon-actions '
-                    . ' t3-icon-actions-document t3-icon-document-info"></span>';
-                case 'actions-system-options-view':
-                    return '<span class="t3-icon t3-icon-actions '
-                    . 't3-icon-actions-document t3-icon-document-view"></span>';
-            }
-        }
     }
 }

@@ -9,7 +9,7 @@
 <f:section name="content">
 
     <f:if condition="{RootPageList}">
-        <table border="0" cellpadding="0" cellspacing="1" width="100%" class="typo3-dblist">
+        <table class="table table-hover">
             <colgroup>
                 <col width="20"/>
                 <col width="*"/>
@@ -40,8 +40,7 @@
                 <tr>
                     <!-- Edit settings button -->
                     <td>
-                        <span title="" class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-open"
-                              onclick="{RootPage.settingsLink}">&nbsp;</span>
+                        <span style="cursor: pointer" onclick="{RootPage.settingsLink}"><core:icon identifier="actions-document-open" size="small" /></span>
                     </td>
 
                     <!-- Title -->
@@ -76,9 +75,7 @@
                     <td class="center">
                         <f:if condition="{RootPage.rootSettings.is_sitemap}">
                             <f:then>
-                                <span
-                                    class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-permission-granted"></span>
-
+                                <core:icon identifier="status-status-permission-granted" size="small" />
                                 <f:if condition="{RootPage.sitemapLink}">
                                     <div class="metaseo-sitemap-link"><a href="{RootPage.sitemapLink}" target="_blank">
                                         <f:translate key="link.open">open</f:translate>
@@ -86,8 +83,7 @@
                                 </f:if>
                             </f:then>
                             <f:else>
-                                <span
-                                    class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-permission-denied"></span>
+                                <core:icon identifier="status-status-permission-denied" size="small" />
                             </f:else>
                         </f:if>
                     </td>
@@ -96,8 +92,7 @@
                     <td class="center">
                         <f:if condition="{RootPage.rootSettings.is_robotstxt}">
                             <f:then>
-                                <span
-                                    class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-permission-granted"></span>
+                                <core:icon identifier="status-status-permission-granted" size="small" />
                                 <f:if condition="{RootPage.robotsTxtLink}">
                                     <div class="metaseo-robotstxt-link"><a href="{RootPage.robotsTxtLink}"
                                                                            target="_blank">
@@ -106,8 +101,7 @@
                                 </f:if>
                             </f:then>
                             <f:else>
-                                <span
-                                    class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-permission-denied"></span>
+                                <core:icon identifier="status-status-permission-denied" size="small" />
                             </f:else>
                         </f:if>
                     </td>

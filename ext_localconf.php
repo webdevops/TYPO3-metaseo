@@ -7,6 +7,17 @@ $confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['metaseo'])
 // BACKEND
 // ##############################################
 if (TYPO3_MODE == 'BE') {
+    /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
+    $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("TYPO3\\CMS\\Core\\Imaging\\IconRegistry");
+    $iconRegistry->registerIcon(
+        'module-seo',
+        "TYPO3\\CMS\\Core\\Imaging\\IconProvider\\FontawesomeIconProvider",
+        array(
+            'name' => 'bullseye'
+        )
+    );
+    unset($iconRegistry);
+
     // Field validations
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals']['tx_metaseo_backend_validation_float']
         = 'EXT:metaseo/Classes/Backend/Validator/ValidatorImport.php';

@@ -1250,19 +1250,19 @@ class MetatagPart extends AbstractPart
         // to prevent linking to other domains
         // see https://github.com/mblaschke/TYPO3-metaseo/issues/5
         if (!$currentIsRootpage) {
-            $startPage    = $GLOBALS['TSFE']->cObj->HMENU($this->tsSetupSeo['sectionLinks.']['start.']);
+            $startPage = $GLOBALS['TSFE']->cObj->cObjGetSingle('HMENU', $this->tsSetupSeo['sectionLinks.']['start.']);
             $startPageUrl = null;
             if (!empty($startPage)) {
                 $startPageUrl = $this->generateLink($startPage);
             }
 
-            $prevPage    = $GLOBALS['TSFE']->cObj->HMENU($this->tsSetupSeo['sectionLinks.']['prev.']);
+            $prevPage =  $GLOBALS['TSFE']->cObj->cObjGetSingle('HMENU', $this->tsSetupSeo['sectionLinks.']['prev.']);
             $prevPageUrl = null;
             if (!empty($prevPage)) {
                 $prevPageUrl = $this->generateLink($prevPage);
             }
 
-            $nextPage    = $GLOBALS['TSFE']->cObj->HMENU($this->tsSetupSeo['sectionLinks.']['next.']);
+            $nextPage =  $GLOBALS['TSFE']->cObj->cObjGetSingle('HMENU', $this->tsSetupSeo['sectionLinks.']['next.']);
             $nextPageUrl = null;
             if (!empty($nextPage)) {
                 $nextPageUrl = $this->generateLink($nextPage);
@@ -1328,6 +1328,7 @@ class MetatagPart extends AbstractPart
      */
     protected function generateCanonicalUrl()
     {
+        $extCompat7 = ExtensionManagementUtility::isLoaded('compatibility7');
         //User has specified a canonical URL in the page properties
         if (!empty($this->pageRecord['tx_metaseo_canonicalurl'])) {
             return $this->generateLink($this->pageRecord['tx_metaseo_canonicalurl']);
@@ -1341,7 +1342,7 @@ class MetatagPart extends AbstractPart
             if (!empty($clUrl) && isset($clLinkConf) && isset($clDisableMpMode)) {
                 $url = $this->generateLink($clUrl, $clLinkConf, $clDisableMpMode);
                 return $this->setFallbackProtocol(
-                    $this->pageRecord['url_scheme'], //page properties protocol selection
+                    $extCompat7 ? $this->pageRecord['url_scheme'] : null, //page properties protocol selection
                     $this->tsSetupSeo['canonicalUrl.']['fallbackProtocol'],
                     $url
                 );

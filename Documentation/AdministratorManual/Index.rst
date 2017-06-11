@@ -36,7 +36,18 @@ Installation via composer
 Migration from TYPO3 CMS 7.6 to 8.7
 -----------------------------------
 
-- Check out the latest `announcements <https://github.com/mblaschke/TYPO3-metaseo/issues/376>`_.
+- Upgrade the extension `metaseo` to the latest 2.x version, still using TYPO3 CMS 7.6.
+- Clear all caches in the install tool.
+- You are now ready to go for TYPO3 CMS 8.7.
+- After upgrading to TYPO3 CMS 8.7, update to the latest version of metaseo 3.x.
+- Again, clear all caches in the install tool.
+
+Please note that there is a feature removal in TYPO3 CMS 8.7, which removes the possibility to enforce a schema
+(http or https) for each page. If this feature still is needed, installing the extension compatibility7 will
+bring it back. Metaseo checks for the existence of the extension compatibility7. In case the extension compatibility7
+is installed, metaseo 3.x will behave like in 2.x releases in respect to the schema selection.
+
+The extension compatibility7 is *not needed* in metaseo 3.0.0 and should be removed if possible.
 
 Migration from TYPO3 CMS 6.2 to 7.6
 -----------------------------------

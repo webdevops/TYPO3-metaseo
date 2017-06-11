@@ -69,8 +69,9 @@ class FrontendUtility
 
         // create time tracker if needed
         if (empty($GLOBALS['TT'])) {
-            /** @var \TYPO3\CMS\Core\TimeTracker\NullTimeTracker $timeTracker */
-            $timeTracker = $objectManager->get('TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker');
+            // Disables the time tracker to speed up TypoScript execution
+            /** @var \TYPO3\CMS\Core\TimeTracker\TimeTracker $timeTracker */
+            $timeTracker = Typo3GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TimeTracker\\TimeTracker', false);
 
             $GLOBALS['TT'] = $timeTracker;
             $GLOBALS['TT']->start();
@@ -184,21 +185,18 @@ class FrontendUtility
     /**
      * Return current URL
      *
-     * @return null|string
+     * @return string
      */
     public static function getCurrentUrl()
     {
-        $ret = null;
+        //former $TSFE->anchorPrefix got deprecated in TYPO3 7.x
+        $tsfeAnchorPrefix = Typo3GeneralUtility::getIndpEnv('TYPO3_SITE_SCRIPT');
 
-        $TSFE = self::getTsfe();
-
-        if (!empty($TSFE->anchorPrefix)) {
-            $ret = (string)$TSFE->anchorPrefix;
+        if ($tsfeAnchorPrefix !== false && !empty($tsfeAnchorPrefix)) {
+            return $tsfeAnchorPrefix;
         } else {
-            $ret = (string)$TSFE->siteScript;
+            return (string) self::getTsfe()->siteScript;
         }
-
-        return $ret;
     }
 
     /**

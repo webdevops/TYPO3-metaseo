@@ -26,24 +26,25 @@
 
 namespace Metaseo\Metaseo\Controller\Ajax;
 
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 abstract class AbstractPageSeoSimController extends AbstractPageSeoController implements PageSeoSimulateInterface
 {
     /**
      * @inheritDoc
      */
-    public function simulateAction($params = array(), AjaxRequestHandler &$ajaxObj = null)
+    public function simulateAction(ServerRequestInterface $request, ResponseInterface $response)
     {
         try {
             $this->init();
-            $ajaxObj->setContent($this->executeSimulate($this->getLanguage()));
+            $this->fetchParams($request);
+            $response->getBody()->write(\GuzzleHttp\json_encode($this->executeSimulate($this->getLanguage())));
         } catch (\Exception $exception) {
-            $this->ajaxExceptionHandler($exception, $ajaxObj);
+            return $this->ajaxExceptionHandler($exception, $response);
         }
 
-        $ajaxObj->setContentFormat(self::CONTENT_FORMAT_JSON);
-        $ajaxObj->render();
+        return $response;
     }
 
     /**

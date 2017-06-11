@@ -26,67 +26,58 @@
 
 namespace Metaseo\Metaseo\Controller\Ajax;
 
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 interface SitemapInterface
 {
     /**
      * Executes an AJAX request which displays the data (usually as a list)
      *
-     * @param array $params Array of parameters from the AJAX interface, currently unused (as of 6.2.14)
-     *                      becomes available starting with 7.4.0 (c048cede,
-     *                      https://forge.typo3.org/issues/68186)
-     * @param AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      *
-     * @return void
+     * @return ResponseInterface
      */
-    public function indexAction($params = array(), AjaxRequestHandler &$ajaxObj = null);
+    public function indexAction(ServerRequestInterface $request, ResponseInterface $response);
 
     /**
      * Blacklists a sitemap entry so that it does not appear in the sitemap presented to search engines
      *
-     * @param array $params Array of parameters from the AJAX interface, currently unused (as of 6.2.14)
-     *                      becomes available starting with 7.4.0 (c048cede,
-     *                      https://forge.typo3.org/issues/68186)
-     * @param AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      *
-     * @return void
+     * @return ResponseInterface
      */
-    public function blacklistAction($params = array(), AjaxRequestHandler &$ajaxObj = null);
+    public function blacklistAction(ServerRequestInterface $request, ResponseInterface $response);
 
     /**
      * Undoes the blacklist operation
      *
-     * @param array $params Array of parameters from the AJAX interface, currently unused (as of 6.2.14)
-     *                      becomes available starting with 7.4.0 (c048cede,
-     *                      https://forge.typo3.org/issues/68186)
-     * @param AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      *
-     * @return void
+     * @return ResponseInterface
      */
-    public function whitelistAction($params = array(), AjaxRequestHandler &$ajaxObj = null);
+    public function whitelistAction(ServerRequestInterface $request, ResponseInterface $response);
 
     /**
      * Deletes an entry from the sitemap. Entry will reappear as soon as it's indexed again
      *
-     * @param array $params Array of parameters from the AJAX interface, currently unused (as of 6.2.14)
-     *                      becomes available starting with 7.4.0 (c048cede,
-     *                      https://forge.typo3.org/issues/68186)
-     * @param AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      *
-     * @return void
+     * @return ResponseInterface
      */
-    public function deleteAction($params = array(), AjaxRequestHandler &$ajaxObj = null);
+    public function deleteAction(ServerRequestInterface $request, ResponseInterface $response);
 
     /**
      * Performs delete operation for all the entries in the sitemap
      *
-     * @param array $params Array of parameters from the AJAX interface, currently unused (as of 6.2.14)
-     *                      becomes available starting with 7.4.0 (c048cede,
-     *                      https://forge.typo3.org/issues/68186)
-     * @param AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
      *
-     * @return void
+     * @return ResponseInterface
      */
-    public function deleteAllAction($params = array(), AjaxRequestHandler &$ajaxObj = null);
+    public function deleteAllAction(ServerRequestInterface $request, ResponseInterface $response);
 }

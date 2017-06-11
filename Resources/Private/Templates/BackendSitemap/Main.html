@@ -9,7 +9,7 @@
 <f:section name="content">
 
     <f:if condition="{RootPageList}">
-        <table border="0" cellpadding="0" cellspacing="1" width="100%" class="typo3-dblist">
+        <table class="table table-hover">
             <colgroup>
                 <col width="20"/>
                 <col width="*"/>
@@ -39,8 +39,9 @@
                 <tr>
                     <!-- Toolbar -->
                     <td>
-                        <f:be.buttons.icon uri="{f:uri.action(action:'sitemap',arguments:{pageId: RootPage.uid})}"
-                                           icon="actions-system-list-open"/>
+                        <f:link.action action="sitemap" arguments="{pageId: RootPage.uid}">
+                            <core:icon identifier="actions-system-list-open" size="small" />
+                        </f:link.action>
                     </td>
 
                     <!-- Title -->

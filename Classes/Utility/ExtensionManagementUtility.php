@@ -27,7 +27,6 @@
 namespace Metaseo\Metaseo\Utility;
 
 use ReflectionMethod;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility as Typo3ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility as Typo3GeneralUtility;
 
 class ExtensionManagementUtility
@@ -42,9 +41,12 @@ class ExtensionManagementUtility
      *
      * @param string $qualifiedClassName
      * @param string $ajaxPrefix
+     *
+     * @return array
      */
-    public static function registerAjaxClass($qualifiedClassName, $ajaxPrefix = '')
+    public static function getAjaxRoutesOfClass($qualifiedClassName, $ajaxPrefix = '')
     {
+        $ajaxRoutes = array();
         if (!empty($ajaxPrefix)) {
             $ajaxPrefix = $ajaxPrefix . self::AJAX_METHOD_DELIMITER;
         }
@@ -55,22 +57,29 @@ class ExtensionManagementUtility
             $methodName = $method->getName();
             if (self::isAjaxMethod($methodName)) {
                 $ajaxMethodName = self::extractAjaxMethod($methodName);
-                Typo3ExtensionManagementUtility::registerAjaxHandler(
-                    $ajaxPrefix . $ajaxMethodName,
-                    $qualifiedClassName . '->' . $methodName
+                $ajaxRoutes[$ajaxPrefix . $ajaxMethodName] = array(
+                    'path' => $ajaxPrefix . $ajaxMethodName,
+                    'target' => $qualifiedClassName . '::' . $ajaxMethodName . self::AJAX_METHOD_NAME_SUFFIX, //AjaxID
                 );
             }
         }
+        return $ajaxRoutes;
     }
+
+
 
     /**
      * @param array $qualifiedClassNames
+     *
+     * @return array Ajax routes to be registered
      */
-    public static function registerAjaxClasses(array $qualifiedClassNames)
+    public static function registerAjaxRoutes(array $qualifiedClassNames)
     {
+        $ajaxRoutes = array();
         foreach ($qualifiedClassNames as $ajaxPrefix => $qualifiedClassName) {
-            self::registerAjaxClass($qualifiedClassName, $ajaxPrefix);
+            $ajaxRoutes = array_merge($ajaxRoutes, self::getAjaxRoutesOfClass($qualifiedClassName, $ajaxPrefix));
         }
+        return $ajaxRoutes;
     }
 
     /**

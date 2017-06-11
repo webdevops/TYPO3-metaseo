@@ -24,9 +24,19 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-namespace Metaseo\Configuration\TCA;
+namespace Metaseo\Metaseo\ViewHelpers\Be\Menus;
 
-/**
- * This File is include()d by TYPO3's ExtensionUtility. We'll get an exception when we remove it.
- * At some time we should find out what this file is actually good for.
- */
+use TYPO3\CMS\Fluid\ViewHelpers\Be\Menus as FluidBeMenus;
+
+class ActionMenuViewHelper extends FluidBeMenus\ActionMenuViewHelper
+{
+    /**
+     * @inheritdoc
+     */
+    public function render()
+    {
+        $this->tag->addAttribute('class', 'form-control t3-js-jumpMenuBox');
+        parent::render();
+        return '<div class="docheader-funcmenu form-group form-group-sm">' . $this->tag->render() . '</div>';
+    }
+}

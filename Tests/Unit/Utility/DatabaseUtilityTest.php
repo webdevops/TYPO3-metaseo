@@ -26,9 +26,8 @@
 
 namespace Metaseo\Metaseo\Tests\Unit\Utility;
 
-
 use Metaseo\Metaseo\Utility\DatabaseUtility;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DatabaseUtilityTest extends UnitTestCase
 {

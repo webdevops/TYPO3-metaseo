@@ -152,6 +152,15 @@ MetaSeo.overview.grid = {
                             });
                         }
                     }
+                },
+                templates: {
+                    cell: new Ext.Template(
+                        // By setting this template, mouse pointer changes when hovering over the icon
+                        // As a bonus: The clickable area extends to the very upper/lower border of the cell
+                        // As soon as there is a better solution for this issue, this template becomes obsolete
+                        '<td class="x-grid3-col x-grid3-cell x-grid3-td-{id} x-selectable {css}" style="{style}" tabIndex="0" {cellAttr}>',
+                        '<div class="x-grid3-cell-inner x-grid3-col-{id}" {attr}>{value}</div>','</td>'
+                    )
                 }
             },
             tbar: [
@@ -439,9 +448,14 @@ MetaSeo.overview.grid = {
 
             case 'url':
                 gridDsColumns.push(
-                    {name: 'alias', type: 'string'},
-                    {name: 'url_scheme', type: 'string'}
+                    {name: 'alias', type: 'string'}
                 );
+
+                if (MetaSeo.overview.conf.urlSchemeAvailable) {
+                    gridDsColumns.push(
+                        {name: 'url_scheme', type: 'string'}
+                    );
+                }
 
                 if (MetaSeo.overview.conf.realurlAvailable) {
                     gridDsColumns.push(
@@ -511,7 +525,6 @@ MetaSeo.overview.grid = {
             }
         });
     },
-
 
     _createGridColumnModel: function () {
         var me = this;
@@ -798,39 +811,43 @@ MetaSeo.overview.grid = {
                 var fieldRendererUrlSimulate = function (value, metaData, record, rowIndex, colIndex, store) {
                     var qtip = Ext.util.Format.htmlEncode(MetaSeo.overview.conf.lang.qtip_url_simulate);
 
-                    return '<div class="metaseo-toolbar" ext:qtip="' + qtip + '">' + MetaSeo.overview.conf.sprite.info + '</div>';
+                    return '<div class="metaseo-toolbar" ext:qtip="' + qtip + '">' + MetaSeo.reRenderIcon(MetaSeo.overview.conf.sprite.info) + '</div>';
                 };
 
 
+                if (MetaSeo.overview.conf.urlSchemeAvailable) {
+                    columnModel.push({
+                        id: 'url_scheme',
+                        header: MetaSeo.overview.conf.lang.page_url_scheme,
+                        width: 100,
+                        sortable: false,
+                        dataIndex: 'url_scheme',
+                        renderer: fieldRendererUrlScheme,
+                        metaSeoClickEdit: {
+                            xtype: 'combo',
+                            forceSelection: true,
+                            editable: false,
+                            mode: 'local',
+                            triggerAction: 'all',
+                            store: new Ext.data.ArrayStore({
+                                id: 0,
+                                fields: [
+                                    'id',
+                                    'label'
+                                ],
+                                data: [
+                                    [0, MetaSeo.overview.conf.lang.page_url_scheme_default],
+                                    [1, MetaSeo.overview.conf.lang.page_url_scheme_http],
+                                    [2, MetaSeo.overview.conf.lang.page_url_scheme_https]
+                                ]
+                            }),
+                            valueField: 'id',
+                            displayField: 'label'
+                        }
+                    });
+                }
+
                 columnModel.push({
-                    id: 'url_scheme',
-                    header: MetaSeo.overview.conf.lang.page_url_scheme,
-                    width: 100,
-                    sortable: false,
-                    dataIndex: 'url_scheme',
-                    renderer: fieldRendererUrlScheme,
-                    metaSeoClickEdit: {
-                        xtype: 'combo',
-                        forceSelection: true,
-                        editable: false,
-                        mode: 'local',
-                        triggerAction: 'all',
-                        store: new Ext.data.ArrayStore({
-                            id: 0,
-                            fields: [
-                                'id',
-                                'label'
-                            ],
-                            data: [
-                                [0, MetaSeo.overview.conf.lang.page_url_scheme_default],
-                                [1, MetaSeo.overview.conf.lang.page_url_scheme_http],
-                                [2, MetaSeo.overview.conf.lang.page_url_scheme_https]
-                            ]
-                        }),
-                        valueField: 'id',
-                        displayField: 'label'
-                    }
-                }, {
                     id: 'alias',
                     header: MetaSeo.overview.conf.lang.page_url_alias,
                     width: 200,
@@ -952,7 +969,7 @@ MetaSeo.overview.grid = {
                 var fieldRendererTitleSimulate = function (value, metaData, record, rowIndex, colIndex, store) {
                     var qtip = Ext.util.Format.htmlEncode(MetaSeo.overview.conf.lang.qtip_pagetitle_simulate);
 
-                    return '<div class="metaseo-toolbar" ext:qtip="' + qtip + '">' + MetaSeo.overview.conf.sprite.info + '</div>';
+                    return '<div class="metaseo-toolbar" ext:qtip="' + qtip + '">' + MetaSeo.reRenderIcon(MetaSeo.overview.conf.sprite.info) + '</div>';
                 };
 
                 columnModel.push({
@@ -1079,7 +1096,7 @@ MetaSeo.overview.grid = {
 
         if (this._cellEditMode) {
             classes += 'metaseo-cell-editable ';
-            icon = MetaSeo.overview.conf.sprite.edit;
+            icon = MetaSeo.reRenderIcon(MetaSeo.overview.conf.sprite.edit);
         }
 
         if (this._fullCellHighlight && !Ext.isEmpty(MetaSeo.overview.conf.criteriaFulltext)) {

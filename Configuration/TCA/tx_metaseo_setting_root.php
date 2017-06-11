@@ -1,11 +1,14 @@
 <?php
 
+// allow pages which contain such a record to be copied by users without throwing errors
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_metaseo_setting_root');
+
 return array(
     'ctrl'      => array(
         'title'         => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:tx_metaseo_setting_root',
         'label'         => 'uid',
         'adminOnly'     => true,
-        'iconfile'      => 'page',
+        'iconfile'      => 'EXT:backend/Resources/Public/Icons/module-page.svg',
         'hideTable'     => true,
         'dividers2tabs' => true,
     ),
@@ -131,11 +134,11 @@ return array(
     'types'     => array(
         '0' => array(
             'showitem'       => '--div--;LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:'
-                . 'tx_metaseo_setting_root.tab.sitemap,is_sitemap;;pallette_sitemap,is_sitemap_language_lock,'
+                . 'tx_metaseo_setting_root.tab.sitemap,is_sitemap, --palette--;;pallette_sitemap,is_sitemap_language_lock,'
                 . 'sitemap_page_limit,sitemap_priority,sitemap_priority_depth_multiplier,'
                 . 'sitemap_priority_depth_modificator,--div--;LLL:EXT:'
                 . 'metaseo/Resources/Private/Language/TCA/locallang.xlf:tx_metaseo_setting_root.tab.robotstxt,'
-                . 'is_robotstxt;;pallette_robotstxt',
+                . 'is_robotstxt, --palette--;;pallette_robotstxt',
             'canNotCollapse' => '1'
         ),
     ),
