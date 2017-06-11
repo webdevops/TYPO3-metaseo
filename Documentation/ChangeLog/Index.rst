@@ -18,9 +18,12 @@ Changelog
 | **3.0.0**   | **Major release** (2017-06-11)                                                                     |
 |             |                                                                                                    |
 |             | - Added TYPO3 CMS 8.7 LTS support                                                                  |
-|             | - Removed support for TYPO3 CMS 6.2 LTS and 7.6 LTS                                                |
-|             | - contains the new features which were backported into 2.1.0                                       |
 |             | - TCA usage is now on par with TYPO3 CMS 8.7                                                       |
+|             | - Removed support for TYPO3 CMS 6.2 LTS and 7.6 LTS                                                |
+|             | - Fully migrated to PSR-7 and AJAX UriBuilder routes                                               |
+|             | - Contains the new features which were backported into 2.1.0                                       |
+|             | - Added SVG icons                                                                                  |
+|             | - Streamlined layout                                                                               |
 |             | - Deprecation log is now supposed to stay empty (except for Doctrine DBAL messages)                |
 |             | - metaseo 3.0.0 runs with and without the compatibility7 extension (uninstall it if possible)      |
 |             |                                                                                                    |
