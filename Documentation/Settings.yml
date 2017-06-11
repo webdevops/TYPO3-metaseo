@@ -6,8 +6,8 @@
 conf.py:
   copyright: 2014-2017
   project: MetaSEO
-  version: 2.1
-  release: 2.1.0
+  version: 3.0
+  release: 3.0.0
   html_theme_options:
       github_repository: mblaschke/TYPO3-metaseo
       github_branch: develop
