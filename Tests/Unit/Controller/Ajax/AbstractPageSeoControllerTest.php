@@ -274,7 +274,7 @@ abstract class AbstractPageSeoControllerTest extends UnitTestCase
      */
     protected function getConfigurationManagerMock()
     {
-        $mock = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
+        $mock = $this->createMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
         $mock
             ->expects($this->any())
             ->method('getConfiguration')
