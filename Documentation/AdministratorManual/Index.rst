@@ -27,7 +27,7 @@ Installation via composer
 - Make sure that you have TYPO3 CMS installed in composer mode
 - `cd` to the path with your `composer.json`
 - To install via TER (recommended default), run `composer require typo3-ter/metaseo -o`
-- To install via Packagist (for enthusiasts), run `composer require mblaschke/metaseo -o`
+- To install via Packagist (for enthusiasts), run `composer require webdevops/metaseo -o`
 - If asked for a version constraint, answer with `*`
 - Include “static extension template” (Template → Info/Modify → Edit the whole template record → “Include static
   (from extensions):” and select “MetaSEO”)
@@ -36,7 +36,7 @@ Installation via composer
 Migration from TYPO3 CMS 7.6 to 8.7
 -----------------------------------
 
-- Check out the latest `announcements <https://github.com/mblaschke/TYPO3-metaseo/issues/376>`_.
+- Check out the latest `announcements <https://github.com/webdevops/TYPO3-metaseo/issues/376>`_.
 
 Migration from TYPO3 CMS 6.2 to 7.6
 -----------------------------------

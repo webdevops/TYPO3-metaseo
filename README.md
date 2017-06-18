@@ -5,8 +5,8 @@
 ![License GPL3](https://img.shields.io/badge/license-GPL3-blue.svg?style=flat)
 
 
-[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/mblaschke/TYPO3-metaseo.svg)](http://isitmaintained.com/project/mblaschke/TYPO3-metaseo "Average time to resolve an issue")
-[![Percentage of issues still open](http://isitmaintained.com/badge/open/mblaschke/TYPO3-metaseo.svg)](http://isitmaintained.com/project/mblaschke/TYPO3-metaseo "Percentage of issues still open")
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/webdevops/TYPO3-metaseo.svg)](http://isitmaintained.com/project/webdevops/TYPO3-metaseo "Average time to resolve an issue")
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/webdevops/TYPO3-metaseo.svg)](http://isitmaintained.com/project/webdevops/TYPO3-metaseo "Percentage of issues still open")
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/19914ab4-1f0f-4be0-9215-410fba880af2/big.png)](https://insight.sensiolabs.com/projects/19914ab4-1f0f-4be0-9215-410fba880af2)
 
@@ -16,20 +16,20 @@ and pagetitle manipulation.
 It's a replacement for the "metatag" extension and the successor of the discontinued extension "tq_seo".
 
 * Manual:      https://docs.typo3.org/typo3cms/extensions/metaseo/
-* Support:     https://github.com/mblaschke/TYPO3-metaseo/issues
-* Source code: https://github.com/mblaschke/TYPO3-metaseo
+* Support:     https://github.com/webdevops/TYPO3-metaseo/issues
+* Source code: https://github.com/webdevops/TYPO3-metaseo
 
 ## Version status
 
 MetaSEO is available via TYPO3's Extension Manager ([TER](https://typo3.org/extensions/repository/view/metaseo))
 and via composer ([TER](https://typo3.org/extensions/repository/view/metaseo),
-[Packagist](https://packagist.org/packages/mblaschke/metaseo)).
+[Packagist](https://packagist.org/packages/webdevops/metaseo)).
 
 * Development version **3.0.1-dev**:
 
   + Branch **master**
   + TYPO3 Version: 8.7.x
-  + composer via Packagist: `composer require mblaschke/metaseo:dev-master -o`
+  + composer via Packagist: `composer require webdevops/metaseo:dev-master -o`
   + Please be aware that the development version can break at any time
 
 * Stable version **3.0.0**:
@@ -37,13 +37,13 @@ and via composer ([TER](https://typo3.org/extensions/repository/view/metaseo),
   + Branch **v3.0**
   + TYPO3 Version: 8.7.x
   + composer via TER: `composer require typo3-ter/metaseo -o` (recommended)
-  + composer via Packagist: `composer require mblaschke/metaseo -o`
+  + composer via Packagist: `composer require webdevops/metaseo -o`
 
 * Old-Stable Development version **2.1.1-dev**:
 
   + Branch **backport**
   + TYPO3 Version: 6.2.x - 7.6.x
-  + composer via Packagist: `composer require mblaschke/metaseo:dev-backport -o`
+  + composer via Packagist: `composer require webdevops/metaseo:dev-backport -o`
   + Please be aware that the development version can break at any time
 
 * Old-Stable version **2.1.0**:
@@ -51,13 +51,13 @@ and via composer ([TER](https://typo3.org/extensions/repository/view/metaseo),
   + Branch **v2.1**
   + TYPO3 Version: 6.2.x - 7.6.x
   + composer via TER: `composer require typo3-ter/metaseo -o` (recommended)
-  + composer via Packagist: `composer require mblaschke/metaseo -o`
+  + composer via Packagist: `composer require webdevops/metaseo -o`
 
 For version specific information see [changelog for MetaSEO](CHANGELOG.md)
 
 ## Found a bug? Have questions?
 
-Please feel free to file an issue in our [Bugtracker](https://github.com/mblaschke/TYPO3-metaseo/issues). To avoid feedback loops we suggest to provide
+Please feel free to file an issue in our [Bugtracker](https://github.com/webdevops/TYPO3-metaseo/issues). To avoid feedback loops we suggest to provide
 
 * MetaSEO version
 * TYPO3 version
@@ -77,10 +77,10 @@ MetaSEO users also meet on slack at [#ext-metaseo](https://typo3.slack.com/messa
 MetaSEO is driven by the community and we're pleased to add new contributions.
 If you want to provide improvements, please
 
-- make sure that an [issue](https://github.com/mblaschke/TYPO3-metaseo/issues) exists so that it is clear what
+- make sure that an [issue](https://github.com/webdevops/TYPO3-metaseo/issues) exists so that it is clear what
   your contribution is supposed to do. Eventually, open a new issue.
 - add a `Fixes #123` to the message of your first commit, whereas `#123` should be the issue number.
-- add yourself to the [list of contributors](https://github.com/mblaschke/TYPO3-metaseo/blob/develop/Documentation/Introduction/Index.rst)
+- add yourself to the [list of contributors](https://github.com/webdevops/TYPO3-metaseo/blob/develop/Documentation/Introduction/Index.rst)
   when you send us your first pull request (PR).
 - provide as many commits in your PR as necessary. There's no single-commit policy, but one PR should not affect more
   than one issue (if possible).

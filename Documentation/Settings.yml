@@ -9,7 +9,7 @@ conf.py:
   version: 2.1
   release: 2.1.0
   html_theme_options:
-      github_repository: mblaschke/TYPO3-metaseo
+      github_repository: webdevops/TYPO3-metaseo
       github_branch: develop
   latex_documents:
   - - Index
