@@ -39,6 +39,13 @@ and via composer ([TER](https://typo3.org/extensions/repository/view/metaseo),
   + composer via TER: `composer require typo3-ter/metaseo -o` (recommended)
   + composer via Packagist: `composer require mblaschke/metaseo -o`
 
+* Old-Stable Development version **2.1.1-dev**:
+
+  + Branch **backport**
+  + TYPO3 Version: 6.2.x - 7.6.x
+  + composer via Packagist: `composer require mblaschke/metaseo:dev-backport -o`
+  + Please be aware that the development version can break at any time
+
 * Old-Stable version **2.1.0**:
 
   + Branch **v2.1**
