@@ -137,7 +137,7 @@ Found a bug?
 ------------
 
 Just send a mail to typo3@markus-blaschke.de
-or file an issue at `github <https://github.com/mblaschke/TYPO3-metaseo>`_
+or file an issue at `github <https://github.com/webdevops/TYPO3-metaseo>`_
 or ask MetaSEO's `slack channel <https://typo3.slack.com/messages/ext-metaseo/>`_
 
 Thanks to...

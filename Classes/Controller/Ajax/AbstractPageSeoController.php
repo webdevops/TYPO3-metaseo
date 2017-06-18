@@ -410,7 +410,7 @@ abstract class AbstractPageSeoController extends AbstractAjaxController implemen
     /**
      * Returns array of classes which contain Ajax controllers with <ajaxPrefix> => <className)
      *
-     * @see {@link https://github.com/mblaschke/TYPO3-metaseo/issues/380}
+     * @see {@link https://github.com/webdevops/TYPO3-metaseo/issues/380}
      *
      * @return array
      */

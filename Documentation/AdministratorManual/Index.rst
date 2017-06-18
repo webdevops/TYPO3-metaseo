@@ -27,7 +27,7 @@ Installation via composer
 - Make sure that you have TYPO3 CMS installed in composer mode
 - `cd` to the path with your `composer.json`
 - To install via TER (recommended default), run `composer require typo3-ter/metaseo -o`
-- To install via Packagist (for enthusiasts), run `composer require mblaschke/metaseo -o`
+- To install via Packagist (for enthusiasts), run `composer require webdevops/metaseo -o`
 - If asked for a version constraint, answer with `*`
 - Include “static extension template” (Template → Info/Modify → Edit the whole template record → “Include static
   (from extensions):” and select “MetaSEO”)
