@@ -34,8 +34,8 @@ Changelog
 |             | - For details in respect to the schema selection (http/https) feature removal, please visit the    |
 |             |   `Manual <https://docs.typo3.org/typo3cms/extensions/metaseo/stable/AdministratorManual/>`_       |
 |             |                                                                                                    |
-|             | `Milestone 3.0.0 <https://github.com/mblaschke/TYPO3-metaseo/milestone/6?closed=1>`_               |
-|             | `Changes in 3.0.0 <https://github.com/mblaschke/TYPO3-metaseo/compare/2.1.0...3.0.0>`_             |
+|             | `Milestone 3.0.0 <https://github.com/webdevops/TYPO3-metaseo/milestone/6?closed=1>`_               |
+|             | `Changes in 3.0.0 <https://github.com/webdevops/TYPO3-metaseo/compare/2.1.0...3.0.0>`_             |
 +-------------+----------------------------------------------------------------------------------------------------+
 | **2.1.0**   | **New feature and Bugfix release** (2017-06-11)                                                    |
 |             |                                                                                                    |
