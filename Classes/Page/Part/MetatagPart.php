@@ -586,7 +586,7 @@ class MetatagPart extends AbstractPart
                 $metaTags['adv.' . $tagName] = array(
                     'tag'        => 'meta',
                     'attributes' => array(
-                        'rel'  => $tagName, //see https://github.com/mblaschke/TYPO3-metaseo/issues/464
+                        'rel'  => $tagName, //see https://github.com/webdevops/TYPO3-metaseo/issues/464
                         'href' => $tagValue,
                     ),
                 );
@@ -600,7 +600,7 @@ class MetatagPart extends AbstractPart
             $metaTags['adv.' . $tagName] = array(
                 'tag'        => 'meta',
                 'attributes' => array(
-                    'rel'  => $tagName, //see https://github.com/mblaschke/TYPO3-metaseo/issues/464
+                    'rel'  => $tagName, //see https://github.com/webdevops/TYPO3-metaseo/issues/464
                     'href' => $tagValue,
                 ),
             );
@@ -1248,7 +1248,7 @@ class MetatagPart extends AbstractPart
 
         // Only generate up, prev and next if NOT rootpage
         // to prevent linking to other domains
-        // see https://github.com/mblaschke/TYPO3-metaseo/issues/5
+        // see https://github.com/webdevops/TYPO3-metaseo/issues/5
         if (!$currentIsRootpage) {
             $startPage = $GLOBALS['TSFE']->cObj->cObjGetSingle('HMENU', $this->tsSetupSeo['sectionLinks.']['start.']);
             $startPageUrl = null;
