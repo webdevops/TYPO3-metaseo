@@ -185,7 +185,7 @@ class XmlGenerator extends AbstractGenerator
 
 
             if ($pageDepth > 0.1) {
-                $pageDepthBase = 1;//1 / $pageDepth;
+                $pageDepthBase = 1 / $pageDepth;
             }
 
             $pagePriority = $pagePriorityDefaultValue * ($pageDepthBase * $pagePriorityDepthMultiplier);
