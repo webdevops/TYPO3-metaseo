@@ -101,7 +101,7 @@ class XmlGenerator extends AbstractGenerator
      *
      * @return  string
      */
-    public function sitemap($page = null)
+    public function sitemap($page = 0)
     {
         $ret = '';
 
@@ -112,23 +112,22 @@ class XmlGenerator extends AbstractGenerator
         }
 
         $pageItems     = count($this->sitemapPages);
-        $pageItemBegin = $pageLimit * ($page - 1);
+        $pageItemBegin = $pageLimit * $page;
 
         if ($pageItemBegin <= $pageItems) {
-            $this->sitemapPages = array_slice($this->sitemapPages, $pageItemBegin, $pageLimit);
-
-            $ret = $this->createSitemapPage();
+            $ret = $this->createSitemapPage(array_slice($this->sitemapPages, $pageItemBegin, $pageLimit));
         }
 
         return $ret;
     }
 
-    /**
-     * Create Sitemap Page
-     *
-     * @return string
-     */
-    protected function createSitemapPage()
+  /**
+   * Create Sitemap Page
+   *
+   * @param array $pagesToGenerate
+   * @return string
+   */
+    protected function createSitemapPage($pagesToGenerate = array())
     {
         $ret = '<?xml version="1.0" encoding="UTF-8"?>';
         $ret .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"';
@@ -163,7 +162,7 @@ class XmlGenerator extends AbstractGenerator
         // SetupTS conf
         // #####################
 
-        foreach ($this->sitemapPages as $sitemapPage) {
+        foreach ($pagesToGenerate as $sitemapPage) {
             if (empty($this->pages[$sitemapPage['page_uid']])) {
                 // invalid page
                 continue;
@@ -186,7 +185,7 @@ class XmlGenerator extends AbstractGenerator
 
 
             if ($pageDepth > 0.1) {
-                $pageDepthBase = 1 / $pageDepth;
+                $pageDepthBase = 1;//1 / $pageDepth;
             }
 
             $pagePriority = $pagePriorityDefaultValue * ($pageDepthBase * $pagePriorityDepthMultiplier);
