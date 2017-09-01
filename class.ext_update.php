@@ -132,7 +132,7 @@ class ext_update
         if ($this->clearCache) {
 
             // Init TCE
-            $TCE        = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+            $TCE        = GeneralUtility::makeInstance(TYPO3\CMS\Core\DataHandling\DataHandler::class);
             $TCE->admin = 1;
             $TCE->clear_cacheCmd('all');
 
@@ -192,19 +192,19 @@ class ext_update
      */
     protected function generateOutput()
     {
-        $output = '';
-
+        $flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+        $messageQueue = $flashMessageService->getMessageQueueByIdentifier();
         foreach ($this->messageList as $message) {
             $flashMessage = GeneralUtility::makeInstance(
-                'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+                FlashMessage::class,
                 $message[2],
                 $message[1],
                 $message[0]
             );
-            $output .= $flashMessage->render();
+            $messageQueue->addMessage($flashMessage);
         }
 
-        return $output;
+        return $messageQueue->renderFlashMessages();
     }
 
 
