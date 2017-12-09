@@ -130,7 +130,9 @@ plugin.metaseo {
 
             # Default typolink configuration for canonical link
             typolink {
-
+				addQueryString = 1
+                addQueryString.method = GET
+                addQueryString.exclude = no_cache, id, cHash, tx_ttnews[pointer], tx_indexedsearch[sword], tx_comments_pi1[page], tx_pagebrowse_pi1[page]
             }
 
             # blacklist (RegExp, eg /typo3/)
