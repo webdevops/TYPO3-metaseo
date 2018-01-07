@@ -221,7 +221,7 @@ class SitemapUtility
             ) >= 1
         ) {
             $pageTypeBlacklist = $GLOBALS['TSFE']->tmpl
-                ->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist'];
+                                     ->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist'];
             $pageTypeBlacklist = Typo3GeneralUtility::trimExplode(',', $pageTypeBlacklist);
 
             $ret = array_merge($ret, $pageTypeBlacklist);
