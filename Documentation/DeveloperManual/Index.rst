@@ -166,6 +166,9 @@ plugin.metaseo.sitemap.index.blacklist                       List of Regular Exp
 
 plugin.metaseo.sitemap.index.pageTypeBlacklist               List of blacklisted page typeNums (SetupTS PAGE objects)     String, comma separated
 
+plugin.metaseo.sitemap.index.pageTypeWhitelist               List of whitelisted page typeNums (SetupTS PAGE objects)     String, comma separated
+                                                             If set then "pageTypeBlacklist" is ignored.
+
 plugin.metaseo.sitemap.index.fileExtension                   List of allowed file extensions for indexing                 List
 
                                                              Default:

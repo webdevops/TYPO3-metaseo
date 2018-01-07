@@ -482,6 +482,9 @@ plugin.metaseo {
             # Blacklist for SetupTS PAGE object typeNums
             pageTypeBlacklist =
 
+            # Whitelist for SetupTS PAGE object typeNums (when set then pageTypeBlacklist is ignored)
+            pageTypeWhitelist =
+
             allowNoStaticCachable = {$plugin.metaseo.sitemap.index.allowNoStaticCachable}
             allowNoCache = {$plugin.metaseo.sitemap.index.allowNoCache}
 

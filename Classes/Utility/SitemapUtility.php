@@ -231,6 +231,23 @@ class SitemapUtility
     }
 
     /**
+     * Get list of whitelisted PAGE typenum (typoscript object)
+     *
+     * @return array
+     */
+    public static function getPageTypeWhitelist()
+    {
+        $pageTypeWhitelist = [];
+        if (isset($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeWhitelist'])
+            && strlen($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeWhitelist'])
+            >= 1) {
+            $pageTypeWhitelist = Typo3GeneralUtility::trimExplode(',',
+                $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeWhitelist']);
+        }
+        return $pageTypeWhitelist;
+    }
+
+    /**
      * Return list of sitemap pages
      *
      * @param   integer $rootPid    Root page id of tree
