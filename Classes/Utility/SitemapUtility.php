@@ -221,13 +221,30 @@ class SitemapUtility
             ) >= 1
         ) {
             $pageTypeBlacklist = $GLOBALS['TSFE']->tmpl
-                                     ->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist'];
+                ->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeBlacklist'];
             $pageTypeBlacklist = Typo3GeneralUtility::trimExplode(',', $pageTypeBlacklist);
 
             $ret = array_merge($ret, $pageTypeBlacklist);
         }
 
         return $ret;
+    }
+
+    /**
+     * Get list of whitelisted PAGE typenum (typoscript object)
+     *
+     * @return array
+     */
+    public static function getPageTypeWhitelist()
+    {
+        $pageTypeWhitelist = [];
+        if (isset($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeWhitelist'])
+            && strlen($GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeWhitelist'])
+            >= 1) {
+            $pageTypeWhitelist = Typo3GeneralUtility::trimExplode(',',
+                $GLOBALS['TSFE']->tmpl->setup['plugin.']['metaseo.']['sitemap.']['index.']['pageTypeWhitelist']);
+        }
+        return $pageTypeWhitelist;
     }
 
     /**

@@ -58,6 +58,13 @@ abstract class SitemapIndexHook implements SingletonInterface
     protected $pageTypeBlacklist = array();
 
     /**
+     * List of whitelisted page types (Setup PAGE object typeNum)
+     *
+     * @var array
+     */
+    protected $pageTypeWhitelist = array();
+
+    /**
      * Page index status
      *
      * @var null|boolean
@@ -157,6 +164,9 @@ abstract class SitemapIndexHook implements SingletonInterface
 
         // Init blacklist for PAGE typenum
         $this->pageTypeBlacklist = SitemapUtility::getPageTypeBlacklist();
+
+        // Init whitelist for PAGE typenum
+        $this->pageTypeWhitelist = SitemapUtility::getPageTypeWhitelist();
     }
 
     /**
@@ -293,9 +303,15 @@ abstract class SitemapIndexHook implements SingletonInterface
 
         $tsfe = self::getTsfe();
 
-        // Check for type blacklisting (from typoscript PAGE object)
-        if (in_array($tsfe->type, $this->pageTypeBlacklist)) {
-            return false;
+        if (!empty($this->pageTypeWhitelist)) {
+            if (!in_array($tsfe->type, $this->pageTypeWhitelist)) {
+                return false;
+            }
+        } else {
+            // Check for type blacklisting (from typoscript PAGE object)
+            if (in_array($tsfe->type, $this->pageTypeBlacklist)) {
+                return false;
+            }
         }
 
         // Check if page is excluded from search engines
