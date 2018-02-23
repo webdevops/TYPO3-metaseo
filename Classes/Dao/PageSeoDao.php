@@ -266,6 +266,7 @@ class PageSeoDao extends Dao
                 $query     = 'SELECT uid
                                 FROM pages_language_overlay
                                WHERE pid = ' . (int)$pid . '
+                               AND deleted = 0
                                  AND sys_language_uid = ' . (int)$sysLanguage;
                 $overlayId = DatabaseUtility::getOne($query);
 
