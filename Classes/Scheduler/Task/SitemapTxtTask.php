@@ -69,7 +69,7 @@ class SitemapTxtTask extends AbstractSitemapTask
         $content   = $generator->sitemap();
 
         $fileName = sprintf($sitemapFileName, $rootPageId, $languageId);
-        $this->writeToFile(PATH_site . '/' . $this->sitemapDir . '/' . $fileName, $content);
+        $this->writeToFile(PATH_site . $this->sitemapDir . '/' . $fileName, $content);
 
         return true;
     }
