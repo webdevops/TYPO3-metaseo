@@ -80,13 +80,13 @@ class SitemapXmlTask extends AbstractSitemapTask
         // Index
         $content  = $generator->sitemapIndex();
         $fileName = sprintf($sitemapIndexFileName, $rootPageId, $languageId);
-        $this->writeToFile(PATH_site . '/' . $this->sitemapDir . '/' . $fileName, $content);
+        $this->writeToFile(PATH_site . $this->sitemapDir . '/' . $fileName, $content);
 
         // Page
         for ($i = 0; $i < $pageCount; $i++) {
             $content  = $generator->sitemap($i);
             $fileName = sprintf($sitemapPageFileName, $rootPageId, $languageId, $i);
-            $this->writeToFile(PATH_site . '/' . $this->sitemapDir . '/' . $fileName, $content);
+            $this->writeToFile(PATH_site . $this->sitemapDir . '/' . $fileName, $content);
         }
 
         return true;
