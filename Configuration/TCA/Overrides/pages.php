@@ -70,7 +70,21 @@ $tempColumns = array(
         'exclude' => 1,
         'label'   => 'LLL:EXT:metaseo/Resources/Private/Language/TCA/locallang.xlf:pages.tx_metaseo_opengraph_image',
         'config'  => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('tx_metaseo_opengraph_image', array(
-                'maxitems' => 1
+                'maxitems' => 1,
+                'foreign_match_fields' => [
+                    'fieldname' => 'tx_metaseo_opengraph_image',
+                    'tablenames' => 'pages',
+                    'table_local' => 'sys_file',
+                ],
+                'overrideChildTca' => [
+                    'types' => [
+                        \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => [
+                            'showitem' => '
+                            --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+                            --palette--;;filePalette'
+                        ],
+                    ],
+                ],
             )
         )
     ),
