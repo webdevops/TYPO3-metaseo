@@ -376,6 +376,8 @@ plugin.metaseo {
 
             anonymizeIp = {$plugin.metaseo.services.googleAnalytics.anonymizeIp}
             domainName = {$plugin.metaseo.services.googleAnalytics.domainName}
+            
+            optoutCode = {$plugin.metaseo.services.googleAnalytics.optoutCode}
 
             trackDownloads = {$plugin.metaseo.services.googleAnalytics.trackDownloads}
             trackDownloadsScript = EXT:metaseo/Resources/Public/Frontend/JavaScript/GoogleAnalyticsTrackDownload.js
@@ -398,10 +400,13 @@ plugin.metaseo {
 
                         gaIsAnonymize = TEXT
                         gaIsAnonymize.field = gaIsAnonymize
-
+                        
                         gaDomainName = TEXT
                         gaDomainName.field = gaDomainName
 
+                        gaOptOutCode = TEXT
+                        gaOptOutCode.field = gaOptOutCode
+                        
                         gaUseUniversalAnalytics = TEXT
                         gaUseUniversalAnalytics.field = gaUseUniversalAnalytics
                     }
