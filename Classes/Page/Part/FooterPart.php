@@ -158,8 +158,10 @@ class FooterPart extends AbstractPart
             $this->cObj->data['gaCode']                  = $gaCode;
             $this->cObj->data['gaIsAnonymize']           = (int)!empty($gaConf['anonymizeIp']);
             $this->cObj->data['gaDomainName']            = $gaConf['domainName'];
+            $this->cObj->data['gaOptOutCode']           = (int)!empty($gaConf['optoutCode']);
             $this->cObj->data['gaCustomizationCode']     = $customCode;
             $this->cObj->data['gaUseUniversalAnalytics'] = (int)!empty($gaConf['universalAnalytics']);
+            
 
             // Build code
             $ret[] = $this->cObj->cObjGetSingle($gaConf['template'], $gaConf['template.']);
