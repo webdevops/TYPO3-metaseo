@@ -127,7 +127,9 @@ plugin.metaseo {
     services.googleAnalytics.domainName =
     # cat=plugin.metaseo.services/page/08; type=boolean; label= Google Analytics Anonymize IP: Enable anonymize IP
     services.googleAnalytics.anonymizeIp = 0
-    # cat=plugin.metaseo.services/page/09; type=boolean; label= Google Analytics Track Downloads: Track downloads (with javascript) (BETA!)
+    # cat=plugin.metaseo.services/page/09; type=boolean; label= Google Analytics Opt-Out-Code: Enable Opt-Out-Code
+    services.googleAnalytics.optoutCode = 0
+    # cat=plugin.metaseo.services/page/10; type=boolean; label= Google Analytics Track Downloads: Track downloads (with javascript) (BETA!)
     services.googleAnalytics.trackDownloads = 0
 
     # cat=plugin.metaseo.services/page/11; type=string; label= Piwik URL: Url to your piwik installation (eg. www.example.com/piwik/ - don't use http:// or https:// as prefix!)
