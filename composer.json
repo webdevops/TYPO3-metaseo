@@ -1,5 +1,5 @@
 {
-  "name": "webdevops/metaseo",
+  "name": "stuartmcfarlane/metaseo",
   "type": "typo3-cms-extension",
   "description": "SEO extension for TYPO3",
   "homepage": "https://github.com/webdevops/TYPO3-metaseo",
@@ -8,7 +8,7 @@
   },
   "license": ["GPL-3.0+"],
   "keywords": ["TYPO3 CMS"],
-  "version": "2.1.0",
+  "version": "2.1.1",
   "autoload": {
     "psr-4": {
       "Metaseo\\Metaseo\\": "Classes/"

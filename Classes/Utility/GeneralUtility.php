@@ -121,17 +121,17 @@ class GeneralUtility
             #################
             # Current rootline
             #################
-            if (empty(self::$rootlineCache['__CURRENT__'])) {
-                // Current rootline
-                $rootline = $GLOBALS['TSFE']->tmpl->rootLine;
+            // Current rootline
+            $rootline = $GLOBALS['TSFE']->tmpl->rootLine;
 
-                // Filter rootline by siteroot
-                $rootline = self::filterRootlineBySiteroot((array)$rootline);
+            // Filter rootline by siteroot
+            $rootline = self::filterRootlineBySiteroot((array)$rootline);
 
-                self::$rootlineCache['__CURRENT__'] = $rootline;
-            }
+            $currentUid = $rootline[0]['uid'];
 
-            $ret = self::$rootlineCache['__CURRENT__'];
+            self::$rootlineCache[$currentUid] = $rootline;
+
+            $ret = self::$rootlineCache[$currentUid];
         } else {
             #################
             # Other rootline
